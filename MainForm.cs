@@ -5,14 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Common.Classes;
-using Common.LogImporter;
-using Common.LogImporter.PCAPNG.Dissectors;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using SharpPcap.WinPcap;
+using sonesson_tools;
 
 namespace LiveRecorder
 {
