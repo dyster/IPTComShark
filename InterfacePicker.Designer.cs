@@ -1,4 +1,4 @@
-﻿namespace LiveRecorder
+﻿namespace IPTComShark
 {
     partial class InterfacePicker
     {

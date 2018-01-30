@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using SharpPcap.WinPcap;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     public partial class InterfacePicker : Form
     {

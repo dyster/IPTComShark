@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using IPTComShark.XmlFiles;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
 using SharpPcap;
@@ -12,7 +13,7 @@ using SharpPcap.LibPcap;
 using SharpPcap.WinPcap;
 using sonesson_tools;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     public partial class MainForm : Form
     {

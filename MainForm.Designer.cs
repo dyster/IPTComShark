@@ -1,4 +1,4 @@
-﻿namespace LiveRecorder
+﻿namespace IPTComShark
 {
     partial class MainForm
     {
@@ -40,8 +40,8 @@
             this.buttonSaveFiltered = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.packetListView1 = new LiveRecorder.PacketListView();
-            this.packetDisplay1 = new LiveRecorder.PacketDisplay();
+            this.packetListView1 = new PacketListView();
+            this.packetDisplay1 = new PacketDisplay();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
             this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LiveRecorder.Properties {
+namespace IPTComShark.Properties {
     using System;
     
     

@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using Common.Classes;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     public partial class PacketDisplay : UserControl
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     internal static class Program
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PacketDotNet;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     public class IPTWPPacket : CapturePacket
     {

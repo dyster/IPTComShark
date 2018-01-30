@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Common.Classes;
 using SharpPcap;
 
-namespace LiveRecorder
+namespace IPTComShark
 {
     public partial class PacketListView : UserControl
     {
