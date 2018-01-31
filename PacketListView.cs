@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Common.Classes;
 using SharpPcap;
 
 namespace IPTComShark

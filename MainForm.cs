@@ -12,18 +12,16 @@ using SharpPcap;
 using SharpPcap.LibPcap;
 using SharpPcap.WinPcap;
 using sonesson_tools;
+using sonesson_tools.BitStreamParser;
+using sonesson_tools.DataSets;
 
 namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        private static readonly List<IPTWPDissector> IptwpDissectors = new List<IPTWPDissector>();
+        private const string Iptfile = @"ECN1_ipt_config.xml";
 
-
-        private static string _iptfile =
-            @"ECN1_ipt_config.xml";
-
-        public static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(_iptfile);
+        private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
         private readonly List<RawCapture> _rawCaptureList = new List<RawCapture>();
         private long _capturedData;
 
@@ -34,11 +32,6 @@ namespace IPTComShark
         public MainForm()
         {
             InitializeComponent();
-
-
-            // add list of iptwp dissectors (skipping the other types for now, they should be converted anyway)
-            IptwpDissectors.AddRange(Dissectors.DissectorList.Where(d => d is IPTWPDissector).Cast<IPTWPDissector>());
-
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.LogTimeString + ": " + log.Message);
 
@@ -76,6 +69,10 @@ namespace IPTComShark
             //if (InvokeRequired)
             //    Invoke(new AddToListDelegate(AddToList), o);
             //else
+
+           
+            
+
             packetListView1.Add(o);
         }
 
@@ -96,6 +93,7 @@ namespace IPTComShark
             }
             else
             {
+                
                 _rawCaptureList.Add(e.Packet);
                 pack.No = _rawCaptureList.Count;
 
@@ -147,31 +145,21 @@ namespace IPTComShark
                         }
                         else
                         {
-                            foreach (IPTWPDissector dissector in IptwpDissectors)
-                                if (dissector.ComId == iptwpPacket.Comid)
-                                {
-                                    // since the iptwp dissector was made by finding comid, we need to give it the raw data instead of the iptwp payload, and put it where the comid starts
-                                    // todo fix the iptwp dissector to work properly!
+                            DataSetDefinition dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
+
+                            if (dataSetDefinition != null)
+                            {
+                                ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
+                                iptwpPacket.Name = parsedDataSet.Name;
+                                iptwpPacket.DictionaryData = parsedDataSet.GetDataDictionary();
 
 
-                                    try
-                                    {
-                                        var chug = dissector.Chug(iptwpPacket.Data, 12);
-                                        iptwpPacket.Name = chug.Name;
-                                        iptwpPacket.DictionaryData = chug.DictionaryData;
-                                        iptwpPacket.From = chug.From;
-                                        iptwpPacket.To = chug.To;
-                                    }
-                                    catch (Exception exception)
-                                    {
-                                        Logger.Log(exception.Message, Severity.Error);
-                                    }
-
-
-                                    break;
-                                }
+                            }
+                            
+                            
 
                             if (iptwpPacket.DictionaryData == null)
+                            {
                                 if (parserOnly)
                                 {
                                     filter = true;
@@ -182,11 +170,16 @@ namespace IPTComShark
                                     if (telegram == null)
                                         iptwpPacket.Name = "Unknown ComID " + iptwpPacket.Comid;
                                     else
-                                        iptwpPacket.Name = telegram.name;
+                                        iptwpPacket.Name = telegram.Name;
                                 }
+                            }
                             else if (iptwpPacket.DictionaryData.Count == 0)
+                            {
                                 if (hideDupes)
+                                {
                                     filter = true;
+                                }
+                            }
 
 
                             // copy over the time values to the new packet
@@ -211,6 +204,8 @@ namespace IPTComShark
                 }
             return pack;
         }
+
+        
 
         private void buttonStart_Click(object sender, EventArgs e)
         {

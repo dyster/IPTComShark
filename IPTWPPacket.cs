@@ -16,7 +16,7 @@ namespace IPTComShark
         //0x4D41(‘MA’) Message Data Acknowledgement for point to point message
         //0x4D61(‘Ma’) Message Data Acknowledgement for a message to a function redundancy group
         //0x4D52(‘MR’) Message Data Response with acknowledgement
-        public static Dictionary<uint, string> MessageTypes = new Dictionary<uint, string>
+        public static readonly Dictionary<uint, string> MessageTypes = new Dictionary<uint, string>
         {
             {0x5044, "PD"},
             {0x4D44, "MD"},

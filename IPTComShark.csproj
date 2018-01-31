@@ -87,6 +87,9 @@
       <DependentUpon>InterfacePicker.cs</DependentUpon>
     </Compile>
     <Compile Include="IPTWPPacket.cs" />
+    <Compile Include="MultiColourTextRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PacketDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using Common.Classes;
+using IPTComShark.XmlFiles;
 
 namespace IPTComShark
 {
@@ -60,19 +60,19 @@ namespace IPTComShark
             try
             {
                 var pointer = 0;
-                foreach (ProcessVariable processVariable in datasetByComId.processvariable)
+                foreach (ProcessVariable processVariable in datasetByComId.Processvariable)
                 {
-                    int arraysize = int.Parse(processVariable.arraysize);
+                    int arraysize = int.Parse(processVariable.Arraysize);
 
                     var dataLine = new DataLine();
-                    dataLine.Name = processVariable.name;
+                    dataLine.Name = processVariable.Name;
                     if (arraysize > 1)
-                        dataLine.Type = processVariable.type + " * " + arraysize;
+                        dataLine.Type = processVariable.Type + " * " + arraysize;
                     else
-                        dataLine.Type = processVariable.type;
+                        dataLine.Type = processVariable.Type;
 
 
-                    switch (processVariable.type)
+                    switch (processVariable.Type)
                     {
                         case "BOOLEAN8":
                         case "BOOL8":
