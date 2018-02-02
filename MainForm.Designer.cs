@@ -40,14 +40,15 @@
             this.buttonSaveFiltered = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.packetListView1 = new PacketListView();
-            this.packetDisplay1 = new PacketDisplay();
+            this.packetListView1 = new IPTComShark.PacketListView();
+            this.packetDisplay1 = new IPTComShark.PacketDisplay();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
             this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.buttonSaveAll = new System.Windows.Forms.Button();
             this.buttonRestart = new System.Windows.Forms.Button();
             this.buttonCleanPcap = new System.Windows.Forms.Button();
+            this.buttonSimulate = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -237,11 +238,22 @@
             this.buttonCleanPcap.UseVisualStyleBackColor = true;
             this.buttonCleanPcap.Click += new System.EventHandler(this.buttonCleanPcap_Click);
             // 
+            // buttonSimulate
+            // 
+            this.buttonSimulate.Location = new System.Drawing.Point(1020, 12);
+            this.buttonSimulate.Name = "buttonSimulate";
+            this.buttonSimulate.Size = new System.Drawing.Size(75, 23);
+            this.buttonSimulate.TabIndex = 14;
+            this.buttonSimulate.Text = "Simulate";
+            this.buttonSimulate.UseVisualStyleBackColor = true;
+            this.buttonSimulate.Click += new System.EventHandler(this.buttonSimulate_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1433, 597);
+            this.Controls.Add(this.buttonSimulate);
             this.Controls.Add(this.buttonCleanPcap);
             this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.buttonSaveAll);
@@ -289,6 +301,7 @@
         private PacketDisplay packetDisplay1;
         private PacketListView packetListView1;
         private System.Windows.Forms.Button buttonCleanPcap;
+        private System.Windows.Forms.Button buttonSimulate;
     }
 }
 

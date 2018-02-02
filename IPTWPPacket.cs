@@ -34,6 +34,7 @@ namespace IPTComShark
         public string IPTWPType { get; set; }
         public uint IPTWPSize { get; set; }
         public byte[] IPTWPPayload { get; set; }
+        public UdpPacket UdpPacket { get; set; }
 
         public static IPTWPPacket Extract(byte[] payload)
         {
@@ -63,7 +64,8 @@ namespace IPTComShark
             var iptPacket = new IPTWPPacket
             {
                 Protocol = "IPTWP",
-                Data = udp.PayloadData
+                Data = udp.PayloadData,
+                UdpPacket = udp
             };
 
             byte[] payload = udp.PayloadData;

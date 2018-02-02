@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using IPTComShark.XmlFiles;
+using LiveRecorder;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
 using SharpPcap;
@@ -439,6 +440,12 @@ namespace IPTComShark
         }
 
         private delegate void UpdateStatusDelegate(string text);
+
+        private void buttonSimulate_Click(object sender, EventArgs e)
+        {
+            var trafficSim = new TrafficSim();
+            trafficSim.Show(this);
+        }
     }
 
     public class CapturePacket : ParsedDataObject
