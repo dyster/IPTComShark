@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{53B92BD5-80DF-48D0-BBA7-C9DBC1469DEB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>LiveRecorder</RootNamespace>
-    <AssemblyName>LiveRecorder</AssemblyName>
+    <RootNamespace>IPTComShark</RootNamespace>
+    <AssemblyName>IPTComShark</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
