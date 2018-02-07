@@ -169,6 +169,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxRAW);
+            this.DoubleBuffered = true;
             this.Name = "PacketDisplay";
             this.Size = new System.Drawing.Size(336, 340);
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).EndInit();

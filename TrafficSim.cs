@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IPTComShark;
+using IPTComShark.FileManager;
 using PacketDotNet;
 using sonesson_tools.FileReaders;
 
@@ -20,7 +21,7 @@ namespace LiveRecorder
 {
     public partial class TrafficSim : Form
     {
-        private List<Packet> _packets = new List<Packet>();
+        private List<CapturePacket> _packets;
         private List<string> _ips = new List<string>();
         private string _ip;
 
@@ -32,59 +33,20 @@ namespace LiveRecorder
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                foreach (string fileName in openFileDialog.FileNames)
-                {
-                    var pcapReader = new PCAPReader();
-                    if (pcapReader.CanRead(fileName))
-                    {
-                        List<FileReadObject> fileReadObjects = pcapReader.Read(fileName);
-                        foreach (FileReadObject fileReadObject in fileReadObjects)
-                        {
-                            var block = (PCAPReader.PCAPBlock)fileReadObject.ReadObject;
-                            _packets.Add(new Packet(block.DateTime, block.PayLoad));
-                        }
-                        continue;
-                    }
-
-                    var pcapngReader = new PCAPNGReader();
-                    if (pcapngReader.CanRead(fileName))
-                    {
-                        List<FileReadObject> fileReadObjects = pcapngReader.Read(fileName);
-                        foreach (FileReadObject fileReadObject in fileReadObjects)
-                        {
-                            var block = (PCAPNGBlock)fileReadObject.ReadObject;
-                            _packets.Add(new Packet(block.Timestamp, block.PayLoad));
-                        }
-                        continue;
-                    }
-
-                    MessageBox.Show("Could not read " + fileName);
-                }
+                var fileManager = new FileManager();
+                _packets = fileManager.OpenFiles(openFileDialog.FileNames);
             }
             else
             {
                 this.Close();
             }
-
             
-
-            foreach (Packet packet in _packets)
-            {
-                
-                IPTWPPacket iptwpPacket = IPTWPPacket.Extract(packet.PayLoad);
-                if (iptwpPacket != null)
-                {
-                    packet.IPTWPPacket = iptwpPacket;
-                }
-
-            }
-
+            // remove all non IPTCom packets
             _packets.RemoveAll(packet => packet.IPTWPPacket == null);
 
-            foreach (Packet packet1 in _packets)
+            foreach (var packet1 in _packets)
             {
-                var ipv4 = (IPv4Packet)packet1.IPTWPPacket.UdpPacket.ParentPacket;
-                string ip = ipv4.SourceAddress.ToString();
+                string ip = packet1.IPv4Packet.SourceAddress.ToString();
 
                 if(!_ips.Contains(ip))
                     _ips.Add(ip);
@@ -92,19 +54,13 @@ namespace LiveRecorder
 
             _packets.Sort();
             
-            var startTime = _packets.First().TimeStamp;
+            var startTime = _packets.First().Date;
 
-            foreach (Packet packet in _packets)
-            {
-                packet.TimeSpan = packet.TimeStamp.Subtract(startTime);
-            }
-
-           
-
+            
             comboBox1.DataSource = _ips;
 
-            labelStart.Text += " " + _packets.First().TimeStamp;
-            labelEnd.Text += " " + _packets.Last().TimeStamp;
+            labelStart.Text += " " + _packets.First().Date;
+            labelEnd.Text += " " + _packets.Last().Date;
         }
 
         private class Packet : IComparable
@@ -138,10 +94,15 @@ namespace LiveRecorder
             var udpClient = new UdpClient();
 
 
-            //var packets = _packets.Where(packet => ((IPv4Packet) packet.IPTWPPacket.UdpPacket.ParentPacket).SourceAddress.ToString() == _ip);
-            var packets = _packets;
+            var packets = _packets.Where(packet =>  packet.IPv4Packet.SourceAddress.ToString() == _ip);
+            //var packets = _packets;
 
-            var que = new Queue<Packet>(packets);
+            var que = new Queue<CapturePacket>(packets);
+
+            DateTime startTime = que.Peek().Date;
+            DateTime endTime = que.Last().Date;
+
+            var totalMS = (endTime - startTime).TotalMilliseconds;
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -154,7 +115,7 @@ namespace LiveRecorder
                 if(que.Count == 0)
                     return;
 
-                var nextSpan = que.Peek().TimeSpan;
+                var nextSpan = que.Peek().Date - startTime;
 
                 while (true)
                 {
@@ -178,19 +139,21 @@ namespace LiveRecorder
                         return;
                 }
 
-                Packet dequeue = que.Dequeue();
+                CapturePacket dequeue = que.Dequeue();
 
                 ThreadPool.QueueUserWorkItem(thing =>
                 {
-                    var ipv4 = (IPv4Packet)dequeue.IPTWPPacket.UdpPacket.ParentPacket;
-                    var ipEndPoint = new IPEndPoint(ipv4.DestinationAddress, dequeue.IPTWPPacket.UdpPacket.DestinationPort);
-                    udpClient.SendAsync(dequeue.IPTWPPacket.UdpPacket.PayloadData,
-                        dequeue.IPTWPPacket.UdpPacket.PayloadData.Length, ipEndPoint);
+                    var ipv4 = dequeue.IPv4Packet;
+                    var ipEndPoint = new IPEndPoint(ipv4.DestinationAddress, dequeue.UDPPacket.DestinationPort);
+                    udpClient.SendAsync(dequeue.UDPPacket.PayloadData,
+                        dequeue.UDPPacket.PayloadData.Length, ipEndPoint);
                 });
 
                 if (que.Count > 0)
                 {
-                    double perc = dequeue.TimeSpan.TotalMilliseconds / que.Last().TimeSpan.TotalMilliseconds;
+                    
+
+                    double perc = (dequeue.Date - startTime).TotalMilliseconds / totalMS;
 
                     backgroundWorker1.ReportProgress((int) (perc * 100));
                 }

@@ -34,12 +34,12 @@
             this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnFrom = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnProtocol = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDictionary = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnData = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnProtocol = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnIPTWPType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
+            this.olvColumnComId = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,22 +49,22 @@
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDate);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnFrom);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnTo);
+            this.fastObjectListView1.AllColumns.Add(this.olvColumnProtocol);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnName);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDictionary);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumnData);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumnProtocol);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnIPTWPType);
+            this.fastObjectListView1.AllColumns.Add(this.olvColumnComId);
             this.fastObjectListView1.CellEditUseWholeCell = false;
             this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnNo,
             this.olvColumnDate,
             this.olvColumnFrom,
             this.olvColumnTo,
+            this.olvColumnProtocol,
             this.olvColumnName,
             this.olvColumnDictionary,
-            this.olvColumnData,
-            this.olvColumnProtocol,
-            this.olvColumnIPTWPType});
+            this.olvColumnIPTWPType,
+            this.olvColumnComId});
             this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fastObjectListView1.FullRowSelect = true;
@@ -92,13 +92,19 @@
             // 
             // olvColumnFrom
             // 
-            this.olvColumnFrom.AspectName = "From";
+            this.olvColumnFrom.AspectName = "IPv4Packet.SourceAddress";
             this.olvColumnFrom.Text = "From";
             // 
             // olvColumnTo
             // 
-            this.olvColumnTo.AspectName = "To";
+            this.olvColumnTo.AspectName = "IPv4Packet.DestinationAddress";
             this.olvColumnTo.Text = "To";
+            // 
+            // olvColumnProtocol
+            // 
+            this.olvColumnProtocol.AspectName = "IPv4Packet.Protocol";
+            this.olvColumnProtocol.Text = "Protocol";
+            this.olvColumnProtocol.Width = 100;
             // 
             // olvColumnName
             // 
@@ -108,26 +114,14 @@
             // 
             // olvColumnDictionary
             // 
-            this.olvColumnDictionary.AspectName = "DictionaryData";
-            this.olvColumnDictionary.Text = "Data";
+            this.olvColumnDictionary.AspectName = "ParsedDate.DictionaryData";
+            this.olvColumnDictionary.Text = "Parsed";
             this.olvColumnDictionary.Width = 398;
-            // 
-            // olvColumnData
-            // 
-            this.olvColumnData.AspectName = "Data.Length";
-            this.olvColumnData.Text = "Data";
-            this.olvColumnData.Width = 100;
-            // 
-            // olvColumnProtocol
-            // 
-            this.olvColumnProtocol.AspectName = "Protocol";
-            this.olvColumnProtocol.Text = "Protocol";
-            this.olvColumnProtocol.Width = 100;
             // 
             // olvColumnIPTWPType
             // 
-            this.olvColumnIPTWPType.AspectName = "IPTWPType";
-            this.olvColumnIPTWPType.Text = "Type";
+            this.olvColumnIPTWPType.AspectName = "IPTWPPacket.IPTWPType";
+            this.olvColumnIPTWPType.Text = "IPTWP Type";
             // 
             // timerAddBuffer
             // 
@@ -135,13 +129,20 @@
             this.timerAddBuffer.Interval = 200;
             this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
             // 
+            // olvColumnComId
+            // 
+            this.olvColumnComId.AspectName = "IPTWPPacket.Comid";
+            this.olvColumnComId.Text = "ComID";
+            // 
             // PacketListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.fastObjectListView1);
+            this.DoubleBuffered = true;
             this.Name = "PacketListView";
             this.Size = new System.Drawing.Size(1112, 763);
+            this.Load += new System.EventHandler(this.PacketListView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -156,9 +157,9 @@
         private BrightIdeasSoftware.OLVColumn olvColumnTo;
         private BrightIdeasSoftware.OLVColumn olvColumnName;
         private BrightIdeasSoftware.OLVColumn olvColumnDictionary;
-        private BrightIdeasSoftware.OLVColumn olvColumnData;
         private BrightIdeasSoftware.OLVColumn olvColumnProtocol;
         private BrightIdeasSoftware.OLVColumn olvColumnIPTWPType;
         private System.Windows.Forms.Timer timerAddBuffer;
+        private BrightIdeasSoftware.OLVColumn olvColumnComId;
     }
 }

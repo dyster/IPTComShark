@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,6 +16,7 @@ using SharpPcap.WinPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
+using sonesson_tools.Generic;
 
 namespace IPTComShark
 {
@@ -23,7 +25,7 @@ namespace IPTComShark
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
-        private readonly List<RawCapture> _rawCaptureList = new List<RawCapture>();
+        private readonly List<Raw> _rawCaptureList = new List<Raw>();
         private long _capturedData;
 
         private WinPcapDevice _device;
@@ -34,13 +36,27 @@ namespace IPTComShark
         {
             InitializeComponent();
 
+            this.Text = Text += " " + Application.ProductVersion;
+
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.LogTimeString + ": " + log.Message);
 
             packetDisplay1.IptConfigReader = IptConfigReader;
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
+            checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true, DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxIgnoreLoopback.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreLoopback", true, DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxHideDupes.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreDuplicatedPD", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxParserOnly.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreUnknownData", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            textBoxIgnoreComid.DataBindings.Add("Text", packetListView1.Settings, "IgnoreComid", true,
+                DataSourceUpdateMode.OnValidation);
+            
+
             InitData();
+
+            Logger.Log("IPTComShark started", Severity.Info);
         }
 
         private void InitData()
@@ -60,7 +76,12 @@ namespace IPTComShark
             if (InvokeRequired)
                 Invoke(new UpdateStatusDelegate(UpdateStatus), text);
             else
+            {
                 statusRight.Text = text;
+                List<Log> logs = Logger.Instance.GetLog();
+                var lastLogs = logs.Skip(Math.Max(0, logs.Count() - 10)).ToList();
+                statusRight.ToolTipText = string.Join(Environment.NewLine, lastLogs);
+            }
         }
 
         //private delegate void AddToListDelegate(CapturePacket o);
@@ -95,7 +116,7 @@ namespace IPTComShark
             else
             {
                 
-                _rawCaptureList.Add(e.Packet);
+                _rawCaptureList.Add(pack.RawCapture);
                 pack.No = _rawCaptureList.Count;
 
                 if (!filter)
@@ -109,13 +130,7 @@ namespace IPTComShark
             out bool discard,
             out bool filter)
         {
-            var pack = new CapturePacket
-            {
-                Data = rawCapture.Data,
-                Date = rawCapture.Timeval.Date,
-                MS = rawCapture.Timeval.MicroSeconds,
-                RawCapture = rawCapture
-            };
+            var pack = new CapturePacket(rawCapture);
 
             discard = false;
             filter = false;
@@ -125,8 +140,8 @@ namespace IPTComShark
                 if (packet.PayloadPacket is IPv4Packet)
                 {
                     var ipv4 = (IPv4Packet) packet.PayloadPacket;
-                    pack.Protocol = ipv4.Protocol.ToString();
-                    pack.Data = ipv4.PayloadData;
+                    
+                    
 
                     if (ipv4.Protocol != IPProtocolType.UDP)
                     {
@@ -146,67 +161,68 @@ namespace IPTComShark
                         }
                         else
                         {
-                            DataSetDefinition dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
-
-                            if (dataSetDefinition != null)
-                            {
-                                ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
-                                iptwpPacket.Name = parsedDataSet.Name;
-                                iptwpPacket.DictionaryData = parsedDataSet.GetDataDictionary();
+                            ParseIPTWPData(pack);
 
 
-                            }
                             
                             
-
-                            if (iptwpPacket.DictionaryData == null)
-                            {
-                                if (parserOnly)
-                                {
-                                    filter = true;
-                                }
-                                else
-                                {
-                                    Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
-                                    if (telegram == null)
-                                        iptwpPacket.Name = "Unknown ComID " + iptwpPacket.Comid;
-                                    else
-                                        iptwpPacket.Name = telegram.Name;
-                                }
-                            }
-                            else if (iptwpPacket.DictionaryData.Count == 0)
-                            {
-                                if (hideDupes)
-                                {
-                                    filter = true;
-                                }
-                            }
-
-
-                            // copy over the time values to the new packet
-                            iptwpPacket.Date = rawCapture.Timeval.Date;
-                            iptwpPacket.MS = rawCapture.Timeval.MicroSeconds;
-                            iptwpPacket.RawCapture = rawCapture;
-
-                            // and write over the old one
-                            pack = iptwpPacket;
                         }
                     }
                 }
                 else if (packet.PayloadPacket is ARPPacket)
                 {
-                    pack.Protocol = "ARP";
+                    
                     discard = true;
                 }
                 else
                 {
-                    if (packet.PayloadPacket != null) pack.Protocol = packet.PayloadPacket.GetType().ToString();
+                    
                     discard = true;
                 }
             return pack;
         }
-
         
+        public static Stopwatch parsingWatch = new Stopwatch();
+
+        public static void ParseIPTWPData(CapturePacket packet)
+        {
+            IPTWPPacket iptwpPacket = packet.IPTWPPacket;
+            if(iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
+                return;
+            parsingWatch.Start();
+            try
+            {
+                
+                DataSetDefinition dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
+                
+
+                if (dataSetDefinition != null)
+                {
+                    
+                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
+                    packet.ParsedData = parsedDataSet;
+                    packet.Name = parsedDataSet.Name;
+                    
+                }
+                else
+                {
+                    
+                    Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
+                    if (telegram == null)
+                        packet.Name = "Unknown ComID " + iptwpPacket.Comid;
+                    else
+                        packet.Name = telegram.Name;
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                packet.Name = e.Message;
+                throw;
+            }
+            parsingWatch.Stop();
+        }
+
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -215,10 +231,9 @@ namespace IPTComShark
 
         private void Start()
         {
-            buttonStart.Enabled = false;
-            buttonStop.Enabled = true;
-            buttonSaveFiltered.Enabled = false;
-            buttonSaveAll.Enabled = false;
+            fileToolStripMenuItem.Enabled = false;
+            
+            
             //buttonTest.Enabled = false;
 
             backgroundWorker1.RunWorkerAsync();
@@ -231,10 +246,9 @@ namespace IPTComShark
 
         private void Stop()
         {
-            buttonStart.Enabled = true;
-            buttonStop.Enabled = false;
-            buttonSaveFiltered.Enabled = true;
-            buttonSaveAll.Enabled = true;
+            fileToolStripMenuItem.Enabled = true;
+            
+            
             //buttonTest.Enabled = true;
             try
             {
@@ -314,40 +328,9 @@ namespace IPTComShark
                               " discarded packets, " + sizestring2 + ".";
         }
 
-        /// <summary>
-        ///     Save Filtered
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            SavePCAP(packetListView1.GetRawCaptures());
-        }
+        
 
-        private void SavePCAP(List<RawCapture> picks)
-        {
-            var dialog = new SaveFileDialog
-            {
-                AddExtension = true,
-                DefaultExt = "pcap"
-            };
-
-            DialogResult dialogResult = dialog.ShowDialog(this);
-            if (dialogResult == DialogResult.OK)
-            {
-                try
-                {
-                    var captureFileWriter = new CaptureFileWriterDevice(dialog.FileName, FileMode.Create);
-                    foreach (RawCapture rawCapture in picks)
-                        captureFileWriter.Write(rawCapture);
-                }
-                catch (Exception e)
-                {
-                    Logger.Log(e.Message, Severity.Error);
-                    MessageBox.Show(e.ToString());
-                }
-            }
-        }
+        
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -362,29 +345,9 @@ namespace IPTComShark
             }
         }
 
-        private void buttonTest_Click(object sender, EventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            DialogResult dialogResult = openFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                ThreadPool.QueueUserWorkItem(o =>
-                {
-                    var captureFileWriter =
-                        //new CaptureFileReaderDevice(@"C:\Users\Johan\Downloads\ricklog.pcap");
-                        new CaptureFileReaderDevice(openFileDialog.FileName);
-                    captureFileWriter.OnPacketArrival += device_OnPacketArrival;
-                    captureFileWriter.Open();
-                    captureFileWriter.Capture();
-                    captureFileWriter.Close();
-                });
-            }
-        }
-
-
         private void buttonSaveAll_Click(object sender, EventArgs e)
         {
-            SavePCAP(_rawCaptureList);
+            throw new NotImplementedException();
         }
 
         private void buttonRestart_Click(object sender, EventArgs e)
@@ -416,7 +379,7 @@ namespace IPTComShark
                         CapturePacket capturePacket =
                             CapturePacket(args.Packet, true, true, out bool discard, out bool filter);
                         if (!discard && !filter)
-                            captures.Add(capturePacket.RawCapture);
+                            captures.Add(args.Packet);
                     };
                     captureFileWriter.Open();
                     captureFileWriter.Capture();
@@ -441,22 +404,139 @@ namespace IPTComShark
 
         private delegate void UpdateStatusDelegate(string text);
 
-        private void buttonSimulate_Click(object sender, EventArgs e)
+        
+
+        private void openFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = openCapturesDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                parsingWatch.Reset();
+                var fileManager = new FileManager.FileManager();
+                List<CapturePacket> capturePackets = fileManager.OpenFiles(openCapturesDialog.FileNames);
+                foreach (CapturePacket capturePacket in capturePackets)
+                {
+                    AddToList(capturePacket);
+                }
+
+                this.statusRight.Text = parsingWatch.ElapsedMilliseconds + "ms spent on data parsing";
+                
+            }
+        }
+
+        private void saveCurrentFilterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void simulateTrafficToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var trafficSim = new TrafficSim();
             trafficSim.Show(this);
         }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            packetListView1.Clear();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
+        }
     }
 
-    public class CapturePacket : ParsedDataObject
+    public class CapturePacket : ParsedDataObject, IComparable
     {
+        public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data, rawCapture.LinkLayerType))
+        {
+            
+        }
+
+        public CapturePacket(Raw raw)
+        {
+            RawCapture = raw;
+            Date = raw.TimeStamp;
+
+            Packet packet = Packet.ParsePacket(raw.LinkLayer, raw.RawData);
+            
+            if (packet == null)
+                return;
+
+            if (packet.PayloadPacket is IPv4Packet)
+            {
+                this.IPv4Packet = (IPv4Packet) packet.PayloadPacket;
+               
+
+                switch (IPv4Packet.Protocol)
+                {
+                    case IPProtocolType.TCP:
+                        break;
+                    
+                    case IPProtocolType.UDP:
+                        var udp = (UdpPacket)IPv4Packet.PayloadPacket;
+                        this.UDPPacket = udp;
+                        IPTWPPacket = IPTWPPacket.Extract(udp);
+                        break;
+                    
+                    case IPProtocolType.NONE:
+                        // dunno
+                        break;
+
+                    case IPProtocolType.ICMP:
+                        // dunno
+                        break;
+
+                    case IPProtocolType.IGMP:
+                        // dunno
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        /// <summary>
+        /// If part of a chain
+        /// </summary>
+        public CapturePacket Previous { get; set; }
+
+        /// <summary>
+        /// If part of a chain
+        /// </summary>
+        public CapturePacket Next { get; set; }
+
+        public IPv4Packet IPv4Packet { get; }
+        public UdpPacket UDPPacket { get; }
+        public IPTWPPacket IPTWPPacket { get; set; }
+
+
         public int No { get; set; }
-        public ulong MS { get; set; }
-        public byte[] Data { get; set; }
         public DateTime Date { get; set; }
-        public ulong Seconds { get; set; }
-        public string Protocol { get; set; }
-        public RawCapture RawCapture { get; set; }
+        
+        public Raw RawCapture { get; }
+        public ParsedDataSet ParsedData { get; set; }
+        public int CompareTo(object obj)
+        {
+            var packet = (CapturePacket)obj;
+            return this.Date.CompareTo(packet.Date);
+
+        }
+    }
+
+    public class Raw
+    {
+        public Raw(DateTime timeStamp, byte[] rawData, LinkLayers layer)
+        {
+            TimeStamp = timeStamp;
+            RawData = rawData;
+            LinkLayer = layer;
+        }
+
+        public DateTime TimeStamp { get;  }
+        public byte[] RawData { get;  }
+        public LinkLayers LinkLayer { get; set; }
     }
 
     public enum Protocol

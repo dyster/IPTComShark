@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using PacketDotNet;
 
 namespace IPTComShark
 {
-    public class IPTWPPacket : CapturePacket
+    public class IPTWPPacket
     {
         //0x5044(‘PD’) Process Data, used for data - set transfer
         //0x4D44(‘MD’) Message Data with acknowledge
@@ -34,7 +35,7 @@ namespace IPTComShark
         public string IPTWPType { get; set; }
         public uint IPTWPSize { get; set; }
         public byte[] IPTWPPayload { get; set; }
-        public UdpPacket UdpPacket { get; set; }
+        //public UdpPacket UdpPacket { get; set; }
 
         public static IPTWPPacket Extract(byte[] payload)
         {
@@ -61,12 +62,7 @@ namespace IPTComShark
             if (udp == null)
                 return null;
 
-            var iptPacket = new IPTWPPacket
-            {
-                Protocol = "IPTWP",
-                Data = udp.PayloadData,
-                UdpPacket = udp
-            };
+            var iptPacket = new IPTWPPacket();
 
             byte[] payload = udp.PayloadData;
 
@@ -131,16 +127,8 @@ namespace IPTComShark
                     readpos++;
                 }
                 iptPacket.IPTWPPayload = data;
-
-
-                //var telegram = _iptConfigReader.GetTelegramByComId(comid);
-                //
-                //if(telegram == null)
-                //    pack.Description = $"Type: {typedic[type]} ComID: {comid} Timestamp: {timestamp} DataLength: {datasetlength}";
-                //else
-                //{
-                //    pack.Description = $"{telegram.name}";
-                //}
+                
+                
             }
             else
             {

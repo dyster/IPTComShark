@@ -9,9 +9,11 @@ namespace IPTComShark
 {
     public class MultiColourTextRenderer : BaseRenderer
     {
+        private Color backColor = Color.Transparent;
+
         public override void DrawText(Graphics g, Rectangle r, string txt)
         {
-            Color backColor = Color.Transparent;
+            
             if (IsDrawBackground && IsItemSelected && !ListView.FullRowSelect)
                 backColor = GetSelectedBackgroundColor();
 
@@ -21,19 +23,39 @@ namespace IPTComShark
                                     CellVerticalAlignmentAsTextFormatFlag;
 
 
-            Dictionary<string, object> dic = null;
-            switch (RowObject)
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            if (RowObject is CapturePacket)
             {
-                case SS27Packet ss27:
-                    if (Column.AspectName == "SubMessage")
-                        dic = ss27.SubMessage?.ToDictionary(row => row.Name, row => row.Value);
-                    else if (Column.AspectName == "Header")
-                        dic = ss27.Header?.ToDictionary(row => row.Name, row => row.Value);
-                    break;
-                case ParsedDataObject ido:
-                    dic = ido.DictionaryData;
-                    break;
+                var cpac = (CapturePacket) RowObject;
+                //dic = cpac.ParsedData?.GetDataDictionary();
+                if(cpac.ParsedData == null)
+                    return;
+                var now = cpac.ParsedData.GetStringDictionary();
+                if (cpac.Previous?.ParsedData != null)
+                {
+                    var before = cpac.Previous.ParsedData.GetStringDictionary();
+                    
+                    foreach (KeyValuePair<string, string> pair in now)
+                    {
+                        if (before.ContainsKey(pair.Key))
+                        {
+                            if (pair.Value != before[pair.Key])
+                                dic.Add(pair.Key, pair.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    dic = now;
+                }
+                
             }
+            else
+            {
+                return;
+            }
+
+            
 
 
             if (dic != null)
@@ -44,7 +66,7 @@ namespace IPTComShark
                 // make the original rectangle zero width to set the first string up
                 r = new Rectangle(r.X, r.Y, 0, r.Height);
 
-                foreach (KeyValuePair<string, object> o in dic)
+                foreach (KeyValuePair<string, string> o in dic)
                 {
                     string text = o.Key + ": ";
 

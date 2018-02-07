@@ -16,21 +16,52 @@ namespace IPTComShark
         public IPTConfigReader IptConfigReader { get; set; }
 
 
-        public void SetObject(IPTWPPacket packet)
+        public void SetObject(CapturePacket packet)
         {
-            textBoxComid.Text = packet.Comid.ToString();
-            textBoxRAW.Text = BitConverter.ToString(packet.IPTWPPayload);
-            textBoxSize.Text = packet.IPTWPSize.ToString();
-            textBoxType.Text = packet.IPTWPType;
+            textBoxComid.Text = string.Empty;
+            textBoxRAW.Text = string.Empty;
+            textBoxSize.Text = string.Empty;
+            textBoxType.Text = string.Empty;
 
             var dataLines = new List<DataLine>();
+            if (packet.IPTWPPacket != null)
+            {
+                textBoxComid.Text = packet.IPTWPPacket.Comid.ToString();
+                textBoxRAW.Text = BitConverter.ToString(packet.IPTWPPacket.IPTWPPayload);
+                textBoxSize.Text = packet.IPTWPPacket.IPTWPSize.ToString();
+                textBoxType.Text = packet.IPTWPPacket.IPTWPType;
 
-            Dataset datasetByComId = null;
-            if (IptConfigReader != null)
-                datasetByComId = IptConfigReader.GetDatasetByComId(packet.Comid);
+                
+
+                Dataset datasetByComId = null;
+                if (IptConfigReader != null)
+                    datasetByComId = IptConfigReader.GetDatasetByComId(packet.IPTWPPacket.Comid);
 
 
-            if (packet.DictionaryData != null) // a parser has chugged out something
+                if (packet.ParsedData?.GetDataDictionary() != null) // a parser has chugged out something
+                    foreach (KeyValuePair<string, object> pair in packet.ParsedData.GetDataDictionary())
+                    {
+                        string typestring = pair.Value.GetType().ToString();
+                        dataLines.Add(new DataLine
+                        {
+                            Name = pair.Key,
+                            Value = pair.Value.ToString(),
+                            Type = typestring.Substring(typestring.LastIndexOf(".") + 1)
+                        });
+                    }
+                else if (datasetByComId == null)
+                    for (var i = 0; i < packet.IPTWPPacket.IPTWPPayload.Length; i++)
+                    {
+                        byte b = packet.IPTWPPacket.IPTWPPayload[i];
+                        dataLines.Add(new DataLine {Name = "Byte " + i, Type = "Byte", Value = $"0x{b:X2} = {b}"});
+                    }
+                else
+                    dataLines.AddRange(ParseDataByIpt(datasetByComId, packet.IPTWPPacket));
+
+
+                
+            }
+            else if (packet.DictionaryData != null) // a parser has chugged out something
                 foreach (KeyValuePair<string, object> pair in packet.DictionaryData)
                 {
                     string typestring = pair.Value.GetType().ToString();
@@ -41,15 +72,7 @@ namespace IPTComShark
                         Type = typestring.Substring(typestring.LastIndexOf(".") + 1)
                     });
                 }
-            else if (datasetByComId == null)
-                for (var i = 0; i < packet.IPTWPPayload.Length; i++)
-                {
-                    byte b = packet.IPTWPPayload[i];
-                    dataLines.Add(new DataLine {Name = "Byte " + i, Type = "Byte", Value = $"0x{b:X2} = {b}"});
-                }
-            else
-                dataLines.AddRange(ParseDataByIpt(datasetByComId, packet));
-
+            
 
             dataListViewRight.DataSource = dataLines;
         }
@@ -95,7 +118,7 @@ namespace IPTComShark
                             pointer += arraysize;
                             break;
                         case "UINT16":
-                            var uint16s = new UInt16[arraysize];
+                            var uint16s = new ushort[arraysize];
                             for (var i = 0; i < arraysize; i++)
                                 uint16s[i] =
                                     BitConverter.ToUInt16(
@@ -108,7 +131,7 @@ namespace IPTComShark
                             pointer += arraysize * 2;
                             break;
                         case "INT16":
-                            var int16s = new Int16[arraysize];
+                            var int16s = new short[arraysize];
                             for (var i = 0; i < arraysize; i++)
                                 int16s[i] = BitConverter.ToInt16(
                                     new[]
@@ -120,7 +143,7 @@ namespace IPTComShark
                             pointer += arraysize * 2;
                             break;
                         case "UINT32":
-                            var uint32s = new UInt32[arraysize];
+                            var uint32s = new uint[arraysize];
                             for (var i = 0; i < arraysize; i++)
                                 uint32s[i] =
                                     BitConverter.ToUInt32(
@@ -135,7 +158,7 @@ namespace IPTComShark
                             pointer += arraysize * 4;
                             break;
                         case "INT32":
-                            var int32s = new Int32[arraysize];
+                            var int32s = new int[arraysize];
                             for (var i = 0; i < arraysize; i++)
                                 int32s[i] = BitConverter.ToInt32(
                                     new[]
