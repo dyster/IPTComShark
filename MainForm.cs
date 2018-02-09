@@ -190,6 +190,7 @@ namespace IPTComShark
             if(iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
                 return;
             parsingWatch.Start();
+
             try
             {
                 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using PacketDotNet;
 using sonesson_tools;
 using SharpPcap;
 
@@ -16,6 +18,10 @@ namespace IPTComShark
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
         private readonly Dictionary<uint, CapturePacket> _lastKnowns = new Dictionary<uint, CapturePacket>();
+
+        private Color TCPColor = Color.FromArgb(231, 230, 255);
+        private Color UDPColor = Color.FromArgb(218, 238, 255);
+        private Color IPTWPColor = Color.FromArgb(170, 223, 255);
 
         public PacketListView()
         {
@@ -29,6 +35,49 @@ namespace IPTComShark
                     return packet.Date.ToString() + ":" + packet.Date.Millisecond;
                 }
                 return null;
+            };
+
+            olvColumnProtocol.AspectGetter += rowObject =>
+            {
+                if (rowObject != null)
+                {
+                    var packet = (CapturePacket) rowObject;
+                    if (packet.IPTWPPacket != null)
+                        return "IPTWP";
+                    if (packet.IPv4Packet.Protocol == IPProtocolType.TCP &&
+                        ((TcpPacket) packet.IPv4Packet.PayloadPacket).DestinationPort == 50040)
+                        return "JRU";
+                    return packet.IPv4Packet.Protocol;
+                }
+
+                return null;
+            };
+
+            fastObjectListView1.RowFormatter += item =>
+            {
+                if (item.RowObject != null)
+                {
+                    var packet = (CapturePacket) item.RowObject;
+                    if (packet.IPTWPPacket != null)
+                    {
+                        item.BackColor = IPTWPColor;
+                    }
+                    else if(packet.IPv4Packet.Protocol == IPProtocolType.TCP)
+                    {
+                        var tcpPacket = (TcpPacket)packet.IPv4Packet.PayloadPacket;
+                        if (tcpPacket.DestinationPort == 50040)
+                            item.BackColor = Color.Orange;
+                        else
+                            item.BackColor = TCPColor;
+                    }
+                    else if(packet.IPv4Packet.Protocol == IPProtocolType.UDP)
+                    {
+                        item.BackColor = UDPColor;
+                    }
+
+                }
+
+                
             };
 
             olvColumnDictionary.AspectGetter += rowObject =>
