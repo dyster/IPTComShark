@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using IPTComShark.XmlFiles;
 
-namespace IPTComShark
+namespace IPTComShark.Controls
 {
     public partial class PacketDisplay : UserControl
     {
@@ -61,17 +61,7 @@ namespace IPTComShark
 
                 
             }
-            else if (packet.DictionaryData != null) // a parser has chugged out something
-                foreach (KeyValuePair<string, object> pair in packet.DictionaryData)
-                {
-                    string typestring = pair.Value.GetType().ToString();
-                    dataLines.Add(new DataLine
-                    {
-                        Name = pair.Key,
-                        Value = pair.Value.ToString(),
-                        Type = typestring.Substring(typestring.LastIndexOf(".") + 1)
-                    });
-                }
+            
             
 
             dataListViewRight.DataSource = dataLines;

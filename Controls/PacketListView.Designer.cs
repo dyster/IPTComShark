@@ -1,4 +1,4 @@
-﻿namespace IPTComShark
+﻿namespace IPTComShark.Controls
 {
     partial class PacketListView
     {
@@ -38,8 +38,8 @@
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDictionary = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnIPTWPType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.olvColumnComId = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,17 +92,17 @@
             // 
             // olvColumnFrom
             // 
-            this.olvColumnFrom.AspectName = "IPv4Packet.SourceAddress";
+            this.olvColumnFrom.AspectName = "Source";
             this.olvColumnFrom.Text = "From";
             // 
             // olvColumnTo
             // 
-            this.olvColumnTo.AspectName = "IPv4Packet.DestinationAddress";
+            this.olvColumnTo.AspectName = "Destination";
             this.olvColumnTo.Text = "To";
             // 
             // olvColumnProtocol
             // 
-            this.olvColumnProtocol.AspectName = "IPv4Packet.Protocol";
+            this.olvColumnProtocol.AspectName = "Protocol";
             this.olvColumnProtocol.Text = "Protocol";
             this.olvColumnProtocol.Width = 100;
             // 
@@ -123,16 +123,16 @@
             this.olvColumnIPTWPType.AspectName = "IPTWPPacket.IPTWPType";
             this.olvColumnIPTWPType.Text = "IPTWP Type";
             // 
-            // timerAddBuffer
-            // 
-            this.timerAddBuffer.Enabled = true;
-            this.timerAddBuffer.Interval = 200;
-            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
-            // 
             // olvColumnComId
             // 
             this.olvColumnComId.AspectName = "IPTWPPacket.Comid";
             this.olvColumnComId.Text = "ComID";
+            // 
+            // timerAddBuffer
+            // 
+            this.timerAddBuffer.Enabled = true;
+            this.timerAddBuffer.Interval = 1000;
+            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
             // 
             // PacketListView
             // 

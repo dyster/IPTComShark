@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,10 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using PacketDotNet;
-using sonesson_tools;
-using SharpPcap;
 
-namespace IPTComShark
+namespace IPTComShark.Controls
 {
     public partial class PacketListView : UserControl
     {
@@ -19,9 +18,10 @@ namespace IPTComShark
         private readonly object _listAddLock = new object();
         private readonly Dictionary<uint, CapturePacket> _lastKnowns = new Dictionary<uint, CapturePacket>();
 
-        private Color TCPColor = Color.FromArgb(231, 230, 255);
-        private Color UDPColor = Color.FromArgb(218, 238, 255);
-        private Color IPTWPColor = Color.FromArgb(170, 223, 255);
+        private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
+        private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
+        private static readonly Color IptwpColor = Color.FromArgb(170, 223, 255);
+        private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
 
         public PacketListView()
         {
@@ -37,43 +37,33 @@ namespace IPTComShark
                 return null;
             };
 
-            olvColumnProtocol.AspectGetter += rowObject =>
-            {
-                if (rowObject != null)
-                {
-                    var packet = (CapturePacket) rowObject;
-                    if (packet.IPTWPPacket != null)
-                        return "IPTWP";
-                    if (packet.IPv4Packet.Protocol == IPProtocolType.TCP &&
-                        ((TcpPacket) packet.IPv4Packet.PayloadPacket).DestinationPort == 50040)
-                        return "JRU";
-                    return packet.IPv4Packet.Protocol;
-                }
-
-                return null;
-            };
-
             fastObjectListView1.RowFormatter += item =>
             {
                 if (item.RowObject != null)
                 {
                     var packet = (CapturePacket) item.RowObject;
-                    if (packet.IPTWPPacket != null)
+                    switch (packet.Protocol)
                     {
-                        item.BackColor = IPTWPColor;
-                    }
-                    else if(packet.IPv4Packet.Protocol == IPProtocolType.TCP)
-                    {
-                        var tcpPacket = (TcpPacket)packet.IPv4Packet.PayloadPacket;
-                        if (tcpPacket.DestinationPort == 50040)
+                        case "IPTWP":
+                            item.BackColor = IptwpColor;
+                            break;
+                        case "ARP":
+                            item.BackColor = ArpColor;
+                            break;
+                        case "TCP":
+                            item.BackColor = TcpColor;
+                            break;
+                        case "JRU":
                             item.BackColor = Color.Orange;
-                        else
-                            item.BackColor = TCPColor;
+                            break;
+                        case "UDP":
+                            item.BackColor = UdpColor;
+                            break;
+                        case "UNKNOWN":
+                            item.BackColor = Color.MediumVioletRed;
+                            break;
                     }
-                    else if(packet.IPv4Packet.Protocol == IPProtocolType.UDP)
-                    {
-                        item.BackColor = UDPColor;
-                    }
+                    
 
                 }
 
@@ -101,8 +91,8 @@ namespace IPTComShark
             {
                 var capturePacket = (CapturePacket)model;
 
-                if (Settings.IgnoreLoopback && capturePacket.IPv4Packet.SourceAddress.ToString() == "127.0.0.1" &&
-                    capturePacket.IPv4Packet.DestinationAddress.ToString() == "127.0.0.1")
+                if (Settings.IgnoreLoopback && capturePacket.Source == "127.0.0.1" &&
+                    capturePacket.Destination == "127.0.0.1")
                     return false;
 
                 if (Settings.IgnoreUnknownData)
@@ -183,10 +173,12 @@ namespace IPTComShark
                 lock (_listAddLock)
                 {
                     _list.AddRange(_listAddBuffer);
-                    fastObjectListView1.UpdateObjects(_listAddBuffer);
+                    //fastObjectListView1.UpdateObjects(_listAddBuffer);
+                    fastObjectListView1.AddObjects(_listAddBuffer);
                     _listAddBuffer.Clear();
                 }
-                if (AutoScroll && fastObjectListView1.GetItemCount() > 10)
+                
+                if (Settings.AutoScroll && fastObjectListView1.GetItemCount() > 10)
                     fastObjectListView1.EnsureVisible(fastObjectListView1.GetItemCount() - 1);
             }
         }
@@ -243,7 +235,8 @@ namespace IPTComShark
         {
             Settings.PropertyChanged += (o, args) =>
             {
-                UpdateFilter();
+                if(args.PropertyName != "AutoScroll")
+                    UpdateFilter();
             };
         }
     }
@@ -311,7 +304,7 @@ namespace IPTComShark
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -325,5 +318,66 @@ namespace IPTComShark
         }
 
         public CapturePacket Packet { get; }
+    }
+
+    public class MySource : IVirtualListDataSource
+    {
+        private List<CapturePacket> _list = new List<CapturePacket>();
+
+        public object GetNthObject(int n)
+        {
+            return _list[n];
+        }
+
+        public int GetObjectCount()
+        {
+            return _list.Count;
+        }
+
+        public int GetObjectIndex(object model)
+        {
+            var cp = (CapturePacket) model;
+            return _list.IndexOf(cp, 0);
+        }
+
+        public void PrepareCache(int first, int last)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int SearchText(string value, int first, int last, OLVColumn column)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Sort(OLVColumn column, SortOrder order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddObjects(ICollection modelObjects)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertObjects(int index, ICollection modelObjects)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveObjects(ICollection modelObjects)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetObjects(IEnumerable collection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateObject(int index, object modelObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

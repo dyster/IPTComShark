@@ -1,4 +1,4 @@
-﻿namespace LiveRecorder
+﻿namespace IPTComShark.Windows
 {
     partial class TrafficSim
     {

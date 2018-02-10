@@ -1,4 +1,4 @@
-﻿namespace IPTComShark
+﻿namespace IPTComShark.Controls
 {
     partial class PacketDisplay
     {

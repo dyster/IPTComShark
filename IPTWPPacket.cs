@@ -35,28 +35,7 @@ namespace IPTComShark
         public string IPTWPType { get; set; }
         public uint IPTWPSize { get; set; }
         public byte[] IPTWPPayload { get; set; }
-        //public UdpPacket UdpPacket { get; set; }
-
-        public static IPTWPPacket Extract(byte[] payload)
-        {
-            Packet packet = Packet.ParsePacket(LinkLayers.Ethernet, payload);
-            if (packet == null)
-            {
-                return null;
-            }
-
-            if (packet.PayloadPacket is IPv4Packet)
-            {
-                var ipv4 = (IPv4Packet) packet.PayloadPacket;
-                var udp = (UdpPacket) ipv4.Extract(typeof(UdpPacket));
-                if (udp == null)
-                    return null;
-                IPTWPPacket iptwpPacket = Extract(udp);
-                return iptwpPacket;
-            }
-            return null;
-        }
-
+        
         public static IPTWPPacket Extract(UdpPacket udp)
         {
             if (udp == null)

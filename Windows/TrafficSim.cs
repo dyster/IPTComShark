@@ -1,23 +1,15 @@
-﻿using System;
+﻿using PacketDotNet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IPTComShark;
-using IPTComShark.FileManager;
-using PacketDotNet;
-using sonesson_tools.FileReaders;
 
-namespace LiveRecorder
+namespace IPTComShark.Windows
 {
     public partial class TrafficSim : Form
     {
@@ -28,25 +20,26 @@ namespace LiveRecorder
         public TrafficSim()
         {
             InitializeComponent();
-
+            
             var openFileDialog = new OpenFileDialog {Multiselect = true};
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var fileManager = new FileManager();
+                var fileManager = new FileManager.FileManager();
                 _packets = fileManager.OpenFiles(openFileDialog.FileNames);
             }
             else
             {
                 this.Close();
             }
-            
+
             // remove all non IPTCom packets
             _packets.RemoveAll(packet => packet.IPTWPPacket == null);
 
             foreach (var packet1 in _packets)
             {
-                string ip = packet1.IPv4Packet.SourceAddress.ToString();
+                
+                string ip = packet1.Source;
 
                 if(!_ips.Contains(ip))
                     _ips.Add(ip);
@@ -63,23 +56,22 @@ namespace LiveRecorder
             labelEnd.Text += " " + _packets.Last().Date;
         }
 
-        private class Packet : IComparable
+        private class SendPacket
         {
-            public Packet(DateTime dateTime, byte[] payload)
+            public SendPacket(DateTime dateTime, IPv4Packet ipv4)
             {
-                TimeStamp = dateTime;
-                PayLoad = payload;
+                UdpPacket udp = (UdpPacket)ipv4.PayloadPacket;
+                Date = dateTime;
+                PayLoad = udp.PayloadData;
+                Destination = new IPEndPoint(ipv4.DestinationAddress, udp.DestinationPort);
             }
-            public DateTime TimeStamp { get; }
+            public DateTime Date { get; }
             public byte[] PayLoad { get; }
-            public IPTWPPacket IPTWPPacket { get; set; }
+            public IPEndPoint Destination { get; set; }
+            
             public TimeSpan TimeSpan { get; set; }
 
-            public int CompareTo(object obj)
-            {
-                var packet = (Packet) obj;
-                return this.TimeStamp.CompareTo(packet.TimeStamp);
-            }
+            
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -94,10 +86,18 @@ namespace LiveRecorder
             var udpClient = new UdpClient();
 
 
-            var packets = _packets.Where(packet =>  packet.IPv4Packet.SourceAddress.ToString() == _ip);
-            //var packets = _packets;
+            
+            
+            var que = new Queue<SendPacket>();
+            foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source == _ip))
+            {
+                Packet packet = Packet.ParsePacket(capturePacket.RawCapture.LinkLayer, capturePacket.RawCapture.RawData);
+                IPv4Packet ipv4 = (IPv4Packet)packet.PayloadPacket;
+                
 
-            var que = new Queue<CapturePacket>(packets);
+                var sendPacket = new SendPacket(capturePacket.Date, ipv4);
+                que.Enqueue(sendPacket);
+            }
 
             DateTime startTime = que.Peek().Date;
             DateTime endTime = que.Last().Date;
@@ -139,14 +139,12 @@ namespace LiveRecorder
                         return;
                 }
 
-                CapturePacket dequeue = que.Dequeue();
+                SendPacket dequeue = que.Dequeue();
 
                 ThreadPool.QueueUserWorkItem(thing =>
                 {
-                    var ipv4 = dequeue.IPv4Packet;
-                    var ipEndPoint = new IPEndPoint(ipv4.DestinationAddress, dequeue.UDPPacket.DestinationPort);
-                    udpClient.SendAsync(dequeue.UDPPacket.PayloadData,
-                        dequeue.UDPPacket.PayloadData.Length, ipEndPoint);
+                    udpClient.SendAsync(dequeue.PayLoad,
+                        dequeue.PayLoad.Length, dequeue.Destination);
                 });
 
                 if (que.Count > 0)

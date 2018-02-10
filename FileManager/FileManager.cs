@@ -28,10 +28,7 @@ namespace IPTComShark.FileManager
 
                 var pcapBlock = (PCAPBlock) chunk;
                 var capturePacket = new CapturePacket(new Raw(pcapBlock.DateTime, pcapBlock.PayLoad, (LinkLayers) pcapBlock.Header.network));
-                if (capturePacket.IPv4Packet == null)
-                    return null;
                 
-                MainForm.ParseIPTWPData(capturePacket);
                 return new List<FileReadObject>(){new FileReadObject(capturePacket) };
             };
 
@@ -39,10 +36,7 @@ namespace IPTComShark.FileManager
             {
                 var pcapngBlock = (PCAPNGBlock) chunk;
                 var capturePacket = new CapturePacket(new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad, (LinkLayers)pcapngBlock.LinkLayerType));
-                if (capturePacket.IPv4Packet == null)
-                    return null;
-
-                MainForm.ParseIPTWPData(capturePacket);
+                
                 return new List<FileReadObject>() { new FileReadObject(capturePacket) };
             };
 
