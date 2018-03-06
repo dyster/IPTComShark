@@ -30,7 +30,7 @@ namespace IPTComShark
                 //dic = cpac.ParsedData?.GetDataDictionary();
                 if(cpac.ParsedData == null)
                     return;
-                var now = cpac.ParsedData.GetStringDictionary();
+                var now = cpac.ParsedData.GetStringDictionary().Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET").ToDictionary(pair => pair.Key, pair => pair.Value);
                 if (cpac.Previous?.ParsedData != null)
                 {
                     var before = cpac.Previous.ParsedData.GetStringDictionary();
