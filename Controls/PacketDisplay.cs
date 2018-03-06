@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using IPTComShark.XmlFiles;
@@ -11,6 +12,13 @@ namespace IPTComShark.Controls
         public PacketDisplay()
         {
             InitializeComponent();
+
+            dataListViewRight.RowFormatter += item =>
+            {
+                DataLine line = (DataLine) item.RowObject;
+                if(line.Changed)
+                    item.BackColor = Color.LightSeaGreen;
+            };
         }
 
         public IPTConfigReader IptConfigReader { get; set; }
@@ -39,14 +47,22 @@ namespace IPTComShark.Controls
 
 
                 if (packet.ParsedData?.GetDataDictionary() != null) // a parser has chugged out something
-                    foreach (KeyValuePair<string, object> pair in packet.ParsedData.GetDataDictionary())
+                    foreach (var field in packet.ParsedData.ParsedFields)
                     {
-                        string typestring = pair.Value.GetType().ToString();
+                        bool changed = false;
+                        if (packet.Previous != null && packet.IPTWPPacket.IPTWPType == "PD")
+                        {
+                            // not checking for null because frankly it shouldn't happen and we want an exception
+                            changed = !packet.Previous.ParsedData.GetField(field.Name).Value.Equals(field.Value);
+                        }
+                        string typestring = field.Value.GetType().ToString();
                         dataLines.Add(new DataLine
                         {
-                            Name = pair.Key,
-                            Value = pair.Value.ToString(),
-                            Type = typestring.Substring(typestring.LastIndexOf(".") + 1)
+                            Name = field.Name,
+                            Value = field.Value.ToString(),
+                            Type = typestring.Substring(typestring.LastIndexOf(".") + 1),
+                            Comment = field.Comment,
+                            Changed = changed
                         });
                     }
                 else if (datasetByComId == null)
@@ -205,5 +221,14 @@ namespace IPTComShark.Controls
 
             return dataLines;
         }
+    }
+
+    public class DataLine
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
+        public string Comment { get; set; }
+        public bool Changed { get; set; }
     }
 }
