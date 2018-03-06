@@ -32,6 +32,7 @@
             this.olvColumnDataLineName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnComment = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.textBoxComid = new System.Windows.Forms.TextBox();
             this.textBoxSize = new System.Windows.Forms.TextBox();
             this.textBoxType = new System.Windows.Forms.TextBox();
@@ -48,6 +49,7 @@
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineName);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineType);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineValue);
+            this.dataListViewRight.AllColumns.Add(this.olvColumnComment);
             this.dataListViewRight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -55,7 +57,8 @@
             this.dataListViewRight.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnDataLineName,
             this.olvColumnDataLineType,
-            this.olvColumnDataLineValue});
+            this.olvColumnDataLineValue,
+            this.olvColumnComment});
             this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
             this.dataListViewRight.Location = new System.Drawing.Point(-1, 104);
@@ -83,6 +86,11 @@
             this.olvColumnDataLineValue.AspectName = "Value";
             this.olvColumnDataLineValue.Text = "Value";
             this.olvColumnDataLineValue.Width = 500;
+            // 
+            // olvColumnComment
+            // 
+            this.olvColumnComment.AspectName = "Comment";
+            this.olvColumnComment.Text = "Comment";
             // 
             // textBoxComid
             // 
@@ -192,5 +200,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxRAW;
+        private BrightIdeasSoftware.OLVColumn olvColumnComment;
     }
 }
