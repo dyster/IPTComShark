@@ -8,9 +8,9 @@ namespace IPTComShark
 {
     public class CapturePacket : IComparable
     {
-        public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data, rawCapture.LinkLayerType))
+        public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data,
+            rawCapture.LinkLayerType))
         {
-            
         }
 
         public CapturePacket(Raw raw)
@@ -19,7 +19,7 @@ namespace IPTComShark
             Date = raw.TimeStamp;
 
             Packet packet = Packet.ParsePacket(raw.LinkLayer, raw.RawData);
-            
+
             if (packet == null)
                 return;
 
@@ -41,14 +41,14 @@ namespace IPTComShark
                         if (((TcpPacket) ipv4.PayloadPacket).DestinationPort == 50040)
                             Protocol = "JRU";
                         break;
-                    
+
                     case IPProtocolType.UDP:
                         PacketTypes |= PacketTypes.UDP;
-                        var udp = (UdpPacket)ipv4.PayloadPacket;
+                        var udp = (UdpPacket) ipv4.PayloadPacket;
                         IPTWPPacket = IPTWPPacket.Extract(udp);
                         MainForm.ParseIPTWPData(this);
                         break;
-                    
+
                     case IPProtocolType.NONE:
                         // dunno
                         break;
@@ -65,7 +65,7 @@ namespace IPTComShark
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            else if(packet.PayloadPacket is ARPPacket)
+            else if (packet.PayloadPacket is ARPPacket)
             {
                 //ARPPacket = (ARPPacket)packet.PayloadPacket;
                 PacketTypes = PacketTypes.ARP;
@@ -95,7 +95,7 @@ namespace IPTComShark
             else
             {
                 Protocol = "UNKNOWN";
-#if DEBUG       
+#if DEBUG
                 // if we are in debug, we might want to know what is in the unknown
                 throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
 #endif
@@ -132,7 +132,7 @@ namespace IPTComShark
         //public ARPPacket ARPPacket { get; }
 
         public IPTWPPacket IPTWPPacket { get; }
-        
+
 
         public string Protocol { get; }
 
@@ -143,16 +143,15 @@ namespace IPTComShark
 
         public int No { get; set; }
         public DateTime Date { get; }
-        
+
         public Raw RawCapture { get; }
         public ParsedDataSet ParsedData { get; set; }
         public string Name { get; set; }
 
         public int CompareTo(object obj)
         {
-            var packet = (CapturePacket)obj;
+            var packet = (CapturePacket) obj;
             return this.Date.CompareTo(packet.Date);
-
         }
     }
 

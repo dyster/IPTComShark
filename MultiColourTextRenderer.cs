@@ -13,7 +13,6 @@ namespace IPTComShark
 
         public override void DrawText(Graphics g, Rectangle r, string txt)
         {
-            
             if (IsDrawBackground && IsItemSelected && !ListView.FullRowSelect)
                 backColor = GetSelectedBackgroundColor();
 
@@ -28,13 +27,15 @@ namespace IPTComShark
             {
                 var cpac = (CapturePacket) RowObject;
                 //dic = cpac.ParsedData?.GetDataDictionary();
-                if(cpac.ParsedData == null)
+                if (cpac.ParsedData == null)
                     return;
-                var now = cpac.ParsedData.GetStringDictionary().Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET").ToDictionary(pair => pair.Key, pair => pair.Value);
+                var now = cpac.ParsedData.GetStringDictionary()
+                    .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
+                    .ToDictionary(pair => pair.Key, pair => pair.Value);
                 if (cpac.Previous?.ParsedData != null)
                 {
                     var before = cpac.Previous.ParsedData.GetStringDictionary();
-                    
+
                     foreach (KeyValuePair<string, string> pair in now)
                     {
                         if (before.ContainsKey(pair.Key))
@@ -48,14 +49,11 @@ namespace IPTComShark
                 {
                     dic = now;
                 }
-                
             }
             else
             {
                 return;
             }
-
-            
 
 
             if (dic != null)

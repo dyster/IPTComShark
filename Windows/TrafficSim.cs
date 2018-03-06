@@ -20,7 +20,7 @@ namespace IPTComShark.Windows
         public TrafficSim()
         {
             InitializeComponent();
-            
+
             var openFileDialog = new OpenFileDialog {Multiselect = true};
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -38,18 +38,17 @@ namespace IPTComShark.Windows
 
             foreach (var packet1 in _packets)
             {
-                
                 string ip = packet1.Source;
 
-                if(!_ips.Contains(ip))
+                if (!_ips.Contains(ip))
                     _ips.Add(ip);
             }
 
             _packets.Sort();
-            
+
             var startTime = _packets.First().Date;
 
-            
+
             comboBox1.DataSource = _ips;
 
             labelStart.Text += " " + _packets.First().Date;
@@ -60,40 +59,35 @@ namespace IPTComShark.Windows
         {
             public SendPacket(DateTime dateTime, IPv4Packet ipv4)
             {
-                UdpPacket udp = (UdpPacket)ipv4.PayloadPacket;
+                UdpPacket udp = (UdpPacket) ipv4.PayloadPacket;
                 Date = dateTime;
                 PayLoad = udp.PayloadData;
                 Destination = new IPEndPoint(ipv4.DestinationAddress, udp.DestinationPort);
             }
+
             public DateTime Date { get; }
             public byte[] PayLoad { get; }
             public IPEndPoint Destination { get; set; }
-            
-            public TimeSpan TimeSpan { get; set; }
 
-            
+            public TimeSpan TimeSpan { get; set; }
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            
-
             var udpClient = new UdpClient();
 
 
-            
-            
             var que = new Queue<SendPacket>();
             foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source == _ip))
             {
-                Packet packet = Packet.ParsePacket(capturePacket.RawCapture.LinkLayer, capturePacket.RawCapture.RawData);
-                IPv4Packet ipv4 = (IPv4Packet)packet.PayloadPacket;
-                
+                Packet packet =
+                    Packet.ParsePacket(capturePacket.RawCapture.LinkLayer, capturePacket.RawCapture.RawData);
+                IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
+
 
                 var sendPacket = new SendPacket(capturePacket.Date, ipv4);
                 que.Enqueue(sendPacket);
@@ -106,13 +100,12 @@ namespace IPTComShark.Windows
 
             Stopwatch stopwatch = new Stopwatch();
 
-            
 
             stopwatch.Start();
 
             while (!backgroundWorker1.CancellationPending)
             {
-                if(que.Count == 0)
+                if (que.Count == 0)
                     return;
 
                 var nextSpan = que.Peek().Date - startTime;
@@ -149,8 +142,6 @@ namespace IPTComShark.Windows
 
                 if (que.Count > 0)
                 {
-                    
-
                     double perc = (dequeue.Date - startTime).TotalMilliseconds / totalMS;
 
                     backgroundWorker1.ReportProgress((int) (perc * 100));
@@ -160,7 +151,6 @@ namespace IPTComShark.Windows
                     backgroundWorker1.ReportProgress(0);
                 }
             }
-
 
 
             stopwatch.Stop();

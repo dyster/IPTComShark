@@ -25,7 +25,7 @@ namespace IPTComShark
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
-        
+
         private long _capturedData;
 
         private WinPcapDevice _device;
@@ -46,15 +46,17 @@ namespace IPTComShark
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
-            checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true, DataSourceUpdateMode.OnPropertyChanged);
-            checkBoxIgnoreLoopback.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreLoopback", true, DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxIgnoreLoopback.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreLoopback", true,
+                DataSourceUpdateMode.OnPropertyChanged);
             checkBoxHideDupes.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreDuplicatedPD", true,
                 DataSourceUpdateMode.OnPropertyChanged);
             checkBoxParserOnly.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreUnknownData", true,
                 DataSourceUpdateMode.OnPropertyChanged);
             textBoxIgnoreComid.DataBindings.Add("Text", packetListView1.Settings, "IgnoreComid", true,
                 DataSourceUpdateMode.OnValidation);
-            
+
 
             InitData();
 
@@ -86,51 +88,43 @@ namespace IPTComShark
 
         //private delegate void AddToListDelegate(CapturePacket o);
 
-        
 
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             _capturedData += e.Packet.Data.Length;
             var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, e.Packet.LinkLayerType);
             var capturePacket = new CapturePacket(raw);
-            
+
             packetListView1.Add(capturePacket);
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-
         }
 
-        
-        
+
         public static void ParseIPTWPData(CapturePacket packet)
         {
             IPTWPPacket iptwpPacket = packet.IPTWPPacket;
-            if(iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
+            if (iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
                 return;
-            
+
             try
             {
-                
                 DataSetDefinition dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
-                
+
 
                 if (dataSetDefinition != null)
                 {
-                    
                     ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
                     packet.ParsedData = parsedDataSet;
                     packet.Name = parsedDataSet.Name;
-                    
                 }
                 else
                 {
-                    
                     Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
                     if (telegram == null)
                         packet.Name = "Unknown ComID " + iptwpPacket.Comid;
                     else
                         packet.Name = telegram.Name;
-                    
                 }
             }
             catch (Exception e)
@@ -138,7 +132,6 @@ namespace IPTComShark
                 packet.Name = e.Message;
                 throw;
             }
-            
         }
 
 
@@ -167,8 +160,8 @@ namespace IPTComShark
         private void Stop()
         {
             fileToolStripMenuItem.Enabled = true;
-            
-            
+
+
             try
             {
                 _device.StopCapture();
@@ -247,9 +240,6 @@ namespace IPTComShark
                               " discarded packets, " + sizestring2 + ".";
         }
 
-        
-
-        
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -267,7 +257,7 @@ namespace IPTComShark
         private void buttonSaveAll_Click(object sender, EventArgs e)
         {
             List<Raw> allRawCaptures = packetListView1.GetAllRawCaptures();
-            if(allRawCaptures.Count == 0)
+            if (allRawCaptures.Count == 0)
                 return;
 
             LinkLayers layer = allRawCaptures.First().LinkLayer;
@@ -304,7 +294,6 @@ namespace IPTComShark
 
         private void checkBoxAutoScroll_CheckedChanged(object sender, EventArgs e)
         {
-            
         }
 
         private void buttonCleanPcap_Click(object sender, EventArgs e)
@@ -313,30 +302,24 @@ namespace IPTComShark
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                ThreadPool.QueueUserWorkItem(o =>
-                {
-                    throw new NotImplementedException();
-                });
+                ThreadPool.QueueUserWorkItem(o => { throw new NotImplementedException(); });
             }
         }
 
         private delegate void UpdateStatusDelegate(string text);
 
-        
 
         private void openFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = openCapturesDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                
                 var fileManager = new FileManager.FileManager();
                 List<CapturePacket> capturePackets = fileManager.OpenFiles(openCapturesDialog.FileNames);
                 foreach (CapturePacket capturePacket in capturePackets)
                 {
                     packetListView1.Add(capturePacket);
                 }
-                
             }
         }
 

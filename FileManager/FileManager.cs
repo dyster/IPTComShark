@@ -25,19 +25,20 @@ namespace IPTComShark.FileManager
         {
             pcapReader.ChunkReader += chunk =>
             {
-
                 var pcapBlock = (PCAPBlock) chunk;
-                var capturePacket = new CapturePacket(new Raw(pcapBlock.DateTime, pcapBlock.PayLoad, (LinkLayers) pcapBlock.Header.network));
-                
-                return new List<FileReadObject>(){new FileReadObject(capturePacket) };
+                var capturePacket = new CapturePacket(new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
+                    (LinkLayers) pcapBlock.Header.network));
+
+                return new List<FileReadObject>() {new FileReadObject(capturePacket)};
             };
 
             pcapngReader.ChunkReader += chunk =>
             {
                 var pcapngBlock = (PCAPNGBlock) chunk;
-                var capturePacket = new CapturePacket(new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad, (LinkLayers)pcapngBlock.LinkLayerType));
-                
-                return new List<FileReadObject>() { new FileReadObject(capturePacket) };
+                var capturePacket = new CapturePacket(new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
+                    (LinkLayers) pcapngBlock.LinkLayerType));
+
+                return new List<FileReadObject>() {new FileReadObject(capturePacket)};
             };
 
             pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
@@ -51,9 +52,6 @@ namespace IPTComShark.FileManager
             _progressbar.Dock = DockStyle.Fill;
 
             _popup.Controls.Add(_progressbar);
-
-            
-
         }
 
         ~FileManager()
@@ -119,16 +117,12 @@ namespace IPTComShark.FileManager
                 _popup.Text = $"Reading file {i} of {dic.Count}";
                 List<FileReadObject> objects = pair.Value.Invoke(pair.Key);
 
-                packets.AddRange(objects.Select(fro => (CapturePacket)fro.ReadObject).ToList());
+                packets.AddRange(objects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
             }
 
             _popup.Close();
 
             return packets;
         }
-
-        
     }
-
-    
 }

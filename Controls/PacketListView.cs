@@ -63,11 +63,7 @@ namespace IPTComShark.Controls
                             item.BackColor = Color.MediumVioletRed;
                             break;
                     }
-                    
-
                 }
-
-                
             };
 
             olvColumnDictionary.AspectGetter += rowObject =>
@@ -81,15 +77,13 @@ namespace IPTComShark.Controls
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
-            
-            
         }
 
         public void UpdateFilter()
         {
             fastObjectListView1.ModelFilter = new ModelFilter(model =>
             {
-                var capturePacket = (CapturePacket)model;
+                var capturePacket = (CapturePacket) model;
 
                 if (Settings.IgnoreLoopback && capturePacket.Source == "127.0.0.1" &&
                     capturePacket.Destination == "127.0.0.1")
@@ -133,8 +127,6 @@ namespace IPTComShark.Controls
                             {
                                 return true;
                             }
-
-                            
                         }
 
                         return false;
@@ -152,8 +144,6 @@ namespace IPTComShark.Controls
         {
             if (fastObjectListView1.SelectedObject != null)
             {
-               
-
                 var packet = (CapturePacket) fastObjectListView1.SelectedObject;
 
                 OnPacketSelected(packet);
@@ -179,7 +169,7 @@ namespace IPTComShark.Controls
                     fastObjectListView1.AddObjects(_listAddBuffer);
                     _listAddBuffer.Clear();
                 }
-                
+
                 if (Settings.AutoScroll && fastObjectListView1.GetItemCount() > 10)
                     fastObjectListView1.EnsureVisible(fastObjectListView1.GetItemCount() - 1);
             }
@@ -202,7 +192,7 @@ namespace IPTComShark.Controls
                     _lastKnowns.Add(comid, o);
                 }
             }
-            
+
 
             lock (_listAddLock)
             {
@@ -236,14 +226,13 @@ namespace IPTComShark.Controls
         public List<CapturePacket> GetFilteredPackets()
         {
             return fastObjectListView1.FilteredObjects.Cast<CapturePacket>().ToList();
-
         }
 
         private void PacketListView_Load(object sender, EventArgs e)
         {
             Settings.PropertyChanged += (o, args) =>
             {
-                if(args.PropertyName != "AutoScroll")
+                if (args.PropertyName != "AutoScroll")
                     UpdateFilter();
             };
         }
@@ -262,7 +251,7 @@ namespace IPTComShark.Controls
             get => _ignoreComid;
             set
             {
-                _ignoreComid = value; 
+                _ignoreComid = value;
                 OnPropertyChanged();
             }
         }

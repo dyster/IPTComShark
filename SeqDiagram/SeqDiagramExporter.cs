@@ -433,7 +433,6 @@ namespace IPTComShark.SeqDiagram
             devices = new Dictionary<string, int>();
             foreach (CapturePacket packet in packets)
             {
-                
                 if (string.IsNullOrEmpty(packet.Source) || string.IsNullOrEmpty(packet.Destination))
                     continue;
 
@@ -444,7 +443,9 @@ namespace IPTComShark.SeqDiagram
 
                 if (packet.ParsedData == null)
                     continue;
-                var now = packet.ParsedData.GetStringDictionary().Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET").ToDictionary(pair => pair.Key, pair => pair.Value);
+                var now = packet.ParsedData.GetStringDictionary()
+                    .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
+                    .ToDictionary(pair => pair.Key, pair => pair.Value);
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
                 if (packet.Previous?.ParsedData != null)

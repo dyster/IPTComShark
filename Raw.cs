@@ -12,8 +12,8 @@ namespace IPTComShark
             LinkLayer = layer;
         }
 
-        public DateTime TimeStamp { get;  }
-        public byte[] RawData { get;  }
+        public DateTime TimeStamp { get; }
+        public byte[] RawData { get; }
         public LinkLayers LinkLayer { get; }
     }
 }

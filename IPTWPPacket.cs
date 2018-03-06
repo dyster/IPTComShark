@@ -35,7 +35,7 @@ namespace IPTComShark
         public string IPTWPType { get; set; }
         public uint IPTWPSize { get; set; }
         public byte[] IPTWPPayload { get; set; }
-        
+
         public static IPTWPPacket Extract(UdpPacket udp)
         {
             if (udp == null)
@@ -106,8 +106,6 @@ namespace IPTComShark
                     readpos++;
                 }
                 iptPacket.IPTWPPayload = data;
-                
-                
             }
             else
             {

@@ -16,7 +16,7 @@ namespace IPTComShark.Controls
             dataListViewRight.RowFormatter += item =>
             {
                 DataLine line = (DataLine) item.RowObject;
-                if(line.Changed)
+                if (line.Changed)
                     item.BackColor = Color.LightSeaGreen;
             };
         }
@@ -39,7 +39,6 @@ namespace IPTComShark.Controls
                 textBoxSize.Text = packet.IPTWPPacket.IPTWPSize.ToString();
                 textBoxType.Text = packet.IPTWPPacket.IPTWPType;
 
-                
 
                 Dataset datasetByComId = null;
                 if (IptConfigReader != null)
@@ -73,12 +72,8 @@ namespace IPTComShark.Controls
                     }
                 else
                     dataLines.AddRange(ParseDataByIpt(datasetByComId, packet.IPTWPPacket));
-
-
-                
             }
-            
-            
+
 
             dataListViewRight.DataSource = dataLines;
         }
