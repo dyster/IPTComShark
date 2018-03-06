@@ -252,6 +252,13 @@ namespace IPTComShark
             {
                 Logger.Log(exception.Message, Severity.Error);
             }
+
+            Properties.Settings.Default.IgnoredComIds = packetListView1.Settings.IgnoreComid;
+            Properties.Settings.Default.AutoScroll = packetListView1.Settings.AutoScroll;
+            Properties.Settings.Default.IgnoreDuplicatedPD = packetListView1.Settings.IgnoreDuplicatedPD;
+            Properties.Settings.Default.IgnoreLoopback = packetListView1.Settings.IgnoreLoopback;
+            Properties.Settings.Default.IgnoreUnknownData = packetListView1.Settings.IgnoreUnknownData;
+            Properties.Settings.Default.Save();
         }
 
         private void buttonSaveAll_Click(object sender, EventArgs e)
@@ -341,6 +348,13 @@ namespace IPTComShark
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            packetListView1.Settings.IgnoreComid = Properties.Settings.Default.IgnoredComIds;
+            packetListView1.Settings.AutoScroll = Properties.Settings.Default.AutoScroll;
+            packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
+            packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
+            packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
+
+
             GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
         }
 

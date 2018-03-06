@@ -41,7 +41,6 @@ namespace IPTComShark
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.packetListView1 = new IPTComShark.Controls.PacketListView();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
             this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
@@ -56,12 +55,13 @@ namespace IPTComShark
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simulateTrafficToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanupPCAPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -156,15 +156,6 @@ namespace IPTComShark
             this.label1.Size = new System.Drawing.Size(170, 13);
             this.label1.TabIndex = 13;
             this.label1.Text = "Ignore Comid (separate by comma)";
-            // 
-            // textBoxIgnoreComid
-            // 
-            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(3, 108);
-            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(393, 20);
-            this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // checkBoxIgnoreLoopback
             // 
@@ -298,6 +289,13 @@ namespace IPTComShark
             this.cleanupPCAPToolStripMenuItem.Text = "Cleanup PCAP";
             this.cleanupPCAPToolStripMenuItem.Click += new System.EventHandler(this.buttonCleanPcap_Click);
             // 
+            // exportSVGSequenceDiagramToolStripMenuItem
+            // 
+            this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
+            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
+            this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
+            // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
@@ -331,12 +329,14 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // exportSVGSequenceDiagramToolStripMenuItem
+            // textBoxIgnoreComid
             // 
-            this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
+            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(3, 108);
+            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(393, 20);
+            this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // MainForm
             // 
