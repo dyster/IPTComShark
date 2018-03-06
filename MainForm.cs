@@ -15,6 +15,7 @@ using SharpPcap.WinPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
+using sonesson_tools.FileWriters;
 using sonesson_tools.Generic;
 
 namespace IPTComShark
@@ -31,13 +32,15 @@ namespace IPTComShark
         private long _discardedData;
         private long _discaredPackets;
 
+        //private PCAPWriter _pcapWriter;
+
         public MainForm()
         {
             InitializeComponent();
 
             this.Text = Text += " " + Application.ProductVersion;
 
-            Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.LogTimeString + ": " + log.Message);
+            Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
             packetDisplay1.IptConfigReader = IptConfigReader;
 
@@ -88,10 +91,12 @@ namespace IPTComShark
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             _capturedData += e.Packet.Data.Length;
-
-            var capturePacket = new CapturePacket(new Raw(e.Packet.Timeval.Date, e.Packet.Data, e.Packet.LinkLayerType));
+            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, e.Packet.LinkLayerType);
+            var capturePacket = new CapturePacket(raw);
             
             packetListView1.Add(capturePacket);
+
+            //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
 
         }
 
@@ -145,9 +150,10 @@ namespace IPTComShark
         private void Start()
         {
             fileToolStripMenuItem.Enabled = false;
-            
-            
-            //buttonTest.Enabled = false;
+
+            //_pcapWriter = new PCAPWriter(@"c:\temp", "testfile");
+            //_pcapWriter.RotationTime = 30;
+            //_pcapWriter.Start();
 
             backgroundWorker1.RunWorkerAsync();
         }
@@ -155,6 +161,7 @@ namespace IPTComShark
         private void buttonStop_Click(object sender, EventArgs e)
         {
             Stop();
+            //_pcapWriter.Stop();
         }
 
         private void Stop()
@@ -162,7 +169,6 @@ namespace IPTComShark
             fileToolStripMenuItem.Enabled = true;
             
             
-            //buttonTest.Enabled = true;
             try
             {
                 _device.StopCapture();
@@ -354,6 +360,20 @@ namespace IPTComShark
         {
             GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
         }
+
+        private void exportSVGSequenceDiagramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = "svg"
+            };
+            DialogResult dialogResult = saveFileDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName);
+            }
+        }
     }
 
     public enum Protocol
@@ -362,12 +382,5 @@ namespace IPTComShark
         UDP,
         TCP,
         IPTWP
-    }
-
-    public class DataLine
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Value { get; set; }
     }
 }

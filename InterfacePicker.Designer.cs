@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.dataListView1 = new BrightIdeasSoftware.DataListView();
-            this.button1 = new System.Windows.Forms.Button();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataListView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,16 +55,6 @@
             this.dataListView1.UseCompatibleStateImageBehavior = false;
             this.dataListView1.View = System.Windows.Forms.View.Details;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 233);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "Interface.FriendlyName";
@@ -82,6 +72,16 @@
             this.olvColumn3.AspectName = "Name";
             this.olvColumn3.Text = "Name";
             this.olvColumn3.Width = 150;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 233);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "OK";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // InterfacePicker
             // 

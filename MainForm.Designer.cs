@@ -61,6 +61,7 @@ namespace IPTComShark
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
+            this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -277,7 +278,8 @@ namespace IPTComShark
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.simulateTrafficToolStripMenuItem,
-            this.cleanupPCAPToolStripMenuItem});
+            this.cleanupPCAPToolStripMenuItem,
+            this.exportSVGSequenceDiagramToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -285,14 +287,14 @@ namespace IPTComShark
             // simulateTrafficToolStripMenuItem
             // 
             this.simulateTrafficToolStripMenuItem.Name = "simulateTrafficToolStripMenuItem";
-            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
             this.simulateTrafficToolStripMenuItem.Click += new System.EventHandler(this.simulateTrafficToolStripMenuItem_Click);
             // 
             // cleanupPCAPToolStripMenuItem
             // 
             this.cleanupPCAPToolStripMenuItem.Name = "cleanupPCAPToolStripMenuItem";
-            this.cleanupPCAPToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.cleanupPCAPToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.cleanupPCAPToolStripMenuItem.Text = "Cleanup PCAP";
             this.cleanupPCAPToolStripMenuItem.Click += new System.EventHandler(this.buttonCleanPcap_Click);
             // 
@@ -328,6 +330,13 @@ namespace IPTComShark
             // 
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
+            // 
+            // exportSVGSequenceDiagramToolStripMenuItem
+            // 
+            this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
+            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
+            this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -387,6 +396,7 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxIgnoreComid;
+        private System.Windows.Forms.ToolStripMenuItem exportSVGSequenceDiagramToolStripMenuItem;
     }
 }
 

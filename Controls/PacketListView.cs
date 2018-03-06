@@ -233,6 +233,12 @@ namespace IPTComShark.Controls
             }
         }
 
+        public List<CapturePacket> GetFilteredPackets()
+        {
+            return fastObjectListView1.FilteredObjects.Cast<CapturePacket>().ToList();
+
+        }
+
         private void PacketListView_Load(object sender, EventArgs e)
         {
             Settings.PropertyChanged += (o, args) =>
