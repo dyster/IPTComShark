@@ -31,6 +31,7 @@ namespace IPTComShark.Windows
             else
             {
                 this.Close();
+                return;
             }
 
             // remove all non IPTCom packets
