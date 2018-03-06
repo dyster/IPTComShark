@@ -134,8 +134,10 @@ namespace IPTComShark.Controls
                                 return true;
                             }
 
-                            return false;
+                            
                         }
+
+                        return false;
                     }
                 }
 
