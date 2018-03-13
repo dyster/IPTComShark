@@ -41,6 +41,7 @@ namespace IPTComShark
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.packetListView1 = new IPTComShark.Controls.PacketListView();
             this.label1 = new System.Windows.Forms.Label();
+            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
             this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
@@ -61,7 +62,8 @@ namespace IPTComShark
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
+            this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -156,6 +158,15 @@ namespace IPTComShark
             this.label1.Size = new System.Drawing.Size(170, 13);
             this.label1.TabIndex = 13;
             this.label1.Text = "Ignore Comid (separate by comma)";
+            // 
+            // textBoxIgnoreComid
+            // 
+            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(3, 108);
+            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(393, 20);
+            this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // checkBoxIgnoreLoopback
             // 
@@ -270,9 +281,11 @@ namespace IPTComShark
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.simulateTrafficToolStripMenuItem,
             this.cleanupPCAPToolStripMenuItem,
-            this.exportSVGSequenceDiagramToolStripMenuItem});
+            this.exportSVGSequenceDiagramToolStripMenuItem,
+            this.exportXLSXToolStripMenuItem,
+            this.exportCSVToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
@@ -329,14 +342,18 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // textBoxIgnoreComid
+            // exportXLSXToolStripMenuItem
             // 
-            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(3, 108);
-            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(393, 20);
-            this.textBoxIgnoreComid.TabIndex = 12;
+            this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
+            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
+            this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
+            // 
+            // exportCSVToolStripMenuItem
+            // 
+            this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
+            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportCSVToolStripMenuItem.Text = "Export CSV";
             // 
             // MainForm
             // 
@@ -397,6 +414,8 @@ namespace IPTComShark
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxIgnoreComid;
         private System.Windows.Forms.ToolStripMenuItem exportSVGSequenceDiagramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportXLSXToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportCSVToolStripMenuItem;
     }
 }
 
