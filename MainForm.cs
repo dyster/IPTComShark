@@ -130,7 +130,7 @@ namespace IPTComShark
             catch (Exception e)
             {
                 packet.Name = e.Message;
-                throw;
+                //throw;
             }
         }
 
