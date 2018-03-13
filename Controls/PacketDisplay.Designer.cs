@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxRAW = new System.Windows.Forms.TextBox();
+            this.olvColumnChanged = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +51,7 @@
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineType);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineValue);
             this.dataListViewRight.AllColumns.Add(this.olvColumnComment);
+            this.dataListViewRight.AllColumns.Add(this.olvColumnChanged);
             this.dataListViewRight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -58,7 +60,8 @@
             this.olvColumnDataLineName,
             this.olvColumnDataLineType,
             this.olvColumnDataLineValue,
-            this.olvColumnComment});
+            this.olvColumnComment,
+            this.olvColumnChanged});
             this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
             this.dataListViewRight.Location = new System.Drawing.Point(-1, 104);
@@ -73,24 +76,25 @@
             // 
             this.olvColumnDataLineName.AspectName = "Name";
             this.olvColumnDataLineName.Text = "Name";
-            this.olvColumnDataLineName.Width = 150;
+            this.olvColumnDataLineName.Width = 100;
             // 
             // olvColumnDataLineType
             // 
             this.olvColumnDataLineType.AspectName = "Type";
             this.olvColumnDataLineType.Text = "Type";
-            this.olvColumnDataLineType.Width = 100;
+            this.olvColumnDataLineType.Width = 50;
             // 
             // olvColumnDataLineValue
             // 
             this.olvColumnDataLineValue.AspectName = "Value";
             this.olvColumnDataLineValue.Text = "Value";
-            this.olvColumnDataLineValue.Width = 500;
+            this.olvColumnDataLineValue.Width = 100;
             // 
             // olvColumnComment
             // 
             this.olvColumnComment.AspectName = "Comment";
             this.olvColumnComment.Text = "Comment";
+            this.olvColumnComment.Width = 200;
             // 
             // textBoxComid
             // 
@@ -164,6 +168,12 @@
             this.textBoxRAW.Size = new System.Drawing.Size(294, 20);
             this.textBoxRAW.TabIndex = 9;
             // 
+            // olvColumnChanged
+            // 
+            this.olvColumnChanged.AspectName = "Changed";
+            this.olvColumnChanged.Text = "Changed";
+            this.olvColumnChanged.Width = 0;
+            // 
             // PacketDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,5 +211,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxRAW;
         private BrightIdeasSoftware.OLVColumn olvColumnComment;
+        private BrightIdeasSoftware.OLVColumn olvColumnChanged;
     }
 }
