@@ -97,7 +97,7 @@ namespace IPTComShark
                 Protocol = "UNKNOWN";
 #if DEBUG
                 // if we are in debug, we might want to know what is in the unknown
-                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
+//                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
 #endif
             }
         }
