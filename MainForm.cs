@@ -386,6 +386,24 @@ namespace IPTComShark
             }
             
         }
+
+        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowserDialog = new FolderBrowserDialog();
+            var dialogResult = folderBrowserDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var fileManager = new FileManager.FileManager();
+
+                var files = Directory.GetFiles(folderBrowserDialog.SelectedPath, "*", SearchOption.AllDirectories);
+
+                List<CapturePacket> capturePackets = fileManager.OpenFiles(files);
+                foreach (CapturePacket capturePacket in capturePackets)
+                {
+                    packetListView1.Add(capturePacket);
+                }
+            }
+        }
     }
 
     public enum Protocol
