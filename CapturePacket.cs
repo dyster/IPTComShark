@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
+using sonesson_tools.DataSets;
 using SharpPcap;
 
 namespace IPTComShark
@@ -37,9 +39,53 @@ namespace IPTComShark
                 switch (ipv4.Protocol)
                 {
                     case IPProtocolType.TCP:
+                        var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
                         PacketTypes |= PacketTypes.TCP;
-                        if (((TcpPacket) ipv4.PayloadPacket).DestinationPort == 50040)
+                        ProtocolInfo = $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
+                        
+                        if (tcpPacket.DestinationPort == 50040 && tcpPacket.PayloadData.Length > 0)
+                        {
                             Protocol = "JRU";
+                            var ss27Parser = new SS27Parser();
+                            var jruload = tcpPacket.PayloadData;
+
+                            try
+                            {
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+                                var buffer = new byte[jrulen];
+                                Array.Copy(jruload, 2, buffer, 0, jrulen);
+                                var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
+                                ParsedData = new ParsedDataSet(){ParsedFields = new List<ParsedField>(ss27.Header)};
+                                Name = ss27.MsgType.ToString();
+                            }
+                            catch (Exception e)
+                            {
+                                Name = "ERROR";
+                                ParsedData = ParsedDataSet.Create("ERROR", e.Message);
+                            }
+
+                        }
+
+                        if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
+                        {
+                            Protocol = "JRU";
+                            var jruload = tcpPacket.PayloadData;
+                            try
+                            {
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
+                                var buffer = new byte[jrulen];
+                                Array.Copy(jruload, 2, buffer, 0, jrulen);
+                                ParsedData = VSIS210.JRU_STATUS.Parse(buffer);
+                                Name = "JRU_STATUS";
+                            }
+                            catch (Exception e)
+                            {
+                                Name = "ERROR";
+                                ParsedData = ParsedDataSet.Create("ERROR", e.Message);
+                            }
+                            
+
+                        }
                         break;
 
                     case IPProtocolType.UDP:
@@ -136,12 +182,14 @@ namespace IPTComShark
 
         public string Protocol { get; }
 
+        public string ProtocolInfo { get; }
+
         /// <summary>
         /// The types of packet contained inside the data
         /// </summary>
         public PacketTypes PacketTypes { get; set; }
 
-        public int No { get; set; }
+        public uint No { get; set; }
         public DateTime Date { get; }
 
         public Raw RawCapture { get; }
