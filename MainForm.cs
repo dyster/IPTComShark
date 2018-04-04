@@ -32,6 +32,8 @@ namespace IPTComShark
         private long _discardedData;
         private long _discaredPackets;
 
+        private uint _seed = 1;
+
         //private PCAPWriter _pcapWriter;
 
         public MainForm()
@@ -94,7 +96,7 @@ namespace IPTComShark
             _capturedData += e.Packet.Data.Length;
             var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, e.Packet.LinkLayerType);
             var capturePacket = new CapturePacket(raw);
-
+            capturePacket.No = _seed++;
             packetListView1.Add(capturePacket);
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);

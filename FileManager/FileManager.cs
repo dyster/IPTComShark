@@ -108,7 +108,7 @@ namespace IPTComShark.FileManager
             }
 
             var packets = new List<CapturePacket>();
-
+            uint seed = 1;
             int i = 0;
             foreach (var pair in dic)
             {
@@ -119,6 +119,8 @@ namespace IPTComShark.FileManager
 
                 packets.AddRange(objects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
             }
+
+            packets.ForEach(p => p.No = seed++);
 
             _popup.Close();
 
