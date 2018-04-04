@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using PacketDotNet;
+using sonesson_tools;
 
 namespace IPTComShark.Controls
 {
@@ -235,6 +236,31 @@ namespace IPTComShark.Controls
                 if (args.PropertyName != "AutoScroll")
                     UpdateFilter();
             };
+        }
+
+        private void copyRawByteshexStringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            if (o != null)
+            {
+                var s = BitConverter.ToString(o.RawCapture.RawData);
+                Clipboard.SetText(s, TextDataFormat.Text);
+            }
+
+            Logger.Log("Hex String copied to ClipBoard", Severity.Info);
+        }
+
+        private void copyParsedDatatextStringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            if (o != null)
+            {
+                
+                var s = Functions.MakeCommentString(o.ParsedData.GetDataDictionary());
+                Clipboard.SetText(s, TextDataFormat.Text);
+            }
+
+            Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
         }
     }
 

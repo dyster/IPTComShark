@@ -35,12 +35,17 @@
             this.olvColumnFrom = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnProtocol = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnProtocolInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDictionary = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnIPTWPType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnComId = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
+            this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
             // 
             // fastObjectListView1
@@ -50,6 +55,7 @@
             this.fastObjectListView1.AllColumns.Add(this.olvColumnFrom);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnTo);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnProtocol);
+            this.fastObjectListView1.AllColumns.Add(this.olvColumnProtocolInfo);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnName);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDictionary);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnIPTWPType);
@@ -61,10 +67,12 @@
             this.olvColumnFrom,
             this.olvColumnTo,
             this.olvColumnProtocol,
+            this.olvColumnProtocolInfo,
             this.olvColumnName,
             this.olvColumnDictionary,
             this.olvColumnIPTWPType,
             this.olvColumnComId});
+            this.fastObjectListView1.ContextMenuStrip = this.contextMenuMouse;
             this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fastObjectListView1.FullRowSelect = true;
@@ -106,6 +114,12 @@
             this.olvColumnProtocol.Text = "Protocol";
             this.olvColumnProtocol.Width = 100;
             // 
+            // olvColumnProtocolInfo
+            // 
+            this.olvColumnProtocolInfo.AspectName = "ProtocolInfo";
+            this.olvColumnProtocolInfo.Text = "Protocol Info";
+            this.olvColumnProtocolInfo.Width = 100;
+            // 
             // olvColumnName
             // 
             this.olvColumnName.AspectName = "Name";
@@ -134,6 +148,28 @@
             this.timerAddBuffer.Interval = 1000;
             this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
             // 
+            // contextMenuMouse
+            // 
+            this.contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyRawByteshexStringToolStripMenuItem,
+            this.copyParsedDatatextStringToolStripMenuItem});
+            this.contextMenuMouse.Name = "contextMenuMouse";
+            this.contextMenuMouse.Size = new System.Drawing.Size(230, 70);
+            // 
+            // copyRawByteshexStringToolStripMenuItem
+            // 
+            this.copyRawByteshexStringToolStripMenuItem.Name = "copyRawByteshexStringToolStripMenuItem";
+            this.copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.copyRawByteshexStringToolStripMenuItem.Text = "Copy raw bytes (hex string)";
+            this.copyRawByteshexStringToolStripMenuItem.Click += new System.EventHandler(this.copyRawByteshexStringToolStripMenuItem_Click);
+            // 
+            // copyParsedDatatextStringToolStripMenuItem
+            // 
+            this.copyParsedDatatextStringToolStripMenuItem.Name = "copyParsedDatatextStringToolStripMenuItem";
+            this.copyParsedDatatextStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.copyParsedDatatextStringToolStripMenuItem.Text = "Copy parsed data (text string)";
+            this.copyParsedDatatextStringToolStripMenuItem.Click += new System.EventHandler(this.copyParsedDatatextStringToolStripMenuItem_Click);
+            // 
             // PacketListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +180,7 @@
             this.Size = new System.Drawing.Size(1112, 763);
             this.Load += new System.EventHandler(this.PacketListView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
+            this.contextMenuMouse.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -161,5 +198,9 @@
         private BrightIdeasSoftware.OLVColumn olvColumnIPTWPType;
         private System.Windows.Forms.Timer timerAddBuffer;
         private BrightIdeasSoftware.OLVColumn olvColumnComId;
+        private BrightIdeasSoftware.OLVColumn olvColumnProtocolInfo;
+        private System.Windows.Forms.ContextMenuStrip contextMenuMouse;
+        private System.Windows.Forms.ToolStripMenuItem copyRawByteshexStringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
     }
 }
