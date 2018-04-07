@@ -60,6 +60,9 @@
       <HintPath>packages\PacketDotNet.0.16.0\lib\PacketDotNet.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="SharpCompress, Version=0.20.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>packages\SharpCompress.0.20.0\lib\net45\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="SharpPcap, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\SharpPcap.4.4.0\lib\SharpPcap.dll</HintPath>
     </Reference>

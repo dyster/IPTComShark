@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PacketDotNet;
 using sonesson_tools.FileReaders;
+using SharpCompress.Archives.SevenZip;
+using SharpCompress.Readers;
 
 namespace IPTComShark.FileManager
 {
@@ -65,10 +67,94 @@ namespace IPTComShark.FileManager
             _popup.Show();
             _popup.Text = "Gathering File Info...";
 
+            var packets = new List<CapturePacket>();
+
             var dic = new Dictionary<string, Func<string, List<FileReadObject>>>();
+
+            //SevenZipExtractor.SetLibraryPath(Application.ExecutablePath + @"\7z.dll");
 
             foreach (string fileName in fileNames)
             {
+                if (SevenZipArchive.IsSevenZipFile(fileName))
+                {
+                    _popup.Text = $"Reading {Path.GetFileName(fileName)}";
+                    var pcaps = new List<SevenZipArchiveEntry>();
+                    var pcapngs = new List<SevenZipArchiveEntry>();
+
+                    using (SevenZipArchive sevenZipArchive = SevenZipArchive.Open(fileName))
+                    {
+                        foreach (SevenZipArchiveEntry entry in sevenZipArchive.Entries.Where(e => !e.IsDirectory))
+                        {
+                            // since these bloody streams can't seek, need to reopen every time
+
+                            using (Stream openEntryStream = entry.OpenEntryStream())
+                            {
+                                if (pcapReader.CanRead(openEntryStream))
+                                {
+                                    pcaps.Add(entry);
+                                    continue;
+                                }
+                            }
+
+
+                            using (Stream openEntryStream = entry.OpenEntryStream())
+                            {
+                                if (pcapngReader.CanRead(openEntryStream))
+                                    pcapngs.Add(entry);
+                            }
+
+                            // there is nothing I deplore more than extracting to temporary files, so I'm going to hold the stream in memory instead
+                            // the pcap(ng) reader should be modified to deal with non-seekable streams perhaps
+                        }
+
+
+                        int total = pcaps.Count + pcapngs.Count;
+                        int curr = 0;
+
+                        foreach (SevenZipArchiveEntry entry in pcaps)
+                        {
+                            _popup.Text = $"{++curr}/{total} in {Path.GetFileName(fileName)}";
+
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                using (Stream openEntryStream = entry.OpenEntryStream())
+                                {
+                                    openEntryStream.CopyTo(memoryStream);
+                                }
+                                memoryStream.Position = 0;
+
+
+                                List<FileReadObject> readObjects = pcapReader.ReadStream(memoryStream);
+                                packets.AddRange(readObjects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
+                            }
+                        }
+
+                        foreach (SevenZipArchiveEntry entry in pcapngs)
+                        {
+                            _popup.Text = $"{++curr}/{total} in {Path.GetFileName(fileName)}";
+
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                using (Stream openEntryStream = entry.OpenEntryStream())
+                                {
+                                    openEntryStream.CopyTo(memoryStream);
+                                }
+                                memoryStream.Position = 0;
+
+
+                                List<FileReadObject> readObjects = pcapngReader.ReadStream(memoryStream);
+                                packets.AddRange(readObjects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
+                            }
+                        }
+                    }
+                }
+                //using (Stream stream = File.OpenRead(fileName))
+                //using (var reader = ReaderFactory.Open(stream))
+                //{
+                //    
+                //}
+
+
                 /* I give up, this just can't be done properly with DeflateStreams, need to get a better zip class!
                 if (zipReader.CanRead(fileName))
                 {
@@ -107,7 +193,7 @@ namespace IPTComShark.FileManager
                 }
             }
 
-            var packets = new List<CapturePacket>();
+
             uint seed = 1;
             int i = 0;
             foreach (var pair in dic)
