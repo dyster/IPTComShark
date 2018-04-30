@@ -17,8 +17,8 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _list = new List<CapturePacket>();
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
-        private readonly Dictionary<uint, CapturePacket> _lastKnowns = new Dictionary<uint, CapturePacket>();
-
+        private readonly Dictionary<Tuple<uint, string>, CapturePacket> _lastKnowns = new Dictionary<Tuple<uint, string>, CapturePacket>();
+        
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
         private static readonly Color IptwpColor = Color.FromArgb(170, 223, 255);
@@ -181,16 +181,16 @@ namespace IPTComShark.Controls
             // Connect up the chain
             if (o.IPTWPPacket != null)
             {
-                var comid = o.IPTWPPacket.Comid;
-                if (_lastKnowns.ContainsKey(comid))
+                var tupleKey = new Tuple<uint, string>(o.IPTWPPacket.Comid, o.Source);
+                if (_lastKnowns.ContainsKey(tupleKey))
                 {
-                    o.Previous = _lastKnowns[comid];
-                    _lastKnowns[comid].Next = o;
-                    _lastKnowns[comid] = o;
+                    o.Previous = _lastKnowns[tupleKey];
+                    _lastKnowns[tupleKey].Next = o;
+                    _lastKnowns[tupleKey] = o;
                 }
                 else
                 {
-                    _lastKnowns.Add(comid, o);
+                    _lastKnowns.Add(tupleKey, o);
                 }
             }
 
@@ -263,6 +263,8 @@ namespace IPTComShark.Controls
             Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
         }
     }
+
+    
 
     public class PacketListSettings : INotifyPropertyChanged
     {
