@@ -193,8 +193,37 @@ namespace IPTComShark
         public DateTime Date { get; }
 
         public Raw RawCapture { get; }
+
         public ParsedDataSet ParsedData { get; set; }
+
+
         public string Name { get; set; }
+
+        /// <summary>
+        /// If this packet is part of a chain, get only the ParsedData that has changed
+        /// </summary>
+        public List<ParsedField> GetDelta()
+        {
+            List<ParsedField> delta = new List<ParsedField>(this.ParsedData.ParsedFields);
+
+            if (Previous != null)
+            {
+                
+
+                foreach (ParsedField field in this.ParsedData.ParsedFields)
+                {
+                    ParsedField lookup = Previous.ParsedData.GetField(field.Name);
+                    if (lookup != null)
+                    {
+                        if (lookup.Value.Equals(field.Value))
+                            delta.Remove(field);
+                    }
+                }
+                
+            }
+
+            return delta;
+        }
 
         public int CompareTo(object obj)
         {
