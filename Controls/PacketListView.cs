@@ -262,9 +262,39 @@ namespace IPTComShark.Controls
 
             Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
         }
+
+        private void analyzeChainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            if (o != null)
+            {
+                var linked = new LinkedList<CapturePacket>();
+                while (o.Previous != null)
+                {
+                    o = o.Previous;
+                    
+                }
+                
+                linked.AddFirst(o);
+
+                while (o.Next != null)
+                {
+                    linked.AddLast(o.Next);
+                    o = o.Next;
+                }
+
+                var saveFileDialog = new SaveFileDialog();
+                saveFileDialog.DefaultExt = "xlsx";
+                DialogResult dialogResult = saveFileDialog.ShowDialog(this);
+                if (dialogResult == DialogResult.OK)
+                {
+                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName);
+                }
+            }
+        }
     }
 
-    
+
 
     public class PacketListSettings : INotifyPropertyChanged
     {

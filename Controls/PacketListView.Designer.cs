@@ -40,10 +40,11 @@
             this.olvColumnDictionary = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnIPTWPType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnComId = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
+            this.analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
@@ -142,24 +143,19 @@
             this.olvColumnComId.AspectName = "IPTWPPacket.Comid";
             this.olvColumnComId.Text = "ComID";
             // 
-            // timerAddBuffer
-            // 
-            this.timerAddBuffer.Enabled = true;
-            this.timerAddBuffer.Interval = 1000;
-            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
-            // 
             // contextMenuMouse
             // 
             this.contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyRawByteshexStringToolStripMenuItem,
-            this.copyParsedDatatextStringToolStripMenuItem});
+            this.copyParsedDatatextStringToolStripMenuItem,
+            this.analyzeChainToolStripMenuItem});
             this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(230, 70);
+            this.contextMenuMouse.Size = new System.Drawing.Size(230, 92);
             // 
             // copyRawByteshexStringToolStripMenuItem
             // 
             this.copyRawByteshexStringToolStripMenuItem.Name = "copyRawByteshexStringToolStripMenuItem";
-            this.copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.copyRawByteshexStringToolStripMenuItem.Text = "Copy raw bytes (hex string)";
             this.copyRawByteshexStringToolStripMenuItem.Click += new System.EventHandler(this.copyRawByteshexStringToolStripMenuItem_Click);
             // 
@@ -169,6 +165,19 @@
             this.copyParsedDatatextStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.copyParsedDatatextStringToolStripMenuItem.Text = "Copy parsed data (text string)";
             this.copyParsedDatatextStringToolStripMenuItem.Click += new System.EventHandler(this.copyParsedDatatextStringToolStripMenuItem_Click);
+            // 
+            // timerAddBuffer
+            // 
+            this.timerAddBuffer.Enabled = true;
+            this.timerAddBuffer.Interval = 1000;
+            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
+            // 
+            // analyzeChainToolStripMenuItem
+            // 
+            this.analyzeChainToolStripMenuItem.Name = "analyzeChainToolStripMenuItem";
+            this.analyzeChainToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.analyzeChainToolStripMenuItem.Text = "Analyze chain";
+            this.analyzeChainToolStripMenuItem.Click += new System.EventHandler(this.analyzeChainToolStripMenuItem_Click);
             // 
             // PacketListView
             // 
@@ -202,5 +211,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuMouse;
         private System.Windows.Forms.ToolStripMenuItem copyRawByteshexStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
     }
 }
