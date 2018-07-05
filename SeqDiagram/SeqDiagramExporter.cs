@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -110,7 +111,7 @@ namespace IPTComShark.SeqDiagram
             svg.Children.Add(svgDefinitionList);
 
             // make the device boxes
-            foreach (KeyValuePair<string, int> device in devices)
+            foreach (KeyValuePair<IPAddress, int> device in devices)
             {
                 groupDevices.Children.Add(new SvgRectangle
                 {
@@ -124,7 +125,7 @@ namespace IPTComShark.SeqDiagram
                 });
                 groupDevices.Children.Add(new SvgText
                 {
-                    Text = device.Key,
+                    Text = device.Key.ToString(),
                     Stroke = new SvgColourServer(Color.Black),
                     X = new SvgUnitCollection {new SvgUnit(device.Value)},
                     Y = new SvgUnitCollection {new SvgUnit(horizontalBase - unitBoxHeight / 2)},
@@ -254,7 +255,7 @@ namespace IPTComShark.SeqDiagram
 
 
             // finally, draw the baselines
-            foreach (KeyValuePair<string, int> device in devices)
+            foreach (KeyValuePair<IPAddress, int> device in devices)
                 groupBaselines.Children.Add(new SvgLine
                 {
                     StartX = device.Value,
@@ -427,13 +428,13 @@ namespace IPTComShark.SeqDiagram
         }*/
 
         private static List<Sequence> GetSequences(List<CapturePacket> packets, int baselinestep,
-            out Dictionary<string, int> devices, ref int baselinegen)
+            out Dictionary<IPAddress, int> devices, ref int baselinegen)
         {
             var list = new List<Sequence>();
-            devices = new Dictionary<string, int>();
+            devices = new Dictionary<IPAddress, int>();
             foreach (CapturePacket packet in packets)
             {
-                if (string.IsNullOrEmpty(packet.Source) || string.IsNullOrEmpty(packet.Destination))
+                if (packet.Source == null || packet.Destination == null)
                     continue;
 
                 if (!devices.ContainsKey(packet.Source))
@@ -489,8 +490,8 @@ namespace IPTComShark.SeqDiagram
         /// </summary>
         private struct Sequence
         {
-            public string From;
-            public string To;
+            public IPAddress From;
+            public IPAddress To;
             public string Name;
             public Dictionary<string, string> Dic;
             public string Time;

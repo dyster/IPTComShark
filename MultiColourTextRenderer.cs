@@ -26,9 +26,12 @@ namespace IPTComShark
             if (RowObject is CapturePacket)
             {
                 var cpac = (CapturePacket) RowObject;
-                //dic = cpac.ParsedData?.GetDataDictionary();
+                
                 if (cpac.ParsedData == null)
                     return;
+
+                // TODO use the generic function in CapturePacket instead
+
                 var now = cpac.ParsedData.GetStringDictionary()
                     .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -75,7 +78,7 @@ namespace IPTComShark
                     TextRenderer.DrawText(g, text, font1, r, GetForegroundColor(), backColor, flags);
 
 
-                    text = o.Value.ToString();
+                    text = o.Value;
 
                     width = TextRenderer.MeasureText(text, font2).Width;
 

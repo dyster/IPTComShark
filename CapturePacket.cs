@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
@@ -28,24 +29,23 @@ namespace IPTComShark
             if (packet.PayloadPacket is IPv4Packet)
             {
                 var ipv4 = (IPv4Packet) packet.PayloadPacket;
-                PacketTypes = PacketTypes.IPv4;
+                
 
-                Source = ipv4.SourceAddress.ToString();
-                Destination = ipv4.DestinationAddress.ToString();
+                Source = ipv4.SourceAddress;
+                Destination = ipv4.DestinationAddress;
 
-                // set the base protocol, may be overwritten later
-                Protocol = ipv4.Protocol.ToString();
-
+                
                 switch (ipv4.Protocol)
                 {
                     case IPProtocolType.TCP:
                         var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
-                        PacketTypes |= PacketTypes.TCP;
+                        Protocol = ProtocolType.TCP;
+                        
                         ProtocolInfo = $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
                         
                         if (tcpPacket.DestinationPort == 50040 && tcpPacket.PayloadData.Length > 0)
                         {
-                            Protocol = "JRU";
+                            Protocol = ProtocolType.JRU;
                             var ss27Parser = new SS27Parser();
                             var jruload = tcpPacket.PayloadData;
 
@@ -68,7 +68,7 @@ namespace IPTComShark
 
                         if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
                         {
-                            Protocol = "JRU";
+                            Protocol = ProtocolType.JRU;
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
@@ -89,21 +89,27 @@ namespace IPTComShark
                         break;
 
                     case IPProtocolType.UDP:
-                        PacketTypes |= PacketTypes.UDP;
+                        
+                        Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket) ipv4.PayloadPacket;
                         IPTWPPacket = IPTWPPacket.Extract(udp);
                         MainForm.ParseIPTWPData(this);
+                        if (IPTWPPacket != null)
+                            Protocol = ProtocolType.IPTWP;
                         break;
 
                     case IPProtocolType.NONE:
+                        Protocol = ProtocolType.UNKNOWN;
                         // dunno
                         break;
 
                     case IPProtocolType.ICMP:
+                        Protocol = ProtocolType.ICMP;
                         // dunno
                         break;
 
                     case IPProtocolType.IGMP:
+                        Protocol = ProtocolType.IGMP;
                         // dunno
                         break;
 
@@ -114,33 +120,33 @@ namespace IPTComShark
             else if (packet.PayloadPacket is ARPPacket)
             {
                 //ARPPacket = (ARPPacket)packet.PayloadPacket;
-                PacketTypes = PacketTypes.ARP;
-                Protocol = "ARP";
+                
+                Protocol = ProtocolType.ARP;
             }
             else if (packet.PayloadPacket is IPv6Packet)
             {
-                PacketTypes = PacketTypes.IPv6;
-                Protocol = "IPv6";
+                
+                Protocol = ProtocolType.IPv6;
                 // ignore, for now
             }
             else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xe1)
             {
-                Protocol = "Homeplug AV";
+                Protocol = ProtocolType.HomeplugAV;
                 // ignore
             }
             else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x89 && packet.Header[13] == 0x12)
             {
-                Protocol = "Mediaxtream";
+                Protocol = ProtocolType.Mediaxtream;
                 // ignore
             }
             else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xcc)
             {
-                Protocol = "LLDP";
+                Protocol = ProtocolType.LLDP;
                 // ignore
             }
             else
             {
-                Protocol = "UNKNOWN";
+                Protocol = ProtocolType.UNKNOWN;
 #if DEBUG
                 // if we are in debug, we might want to know what is in the unknown
 //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
@@ -158,8 +164,8 @@ namespace IPTComShark
         /// </summary>
         public CapturePacket Next { get; set; }
 
-        public string Source { get; set; }
-        public string Destination { get; set; }
+        public IPAddress Source { get; set; }
+        public IPAddress Destination { get; set; }
 
         //public IPv4Packet IPv4Packet { get; }
         //
@@ -180,14 +186,14 @@ namespace IPTComShark
         public IPTWPPacket IPTWPPacket { get; }
 
 
-        public string Protocol { get; }
+        public ProtocolType Protocol { get; }
 
         public string ProtocolInfo { get; }
 
         /// <summary>
         /// The types of packet contained inside the data
         /// </summary>
-        public PacketTypes PacketTypes { get; set; }
+        //public PacketTypes PacketTypes { get; set; }
 
         public uint No { get; set; }
         public DateTime Date { get; }
@@ -240,5 +246,21 @@ namespace IPTComShark
         UDP,
         TCP,
         ARP
+    }
+
+    public enum ProtocolType
+    {
+        UNKNOWN,
+        ARP,
+        JRU,
+        IPv6,
+        HomeplugAV,
+        Mediaxtream,
+        LLDP,
+        IPTWP,
+        TCP,
+        UDP,
+        ICMP,
+        IGMP
     }
 }

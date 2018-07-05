@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
@@ -17,7 +18,7 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _list = new List<CapturePacket>();
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
-        private readonly Dictionary<Tuple<uint, string>, CapturePacket> _lastKnowns = new Dictionary<Tuple<uint, string>, CapturePacket>();
+        private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns = new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
         
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
@@ -45,22 +46,22 @@ namespace IPTComShark.Controls
                     var packet = (CapturePacket) item.RowObject;
                     switch (packet.Protocol)
                     {
-                        case "IPTWP":
+                        case ProtocolType.IPTWP:
                             item.BackColor = IptwpColor;
                             break;
-                        case "ARP":
+                        case ProtocolType.ARP:
                             item.BackColor = ArpColor;
                             break;
-                        case "TCP":
+                        case ProtocolType.TCP:
                             item.BackColor = TcpColor;
                             break;
-                        case "JRU":
+                        case ProtocolType.JRU:
                             item.BackColor = Color.Orange;
                             break;
-                        case "UDP":
+                        case ProtocolType.UDP:
                             item.BackColor = UdpColor;
                             break;
-                        case "UNKNOWN":
+                        case ProtocolType.UNKNOWN:
                             item.BackColor = Color.MediumVioletRed;
                             break;
                     }
@@ -86,8 +87,10 @@ namespace IPTComShark.Controls
             {
                 var capturePacket = (CapturePacket) model;
 
-                if (Settings.IgnoreLoopback && capturePacket.Source == "127.0.0.1" &&
-                    capturePacket.Destination == "127.0.0.1")
+                var lochost = IPAddress.Parse("127.0.0.1");
+
+                if (Settings.IgnoreLoopback && capturePacket.Source == lochost &&
+                    capturePacket.Destination == lochost)
                     return false;
 
                 if (Settings.IgnoreUnknownData)
@@ -181,7 +184,7 @@ namespace IPTComShark.Controls
             // Connect up the chain
             if (o.IPTWPPacket != null)
             {
-                var tupleKey = new Tuple<uint, string>(o.IPTWPPacket.Comid, o.Source);
+                var tupleKey = new Tuple<uint, IPAddress>(o.IPTWPPacket.Comid, o.Source);
                 if (_lastKnowns.ContainsKey(tupleKey))
                 {
                     o.Previous = _lastKnowns[tupleKey];

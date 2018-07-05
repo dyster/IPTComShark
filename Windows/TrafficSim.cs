@@ -14,8 +14,8 @@ namespace IPTComShark.Windows
     public partial class TrafficSim : Form
     {
         private List<CapturePacket> _packets;
-        private List<string> _ips = new List<string>();
-        private string _ip;
+        private List<IPAddress> _ips = new List<IPAddress>();
+        private IPAddress _ip;
 
         public TrafficSim()
         {
@@ -39,7 +39,7 @@ namespace IPTComShark.Windows
 
             foreach (var packet1 in _packets)
             {
-                string ip = packet1.Source;
+                IPAddress ip = packet1.Source;
 
                 if (!_ips.Contains(ip))
                     _ips.Add(ip);
@@ -165,7 +165,7 @@ namespace IPTComShark.Windows
         private void buttonGo_Click(object sender, EventArgs e)
         {
             IPAddress ipAddress = IPAddress.Parse(comboBox1.SelectedItem.ToString());
-            _ip = ipAddress.ToString();
+            _ip = ipAddress;
 
             if (!backgroundWorker1.IsBusy)
                 backgroundWorker1.RunWorkerAsync();
