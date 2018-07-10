@@ -39,10 +39,12 @@ namespace IPTComShark
             this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.packetListView1 = new IPTComShark.Controls.PacketListView();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
             this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
+            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
             this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -53,17 +55,15 @@ namespace IPTComShark
             this.saveCurrentFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simulateTrafficToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cleanupPCAPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.packetListView1 = new IPTComShark.Controls.PacketListView();
-            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
+            this.mergeAndCleanFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -135,6 +135,21 @@ namespace IPTComShark
             this.splitContainer1.SplitterDistance = 1030;
             this.splitContainer1.TabIndex = 7;
             // 
+            // packetListView1
+            // 
+            this.packetListView1.AutoScroll = true;
+            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetListView1.Location = new System.Drawing.Point(0, 0);
+            this.packetListView1.Name = "packetListView1";
+            packetListSettings1.AutoScroll = true;
+            packetListSettings1.IgnoreComid = null;
+            packetListSettings1.IgnoreDuplicatedPD = true;
+            packetListSettings1.IgnoreLoopback = true;
+            packetListSettings1.IgnoreUnknownData = true;
+            this.packetListView1.Settings = packetListSettings1;
+            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
+            this.packetListView1.TabIndex = 0;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -172,6 +187,17 @@ namespace IPTComShark
             this.checkBoxAutoScroll.TabIndex = 10;
             this.checkBoxAutoScroll.Text = "AutoScroll";
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
+            // 
+            // packetDisplay1
+            // 
+            this.packetDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.packetDisplay1.IptConfigReader = null;
+            this.packetDisplay1.Location = new System.Drawing.Point(0, 134);
+            this.packetDisplay1.Name = "packetDisplay1";
+            this.packetDisplay1.Size = new System.Drawing.Size(396, 411);
+            this.packetDisplay1.TabIndex = 0;
             // 
             // checkBoxHideDupes
             // 
@@ -255,12 +281,12 @@ namespace IPTComShark
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.simulateTrafficToolStripMenuItem,
-            this.cleanupPCAPToolStripMenuItem,
             this.exportSVGSequenceDiagramToolStripMenuItem,
             this.exportXLSXToolStripMenuItem,
-            this.exportCSVToolStripMenuItem});
+            this.exportCSVToolStripMenuItem,
+            this.mergeAndCleanFilesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
@@ -270,19 +296,25 @@ namespace IPTComShark
             this.simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
             this.simulateTrafficToolStripMenuItem.Click += new System.EventHandler(this.simulateTrafficToolStripMenuItem_Click);
             // 
-            // cleanupPCAPToolStripMenuItem
-            // 
-            this.cleanupPCAPToolStripMenuItem.Name = "cleanupPCAPToolStripMenuItem";
-            this.cleanupPCAPToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.cleanupPCAPToolStripMenuItem.Text = "Cleanup PCAP";
-            this.cleanupPCAPToolStripMenuItem.Click += new System.EventHandler(this.buttonCleanPcap_Click);
-            // 
             // exportSVGSequenceDiagramToolStripMenuItem
             // 
             this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
             this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
             this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
+            // 
+            // exportXLSXToolStripMenuItem
+            // 
+            this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
+            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
+            this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
+            // 
+            // exportCSVToolStripMenuItem
+            // 
+            this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
+            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportCSVToolStripMenuItem.Text = "Export CSV";
             // 
             // startToolStripMenuItem
             // 
@@ -317,44 +349,12 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // exportXLSXToolStripMenuItem
+            // mergeAndCleanFilesToolStripMenuItem
             // 
-            this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
-            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
-            this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
-            // 
-            // exportCSVToolStripMenuItem
-            // 
-            this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
-            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.exportCSVToolStripMenuItem.Text = "Export CSV";
-            // 
-            // packetListView1
-            // 
-            this.packetListView1.AutoScroll = true;
-            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Name = "packetListView1";
-            packetListSettings1.AutoScroll = true;
-            packetListSettings1.IgnoreComid = null;
-            packetListSettings1.IgnoreDuplicatedPD = true;
-            packetListSettings1.IgnoreLoopback = true;
-            packetListSettings1.IgnoreUnknownData = true;
-            this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
-            this.packetListView1.TabIndex = 0;
-            // 
-            // packetDisplay1
-            // 
-            this.packetDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.packetDisplay1.IptConfigReader = null;
-            this.packetDisplay1.Location = new System.Drawing.Point(0, 134);
-            this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(396, 411);
-            this.packetDisplay1.TabIndex = 0;
+            this.mergeAndCleanFilesToolStripMenuItem.Name = "mergeAndCleanFilesToolStripMenuItem";
+            this.mergeAndCleanFilesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.mergeAndCleanFilesToolStripMenuItem.Text = "Merge and Clean files";
+            this.mergeAndCleanFilesToolStripMenuItem.Click += new System.EventHandler(this.mergeAndCleanFilesToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -406,7 +406,6 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem saveCurrentFilterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem simulateTrafficToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cleanupPCAPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
@@ -417,6 +416,7 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem exportSVGSequenceDiagramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportXLSXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportCSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mergeAndCleanFilesToolStripMenuItem;
     }
 }
 

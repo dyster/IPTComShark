@@ -309,15 +309,7 @@ namespace IPTComShark
         {
         }
 
-        private void buttonCleanPcap_Click(object sender, EventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            DialogResult dialogResult = openFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                ThreadPool.QueueUserWorkItem(o => { throw new NotImplementedException(); });
-            }
-        }
+        
 
         private delegate void UpdateStatusDelegate(string text);
 
@@ -409,6 +401,19 @@ namespace IPTComShark
                     packetListView1.Add(capturePacket);
                 }
             }
+        }
+
+        private void mergeAndCleanFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = openCapturesDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var cleanAndMerge = new CleanAndMerge(openCapturesDialog.FileNames);
+                cleanAndMerge.Show();
+                
+            }
+
+            
         }
     }
 
