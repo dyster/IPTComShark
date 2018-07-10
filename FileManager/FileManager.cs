@@ -28,19 +28,23 @@ namespace IPTComShark.FileManager
             pcapReader.ChunkReader += chunk =>
             {
                 var pcapBlock = (PCAPBlock) chunk;
-                var capturePacket = new CapturePacket(new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                    (LinkLayers) pcapBlock.Header.network));
+                var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
+                    (LinkLayers) pcapBlock.Header.network);
+                OnRawParsed(raw);
+                
 
-                return new List<FileReadObject>() {new FileReadObject(capturePacket)};
+                return new List<FileReadObject>() ;
             };
 
             pcapngReader.ChunkReader += chunk =>
             {
                 var pcapngBlock = (PCAPNGBlock) chunk;
-                var capturePacket = new CapturePacket(new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                    (LinkLayers) pcapngBlock.LinkLayerType));
+                var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
+                    (LinkLayers) pcapngBlock.LinkLayerType);
+                OnRawParsed(raw);
+                
 
-                return new List<FileReadObject>() {new FileReadObject(capturePacket)};
+                return new List<FileReadObject>();
             };
 
             pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
@@ -62,12 +66,19 @@ namespace IPTComShark.FileManager
             _popup.Dispose();
         }
 
-        public List<CapturePacket> OpenFiles(string[] fileNames)
+        public event EventHandler<Raw> RawParsed;
+
+        protected virtual void OnRawParsed(Raw e)
+        {
+            RawParsed?.Invoke(this, e);
+        }
+
+        public void EnumerateFiles(string[] fileNames)
         {
             _popup.Show();
             _popup.Text = "Gathering File Info...";
 
-            var packets = new List<CapturePacket>();
+            
 
             var dic = new Dictionary<string, Func<string, List<FileReadObject>>>();
 
@@ -125,7 +136,7 @@ namespace IPTComShark.FileManager
 
 
                                 List<FileReadObject> readObjects = pcapReader.ReadStream(memoryStream);
-                                packets.AddRange(readObjects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
+                                
                             }
                         }
 
@@ -143,7 +154,7 @@ namespace IPTComShark.FileManager
 
 
                                 List<FileReadObject> readObjects = pcapngReader.ReadStream(memoryStream);
-                                packets.AddRange(readObjects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
+                                
                             }
                         }
                     }
@@ -203,14 +214,31 @@ namespace IPTComShark.FileManager
                 _popup.Text = $"Reading file {i} of {dic.Count}";
                 List<FileReadObject> objects = pair.Value.Invoke(pair.Key);
 
-                packets.AddRange(objects.Select(fro => (CapturePacket) fro.ReadObject).ToList());
+                
             }
-
-            packets.ForEach(p => p.No = seed++);
-
+            
             _popup.Close();
+        }
 
+        public List<CapturePacket> OpenFiles(string[] fileNames)
+        {
+            var packets = new List<CapturePacket>();
+            RawParsed += (sender, raw) =>
+            {
+                packets.Add(new CapturePacket(raw));
+            };
+
+            EnumerateFiles(fileNames);
+            
+
+            uint seed = 1;
+            
+            
+            packets.ForEach(p => p.No = seed++);
+            
             return packets;
         }
+
+        
     }
 }
