@@ -11,6 +11,17 @@ namespace IPTComShark
 {
     public class CapturePacket : IComparable
     {
+        /// <summary>
+        /// Constructor to create an artifical packet
+        /// </summary>
+        /// <param name="protocol"></param>
+        public CapturePacket(ProtocolType protocol, string name, DateTime datetime)
+        {
+            Protocol = protocol;
+            Name = name;
+            Date = datetime;
+        }
+
         public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data,
             rawCapture.LinkLayerType))
         {
@@ -184,6 +195,8 @@ namespace IPTComShark
         //public ARPPacket ARPPacket { get; }
 
         public IPTWPPacket IPTWPPacket { get; }
+
+        public SS27Packet SS27Packet { get; set; }
 
 
         public ProtocolType Protocol { get; }

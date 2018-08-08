@@ -91,6 +91,7 @@
     <Compile Include="CapturePacket.cs" />
     <Compile Include="Export\Export.cs" />
     <Compile Include="FileManager\FileManager.cs" />
+    <Compile Include="Import\Hasler.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

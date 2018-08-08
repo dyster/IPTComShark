@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using IPTComShark.Import;
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
 using PacketDotNet;
@@ -414,6 +415,27 @@ namespace IPTComShark
             }
 
             
+        }
+
+        private void eVA2XMLExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            var dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var hasler = new Hasler();
+                if (hasler.CanImport(openFileDialog.FileName))
+                {
+                    foreach (var capturePacket in hasler.Import(openFileDialog.FileName))
+                    {
+                        packetListView1.Add(capturePacket);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Can't import the selected file!");
+                }
+            }
         }
     }
 

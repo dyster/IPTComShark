@@ -58,12 +58,14 @@ namespace IPTComShark
             this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mergeAndCleanFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.mergeAndCleanFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -231,7 +233,8 @@ namespace IPTComShark
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.restartToolStripMenuItem,
-            this.clearToolStripMenuItem});
+            this.clearToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1433, 24);
@@ -252,28 +255,28 @@ namespace IPTComShark
             // openFilesToolStripMenuItem
             // 
             this.openFilesToolStripMenuItem.Name = "openFilesToolStripMenuItem";
-            this.openFilesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.openFilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openFilesToolStripMenuItem.Text = "Open Files";
             this.openFilesToolStripMenuItem.Click += new System.EventHandler(this.openFilesToolStripMenuItem_Click);
             // 
             // openFolderToolStripMenuItem
             // 
             this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openFolderToolStripMenuItem.Text = "Open Folder";
             this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAllToolStripMenuItem.Text = "Save All";
             this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.buttonSaveAll_Click);
             // 
             // saveCurrentFilterToolStripMenuItem
             // 
             this.saveCurrentFilterToolStripMenuItem.Name = "saveCurrentFilterToolStripMenuItem";
-            this.saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveCurrentFilterToolStripMenuItem.Text = "Save Current Filter";
             this.saveCurrentFilterToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentFilterToolStripMenuItem_Click);
             // 
@@ -286,7 +289,7 @@ namespace IPTComShark
             this.exportCSVToolStripMenuItem,
             this.mergeAndCleanFilesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
@@ -315,6 +318,13 @@ namespace IPTComShark
             this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
             this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.exportCSVToolStripMenuItem.Text = "Export CSV";
+            // 
+            // mergeAndCleanFilesToolStripMenuItem
+            // 
+            this.mergeAndCleanFilesToolStripMenuItem.Name = "mergeAndCleanFilesToolStripMenuItem";
+            this.mergeAndCleanFilesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.mergeAndCleanFilesToolStripMenuItem.Text = "Merge and Clean files";
+            this.mergeAndCleanFilesToolStripMenuItem.Click += new System.EventHandler(this.mergeAndCleanFilesToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
@@ -349,12 +359,20 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // mergeAndCleanFilesToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            this.mergeAndCleanFilesToolStripMenuItem.Name = "mergeAndCleanFilesToolStripMenuItem";
-            this.mergeAndCleanFilesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.mergeAndCleanFilesToolStripMenuItem.Text = "Merge and Clean files";
-            this.mergeAndCleanFilesToolStripMenuItem.Click += new System.EventHandler(this.mergeAndCleanFilesToolStripMenuItem_Click);
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eVA2XMLExportToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
+            this.toolStripMenuItem1.Text = "Import";
+            // 
+            // eVA2XMLExportToolStripMenuItem
+            // 
+            this.eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
+            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
+            this.eVA2XMLExportToolStripMenuItem.Click += new System.EventHandler(this.eVA2XMLExportToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -417,6 +435,8 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem exportXLSXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportCSVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mergeAndCleanFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem eVA2XMLExportToolStripMenuItem;
     }
 }
 

@@ -18,6 +18,8 @@ namespace IPTComShark.Controls
                 DataLine line = (DataLine) item.RowObject;
                 if (line.Changed)
                     item.BackColor = Color.LightSeaGreen;
+                if (line.IsCategory)
+                    item.Font = new Font(item.Font, FontStyle.Bold);
             };
         }
 
@@ -74,6 +76,47 @@ namespace IPTComShark.Controls
                     dataLines.AddRange(ParseDataByIpt(datasetByComId, packet.IPTWPPacket));
             }
 
+            if (packet.SS27Packet != null)
+            {
+                dataLines.Add(new DataLine(){IsCategory = true, Name = "Header"});
+                foreach (var parsedField in packet.SS27Packet.Header)
+                {
+                    dataLines.Add(new DataLine()
+                    {
+                        Name = parsedField.Name,
+                        Value = parsedField.Value.ToString(),
+                        Comment = parsedField.Comment,
+                        Type = parsedField.Value.GetType().ToString()
+                    });
+                }
+
+                dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
+                foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
+                {
+                    dataLines.Add(new DataLine()
+                    {
+                        Name = parsedField.Name,
+                        Value = parsedField.Value.ToString(),
+                        Comment = parsedField.Comment,
+                        Type = parsedField.Value.GetType().ToString()
+                    });
+                }
+
+                foreach (var ss27PacketExtraMessage in packet.SS27Packet.ExtraMessages)
+                {
+                    dataLines.Add(new DataLine() { IsCategory = true, Name = ss27PacketExtraMessage.Name, Comment = ss27PacketExtraMessage.Comment});
+                    foreach (var parsedField in ss27PacketExtraMessage.ParsedFields)
+                    {
+                        dataLines.Add(new DataLine()
+                        {
+                            Name = parsedField.Name,
+                            Value = parsedField.Value.ToString(),
+                            Comment = parsedField.Comment,
+                            Type = parsedField.Value.GetType().ToString()
+                        });
+                    }
+                }
+            }
 
             dataListViewRight.DataSource = dataLines;
         }
@@ -225,5 +268,6 @@ namespace IPTComShark.Controls
         public string Value { get; set; }
         public string Comment { get; set; }
         public bool Changed { get; set; }
+        public bool IsCategory { get; set; }
     }
 }
