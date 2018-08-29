@@ -79,6 +79,9 @@ namespace IPTComShark.Controls
             if (packet.SS27Packet != null)
             {
                 dataLines.Add(new DataLine(){IsCategory = true, Name = "Header"});
+                dataLines.Add(new DataLine(){Name = "Level", Value = packet.SS27Packet.Level});
+                dataLines.Add(new DataLine() { Name = "Mode", Value = packet.SS27Packet.Mode });
+                dataLines.Add(new DataLine() { Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString() });
                 foreach (var parsedField in packet.SS27Packet.Header)
                 {
                     dataLines.Add(new DataLine()

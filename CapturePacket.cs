@@ -66,8 +66,28 @@ namespace IPTComShark
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
-                                ParsedData = new ParsedDataSet(){ParsedFields = new List<ParsedField>(ss27.Header)};
+
+                                var outlist = new List<ParsedField>();
+                                outlist.Add(new ParsedField(){Name = "Mode", Value = ss27.Mode});
+                                outlist.Add(new ParsedField() { Name = "Level", Value = ss27.Level });
+                                outlist.Add(new ParsedField() { Name = "Speed", Value = ss27.V_TRAIN });
+
+                                string ev = string.Join(", ", ss27.Events);
+
+                                if (string.IsNullOrEmpty(ev))
+                                {
+                                    // if there is no event, chuck some other data in there, maybe
+                                    // ParsedData = new ParsedDataSet() { ParsedFields = new List<ParsedField>(ss27.Header) };
+                                }
+                                else
+                                {
+                                    ParsedData = ParsedDataSet.Create("Event", ev);
+                                }
+
+                                
                                 Name = ss27.MsgType.ToString();
+
+                                this.SS27Packet = ss27;
                             }
                             catch (Exception e)
                             {
