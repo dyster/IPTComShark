@@ -43,8 +43,9 @@
             this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
+            this.addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
@@ -148,9 +149,10 @@
             this.contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyRawByteshexStringToolStripMenuItem,
             this.copyParsedDatatextStringToolStripMenuItem,
-            this.analyzeChainToolStripMenuItem});
+            this.analyzeChainToolStripMenuItem,
+            this.addToIgnoredComIDsToolStripMenuItem});
             this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(230, 92);
+            this.contextMenuMouse.Size = new System.Drawing.Size(230, 114);
             // 
             // copyRawByteshexStringToolStripMenuItem
             // 
@@ -166,18 +168,25 @@
             this.copyParsedDatatextStringToolStripMenuItem.Text = "Copy parsed data (text string)";
             this.copyParsedDatatextStringToolStripMenuItem.Click += new System.EventHandler(this.copyParsedDatatextStringToolStripMenuItem_Click);
             // 
-            // timerAddBuffer
-            // 
-            this.timerAddBuffer.Enabled = true;
-            this.timerAddBuffer.Interval = 1000;
-            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
-            // 
             // analyzeChainToolStripMenuItem
             // 
             this.analyzeChainToolStripMenuItem.Name = "analyzeChainToolStripMenuItem";
             this.analyzeChainToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.analyzeChainToolStripMenuItem.Text = "Analyze chain";
             this.analyzeChainToolStripMenuItem.Click += new System.EventHandler(this.analyzeChainToolStripMenuItem_Click);
+            // 
+            // timerAddBuffer
+            // 
+            this.timerAddBuffer.Enabled = true;
+            this.timerAddBuffer.Interval = 1000;
+            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
+            // 
+            // addToIgnoredComIDsToolStripMenuItem
+            // 
+            this.addToIgnoredComIDsToolStripMenuItem.Name = "addToIgnoredComIDsToolStripMenuItem";
+            this.addToIgnoredComIDsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.addToIgnoredComIDsToolStripMenuItem.Text = "Add to ignored ComID\'s";
+            this.addToIgnoredComIDsToolStripMenuItem.Click += new System.EventHandler(this.addToIgnoredComIDsToolStripMenuItem_Click);
             // 
             // PacketListView
             // 
@@ -212,5 +221,6 @@
         private System.Windows.Forms.ToolStripMenuItem copyRawByteshexStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
     }
 }
