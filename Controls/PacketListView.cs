@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using PacketDotNet;
 using sonesson_tools;
 
 namespace IPTComShark.Controls
@@ -18,8 +18,10 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _list = new List<CapturePacket>();
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
-        private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns = new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
-        
+
+        private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns =
+            new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
+
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
         private static readonly Color IptwpColor = Color.FromArgb(170, 223, 255);
@@ -31,12 +33,11 @@ namespace IPTComShark.Controls
 
             olvColumnDate.AspectGetter += rowObject =>
             {
-                if (rowObject != null)
-                {
-                    var packet = (CapturePacket) rowObject;
-                    return packet.Date.ToString() + ":" + packet.Date.Millisecond;
-                }
-                return null;
+                if (rowObject == null) return null;
+
+                var packet = (CapturePacket) rowObject;
+                return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
+
             };
 
             fastObjectListView1.RowFormatter += item =>
@@ -83,14 +84,14 @@ namespace IPTComShark.Controls
 
         public void UpdateFilter()
         {
-            fastObjectListView1.ModelFilter = new ModelFilter(model =>
+            fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket) model;
 
-                var lochost = IPAddress.Parse("127.0.0.1");
+                var localhost = IPAddress.Parse("127.0.0.1");
 
-                if (Settings.IgnoreLoopback && capturePacket.Source == lochost &&
-                    capturePacket.Destination == lochost)
+                if (Settings.IgnoreLoopback && Equals(capturePacket.Source, localhost) &&
+                    Equals(capturePacket.Destination, localhost))
                     return false;
 
                 if (Settings.IgnoreUnknownData)
@@ -146,12 +147,10 @@ namespace IPTComShark.Controls
 
         private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (fastObjectListView1.SelectedObject != null)
-            {
-                var packet = (CapturePacket) fastObjectListView1.SelectedObject;
+            if (fastObjectListView1.SelectedObject == null) return;
 
-                OnPacketSelected(packet);
-            }
+            var packet = (CapturePacket) fastObjectListView1.SelectedObject;
+            OnPacketSelected(packet);
         }
 
         public event EventHandler<PacketSelectedEventArgs> PacketSelected;
@@ -210,7 +209,9 @@ namespace IPTComShark.Controls
             {
                 _listAddBuffer.Clear();
             }
+
             _list.Clear();
+            _lastKnowns.Clear();
             fastObjectListView1.Objects = _list;
         }
 
@@ -255,10 +256,9 @@ namespace IPTComShark.Controls
 
         private void copyParsedDatatextStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                
                 var s = Functions.MakeCommentString(o.ParsedData.GetDataDictionary());
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
@@ -268,16 +268,15 @@ namespace IPTComShark.Controls
 
         private void analyzeChainToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var linked = new LinkedList<CapturePacket>();
                 while (o.Previous != null)
                 {
                     o = o.Previous;
-                    
                 }
-                
+
                 linked.AddFirst(o);
 
                 while (o.Next != null)
@@ -286,8 +285,7 @@ namespace IPTComShark.Controls
                     o = o.Next;
                 }
 
-                var saveFileDialog = new SaveFileDialog();
-                saveFileDialog.DefaultExt = "xlsx";
+                var saveFileDialog = new SaveFileDialog {DefaultExt = "xlsx"};
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
@@ -296,7 +294,6 @@ namespace IPTComShark.Controls
             }
         }
     }
-
 
 
     public class PacketListSettings : INotifyPropertyChanged
