@@ -212,7 +212,9 @@ namespace IPTComShark.Controls
 
             _list.Clear();
             _lastKnowns.Clear();
-            fastObjectListView1.Objects = _list;
+            fastObjectListView1.ClearObjects();
+            fastObjectListView1.SetObjects(_list);
+            GC.Collect();
         }
 
         public int Count()

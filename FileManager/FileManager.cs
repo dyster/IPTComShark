@@ -14,7 +14,7 @@ using SharpCompress.Readers;
 
 namespace IPTComShark.FileManager
 {
-    public class FileManager
+    public class FileManager :IDisposable
     {
         private ZipReader zipReader = new ZipReader();
         private PCAPReader pcapReader = new PCAPReader();
@@ -62,8 +62,7 @@ namespace IPTComShark.FileManager
 
         ~FileManager()
         {
-            _progressbar.Dispose();
-            _popup.Dispose();
+            Dispose(false);
         }
 
         public event EventHandler<Raw> RawParsed;
@@ -239,6 +238,26 @@ namespace IPTComShark.FileManager
             return packets;
         }
 
-        
+
+        private void ReleaseUnmanagedResources()
+        {
+            // TODO release unmanaged resources here
+        }
+
+        private void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                _popup?.Dispose();
+                _progressbar?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
