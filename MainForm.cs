@@ -23,6 +23,10 @@ namespace IPTComShark
 {
     public partial class MainForm : Form
     {
+        private static readonly Walter Walter = new Walter();
+        private static readonly VSIS210 VSIS210 = new VSIS210();
+        private static readonly TPWS TPWS = new TPWS();
+
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
@@ -114,7 +118,11 @@ namespace IPTComShark
             {
                 DataSetDefinition dataSetDefinition;
 
-                dataSetDefinition = Walter.GetDataSetDefinition(iptwpPacket.Comid);
+                dataSetDefinition = Walter[iptwpPacket.Comid];
+
+                if (dataSetDefinition == null)
+                    dataSetDefinition = TPWS.GetDataSetDefinition(iptwpPacket.Comid);
+
                 if (dataSetDefinition == null)
                     dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
 
@@ -447,32 +455,22 @@ namespace IPTComShark
         IPTWP
     }
 
-    public static class Walter
+    public class Walter : IPTDataSets
     {
-        private static Dictionary<uint, DataSetDefinition> dic = new Dictionary<uint, DataSetDefinition>()
+        public Walter()
         {
-            {310, iHMI1411_Status},
-            {201200800, iXradtCtrlCcuoToCcus},
-            //{230503200, TR_3},
-            //{230503300, TR_4},
-            //{230503400, TR_5},
-            //{230503500, TR_6},
-            //{230503700, OBU_1},
-        };
-
-        /// <summary>
-        /// This method will chug out a dataset from a comid, this should be placed somewhere else as it is project specific really (although this version of VSIS has these fixed)
-        /// </summary>
-        /// <param name="comid"></param>
-        /// <returns></returns>
-        public static DataSetDefinition GetDataSetDefinition(uint comid)
-        {
-            if (dic.ContainsKey(comid))
-                return dic[comid];
-            else
-                return null;
+            Dictionary = new Dictionary<uint, DataSetDefinition>()
+            {
+                {310, iHMI1411_Status},
+                {201200800, iXradtCtrlCcuoToCcus},
+                //{230503200, TR_3},
+                //{230503300, TR_4},
+                //{230503400, TR_5},
+                //{230503500, TR_6},
+                //{230503700, OBU_1},
+            };
         }
-
+        
         public static DataSetDefinition iXradtCtrlCcuoToCcus => new DataSetDefinition()
         {
             Name = "iXradtCtrlCcuoToCcus",
