@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using IPTComShark.XmlFiles;
+using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Controls
 {
@@ -56,13 +58,9 @@ namespace IPTComShark.Controls
                             // not checking for null because frankly it shouldn't happen and we want an exception
                             changed = !packet.Previous.ParsedData.GetField(field.Name).Value.Equals(field.Value);
                         }
-                        string typestring = field.Value.GetType().ToString();
-                        dataLines.Add(new DataLine
+                        
+                        dataLines.Add(new DataLine(field)
                         {
-                            Name = field.Name,
-                            Value = field.Value.ToString(),
-                            Type = typestring.Substring(typestring.LastIndexOf(".") + 1),
-                            Comment = field.Comment,
                             Changed = changed
                         });
                     }
@@ -82,27 +80,13 @@ namespace IPTComShark.Controls
                 dataLines.Add(new DataLine(){Name = "Level", Value = packet.SS27Packet.Level});
                 dataLines.Add(new DataLine() { Name = "Mode", Value = packet.SS27Packet.Mode });
                 dataLines.Add(new DataLine() { Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString() });
-                foreach (var parsedField in packet.SS27Packet.Header)
-                {
-                    dataLines.Add(new DataLine()
-                    {
-                        Name = parsedField.Name,
-                        Value = parsedField.Value.ToString(),
-                        Comment = parsedField.Comment,
-                        Type = parsedField.Value.GetType().ToString()
-                    });
-                }
+
+                dataLines.AddRange(packet.SS27Packet.Header.Select(parsedField => new DataLine(parsedField)));
 
                 dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
                 foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
                 {
-                    dataLines.Add(new DataLine()
-                    {
-                        Name = parsedField.Name,
-                        Value = parsedField.Value.ToString(),
-                        Comment = parsedField.Comment,
-                        Type = parsedField.Value.GetType().ToString()
-                    });
+                    dataLines.Add(new DataLine(parsedField));
                 }
 
                 foreach (var ss27PacketExtraMessage in packet.SS27Packet.ExtraMessages)
@@ -110,13 +94,7 @@ namespace IPTComShark.Controls
                     dataLines.Add(new DataLine() { IsCategory = true, Name = ss27PacketExtraMessage.Name, Comment = ss27PacketExtraMessage.Comment});
                     foreach (var parsedField in ss27PacketExtraMessage.ParsedFields)
                     {
-                        dataLines.Add(new DataLine()
-                        {
-                            Name = parsedField.Name,
-                            Value = parsedField.Value.ToString(),
-                            Comment = parsedField.Comment,
-                            Type = parsedField.Value.GetType().ToString()
-                        });
+                        dataLines.Add(new DataLine(parsedField));
                     }
                 }
             }
@@ -266,9 +244,26 @@ namespace IPTComShark.Controls
 
     public class DataLine
     {
+        public DataLine()
+        {
+
+        }
+
+        public DataLine(ParsedField field)
+        {
+            string typestring = field.Value.GetType().ToString();
+
+            Name = field.Name;
+            Value = field.Value.ToString();
+            TrueValue = field.TrueValue;
+            Type = typestring.Substring(typestring.LastIndexOf(".") + 1);
+            Comment = field.Comment;
+            
+        }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+        public object TrueValue { get; set; }
         public string Comment { get; set; }
         public bool Changed { get; set; }
         public bool IsCategory { get; set; }
