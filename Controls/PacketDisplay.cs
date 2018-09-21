@@ -83,10 +83,14 @@ namespace IPTComShark.Controls
 
                 dataLines.AddRange(packet.SS27Packet.Header.Select(parsedField => new DataLine(parsedField)));
 
-                dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
-                foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
+                
+                if (packet.SS27Packet.SubMessage != null)
                 {
-                    dataLines.Add(new DataLine(parsedField));
+                    dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
+                    foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
+                    {
+                        dataLines.Add(new DataLine(parsedField));
+                    }
                 }
 
                 foreach (var ss27PacketExtraMessage in packet.SS27Packet.ExtraMessages)

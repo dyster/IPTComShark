@@ -96,7 +96,7 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreUnknownData)
                 {
-                    if (capturePacket.ParsedData == null)
+                    if (capturePacket.ParsedData != null || capturePacket.SS27Packet != null)
                         return false;
                 }
 
