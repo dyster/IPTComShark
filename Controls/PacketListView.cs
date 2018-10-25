@@ -97,6 +97,10 @@ namespace IPTComShark.Controls
                 if (Settings.IgnoreUnknownData)
                 {
                     if (capturePacket.ParsedData != null || capturePacket.SS27Packet != null)
+                    {
+                        // we have data
+                    }
+                    else
                         return false;
                 }
 
@@ -113,29 +117,33 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
+                    if(capturePacket.IPTWPPacket?.IPTWPType == "PD")
                     {
-                        var before = capturePacket.Previous.ParsedData.GetStringDictionary();
-                        var now = capturePacket.ParsedData.GetStringDictionary();
-
-                        if (before.Count != now.Count)
-                            return true;
-
-                        foreach (KeyValuePair<string, string> pair in now)
+                        if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
                         {
-                            if (before.ContainsKey(pair.Key))
-                            {
-                                if (pair.Value != before[pair.Key])
-                                    return true;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
+                            var before = capturePacket.Previous.ParsedData.GetStringDictionary();
+                            var now = capturePacket.ParsedData.GetStringDictionary();
 
-                        return false;
+                            if (before.Count != now.Count)
+                                return true;
+
+                            foreach (KeyValuePair<string, string> pair in now)
+                            {
+                                if (before.ContainsKey(pair.Key))
+                                {
+                                    if (pair.Value != before[pair.Key])
+                                        return true;
+                                }
+                                else
+                                {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        }
                     }
+                    
                 }
 
                 return true;
