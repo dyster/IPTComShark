@@ -64,6 +64,11 @@ namespace IPTComShark
             textBoxIgnoreComid.DataBindings.Add("Text", packetListView1.Settings, "IgnoreComid", true,
                 DataSourceUpdateMode.OnValidation);
 
+            packetListView1.Settings.IgnoreComid = Properties.Settings.Default.IgnoredComIds;
+            packetListView1.Settings.AutoScroll = Properties.Settings.Default.AutoScroll;
+            packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
+            packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
+            packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
 
             InitData();
 
@@ -356,11 +361,7 @@ namespace IPTComShark
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            packetListView1.Settings.IgnoreComid = Properties.Settings.Default.IgnoredComIds;
-            packetListView1.Settings.AutoScroll = Properties.Settings.Default.AutoScroll;
-            packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
-            packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
-            packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
+            
 
 
             GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);

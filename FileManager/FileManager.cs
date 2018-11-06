@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IPTComShark.Windows;
 using PacketDotNet;
 using sonesson_tools.FileReaders;
 using SharpCompress.Archives.SevenZip;
@@ -30,7 +31,8 @@ namespace IPTComShark.FileManager
                 var pcapBlock = (PCAPBlock) chunk;
                 var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                     (LinkLayers) pcapBlock.Header.network);
-                OnRawParsed(raw);
+                if(raw.TimeStamp > FilterFrom && raw.TimeStamp < FilterTo)
+                    OnRawParsed(raw);
                 
 
                 return new List<FileReadObject>() ;
@@ -41,7 +43,8 @@ namespace IPTComShark.FileManager
                 var pcapngBlock = (PCAPNGBlock) chunk;
                 var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
                     (LinkLayers) pcapngBlock.LinkLayerType);
-                OnRawParsed(raw);
+                if (raw.TimeStamp > FilterFrom && raw.TimeStamp < FilterTo)
+                    OnRawParsed(raw);
                 
 
                 return new List<FileReadObject>();
@@ -72,12 +75,60 @@ namespace IPTComShark.FileManager
             RawParsed?.Invoke(this, e);
         }
 
+        private Tuple<DateTime, DateTime> Peek(string[] fileNames)
+        {
+            _popup.Text = "Peeking";
+
+            var dates = new List<DateTime>();
+
+            foreach (string fileName in fileNames)
+            {
+                if (SevenZipArchive.IsSevenZipFile(fileName))
+                {
+                    MessageBox.Show(
+                        "Peeking is not supported for zip archives currently, please make sure to tick All Data");
+                }
+
+                
+
+                if (pcapReader.CanRead(fileName))
+                {
+                    var reader = new PCAPReader();
+                    var fileReadObjects = reader.Read(fileName);
+                    var first = (PCAPBlock)fileReadObjects.First().ReadObject;
+                    var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
+                    dates.Add(first.DateTime);
+                    dates.Add(last.DateTime);
+                }
+                else if (pcapngReader.CanRead(fileName))
+                {
+                    var reader = new PCAPNGReader();
+                    var fileReadObjects = reader.Read(fileName);
+                    var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
+                    var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
+                    dates.Add(first.Timestamp);
+                    dates.Add(last.Timestamp);
+                }
+            }
+
+            var openFiles = new OpenFiles(dates);
+            var dialogResult = openFiles.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var openFilesFrom = openFiles.From;
+                var openFilesTo = openFiles.To;
+
+                return new Tuple<DateTime, DateTime>(openFilesFrom, openFilesTo);
+            }
+
+            return null;
+        }
+
         public void EnumerateFiles(string[] fileNames)
         {
-            _popup.Show();
+
             _popup.Text = "Gathering File Info...";
 
-            
 
             var dic = new Dictionary<string, Func<string, List<FileReadObject>>>();
 
@@ -216,27 +267,40 @@ namespace IPTComShark.FileManager
                 
             }
             
-            _popup.Close();
+            
         }
 
         public List<CapturePacket> OpenFiles(string[] fileNames)
         {
+            _popup.Show();
+            
+
             var packets = new List<CapturePacket>();
+            
             RawParsed += (sender, raw) =>
             {
                 packets.Add(new CapturePacket(raw));
             };
 
+            var dates = Peek(fileNames);
+            this.FilterFrom = dates.Item1;
+            this.FilterTo = dates.Item2;
+
             EnumerateFiles(fileNames);
             
+
 
             uint seed = 1;
             
             
             packets.ForEach(p => p.No = seed++);
-            
+            _popup.Close();
             return packets;
         }
+
+        public DateTime FilterTo { get; set; }
+
+        public DateTime FilterFrom { get; set; }
 
 
         private void ReleaseUnmanagedResources()
