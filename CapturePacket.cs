@@ -32,7 +32,16 @@ namespace IPTComShark
             RawCapture = raw;
             Date = raw.TimeStamp;
 
-            Packet packet = Packet.ParsePacket(raw.LinkLayer, raw.RawData);
+            Packet packet = null;
+            try
+            {
+                packet = Packet.ParsePacket(raw.LinkLayer, raw.RawData);
+            }
+            catch(Exception e)
+            {
+                Error = e.Message;
+            }
+            
 
             if (packet == null)
                 return;
@@ -53,7 +62,19 @@ namespace IPTComShark
                         Protocol = ProtocolType.TCP;
                         
                         ProtocolInfo = $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
-                        
+
+                        // catch a semi-rare error in PacketDotNet that cannot be checked against
+                        try
+                        {
+                            if (tcpPacket.PayloadData.Length == 0)
+                                break;
+                        }
+                        catch (Exception e)
+                        {
+                            Error = e.Message;
+                            break;
+                        }
+
                         if (tcpPacket.DestinationPort == 50040 && tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
@@ -235,6 +256,7 @@ namespace IPTComShark
 
         public ParsedDataSet ParsedData { get; set; }
 
+        public string Error { get; set; } = null;
 
         public string Name { get; set; }
 

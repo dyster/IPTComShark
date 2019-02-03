@@ -446,6 +446,42 @@ namespace IPTComShark
                 }
             }
         }
+
+        private void reportAnIssueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/dyster/IPTComShark/issues");
+        }
+
+        private void packetListView1_DragEnter(object sender, DragEventArgs e)
+        {
+            var formats = e.Data.GetFormats();
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Link;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void packetListView1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] data = (string[]) e.Data.GetData(DataFormats.FileDrop);
+
+                using (var fileManager = new FileManager.FileManager())
+                {
+                    
+                    List<CapturePacket> capturePackets = fileManager.OpenFiles(data);
+                    foreach (CapturePacket capturePacket in capturePackets)
+                    {
+                        packetListView1.Add(capturePacket);
+                    }
+                }
+            }
+        }
     }
 
     public enum Protocol

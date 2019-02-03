@@ -26,6 +26,7 @@ namespace IPTComShark.Controls
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
         private static readonly Color IptwpColor = Color.FromArgb(170, 223, 255);
         private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
+        private static readonly Color ErrorColor = Color.Crimson;
 
         public PacketListView()
         {
@@ -45,27 +46,30 @@ namespace IPTComShark.Controls
                 if (item.RowObject != null)
                 {
                     var packet = (CapturePacket) item.RowObject;
-                    switch (packet.Protocol)
-                    {
-                        case ProtocolType.IPTWP:
-                            item.BackColor = IptwpColor;
-                            break;
-                        case ProtocolType.ARP:
-                            item.BackColor = ArpColor;
-                            break;
-                        case ProtocolType.TCP:
-                            item.BackColor = TcpColor;
-                            break;
-                        case ProtocolType.JRU:
-                            item.BackColor = Color.Orange;
-                            break;
-                        case ProtocolType.UDP:
-                            item.BackColor = UdpColor;
-                            break;
-                        case ProtocolType.UNKNOWN:
-                            item.BackColor = Color.MediumVioletRed;
-                            break;
-                    }
+                    if (packet.Error != null)
+                        item.BackColor = ErrorColor;
+                    else
+                        switch (packet.Protocol)
+                        {
+                            case ProtocolType.IPTWP:
+                                item.BackColor = IptwpColor;
+                                break;
+                            case ProtocolType.ARP:
+                                item.BackColor = ArpColor;
+                                break;
+                            case ProtocolType.TCP:
+                                item.BackColor = TcpColor;
+                                break;
+                            case ProtocolType.JRU:
+                                item.BackColor = Color.Orange;
+                                break;
+                            case ProtocolType.UDP:
+                                item.BackColor = UdpColor;
+                                break;
+                            case ProtocolType.UNKNOWN:
+                                item.BackColor = Color.MediumVioletRed;
+                                break;
+                        }
                 }
             };
 

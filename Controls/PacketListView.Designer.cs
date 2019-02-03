@@ -44,8 +44,8 @@
             this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
@@ -77,9 +77,12 @@
             this.fastObjectListView1.ContextMenuStrip = this.contextMenuMouse;
             this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fastObjectListView1.EmptyListMsg = "No files loaded, use File->Open or Drag&Drop";
             this.fastObjectListView1.FullRowSelect = true;
             this.fastObjectListView1.Location = new System.Drawing.Point(0, 0);
             this.fastObjectListView1.Name = "fastObjectListView1";
+            this.fastObjectListView1.OverlayText.Alignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.fastObjectListView1.OverlayText.Text = "";
             this.fastObjectListView1.ShowGroups = false;
             this.fastObjectListView1.Size = new System.Drawing.Size(1112, 763);
             this.fastObjectListView1.TabIndex = 4;
@@ -152,7 +155,7 @@
             this.analyzeChainToolStripMenuItem,
             this.addToIgnoredComIDsToolStripMenuItem});
             this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(230, 114);
+            this.contextMenuMouse.Size = new System.Drawing.Size(230, 92);
             // 
             // copyRawByteshexStringToolStripMenuItem
             // 
@@ -175,18 +178,18 @@
             this.analyzeChainToolStripMenuItem.Text = "Analyze chain";
             this.analyzeChainToolStripMenuItem.Click += new System.EventHandler(this.analyzeChainToolStripMenuItem_Click);
             // 
-            // timerAddBuffer
-            // 
-            this.timerAddBuffer.Enabled = true;
-            this.timerAddBuffer.Interval = 1000;
-            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
-            // 
             // addToIgnoredComIDsToolStripMenuItem
             // 
             this.addToIgnoredComIDsToolStripMenuItem.Name = "addToIgnoredComIDsToolStripMenuItem";
             this.addToIgnoredComIDsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.addToIgnoredComIDsToolStripMenuItem.Text = "Add to ignored ComID\'s";
             this.addToIgnoredComIDsToolStripMenuItem.Click += new System.EventHandler(this.addToIgnoredComIDsToolStripMenuItem_Click);
+            // 
+            // timerAddBuffer
+            // 
+            this.timerAddBuffer.Enabled = true;
+            this.timerAddBuffer.Interval = 1000;
+            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
             // 
             // PacketListView
             // 

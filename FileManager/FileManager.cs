@@ -42,7 +42,7 @@ namespace IPTComShark.FileManager
             {
                 var pcapngBlock = (PCAPNGBlock) chunk;
                 var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                    (LinkLayers) pcapngBlock.LinkLayerType);
+                    (LinkLayers) pcapngBlock.Interface.LinkLayerType);
                 if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
                 
@@ -270,10 +270,26 @@ namespace IPTComShark.FileManager
             
         }
 
-        public List<CapturePacket> OpenFiles(string[] fileNames)
+        /// <summary>
+        /// Open files and folders both
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <returns></returns>
+        public List<CapturePacket> OpenFiles(string[] inputs)
         {
             _popup.Show();
             
+            List<string> fileNames = new List<string>();
+
+            foreach (var str in inputs)
+            {
+                if(File.Exists(str))
+                    fileNames.Add(str);
+                else if (Directory.Exists(str))
+                {
+                    fileNames.AddRange(Directory.GetFiles(str, "*", SearchOption.AllDirectories));
+                }
+            }
 
             var packets = new List<CapturePacket>();
             
@@ -282,11 +298,11 @@ namespace IPTComShark.FileManager
                 packets.Add(new CapturePacket(raw));
             };
 
-            var dates = Peek(fileNames);
+            var dates = Peek(fileNames.ToArray());
             this.FilterFrom = dates.Item1;
             this.FilterTo = dates.Item2;
 
-            EnumerateFiles(fileNames);
+            EnumerateFiles(fileNames.ToArray());
             
 
 
