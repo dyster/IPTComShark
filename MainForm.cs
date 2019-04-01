@@ -104,7 +104,7 @@ namespace IPTComShark
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             _capturedData += e.Packet.Data.Length;
-            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, e.Packet.LinkLayerType);
+            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
             var capturePacket = new CapturePacket(raw);
             capturePacket.No = _seed++;
             packetListView1.Add(capturePacket);
@@ -287,7 +287,7 @@ namespace IPTComShark
             if (allRawCaptures.Count == 0)
                 return;
 
-            LinkLayers layer = allRawCaptures.First().LinkLayer;
+            LinkLayerType layer = allRawCaptures.First().LinkLayer;
             if (!allRawCaptures.TrueForAll(raw => raw.LinkLayer == layer))
             {
                 MessageBox.Show(

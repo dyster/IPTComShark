@@ -22,10 +22,10 @@ namespace IPTComShark
             Date = datetime;
         }
 
-        public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data,
-            rawCapture.LinkLayerType))
-        {
-        }
+        //public CapturePacket(RawCapture rawCapture) : this(new Raw(rawCapture.Timeval.Date, rawCapture.Data,
+        //    rawCapture.LinkLayerType))
+        //{
+        //}
 
         public CapturePacket(Raw raw)
         {
@@ -35,7 +35,7 @@ namespace IPTComShark
             Packet packet = null;
             try
             {
-                packet = Packet.ParsePacket(raw.LinkLayer, raw.RawData);
+                packet = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
             }
             catch(Exception e)
             {
@@ -181,17 +181,17 @@ namespace IPTComShark
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
             }
-            else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xe1)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xe1)
             {
                 Protocol = ProtocolType.HomeplugAV;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x89 && packet.Header[13] == 0x12)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x89 && packet.Header[13] == 0x12)
             {
                 Protocol = ProtocolType.Mediaxtream;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayers.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xcc)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xcc)
             {
                 Protocol = ProtocolType.LLDP;
                 // ignore

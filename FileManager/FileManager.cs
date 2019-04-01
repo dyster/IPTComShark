@@ -30,7 +30,7 @@ namespace IPTComShark.FileManager
             {
                 var pcapBlock = (PCAPBlock) chunk;
                 var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                    (LinkLayers) pcapBlock.Header.network);
+                    (LinkLayerType) pcapBlock.Header.network);
                 if(raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
                 
@@ -42,7 +42,7 @@ namespace IPTComShark.FileManager
             {
                 var pcapngBlock = (PCAPNGBlock) chunk;
                 var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                    (LinkLayers) pcapngBlock.Interface.LinkLayerType);
+                    (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
                 if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
                 
