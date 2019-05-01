@@ -81,6 +81,18 @@ namespace IPTComShark.Controls
                 return capturePacket.ParsedData;
             };
 
+            olvColumnFrom.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket.Source != null ? new IPAddress(capturePacket.Source) : null;
+            };
+
+            olvColumnTo.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket.Source != null ? new IPAddress(capturePacket.Destination) : null;
+            };
+
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
@@ -195,7 +207,8 @@ namespace IPTComShark.Controls
             // Connect up the chain
             if (o.IPTWPPacket != null)
             {
-                var tupleKey = new Tuple<uint, IPAddress>(o.IPTWPPacket.Comid, o.Source);
+                
+                var tupleKey = new Tuple<uint, IPAddress>(o.IPTWPPacket.Comid, new IPAddress(o.Source));
                 if (_lastKnowns.ContainsKey(tupleKey))
                 {
                     o.Previous = _lastKnowns[tupleKey];
@@ -240,6 +253,11 @@ namespace IPTComShark.Controls
             {
                 return _list.Select(l => l.RawCapture).ToList();
             }
+        }
+
+        public List<CapturePacket> GetAllPackets()
+        {
+            return _list.ToArray().ToList();
         }
 
         public List<CapturePacket> GetFilteredPackets()

@@ -39,7 +39,7 @@ namespace IPTComShark.Windows
 
             foreach (var packet1 in _packets)
             {
-                IPAddress ip = packet1.Source;
+                IPAddress ip = new IPAddress(packet1.Source);
 
                 if (!_ips.Contains(ip))
                     _ips.Add(ip);

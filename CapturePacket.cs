@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using PacketDotNet;
 using sonesson_tools.BitStreamParser;
@@ -9,6 +10,7 @@ using SharpPcap;
 
 namespace IPTComShark
 {
+    [Serializable]
     public class CapturePacket : IComparable
     {
         /// <summary>
@@ -51,8 +53,8 @@ namespace IPTComShark
                 var ipv4 = (IPv4Packet) packet.PayloadPacket;
                 
 
-                Source = ipv4.SourceAddress;
-                Destination = ipv4.DestinationAddress;
+                Source = ipv4.SourceAddress.GetAddressBytes();
+                Destination = ipv4.DestinationAddress.GetAddressBytes();
 
                 
                 switch (ipv4.Protocol)
@@ -89,9 +91,9 @@ namespace IPTComShark
                                 var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
 
                                 var outlist = new List<ParsedField>();
-                                outlist.Add(new ParsedField(){Name = "Mode", Value = ss27.Mode});
-                                outlist.Add(new ParsedField() { Name = "Level", Value = ss27.Level });
-                                outlist.Add(new ParsedField() { Name = "Speed", Value = ss27.V_TRAIN });
+                                outlist.Add(ParsedField.Create("Mode", ss27.Mode));
+                                outlist.Add(ParsedField.Create("Level",  ss27.Level ));
+                                outlist.Add(ParsedField.Create("Speed", ss27.V_TRAIN.ToString() ));
 
                                 string ev = string.Join(", ", ss27.Events);
 
@@ -102,7 +104,10 @@ namespace IPTComShark
                                 }
                                 else
                                 {
-                                    ParsedData = ParsedDataSet.Create("Event", ev);
+                                    // TODO FIX THIS SO IT WORKS
+                                    var parsedFields = ss27.Events.Select(e => ParsedField.Create(e.EventType.ToString(), e.Description)).ToList();
+                                    ParsedData = new ParsedDataSet(){ParsedFields = parsedFields};
+                                    //ParsedData = ParsedDataSet.Create("Event", ev);
                                 }
 
                                 
@@ -113,7 +118,7 @@ namespace IPTComShark
                             catch (Exception e)
                             {
                                 Name = "ERROR";
-                                ParsedData = ParsedDataSet.Create("ERROR", e.Message);
+                                ParsedData = ParsedDataSet.CreateError(e.Message);
                             }
 
                         }
@@ -133,7 +138,7 @@ namespace IPTComShark
                             catch (Exception e)
                             {
                                 Name = "ERROR";
-                                ParsedData = ParsedDataSet.Create("ERROR", e.Message);
+                                ParsedData = ParsedDataSet.CreateError(e.Message);
                             }
                             
 
@@ -216,8 +221,8 @@ namespace IPTComShark
         /// </summary>
         public CapturePacket Next { get; set; }
 
-        public IPAddress Source { get; set; }
-        public IPAddress Destination { get; set; }
+        public byte[] Source { get; set; }
+        public byte[] Destination { get; set; }
 
         //public IPv4Packet IPv4Packet { get; }
         //

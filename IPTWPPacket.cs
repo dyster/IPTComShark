@@ -5,6 +5,7 @@ using PacketDotNet;
 
 namespace IPTComShark
 {
+    [Serializable]
     public class IPTWPPacket
     {
         //0x5044(‘PD’) Process Data, used for data - set transfer

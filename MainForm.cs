@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using IPTComShark.Import;
@@ -73,6 +74,8 @@ namespace IPTComShark
             InitData();
 
             Logger.Log("IPTComShark started", Severity.Info);
+
+            
         }
 
         private void InitData()
@@ -310,6 +313,20 @@ namespace IPTComShark
                     pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
                 }
             }
+
+            // TODO FOR TEST ONLY
+            //using (var fstream = new FileStream(saveFileDialog.FileName + ".binary", FileMode.OpenOrCreate, FileAccess.Write))
+            //{
+            //    var bWriter = new BinaryFormatter();
+            //    bWriter.Serialize(fstream, allRawCaptures);
+            //}
+            //
+            //using (var fstream2 = new FileStream(saveFileDialog.FileName + ".binary2", FileMode.OpenOrCreate, FileAccess.Write))
+            //{
+            //    var bWriter2 = new BinaryFormatter();
+            //    var capturePacket = packetListView1.GetAllPackets().First(p => p.ParsedData != null);
+            //    bWriter2.Serialize(fstream2, packetListView1.GetAllPackets());
+            //}
         }
 
         private void buttonRestart_Click(object sender, EventArgs e)

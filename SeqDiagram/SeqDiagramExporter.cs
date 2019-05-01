@@ -437,10 +437,10 @@ namespace IPTComShark.SeqDiagram
                 if (packet.Source == null || packet.Destination == null)
                     continue;
 
-                if (!devices.ContainsKey(packet.Source))
-                    devices.Add(packet.Source, baselinegen += baselinestep);
-                if (!devices.ContainsKey(packet.Destination))
-                    devices.Add(packet.Destination, baselinegen += baselinestep);
+                if (!devices.ContainsKey(new IPAddress(packet.Source)))
+                    devices.Add(new IPAddress(packet.Source), baselinegen += baselinestep);
+                if (!devices.ContainsKey(new IPAddress(packet.Destination)))
+                    devices.Add(new IPAddress(packet.Destination), baselinegen += baselinestep);
 
                 if (packet.ParsedData == null)
                     continue;
@@ -469,8 +469,8 @@ namespace IPTComShark.SeqDiagram
 
                 var sequence = new Sequence
                 {
-                    From = packet.Source,
-                    To = packet.Destination,
+                    From = new IPAddress(packet.Source),
+                    To = new IPAddress(packet.Destination),
                     Time = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff")
                 };
 
