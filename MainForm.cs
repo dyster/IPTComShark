@@ -24,7 +24,6 @@ namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        private static readonly Walter Walter = new Walter();
         private static readonly VSIS210 VSIS210 = new VSIS210();
         private static readonly TPWS TPWS = new TPWS();
         private static DataSetCollection GDB;
@@ -54,11 +53,7 @@ namespace IPTComShark
             packetDisplay1.IptConfigReader = IptConfigReader;
 
             GDB = IptConfigReader.GetDataSetCollection();
-
-            var d = GDB.DataSets[1];
-
-            var str = d.Serialize();
-
+                        
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
             checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true,
@@ -133,9 +128,9 @@ namespace IPTComShark
             {
                 DataSetDefinition dataSetDefinition;
 
-                dataSetDefinition = Walter[iptwpPacket.Comid];
+                
 
-                if (dataSetDefinition == null)
+                //if (dataSetDefinition == null)
                     dataSetDefinition = TPWS.GetDataSetDefinition(iptwpPacket.Comid);
 
                 if (dataSetDefinition == null)
@@ -520,63 +515,5 @@ namespace IPTComShark
         UDP,
         TCP,
         IPTWP
-    }
-
-    public class Walter : IPTDataSets
-    {
-        public Walter()
-        {
-            Dictionary = new Dictionary<uint, DataSetDefinition>()
-            {
-                {310, iHMI1411_Status},
-                {201200800, iXradtCtrlCcuoToCcus},
-                //{230503200, TR_3},
-                //{230503300, TR_4},
-                //{230503400, TR_5},
-                //{230503500, TR_6},
-                //{230503700, OBU_1},
-            };
-        }
-        
-        public static DataSetDefinition iXradtCtrlCcuoToCcus => new DataSetDefinition()
-        {
-            Name = "iXradtCtrlCcuoToCcus",
-            BitFields = new List<BitField>
-            {
-                new BitField {Name = "FE_STAT_DMS1", BitFieldType = BitFieldType.UInt16, Length = 8},
-                new BitField {Name = "FE_STAT_DMS2", BitFieldType = BitFieldType.UInt16, Length = 8},
-                new BitField {Name = "SPEEDOMETER_UNIT", BitFieldType = BitFieldType.UInt16, Length = 8},
-                new BitField {Name = "FE_G_SAFE_TXT", BitFieldType = BitFieldType.UInt16, Length = 8},
-                new BitField {Name = "MaskID", BitFieldType = BitFieldType.UInt16, Length = 16},
-                new BitField {Name = "MaskFdbID", BitFieldType = BitFieldType.UInt16, Length = 16},
-            }
-        };
-
-        public static DataSetDefinition iHMI1411_Status => new DataSetDefinition
-        {
-            Name = "iHMI1411_Status",
-            BitFields = new List<BitField>
-            {
-                new BitField {Name = "StatusTelegramID", BitFieldType = BitFieldType.UInt16, Length = 16},
-                new BitField {Name = "CheckVariable", BitFieldType = BitFieldType.UInt16, Length = 16},
-                new BitField {Name = "InterfaceVersion", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "DeviceState", BitFieldType = BitFieldType.UInt32, Length = 32},
-                new BitField {Name = "OperationalSafeState", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "SPSoftwareType", BitFieldType = BitFieldType.UInt32, Length = 32},
-                new BitField {Name = "HardwareRevision", BitFieldType = BitFieldType.HexString, Length = 16},
-                new BitField {Name = "HmisTemp", BitFieldType = BitFieldType.UInt16, Length = 16},
-                new BitField {Name = "SP_PPC_SW_Version", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "SP_Customer_SW_Version", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "Reserved1", BitFieldType = BitFieldType.Spare, Length = 32},
-                new BitField {Name = "Reserved2", BitFieldType = BitFieldType.Spare, Length = 32},
-                new BitField {Name = "ConsistIdKeytableVersion", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "ConsistIdKeytableChecksum", BitFieldType = BitFieldType.UInt32, Length = 32},
-                new BitField {Name = "DeviceIdKeytableVersion", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "DeviceIdKeytableChecksum", BitFieldType = BitFieldType.UInt32, Length = 32},
-                new BitField {Name = "DataKeytableVersion", BitFieldType = BitFieldType.HexString, Length = 32},
-                new BitField {Name = "DataKeytableChecksum", BitFieldType = BitFieldType.UInt32, Length = 32},
-                new BitField {Name = "SIF1_ActivePage", BitFieldType = BitFieldType.UInt32, Length = 32},
-            }
-        };
-    }
+    }    
 }
