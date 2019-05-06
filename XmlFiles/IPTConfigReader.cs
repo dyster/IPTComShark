@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sonesson_tools.BitStreamParser;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,6 +45,153 @@ namespace IPTComShark.XmlFiles
                 if (dataset.Datasetid == telegram.Datasetid)
                     return dataset;
             return null;
+        }
+
+        public DataSetCollection GetDataSetCollection()
+        {
+            var c = new DataSetCollection();
+            
+
+            var datasetdic = new Dictionary<string, DataSetDefinition>();
+            //var triplets = new Tuple<string, DataSetDefinition, List<int>>();
+
+            foreach (Dataset dataset in Datasets)
+            {
+                var set = ExtractDataset(dataset);
+                var d = new DataSetDefinition();
+                d.BitFields = set;
+                var serial = d.Serialize();
+                if(!datasetdic.ContainsKey(serial))
+                {
+                    datasetdic.Add(serial, d);
+                }
+            }
+
+
+            foreach (var t in Telegrams)
+            {
+                var comid = t.Comid.ToString();
+                var set = Datasets.First(dataset => dataset.Datasetid == t.Datasetid);
+
+                var dud = new DataSetDefinition() { BitFields = ExtractDataset(set) };
+                var serial = dud.Serialize();
+
+                var datasetdef = datasetdic[serial];
+
+                if (string.IsNullOrEmpty(datasetdef.Name))
+                    datasetdef.Name = t.Name;
+                else if(!datasetdef.Name.Contains(t.Name))
+                    datasetdef.Name += "," + t.Name;
+
+                if (!datasetdef.Identifiers.Contains(comid))
+                    datasetdef.Identifiers.Add(comid);
+                                             
+                
+
+                
+            }
+
+            var outlist = datasetdic.Values.ToList();
+            outlist.RemoveAll(d => d.Identifiers.Count == 0);
+
+            c.DataSets.AddRange(outlist);       
+            
+
+            return c;
+        }
+
+        private static List<BitField> ExtractDataset(Dataset set)
+        {
+            var list = new List<BitField>();
+            foreach (ProcessVariable processVariable in set.Processvariable)
+            {
+                int arraysize = int.Parse(processVariable.Arraysize);
+
+
+                if (processVariable.Type == "CHAR8")
+                {
+                    list.Add(new BitField
+                    {
+                        Name = processVariable.Name,
+                        BitFieldType = BitFieldType.StringAscii,
+                        Length = arraysize * 8
+                    });
+                }
+                else if (processVariable.Type == "CHAR16")
+                {
+                    list.Add(new BitField
+                    {
+                        Name = processVariable.Name,
+                        BitFieldType = BitFieldType.StringBigEndUtf16,
+                        Length = arraysize * 16
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < arraysize; i++)
+                    {
+                        var field = new BitField();
+                        field.Name = processVariable.Name;
+                        if (arraysize > 1)
+                        {
+                            field.Name += "[" + i + "]";
+                        }
+
+                        switch (processVariable.Type)
+                        {
+                            case "BOOLEAN1":
+                            case "BOOL1":
+                                field.BitFieldType = BitFieldType.Bool;
+                                field.Length = 1;
+                                break;
+                            case "BOOLEAN8":
+                            case "BOOL8":
+                                field.BitFieldType = BitFieldType.Bool;
+                                field.Length = 8;
+                                break;
+                            case "UINT8":
+                                field.BitFieldType = BitFieldType.UInt16;
+                                field.Length = 8;
+                                break;
+                            case "INT8":
+                                field.BitFieldType = BitFieldType.Int8;
+                                field.Length = 8;
+                                break;
+                            case "UINT16":
+                                field.BitFieldType = BitFieldType.UInt16;
+                                field.Length = 16;
+                                break;
+                            case "INT16":
+                                field.BitFieldType = BitFieldType.Int16;
+                                field.Length = 16;
+                                break;
+                            case "UINT32":
+                                field.BitFieldType = BitFieldType.UInt32;
+                                field.Length = 32;
+                                break;
+                            case "INT32":
+                                field.BitFieldType = BitFieldType.Int32;
+                                field.Length = 32;
+                                break;
+                            case "REAL32":
+                                field.BitFieldType = BitFieldType.Float32;
+                                field.Length = 32;
+                                break;
+                            case "TIME48":
+                                field.BitFieldType = BitFieldType.HexString;
+                                field.Length = 48;
+                                break;
+                            default:
+                                throw new Exception("Unknown Type!");
+                                break;
+                        }
+                        list.Add(field);
+                    }
+                }
+
+            }
+
+            return list;
         }
     }
 

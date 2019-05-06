@@ -27,6 +27,7 @@ namespace IPTComShark
         private static readonly Walter Walter = new Walter();
         private static readonly VSIS210 VSIS210 = new VSIS210();
         private static readonly TPWS TPWS = new TPWS();
+        private static DataSetCollection GDB;
 
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
@@ -51,6 +52,12 @@ namespace IPTComShark
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
             packetDisplay1.IptConfigReader = IptConfigReader;
+
+            GDB = IptConfigReader.GetDataSetCollection();
+
+            var d = GDB.DataSets[1];
+
+            var str = d.Serialize();
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
@@ -133,6 +140,12 @@ namespace IPTComShark
 
                 if (dataSetDefinition == null)
                     dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
+
+                if (dataSetDefinition == null)
+                {
+                    dataSetDefinition = GDB.FindByIdentifier(iptwpPacket.Comid.ToString());                                        
+                }
+                    
 
 
                 if (dataSetDefinition != null)
