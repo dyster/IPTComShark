@@ -16,12 +16,12 @@ using System.Threading;
 
 namespace IPTComShark.FileManager
 {
-    public class FileManager :IDisposable
+    public class FileManager : IDisposable
     {
         private ZipReader zipReader = new ZipReader();
         private PCAPReader pcapReader = new PCAPReader();
         private PCAPNGReader pcapngReader = new PCAPNGReader();
-        
+
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
@@ -36,11 +36,11 @@ namespace IPTComShark.FileManager
                 var pcapBlock = (PCAPBlock) chunk;
                 var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                     (LinkLayerType) pcapBlock.Header.network);
-                if(raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
+                if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
-                
 
-                return new List<FileReadObject>() ;
+
+                return new List<FileReadObject>();
             };
 
             pcapngReader.ChunkReader += chunk =>
@@ -52,7 +52,7 @@ namespace IPTComShark.FileManager
                     (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
                 if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
-                
+
 
                 return new List<FileReadObject>();
             };
@@ -68,9 +68,6 @@ namespace IPTComShark.FileManager
             _progressbar.Dock = DockStyle.Fill;
 
             _popup.Controls.Add(_progressbar);
-
-            
-            
         }
 
         private delegate void ProgressDelegate(int i);
@@ -83,12 +80,11 @@ namespace IPTComShark.FileManager
                 _progressbar.Invoke(new ProgressDelegate(UpdateProgress), i);
             else
             {
-                if(i != _lastProgress)
+                if (i != _lastProgress)
                 {
                     _progressbar.Value = i;
                     _lastProgress = i;
                 }
-                
             }
         }
 
@@ -102,7 +98,7 @@ namespace IPTComShark.FileManager
         protected virtual void OnRawParsed(Raw e)
         {
             RawParsed?.Invoke(this, e);
-        }        
+        }
 
         private int PacketCounter { get; set; }
         private int PacketTotal { get; set; }
@@ -110,7 +106,7 @@ namespace IPTComShark.FileManager
         public void EnumerateFiles(List<DataSource> dataSources)
         {
             _popup.Show();
-            
+
             _popup.Text = "Starting the parse";
 
 
@@ -127,51 +123,49 @@ namespace IPTComShark.FileManager
                 string pre = i + "/" + dataSources.Count + " ";
                 _popup.Text = pre + "Reading from " + source.FileInfo.Name;
 
-                if(source.SourceType == SourceType.PCAP)
-                {            
-                 
+                if (source.SourceType == SourceType.PCAP)
+                {
                     pcapReader.Read(source.FileInfo.FullName);
                 }
-                else if(source.SourceType == SourceType.PCAPNG)
+                else if (source.SourceType == SourceType.PCAPNG)
                 {
                     pcapngReader.Read(source.FileInfo.FullName);
                 }
-                else if(source.SourceType == SourceType.Zip)
+                else if (source.SourceType == SourceType.Zip)
                 {
                     if (SevenZipArchive.IsSevenZipFile(source.FileInfo.FullName))
                     {
                         using (SevenZipArchive sevenZipArchive = SevenZipArchive.Open(source.FileInfo.FullName))
                         {
                             using (var reader = sevenZipArchive.ExtractAllEntries())
-                            {                                
+                            {
                                 ZipReader(reader, source);
                             }
                         }
+
                         GC.Collect();
                     }
                     else
                     {
                         try
                         {
-
                             using (var filestream = File.OpenRead(source.FileInfo.FullName))
                             {
                                 using (var reader = ReaderFactory.Open(filestream))
-                                {                                    
+                                {
                                     ZipReader(reader, source);
-
                                 }
                             }
                         }
                         catch (InvalidOperationException ex)
                         {
-                            
                         }
+
                         GC.Collect();
                     }
                 }
-                
             }
+
             _popup.Close();
         }
 
@@ -188,32 +182,25 @@ namespace IPTComShark.FileManager
                         var memstream = new MemoryStream();
                         using (var entryStream = reader.OpenEntryStream())
                         {
-                           
                             entryStream.CopyTo(memstream);
                             memstream.Position = 0;
-                            
                         }
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAP)
                         {
-
                             pcapReader.ReadStream(memstream);
                         }
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAPNG)
                         {
                             pcapngReader.ReadStream(memstream);
-
-
                         }
                     }
                 }
             }
             //catch(Exception e)
             {
-
             }
-
         }
 
         /// <summary>
@@ -223,35 +210,27 @@ namespace IPTComShark.FileManager
         /// <returns></returns>
         public List<CapturePacket> OpenFiles(string[] inputs)
         {
-            
-
-            
-            
             List<string> fileNames = new List<string>();
 
             var fo = new FileOpener(inputs);
             var dialogresult = fo.ShowDialog();
-            if(dialogresult == DialogResult.OK)
+            if (dialogresult == DialogResult.OK)
             {
                 this.FilterFrom = fo.DateTimeFrom;
                 this.FilterTo = fo.DateTimeTo;
-                
+
                 var packets = new List<CapturePacket>();
 
-                RawParsed += (sender, raw) =>
-                {
-                    packets.Add(new CapturePacket(raw));
-                };
+                RawParsed += (sender, raw) => { packets.Add(new CapturePacket(raw)); };
 
                 EnumerateFiles(fo.DataSources);
-
 
 
                 uint seed = 1;
 
 
                 packets.ForEach(p => p.No = seed++);
-                
+
                 return packets;
             }
 
@@ -265,7 +244,7 @@ namespace IPTComShark.FileManager
 
         private void ReleaseUnmanagedResources()
         {
-            _closing = true;            
+            _closing = true;
         }
 
         private void Dispose(bool disposing)

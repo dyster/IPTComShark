@@ -39,11 +39,11 @@ namespace IPTComShark
             {
                 packet = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Error = e.Message;
             }
-            
+
 
             if (packet == null)
                 return;
@@ -51,19 +51,20 @@ namespace IPTComShark
             if (packet.PayloadPacket is IPv4Packet)
             {
                 var ipv4 = (IPv4Packet) packet.PayloadPacket;
-                
+
 
                 Source = ipv4.SourceAddress.GetAddressBytes();
                 Destination = ipv4.DestinationAddress.GetAddressBytes();
 
-                
+
                 switch (ipv4.Protocol)
                 {
                     case IPProtocolType.TCP:
                         var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
-                        
-                        ProtocolInfo = $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
+
+                        ProtocolInfo =
+                            $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
 
                         // catch a semi-rare error in PacketDotNet that cannot be checked against
                         try
@@ -88,12 +89,12 @@ namespace IPTComShark
                                 ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
-                                var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
+                                var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
 
                                 var outlist = new List<ParsedField>();
                                 outlist.Add(ParsedField.Create("Mode", ss27.Mode));
-                                outlist.Add(ParsedField.Create("Level",  ss27.Level ));
-                                outlist.Add(ParsedField.Create("Speed", ss27.V_TRAIN.ToString() ));
+                                outlist.Add(ParsedField.Create("Level", ss27.Level));
+                                outlist.Add(ParsedField.Create("Speed", ss27.V_TRAIN.ToString()));
 
                                 string ev = string.Join(", ", ss27.Events);
 
@@ -105,12 +106,13 @@ namespace IPTComShark
                                 else
                                 {
                                     // TODO FIX THIS SO IT WORKS
-                                    var parsedFields = ss27.Events.Select(e => ParsedField.Create(e.EventType.ToString(), e.Description)).ToList();
-                                    ParsedData = new ParsedDataSet(){ParsedFields = parsedFields};
+                                    var parsedFields = ss27.Events.Select(e =>
+                                        ParsedField.Create(e.EventType.ToString(), e.Description)).ToList();
+                                    ParsedData = new ParsedDataSet() {ParsedFields = parsedFields};
                                     //ParsedData = ParsedDataSet.Create("Event", ev);
                                 }
 
-                                
+
                                 Name = ss27.MsgType.ToString();
 
                                 this.SS27Packet = ss27;
@@ -120,7 +122,6 @@ namespace IPTComShark
                                 Name = "ERROR";
                                 ParsedData = ParsedDataSet.CreateError(e.Message);
                             }
-
                         }
 
                         if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
@@ -129,7 +130,7 @@ namespace IPTComShark
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
-                                ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 ParsedData = VSIS210.JRU_STATUS.Parse(buffer);
@@ -140,13 +141,12 @@ namespace IPTComShark
                                 Name = "ERROR";
                                 ParsedData = ParsedDataSet.CreateError(e.Message);
                             }
-                            
-
                         }
+
                         break;
 
                     case IPProtocolType.UDP:
-                        
+
                         Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket) ipv4.PayloadPacket;
                         IPTWPPacket = IPTWPPacket.Extract(udp);
@@ -177,12 +177,11 @@ namespace IPTComShark
             else if (packet.PayloadPacket is ARPPacket)
             {
                 //ARPPacket = (ARPPacket)packet.PayloadPacket;
-                
+
                 Protocol = ProtocolType.ARP;
             }
             else if (packet.PayloadPacket is IPv6Packet)
             {
-                
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
             }
@@ -255,6 +254,7 @@ namespace IPTComShark
         //public PacketTypes PacketTypes { get; set; }
 
         public uint No { get; set; }
+
         public DateTime Date { get; }
 
         public Raw RawCapture { get; }
@@ -274,8 +274,6 @@ namespace IPTComShark
 
             if (Previous != null)
             {
-                
-
                 foreach (ParsedField field in this.ParsedData.ParsedFields)
                 {
                     ParsedField lookup = Previous.ParsedData.GetField(field.Name);
@@ -285,7 +283,6 @@ namespace IPTComShark
                             delta.Remove(field);
                     }
                 }
-                
             }
 
             return delta;

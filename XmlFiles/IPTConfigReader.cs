@@ -50,7 +50,7 @@ namespace IPTComShark.XmlFiles
         public DataSetCollection GetDataSetCollection()
         {
             var c = new DataSetCollection();
-            
+
 
             var datasetdic = new Dictionary<string, DataSetDefinition>();
             //var triplets = new Tuple<string, DataSetDefinition, List<int>>();
@@ -61,7 +61,7 @@ namespace IPTComShark.XmlFiles
                 var d = new DataSetDefinition();
                 d.BitFields = set;
                 var serial = d.Serialize();
-                if(!datasetdic.ContainsKey(serial))
+                if (!datasetdic.ContainsKey(serial))
                 {
                     datasetdic.Add(serial, d);
                 }
@@ -73,29 +73,25 @@ namespace IPTComShark.XmlFiles
                 var comid = t.Comid.ToString();
                 var set = Datasets.First(dataset => dataset.Datasetid == t.Datasetid);
 
-                var dud = new DataSetDefinition() { BitFields = ExtractDataset(set) };
+                var dud = new DataSetDefinition() {BitFields = ExtractDataset(set)};
                 var serial = dud.Serialize();
 
                 var datasetdef = datasetdic[serial];
 
                 if (string.IsNullOrEmpty(datasetdef.Name))
                     datasetdef.Name = t.Name;
-                else if(!datasetdef.Name.Contains(t.Name))
+                else if (!datasetdef.Name.Contains(t.Name))
                     datasetdef.Name += "," + t.Name;
 
                 if (!datasetdef.Identifiers.Contains(comid))
                     datasetdef.Identifiers.Add(comid);
-                                             
-                
-
-                
             }
 
             var outlist = datasetdic.Values.ToList();
             outlist.RemoveAll(d => d.Identifiers.Count == 0);
 
-            c.DataSets.AddRange(outlist);       
-            
+            c.DataSets.AddRange(outlist);
+
 
             return c;
         }
@@ -185,10 +181,10 @@ namespace IPTComShark.XmlFiles
                                 throw new Exception("Unknown Type!");
                                 break;
                         }
+
                         list.Add(field);
                     }
                 }
-
             }
 
             return list;

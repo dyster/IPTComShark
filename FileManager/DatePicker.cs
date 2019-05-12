@@ -14,6 +14,7 @@ namespace IPTComShark.FileManager
     {
         private DateTime _from;
         private DateTime _to;
+
         public DatePicker()
         {
             InitializeComponent();
@@ -25,11 +26,10 @@ namespace IPTComShark.FileManager
 
         public void Update(List<DateTime> dates)
         {
-            
             if (dates.Count == 0)
                 return;
-            
-            
+
+
             dates.Sort();
 
             _from = dates.First();
@@ -50,11 +50,6 @@ namespace IPTComShark.FileManager
             dateTimePickerTo.Value = _to;
             dateTimePickerFromTime.Value = _from;
             dateTimePickerToTime.Value = _to;
-
-
-
-            
-
         }
 
         private void DateTimePickerFrom_ValueChanged(object sender, EventArgs e)

@@ -202,6 +202,7 @@ namespace IPTComShark.SeqDiagram
                             tv2 = tv1[tv1.Length - 1] + tv2;
                             tv1 = tv1.Substring(0, tv1.Length - 1);
                         }
+
                         var keySpan = new SvgTextSpan {Text = textKey, FontWeight = SvgFontWeight.Bold};
                         var valueSpan1 = new SvgTextSpan {Text = tv1};
                         var valueSpan2 = new SvgTextSpan
@@ -482,6 +483,7 @@ namespace IPTComShark.SeqDiagram
                 if (sequence.Dic.Count > 0)
                     list.Add(sequence);
             }
+
             return list;
         }
 

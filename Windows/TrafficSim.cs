@@ -83,10 +83,12 @@ namespace IPTComShark.Windows
 
 
             var que = new Queue<SendPacket>();
-            foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source.ToString() == _ip.ToString()))
+            foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source.ToString() == _ip.ToString())
+            )
             {
                 Packet packet =
-                    Packet.ParsePacket((LinkLayers) capturePacket.RawCapture.LinkLayer, capturePacket.RawCapture.RawData);
+                    Packet.ParsePacket((LinkLayers) capturePacket.RawCapture.LinkLayer,
+                        capturePacket.RawCapture.RawData);
                 IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
 
 

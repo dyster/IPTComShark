@@ -39,11 +39,8 @@ namespace IPTComShark.FileManager
             dataListView1.PrimarySortColumn = olvColumnStart;
 
             backgroundWorker1.RunWorkerAsync();
-
-                        
         }
 
-        
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -59,14 +56,13 @@ namespace IPTComShark.FileManager
                     fileNames.AddRange(Directory.GetFiles(str, "*", SearchOption.AllDirectories));
                 }
             }
+
             fileNames = Uniquify(fileNames);
 
             UpdateList("Inspecting " + fileNames.Count + " files");
 
             InspectFiles(fileNames);
-                        
 
-            
 
             GC.Collect();
         }
@@ -83,8 +79,8 @@ namespace IPTComShark.FileManager
                 {
                     var reader = new PCAPReader();
                     var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
+                    var first = (PCAPBlock) fileReadObjects.First().ReadObject;
+                    var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
 
                     var dsource = new DataSource
                     {
@@ -101,8 +97,8 @@ namespace IPTComShark.FileManager
                 {
                     var reader = new PCAPNGReader();
                     var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
+                    var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
+                    var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
                     var dsource = new DataSource
                     {
                         FileInfo = finfo,
@@ -123,29 +119,19 @@ namespace IPTComShark.FileManager
                     threads.Add(thread);
 
 
-
-
                     continue;
                 }
 
                 // zip performance is much better and we will not thread
                 DoZip(finfo);
-
-
-
-
-
-
-
-
-
-
             }
+
             UpdateList("Waiting for all threads to finish");
             foreach (Thread thread in threads)
             {
                 thread.Join();
             }
+
             UpdateList("All threads finished");
         }
 
@@ -159,6 +145,7 @@ namespace IPTComShark.FileManager
                     PeekReader(reader, finfo);
                 }
             }
+
             GC.Collect();
         }
 
@@ -166,26 +153,25 @@ namespace IPTComShark.FileManager
         {
             try
             {
-
                 using (var filestream = File.OpenRead(finfo.FullName))
                 {
                     using (var reader = ReaderFactory.Open(filestream))
                     {
                         UpdateList("Opening " + reader.ArchiveType + ": " + finfo.FullName);
                         PeekReader(reader, finfo);
-
                     }
-                }                
+                }
             }
             catch (InvalidOperationException ex)
             {
                 //UpdateList(ex.ToString());
             }
+
             GC.Collect();
         }
 
         private void PeekReader(IReader reader, FileInfo finfo)
-        {       
+        {
             //try
             {
                 while (reader.MoveToNextEntry())
@@ -196,24 +182,23 @@ namespace IPTComShark.FileManager
                         using (var entryStream = reader.OpenEntryStream())
                         {
                             entryStream.Read(readbytes, 0, 4);
-                            
+
                             var dsource = new DataSource
                             {
-                                FileInfo = finfo,                                
+                                FileInfo = finfo,
                                 SourceType = SourceType.Zip,
                                 ArchiveKey = reader.Entry.Key
                             };
-                            
+
 
                             if (IsPCAP(readbytes))
                             {
-                                
                                 var memstream = MemStream(readbytes, entryStream);
-                                
+
                                 var pcapreader = new PCAPReader();
                                 var fileReadObjects = pcapreader.ReadStream(memstream);
-                                var first = (PCAPBlock)fileReadObjects.First().ReadObject;
-                                var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
+                                var first = (PCAPBlock) fileReadObjects.First().ReadObject;
+                                var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
                                 dsource.StartTime = first.DateTime;
                                 dsource.EndTime = last.DateTime;
                                 dsource.Packets = fileReadObjects.Count();
@@ -224,11 +209,11 @@ namespace IPTComShark.FileManager
                             if (IsPCAPNG(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
-                                
+
                                 var pcapngreader = new PCAPNGReader();
                                 var fileReadObjects = pcapngreader.ReadStream(memstream);
-                                var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
-                                var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
+                                var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
+                                var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
                                 dsource.StartTime = first.Timestamp;
                                 dsource.EndTime = last.Timestamp;
                                 dsource.Packets = fileReadObjects.Count();
@@ -236,16 +221,12 @@ namespace IPTComShark.FileManager
                                 UpdateList(dsource);
                             }
                         }
-
-
                     }
                 }
             }
             //catch(Exception e)
             {
-
             }
-            
         }
 
         public static MemoryStream MemStream(byte[] bytes, Stream input)
@@ -258,11 +239,13 @@ namespace IPTComShark.FileManager
             {
                 output.Write(buffer, 0, read);
             }
+
             output.Position = 0;
             return output;
         }
 
         private delegate void VoidStringDelegate(string text);
+
         private delegate void VoidDSDelegate(DataSource dataSource);
 
         private void UpdateList(string text)
@@ -272,7 +255,7 @@ namespace IPTComShark.FileManager
             else
             {
                 listBox1.Items.Add(text);
-                listBox1.SelectedIndex = listBox1.Items.Count - 1;                
+                listBox1.SelectedIndex = listBox1.Items.Count - 1;
             }
         }
 
@@ -290,14 +273,14 @@ namespace IPTComShark.FileManager
             {
                 _dataSources.Add(dataSource);
                 var list = new List<DateTime>();
-                foreach(var source in _dataSources)
+                foreach (var source in _dataSources)
                 {
                     list.Add(source.StartTime);
                     list.Add(source.EndTime);
                 }
+
                 datePicker1.Update(list);
             }
-                
         }
 
         private bool IsPCAP(byte[] bytes)
@@ -318,7 +301,7 @@ namespace IPTComShark.FileManager
             if (removed > 0)
                 UpdateList($"Removed {removed} duplicates");
             return unique_items.ToList<string>();
-        }        
+        }
 
         private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -356,7 +339,7 @@ namespace IPTComShark.FileManager
                 var fileManager = new FileManager();
                 fileManager.FilterFrom = DateTimeFrom;
                 fileManager.FilterTo = DateTimeTo;
-                                
+
                 var pcapWriter = new PCAPWriter(fileName);
                 bool started = false;
                 int pos = 0;
@@ -366,8 +349,8 @@ namespace IPTComShark.FileManager
                 {
                     if (!started)
                     {
-                        pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
-                        
+                        pcapWriter.LinkLayerType = (uint) raw.LinkLayer;
+
                         started = true;
                     }
 
@@ -381,8 +364,6 @@ namespace IPTComShark.FileManager
                     //{
                     //    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
                     //}
-
-
                 };
 
                 fileManager.EnumerateFiles(DataSources);
@@ -392,6 +373,4 @@ namespace IPTComShark.FileManager
             }
         }
     }
-
-    
 }

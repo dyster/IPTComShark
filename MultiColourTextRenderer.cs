@@ -26,7 +26,7 @@ namespace IPTComShark
             if (RowObject is CapturePacket)
             {
                 var cpac = (CapturePacket) RowObject;
-                
+
                 if (cpac.ParsedData == null)
                     return;
 
@@ -85,6 +85,7 @@ namespace IPTComShark
                     r = new Rectangle(r.Right, r.Y, width, r.Height);
                     TextRenderer.DrawText(g, text, font2, r, GetForegroundColor(), backColor, flags);
                 }
+
                 //TextRenderer.DrawText(g, dic.DictionaryData.Count.ToString(), this.Font, r, this.GetForegroundColor(), backColor, flags);
             }
             else

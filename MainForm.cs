@@ -54,7 +54,7 @@ namespace IPTComShark
             packetDisplay1.IptConfigReader = IptConfigReader;
 
             GDB = IptConfigReader.GetDataSetCollection();
-                        
+
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
             checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true,
@@ -77,8 +77,6 @@ namespace IPTComShark
             InitData();
 
             Logger.Log("IPTComShark started", Severity.Info);
-
-            
         }
 
         private void InitData()
@@ -129,19 +127,17 @@ namespace IPTComShark
             {
                 DataSetDefinition dataSetDefinition;
 
-                
 
                 //if (dataSetDefinition == null)
-                    dataSetDefinition = TPWS.GetDataSetDefinition(iptwpPacket.Comid);
+                dataSetDefinition = TPWS.GetDataSetDefinition(iptwpPacket.Comid);
 
                 if (dataSetDefinition == null)
                     dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
 
                 if (dataSetDefinition == null)
                 {
-                    dataSetDefinition = GDB.FindByIdentifier(iptwpPacket.Comid.ToString());                                        
+                    dataSetDefinition = GDB.FindByIdentifier(iptwpPacket.Comid.ToString());
                 }
-                    
 
 
                 if (dataSetDefinition != null)
@@ -154,7 +150,7 @@ namespace IPTComShark
                 {
                     //Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
                     //if (telegram == null)
-                        packet.Name = "Unknown ComID " + iptwpPacket.Comid;
+                    packet.Name = "Unknown ComID " + iptwpPacket.Comid;
                     //else
                     //    packet.Name = telegram.Name;
                 }
@@ -361,14 +357,13 @@ namespace IPTComShark
                 using (var fileManager = new FileManager.FileManager())
                 {
                     List<CapturePacket> capturePackets = fileManager.OpenFiles(openCapturesDialog.FileNames);
-                    if(capturePackets != null)
+                    if (capturePackets != null)
                     {
                         foreach (CapturePacket capturePacket in capturePackets)
                         {
                             packetListView1.Add(capturePacket);
                         }
                     }
-                    
                 }
             }
         }
@@ -391,9 +386,6 @@ namespace IPTComShark
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-
-
             GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
         }
 
@@ -432,10 +424,10 @@ namespace IPTComShark
             if (dialogResult == DialogResult.OK)
             {
                 List<CapturePacket> capturePackets;
-                
+
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    capturePackets = fileManager.OpenFiles(new[] { folderBrowserDialog.SelectedPath });
+                    capturePackets = fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath});
                 }
 
                 foreach (CapturePacket capturePacket in capturePackets)
@@ -443,7 +435,7 @@ namespace IPTComShark
                     packetListView1.Add(capturePacket);
                 }
             }
-        }        
+        }
 
         private void eVA2XMLExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -492,7 +484,6 @@ namespace IPTComShark
 
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    
                     List<CapturePacket> capturePackets = fileManager.OpenFiles(data);
                     foreach (CapturePacket capturePacket in capturePackets)
                     {
@@ -509,5 +500,5 @@ namespace IPTComShark
         UDP,
         TCP,
         IPTWP
-    }    
+    }
 }

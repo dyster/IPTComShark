@@ -3,8 +3,6 @@ using System.IO;
 
 namespace IPTComShark.FileManager
 {
-    
-    
     public class DataSource
     {
         public FileInfo FileInfo { get; set; }
@@ -18,6 +16,7 @@ namespace IPTComShark.FileManager
         /// Is the archive entry PCAP or PCAPNG
         /// </summary>
         public SourceType ArchiveSourceType { get; set; }
+
         public bool Use { get; set; } = true;
 
         public override string ToString()
@@ -35,7 +34,4 @@ namespace IPTComShark.FileManager
         PCAPNG,
         Zip
     }
-    
-
-    
 }

@@ -25,7 +25,7 @@ namespace IPTComShark.Import
 
         private static byte[] MakeTcpBytes(byte[] bytes)
         {
-            var lenBytes = BitConverter.GetBytes((ushort)bytes.Length);
+            var lenBytes = BitConverter.GetBytes((ushort) bytes.Length);
             var outBytes = new byte[bytes.Length + 2];
             outBytes[0] = lenBytes[1];
             outBytes[1] = lenBytes[0];
@@ -50,7 +50,7 @@ namespace IPTComShark.Import
                 byte[] bytearray = StringToByteArray(hexstring);
 
 
-                var ss27 = (SS27Packet)ss27Parser.ParseData(bytearray);
+                var ss27 = (SS27Packet) ss27Parser.ParseData(bytearray);
 
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);

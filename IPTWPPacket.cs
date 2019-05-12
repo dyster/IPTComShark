@@ -106,6 +106,7 @@ namespace IPTComShark
                     data[i] = payload[readpos];
                     readpos++;
                 }
+
                 iptPacket.IPTWPPayload = data;
             }
             else

@@ -58,7 +58,7 @@ namespace IPTComShark.Controls
                             // not checking for null because frankly it shouldn't happen and we want an exception
                             changed = !packet.Previous.ParsedData.GetField(field.Name).Value.Equals(field.Value);
                         }
-                        
+
                         dataLines.Add(new DataLine(field)
                         {
                             Changed = changed
@@ -76,17 +76,17 @@ namespace IPTComShark.Controls
 
             if (packet.SS27Packet != null)
             {
-                dataLines.Add(new DataLine(){IsCategory = true, Name = "Header"});
-                dataLines.Add(new DataLine(){Name = "Level", Value = packet.SS27Packet.Level});
-                dataLines.Add(new DataLine() { Name = "Mode", Value = packet.SS27Packet.Mode });
-                dataLines.Add(new DataLine() { Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString() });
+                dataLines.Add(new DataLine() {IsCategory = true, Name = "Header"});
+                dataLines.Add(new DataLine() {Name = "Level", Value = packet.SS27Packet.Level});
+                dataLines.Add(new DataLine() {Name = "Mode", Value = packet.SS27Packet.Mode});
+                dataLines.Add(new DataLine() {Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString()});
 
                 dataLines.AddRange(packet.SS27Packet.Header.Select(parsedField => new DataLine(parsedField)));
 
-                
+
                 if (packet.SS27Packet.SubMessage != null)
                 {
-                    dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
+                    dataLines.Add(new DataLine() {IsCategory = true, Name = "SubMessage"});
                     foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
                     {
                         dataLines.Add(new DataLine(parsedField));
@@ -95,7 +95,12 @@ namespace IPTComShark.Controls
 
                 foreach (var ss27PacketExtraMessage in packet.SS27Packet.ExtraMessages)
                 {
-                    dataLines.Add(new DataLine() { IsCategory = true, Name = ss27PacketExtraMessage.Name, Comment = ss27PacketExtraMessage.Comment});
+                    dataLines.Add(new DataLine()
+                    {
+                        IsCategory = true,
+                        Name = ss27PacketExtraMessage.Name,
+                        Comment = ss27PacketExtraMessage.Comment
+                    });
                     foreach (var parsedField in ss27PacketExtraMessage.ParsedFields)
                     {
                         dataLines.Add(new DataLine(parsedField));
@@ -226,6 +231,7 @@ namespace IPTComShark.Controls
                             pointer += arraysize;
                             break;
                     }
+
                     dataLines.Add(dataLine);
                 }
 
@@ -250,7 +256,6 @@ namespace IPTComShark.Controls
     {
         public DataLine()
         {
-
         }
 
         public DataLine(ParsedField field)
@@ -262,8 +267,8 @@ namespace IPTComShark.Controls
             TrueValue = field.TrueValue;
             Type = typestring.Substring(typestring.LastIndexOf(".") + 1);
             Comment = field.Comment;
-            
         }
+
         public string Name { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }

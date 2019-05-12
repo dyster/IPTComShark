@@ -41,7 +41,6 @@ namespace IPTComShark.Controls
                 return packet.Date.Millisecond;
             };
 
-            
 
             fastObjectListView1.RowFormatter += item =>
             {
@@ -88,9 +87,9 @@ namespace IPTComShark.Controls
             olvColumnFrom.AspectGetter += rowObject =>
             {
                 if (rowObject == null)
-                    return null;              
+                    return null;
 
-                var capturePacket = (CapturePacket)rowObject;
+                var capturePacket = (CapturePacket) rowObject;
                 return capturePacket.Source != null ? new IPAddress(capturePacket.Source) : null;
             };
 
@@ -98,14 +97,14 @@ namespace IPTComShark.Controls
             {
                 if (rowObject == null)
                     return null;
-                var capturePacket = (CapturePacket)rowObject;
+                var capturePacket = (CapturePacket) rowObject;
                 return capturePacket.Source != null ? new IPAddress(capturePacket.Destination) : null;
             };
 
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
-        }        
+        }
 
         public void UpdateFilter()
         {
@@ -142,7 +141,7 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if(capturePacket.IPTWPPacket?.IPTWPType == "PD")
+                    if (capturePacket.IPTWPPacket?.IPTWPType == "PD")
                     {
                         if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
                         {
@@ -168,7 +167,6 @@ namespace IPTComShark.Controls
                             return false;
                         }
                     }
-                    
                 }
 
                 return true;
@@ -216,7 +214,6 @@ namespace IPTComShark.Controls
             // Connect up the chain
             if (o.IPTWPPacket != null)
             {
-                
                 var tupleKey = new Tuple<uint, IPAddress>(o.IPTWPPacket.Comid, new IPAddress(o.Source));
                 if (_lastKnowns.ContainsKey(tupleKey))
                 {
@@ -337,7 +334,7 @@ namespace IPTComShark.Controls
 
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var s = o.IPTWPPacket.Comid.ToString();

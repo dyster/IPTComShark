@@ -48,18 +48,17 @@ namespace IPTComShark.Export
                     range.Style.Font.Bold = true;
                     range.AutoFilter = true;
                 }
-                
+
                 int rowindex = 4;
                 foreach (var packet in packets)
                 {
-
-
                     worksheet.Cells[rowindex, 1].Value = packet.No;
                     worksheet.Cells[rowindex, 2].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     worksheet.Cells[rowindex, 2].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
                     if (packet.Previous != null)
                     {
-                        worksheet.Cells[rowindex, 3].Value = packet.Date.Subtract(packet.Previous.Date).TotalMilliseconds;
+                        worksheet.Cells[rowindex, 3].Value =
+                            packet.Date.Subtract(packet.Previous.Date).TotalMilliseconds;
                         //worksheet.Cells[rowindex, 3].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
                     }
 
@@ -75,19 +74,13 @@ namespace IPTComShark.Export
                             worksheet.Cells[rowindex, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
                             worksheet.Cells[rowindex, col].Style.Fill.BackgroundColor.SetColor(Color.LightSeaGreen);
                         }
+
                         col++;
                     }
-                    
+
                     rowindex++;
                 }
 
-
-                
-
-                
-
-
-                
 
                 //There is actually no need to calculate, Excel will do it for you, but in some cases it might be useful. 
                 //For example if you link to this workbook from another workbook or you will open the workbook in a program that hasn't a calculation engine or 
