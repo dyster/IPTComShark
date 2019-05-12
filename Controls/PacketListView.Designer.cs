@@ -32,6 +32,7 @@
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnMS = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnFrom = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnTo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnProtocol = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -54,6 +55,7 @@
             // 
             this.fastObjectListView1.AllColumns.Add(this.olvColumnNo);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDate);
+            this.fastObjectListView1.AllColumns.Add(this.olvColumnMS);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnFrom);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnTo);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnProtocol);
@@ -66,6 +68,7 @@
             this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnNo,
             this.olvColumnDate,
+            this.olvColumnMS,
             this.olvColumnFrom,
             this.olvColumnTo,
             this.olvColumnProtocol,
@@ -101,7 +104,12 @@
             // 
             this.olvColumnDate.AspectName = "Date";
             this.olvColumnDate.Text = "Date";
-            this.olvColumnDate.Width = 100;
+            this.olvColumnDate.Width = 130;
+            // 
+            // olvColumnMS
+            // 
+            this.olvColumnMS.Text = "ms";
+            this.olvColumnMS.Width = 40;
             // 
             // olvColumnFrom
             // 
@@ -225,5 +233,6 @@
         private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumnMS;
     }
 }

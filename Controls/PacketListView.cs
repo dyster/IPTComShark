@@ -32,14 +32,16 @@ namespace IPTComShark.Controls
         {
             InitializeComponent();
 
-            olvColumnDate.AspectGetter += rowObject =>
+            olvColumnMS.AspectGetter += rowObject =>
             {
                 if (rowObject == null) return null;
 
                 var packet = (CapturePacket) rowObject;
-                return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
-
+                //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
+                return packet.Date.Millisecond;
             };
+
+            
 
             fastObjectListView1.RowFormatter += item =>
             {
@@ -103,7 +105,7 @@ namespace IPTComShark.Controls
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
-        }
+        }        
 
         public void UpdateFilter()
         {
