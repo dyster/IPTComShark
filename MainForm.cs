@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
+using IPTComShark.FileManager;
 using IPTComShark.Import;
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
@@ -151,11 +152,11 @@ namespace IPTComShark
                 }
                 else
                 {
-                    Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
-                    if (telegram == null)
+                    //Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
+                    //if (telegram == null)
                         packet.Name = "Unknown ComID " + iptwpPacket.Comid;
-                    else
-                        packet.Name = telegram.Name;
+                    //else
+                    //    packet.Name = telegram.Name;
                 }
             }
             catch (Exception e)
@@ -360,10 +361,14 @@ namespace IPTComShark
                 using (var fileManager = new FileManager.FileManager())
                 {
                     List<CapturePacket> capturePackets = fileManager.OpenFiles(openCapturesDialog.FileNames);
-                    foreach (CapturePacket capturePacket in capturePackets)
+                    if(capturePackets != null)
                     {
-                        packetListView1.Add(capturePacket);
+                        foreach (CapturePacket capturePacket in capturePackets)
+                        {
+                            packetListView1.Add(capturePacket);
+                        }
                     }
+                    
                 }
             }
         }
@@ -427,11 +432,10 @@ namespace IPTComShark
             if (dialogResult == DialogResult.OK)
             {
                 List<CapturePacket> capturePackets;
+                
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    var files = Directory.GetFiles(folderBrowserDialog.SelectedPath, "*", SearchOption.AllDirectories);
-
-                    capturePackets = fileManager.OpenFiles(files);
+                    capturePackets = fileManager.OpenFiles(new[] { folderBrowserDialog.SelectedPath });
                 }
 
                 foreach (CapturePacket capturePacket in capturePackets)
@@ -439,17 +443,7 @@ namespace IPTComShark
                     packetListView1.Add(capturePacket);
                 }
             }
-        }
-
-        private void mergeAndCleanFilesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = openCapturesDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                var cleanAndMerge = new CleanAndMerge(openCapturesDialog.FileNames);
-                cleanAndMerge.Show();
-            }
-        }
+        }        
 
         private void eVA2XMLExportToolStripMenuItem_Click(object sender, EventArgs e)
         {

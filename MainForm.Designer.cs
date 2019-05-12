@@ -58,7 +58,6 @@ namespace IPTComShark
             this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mergeAndCleanFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -291,8 +290,7 @@ namespace IPTComShark
             this.simulateTrafficToolStripMenuItem,
             this.exportSVGSequenceDiagramToolStripMenuItem,
             this.exportXLSXToolStripMenuItem,
-            this.exportCSVToolStripMenuItem,
-            this.mergeAndCleanFilesToolStripMenuItem});
+            this.exportCSVToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -323,13 +321,6 @@ namespace IPTComShark
             this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
             this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
             this.exportCSVToolStripMenuItem.Text = "Export CSV";
-            // 
-            // mergeAndCleanFilesToolStripMenuItem
-            // 
-            this.mergeAndCleanFilesToolStripMenuItem.Name = "mergeAndCleanFilesToolStripMenuItem";
-            this.mergeAndCleanFilesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.mergeAndCleanFilesToolStripMenuItem.Text = "Merge and Clean files";
-            this.mergeAndCleanFilesToolStripMenuItem.Click += new System.EventHandler(this.mergeAndCleanFilesToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
@@ -447,7 +438,6 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem exportSVGSequenceDiagramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportXLSXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportCSVToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mergeAndCleanFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem eVA2XMLExportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportAnIssueToolStripMenuItem;

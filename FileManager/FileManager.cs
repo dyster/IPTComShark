@@ -12,6 +12,7 @@ using PacketDotNet;
 using sonesson_tools.FileReaders;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
+using System.Threading;
 
 namespace IPTComShark.FileManager
 {
@@ -20,14 +21,18 @@ namespace IPTComShark.FileManager
         private ZipReader zipReader = new ZipReader();
         private PCAPReader pcapReader = new PCAPReader();
         private PCAPNGReader pcapngReader = new PCAPNGReader();
-
+        
         private Form _popup;
         private ProgressBar _progressbar;
+        private bool _closing = false;
+        private int _lastProgress = 0;
 
         public FileManager()
         {
             pcapReader.ChunkReader += chunk =>
             {
+                PacketCounter++;
+                UpdateProgress((PacketCounter * 100) / PacketTotal);
                 var pcapBlock = (PCAPBlock) chunk;
                 var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                     (LinkLayerType) pcapBlock.Header.network);
@@ -40,6 +45,8 @@ namespace IPTComShark.FileManager
 
             pcapngReader.ChunkReader += chunk =>
             {
+                PacketCounter++;
+                UpdateProgress((PacketCounter * 100) / PacketTotal);
                 var pcapngBlock = (PCAPNGBlock) chunk;
                 var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
                     (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
@@ -50,9 +57,9 @@ namespace IPTComShark.FileManager
                 return new List<FileReadObject>();
             };
 
-            pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
+            //pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
 
-            pcapngReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
+            //pcapngReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
 
             _popup = new Form();
             _popup.Size = new Size(400, 70);
@@ -61,6 +68,28 @@ namespace IPTComShark.FileManager
             _progressbar.Dock = DockStyle.Fill;
 
             _popup.Controls.Add(_progressbar);
+
+            
+            
+        }
+
+        private delegate void ProgressDelegate(int i);
+
+        private void UpdateProgress(int i)
+        {
+            if (i > 100)
+                i = 100;
+            if (_progressbar.InvokeRequired)
+                _progressbar.Invoke(new ProgressDelegate(UpdateProgress), i);
+            else
+            {
+                if(i != _lastProgress)
+                {
+                    _progressbar.Value = i;
+                    _lastProgress = i;
+                }
+                
+            }
         }
 
         ~FileManager()
@@ -73,201 +102,118 @@ namespace IPTComShark.FileManager
         protected virtual void OnRawParsed(Raw e)
         {
             RawParsed?.Invoke(this, e);
-        }
+        }        
 
-        private Tuple<DateTime, DateTime> Peek(string[] fileNames)
+        private int PacketCounter { get; set; }
+        private int PacketTotal { get; set; }
+
+        public void EnumerateFiles(List<DataSource> dataSources)
         {
-            _popup.Text = "Peeking";
-
-            var dates = new List<DateTime>();
-
-            foreach (string fileName in fileNames)
-            {
-                if (SevenZipArchive.IsSevenZipFile(fileName))
-                {
-                    MessageBox.Show(
-                        "Peeking is not supported for zip archives currently, please make sure to tick All Data");
-                }
-
-                
-
-                if (pcapReader.CanRead(fileName))
-                {
-                    var reader = new PCAPReader();
-                    var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
-                    dates.Add(first.DateTime);
-                    dates.Add(last.DateTime);
-                }
-                else if (pcapngReader.CanRead(fileName))
-                {
-                    var reader = new PCAPNGReader();
-                    var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
-                    dates.Add(first.Timestamp);
-                    dates.Add(last.Timestamp);
-                }
-            }
-
-            var openFiles = new OpenFiles(dates);
-            var dialogResult = openFiles.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                var openFilesFrom = openFiles.From;
-                var openFilesTo = openFiles.To;
-
-                return new Tuple<DateTime, DateTime>(openFilesFrom, openFilesTo);
-            }
-
-            return null;
-        }
-
-        public void EnumerateFiles(string[] fileNames)
-        {
-
-            _popup.Text = "Gathering File Info...";
+            _popup.Show();
+            
+            _popup.Text = "Starting the parse";
 
 
             var dic = new Dictionary<string, Func<string, List<FileReadObject>>>();
 
             //SevenZipExtractor.SetLibraryPath(Application.ExecutablePath + @"\7z.dll");
 
-            foreach (string fileName in fileNames)
+            int i = 1;
+            foreach (var source in dataSources)
             {
-                if (SevenZipArchive.IsSevenZipFile(fileName))
-                {
-                    _popup.Text = $"Reading {Path.GetFileName(fileName)}";
-                    var pcaps = new List<SevenZipArchiveEntry>();
-                    var pcapngs = new List<SevenZipArchiveEntry>();
+                PacketCounter = 0;
+                PacketTotal = source.Packets;
 
-                    using (SevenZipArchive sevenZipArchive = SevenZipArchive.Open(fileName))
-                    {
-                        foreach (SevenZipArchiveEntry entry in sevenZipArchive.Entries.Where(e => !e.IsDirectory))
-                        {
-                            // since these bloody streams can't seek, need to reopen every time
+                string pre = i + "/" + dataSources.Count + " ";
+                _popup.Text = pre + "Reading from " + source.FileInfo.Name;
 
-                            using (Stream openEntryStream = entry.OpenEntryStream())
-                            {
-                                if (pcapReader.CanRead(openEntryStream))
-                                {
-                                    pcaps.Add(entry);
-                                    continue;
-                                }
-                            }
-
-
-                            using (Stream openEntryStream = entry.OpenEntryStream())
-                            {
-                                if (pcapngReader.CanRead(openEntryStream))
-                                    pcapngs.Add(entry);
-                            }
-
-                            // there is nothing I deplore more than extracting to temporary files, so I'm going to hold the stream in memory instead
-                            // the pcap(ng) reader should be modified to deal with non-seekable streams perhaps
-                        }
-
-
-                        int total = pcaps.Count + pcapngs.Count;
-                        int curr = 0;
-
-                        foreach (SevenZipArchiveEntry entry in pcaps)
-                        {
-                            _popup.Text = $"{++curr}/{total} in {Path.GetFileName(fileName)}";
-
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                using (Stream openEntryStream = entry.OpenEntryStream())
-                                {
-                                    openEntryStream.CopyTo(memoryStream);
-                                }
-                                memoryStream.Position = 0;
-
-
-                                List<FileReadObject> readObjects = pcapReader.ReadStream(memoryStream);
-                                
-                            }
-                        }
-
-                        foreach (SevenZipArchiveEntry entry in pcapngs)
-                        {
-                            _popup.Text = $"{++curr}/{total} in {Path.GetFileName(fileName)}";
-
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                using (Stream openEntryStream = entry.OpenEntryStream())
-                                {
-                                    openEntryStream.CopyTo(memoryStream);
-                                }
-                                memoryStream.Position = 0;
-
-
-                                List<FileReadObject> readObjects = pcapngReader.ReadStream(memoryStream);
-                                
-                            }
-                        }
-                    }
+                if(source.SourceType == SourceType.PCAP)
+                {            
+                 
+                    pcapReader.Read(source.FileInfo.FullName);
                 }
-                //using (Stream stream = File.OpenRead(fileName))
-                //using (var reader = ReaderFactory.Open(stream))
-                //{
-                //    
-                //}
-
-
-                /* I give up, this just can't be done properly with DeflateStreams, need to get a better zip class!
-                if (zipReader.CanRead(fileName))
+                else if(source.SourceType == SourceType.PCAPNG)
                 {
-                    ZipArchive zipArchive = ZipFile.OpenRead(fileName);
-                    foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Entries)
+                    pcapngReader.Read(source.FileInfo.FullName);
+                }
+                else if(source.SourceType == SourceType.Zip)
+                {
+                    if (SevenZipArchive.IsSevenZipFile(source.FileInfo.FullName))
                     {
-                        // all the opening and closing of stream below is because DeflateStream is stupid
-                        Stream stream = zipArchiveEntry.Open();
+                        using (SevenZipArchive sevenZipArchive = SevenZipArchive.Open(source.FileInfo.FullName))
+                        {
+                            using (var reader = sevenZipArchive.ExtractAllEntries())
+                            {                                
+                                ZipReader(reader, source);
+                            }
+                        }
+                        GC.Collect();
+                    }
+                    else
+                    {
+                        try
+                        {
 
-                        if (pcapReader.CanRead(stream))
+                            using (var filestream = File.OpenRead(source.FileInfo.FullName))
+                            {
+                                using (var reader = ReaderFactory.Open(filestream))
+                                {                                    
+                                    ZipReader(reader, source);
+
+                                }
+                            }
+                        }
+                        catch (InvalidOperationException ex)
                         {
                             
-                            stream.Close();
-                            dic.Add(zipArchiveEntry.Open(), pcapReader.GetReadStreamFunction());
-                            continue;
                         }
-
-                        stream.Close();
-                        stream = zipArchiveEntry.Open();
-                        if (pcapngReader.CanRead(stream))
-                        {
-                            
-                            stream.Close();
-                            dic.Add(zipArchiveEntry.Open(), pcapReader.GetReadStreamFunction());
-                        }
+                        GC.Collect();
                     }
-                }*/
-
-                if (pcapReader.CanRead(fileName))
-                {
-                    dic.Add(fileName, pcapReader.GetReadFunction());
                 }
-                else if (pcapngReader.CanRead(fileName))
-                {
-                    dic.Add(fileName, pcapngReader.GetReadFunction());
-                }
-            }
-
-
-            uint seed = 1;
-            int i = 0;
-            foreach (var pair in dic)
-            {
-                i++;
-
-                _popup.Text = $"Reading file {i} of {dic.Count}";
-                List<FileReadObject> objects = pair.Value.Invoke(pair.Key);
-
                 
             }
-            
-            
+            _popup.Close();
+        }
+
+        private void ZipReader(IReader reader, DataSource dataSource)
+        {
+            //try
+            {
+                while (reader.MoveToNextEntry())
+                {
+                    if (!reader.Entry.IsDirectory)
+                    {
+                        if (reader.Entry.Key != dataSource.ArchiveKey)
+                            continue;
+                        var memstream = new MemoryStream();
+                        using (var entryStream = reader.OpenEntryStream())
+                        {
+                           
+                            entryStream.CopyTo(memstream);
+                            memstream.Position = 0;
+                            
+                        }
+
+                        if (dataSource.ArchiveSourceType == SourceType.PCAP)
+                        {
+
+                            pcapReader.ReadStream(memstream);
+                        }
+
+                        if (dataSource.ArchiveSourceType == SourceType.PCAPNG)
+                        {
+                            pcapngReader.ReadStream(memstream);
+
+
+                        }
+                    }
+                }
+            }
+            //catch(Exception e)
+            {
+
+            }
+
         }
 
         /// <summary>
@@ -277,41 +223,39 @@ namespace IPTComShark.FileManager
         /// <returns></returns>
         public List<CapturePacket> OpenFiles(string[] inputs)
         {
-            _popup.Show();
+            
+
+            
             
             List<string> fileNames = new List<string>();
 
-            foreach (var str in inputs)
+            var fo = new FileOpener(inputs);
+            var dialogresult = fo.ShowDialog();
+            if(dialogresult == DialogResult.OK)
             {
-                if(File.Exists(str))
-                    fileNames.Add(str);
-                else if (Directory.Exists(str))
+                this.FilterFrom = fo.DateTimeFrom;
+                this.FilterTo = fo.DateTimeTo;
+                
+                var packets = new List<CapturePacket>();
+
+                RawParsed += (sender, raw) =>
                 {
-                    fileNames.AddRange(Directory.GetFiles(str, "*", SearchOption.AllDirectories));
-                }
+                    packets.Add(new CapturePacket(raw));
+                };
+
+                EnumerateFiles(fo.DataSources);
+
+
+
+                uint seed = 1;
+
+
+                packets.ForEach(p => p.No = seed++);
+                
+                return packets;
             }
 
-            var packets = new List<CapturePacket>();
-            
-            RawParsed += (sender, raw) =>
-            {
-                packets.Add(new CapturePacket(raw));
-            };
-
-            var dates = Peek(fileNames.ToArray());
-            this.FilterFrom = dates.Item1;
-            this.FilterTo = dates.Item2;
-
-            EnumerateFiles(fileNames.ToArray());
-            
-
-
-            uint seed = 1;
-            
-            
-            packets.ForEach(p => p.No = seed++);
-            _popup.Close();
-            return packets;
+            return null;
         }
 
         public DateTime FilterTo { get; set; }
@@ -321,7 +265,7 @@ namespace IPTComShark.FileManager
 
         private void ReleaseUnmanagedResources()
         {
-            // TODO release unmanaged resources here
+            _closing = true;            
         }
 
         private void Dispose(bool disposing)
