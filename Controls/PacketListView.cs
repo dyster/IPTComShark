@@ -75,6 +75,8 @@ namespace IPTComShark.Controls
 
             olvColumnDictionary.AspectGetter += rowObject =>
             {
+                if (rowObject == null)
+                    return null;
                 var capturePacket = (CapturePacket) rowObject;
                 if (capturePacket?.ParsedData == null)
                     return "";
@@ -83,12 +85,17 @@ namespace IPTComShark.Controls
 
             olvColumnFrom.AspectGetter += rowObject =>
             {
+                if (rowObject == null)
+                    return null;              
+
                 var capturePacket = (CapturePacket)rowObject;
                 return capturePacket.Source != null ? new IPAddress(capturePacket.Source) : null;
             };
 
             olvColumnTo.AspectGetter += rowObject =>
             {
+                if (rowObject == null)
+                    return null;
                 var capturePacket = (CapturePacket)rowObject;
                 return capturePacket.Source != null ? new IPAddress(capturePacket.Destination) : null;
             };
