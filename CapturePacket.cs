@@ -274,14 +274,16 @@ namespace IPTComShark
 
             if (Previous != null)
             {
-                foreach (ParsedField field in this.ParsedData.ParsedFields)
+                for (int i = 0; i < ParsedData.ParsedFields.Count; i++)
                 {
-                    ParsedField lookup = Previous.ParsedData.GetField(field.Name);
-                    if (lookup != null)
-                    {
-                        if (lookup.Value.Equals(field.Value))
-                            delta.Remove(field);
-                    }
+                    if (Previous.ParsedData.ParsedFields.Count == i)
+                        break;
+                    ParsedField field = this.ParsedData[i];
+                    ParsedField lookup = Previous.ParsedData[i];
+                                        
+                    if (lookup.Value.Equals(field.Value))
+                        delta.Remove(field);
+                    
                 }
             }
 

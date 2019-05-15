@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -22,78 +23,55 @@ namespace IPTComShark
                                     CellVerticalAlignmentAsTextFormatFlag;
 
 
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+            //Dictionary<string, string> dic = new Dictionary<string, string>();
+            var tuples = new List<Tuple<string,string>>();
             if (RowObject is CapturePacket)
             {
                 var cpac = (CapturePacket) RowObject;
 
                 if (cpac.ParsedData == null)
                     return;
+                                
+                var delta = cpac.GetDelta();
 
-                // TODO use the generic function in CapturePacket instead
-
-                var now = cpac.ParsedData.GetStringDictionary()
-                    .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
-                if (cpac.Previous?.ParsedData != null)
+                foreach(var field in delta)
                 {
-                    var before = cpac.Previous.ParsedData.GetStringDictionary();
-
-                    foreach (KeyValuePair<string, string> pair in now)
-                    {
-                        if (before.ContainsKey(pair.Key))
-                        {
-                            if (pair.Value != before[pair.Key])
-                                dic.Add(pair.Key, pair.Value);
-                        }
-                    }
-                }
-                else
-                {
-                    dic = now;
-                }
+                    if(field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
+                        tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
+                }                
             }
             else
             {
                 return;
             }
+            
+            Font font1 = Font;
+            var font2 = new Font(Font, FontStyle.Bold);
 
+            // make the original rectangle zero width to set the first string up
+            r = new Rectangle(r.X, r.Y, 0, r.Height);
 
-            if (dic != null)
+            foreach (Tuple<string, string> o in tuples)
             {
-                Font font1 = Font;
-                var font2 = new Font(Font, FontStyle.Bold);
+                string text = o.Item1 + ": ";
 
-                // make the original rectangle zero width to set the first string up
-                r = new Rectangle(r.X, r.Y, 0, r.Height);
-
-                foreach (KeyValuePair<string, string> o in dic)
-                {
-                    string text = o.Key + ": ";
-
-                    int width = TextRenderer.MeasureText(text, font1).Width;
+                int width = TextRenderer.MeasureText(text, font1).Width;
 
 
-                    r = new Rectangle(r.Right, r.Y, width, r.Height);
-                    TextRenderer.DrawText(g, text, font1, r, GetForegroundColor(), backColor, flags);
+                r = new Rectangle(r.Right, r.Y, width, r.Height);
+                TextRenderer.DrawText(g, text, font1, r, GetForegroundColor(), backColor, flags);
 
 
-                    text = o.Value;
+                text = o.Item2;
 
-                    width = TextRenderer.MeasureText(text, font2).Width;
+                width = TextRenderer.MeasureText(text, font2).Width;
 
-                    r = new Rectangle(r.Right, r.Y, width, r.Height);
-                    TextRenderer.DrawText(g, text, font2, r, GetForegroundColor(), backColor, flags);
-                }
-
-                //TextRenderer.DrawText(g, dic.DictionaryData.Count.ToString(), this.Font, r, this.GetForegroundColor(), backColor, flags);
-            }
-            else
-            {
-                base.DrawText(g, r, txt);
+                r = new Rectangle(r.Right, r.Y, width, r.Height);
+                TextRenderer.DrawText(g, text, font2, r, GetForegroundColor(), backColor, flags);
             }
 
-
+            //TextRenderer.DrawText(g, dic.DictionaryData.Count.ToString(), this.Font, r, this.GetForegroundColor(), backColor, flags);
+            //base.DrawText(g, r, txt);         
             //TextRenderer.DrawText(g, txt, this.Font, r, this.GetForegroundColor(), backColor);
         }
     }
