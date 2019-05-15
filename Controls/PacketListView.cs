@@ -72,25 +72,15 @@ namespace IPTComShark.Controls
                                 break;
                         }
                 }
-            };
-
-            olvColumnDictionary.AspectGetter += rowObject =>
-            {
-                if (rowObject == null)
-                    return null;
-                var capturePacket = (CapturePacket) rowObject;
-                if (capturePacket?.ParsedData == null)
-                    return "";
-                return capturePacket.ParsedData;
-            };
-
+            };            
+            
             olvColumnFrom.AspectGetter += rowObject =>
             {
                 if (rowObject == null)
                     return null;
 
                 var capturePacket = (CapturePacket) rowObject;
-                return capturePacket.Source != null ? new IPAddress(capturePacket.Source) : null;
+                return capturePacket.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
             };
 
             olvColumnTo.AspectGetter += rowObject =>
@@ -98,7 +88,8 @@ namespace IPTComShark.Controls
                 if (rowObject == null)
                     return null;
                 var capturePacket = (CapturePacket) rowObject;
-                return capturePacket.Source != null ? new IPAddress(capturePacket.Destination) : null;
+
+                return capturePacket.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
             };
 
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
@@ -114,8 +105,8 @@ namespace IPTComShark.Controls
 
                 var localhost = IPAddress.Parse("127.0.0.1");
 
-                if (Settings.IgnoreLoopback && Equals(capturePacket.Source, localhost) &&
-                    Equals(capturePacket.Destination, localhost))
+                if (Settings.IgnoreLoopback && Equals(new IPAddress(capturePacket.Source), localhost) &&
+                    Equals(new IPAddress(capturePacket.Destination), localhost))
                     return false;
 
                 if (Settings.IgnoreUnknownData)

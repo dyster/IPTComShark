@@ -113,12 +113,12 @@
             // 
             // olvColumnFrom
             // 
-            this.olvColumnFrom.AspectName = "Source";
+            this.olvColumnFrom.AspectName = "";
             this.olvColumnFrom.Text = "From";
             // 
             // olvColumnTo
             // 
-            this.olvColumnTo.AspectName = "Destination";
+            this.olvColumnTo.AspectName = "";
             this.olvColumnTo.Text = "To";
             // 
             // olvColumnProtocol
@@ -141,7 +141,7 @@
             // 
             // olvColumnDictionary
             // 
-            this.olvColumnDictionary.AspectName = "ParsedDate.DictionaryData";
+            this.olvColumnDictionary.AspectName = "ParsedData";
             this.olvColumnDictionary.Text = "Parsed";
             this.olvColumnDictionary.Width = 398;
             // 
