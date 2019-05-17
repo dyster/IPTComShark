@@ -32,6 +32,18 @@ namespace IPTComShark.Controls
         {
             InitializeComponent();
 
+            if(Properties.Settings.Default.ColumnSettings != null)
+            {
+                foreach(var cset in Properties.Settings.Default.ColumnSettings)
+                {
+                    var column = fastObjectListView1.AllColumns.Find(col => col.Text == cset.Name);
+                    column.DisplayIndex = cset.DisplayIndex;
+                    column.Width = cset.Width;
+                    column.IsVisible = cset.IsVisible;
+                }
+                fastObjectListView1.RebuildColumns();
+            }
+
             olvColumnMS.AspectGetter += rowObject =>
             {
                 if (rowObject == null) return null;
@@ -40,6 +52,10 @@ namespace IPTComShark.Controls
                 //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
                 return packet.Date.Millisecond;
             };
+
+            fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
+            fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
+            
 
 
             fastObjectListView1.RowFormatter += item =>
@@ -95,6 +111,29 @@ namespace IPTComShark.Controls
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
+        }
+
+        private void FastObjectListView1_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+            SaveColumns();
+        }
+
+        private void FastObjectListView1_ColumnReordered(object sender, ColumnReorderedEventArgs e)
+        {
+            // we have to set it manually to have it available when we call save
+            e.Header.DisplayIndex = e.NewDisplayIndex;
+            SaveColumns();
+        }
+
+        private void SaveColumns()
+        {
+            var cset = new ColumnSettings();
+            foreach(var column in fastObjectListView1.AllColumns)
+            {
+                cset.Add(new ColumnInfo() { DisplayIndex = column.DisplayIndex, Name = column.Text, Width = column.Width, IsVisible = column.IsVisible });
+            }
+            Properties.Settings.Default.ColumnSettings = cset;
+            Properties.Settings.Default.Save();
         }
 
         public void UpdateFilter()
@@ -337,8 +376,25 @@ namespace IPTComShark.Controls
                 UpdateFilter();
             }
         }
+                
     }
 
+    /// <summary>
+    /// Empty class to be used in Settings
+    /// </summary>
+    public class ColumnSettings : List<ColumnInfo>
+    {      
+
+        
+    }
+
+    public class ColumnInfo
+    {
+        public string Name { get; set; }
+        public int Width { get; set; }
+        public int DisplayIndex { get; set; }
+        public bool IsVisible { get; set; }
+    }
 
     public class PacketListSettings : INotifyPropertyChanged
     {

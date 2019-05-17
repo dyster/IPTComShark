@@ -64,6 +64,7 @@
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDictionary);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnIPTWPType);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnComId);
+            this.fastObjectListView1.AllowColumnReorder = true;
             this.fastObjectListView1.CellEditUseWholeCell = false;
             this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnNo,
