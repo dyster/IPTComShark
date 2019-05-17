@@ -41,16 +41,20 @@
             this.dataListView1.AllColumns.Add(this.olvColumn1);
             this.dataListView1.AllColumns.Add(this.olvColumn2);
             this.dataListView1.AllColumns.Add(this.olvColumn3);
+            this.dataListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataListView1.CellEditUseWholeCell = false;
             this.dataListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1,
             this.olvColumn2,
             this.olvColumn3});
+            this.dataListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListView1.DataSource = null;
-            this.dataListView1.Location = new System.Drawing.Point(12, 12);
+            this.dataListView1.Location = new System.Drawing.Point(0, 0);
             this.dataListView1.Name = "dataListView1";
             this.dataListView1.ShowGroups = false;
-            this.dataListView1.Size = new System.Drawing.Size(644, 215);
+            this.dataListView1.Size = new System.Drawing.Size(769, 238);
             this.dataListView1.TabIndex = 0;
             this.dataListView1.UseCompatibleStateImageBehavior = false;
             this.dataListView1.View = System.Windows.Forms.View.Details;
@@ -75,7 +79,8 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 233);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Location = new System.Drawing.Point(12, 244);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -87,7 +92,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(668, 263);
+            this.ClientSize = new System.Drawing.Size(769, 274);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataListView1);
             this.Name = "InterfacePicker";
