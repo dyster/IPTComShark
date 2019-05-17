@@ -171,12 +171,14 @@ namespace IPTComShark
         private void Start()
         {
             fileToolStripMenuItem.Enabled = false;
-
+            
             //_pcapWriter = new PCAPWriter(@"c:\temp", "testfile");
             //_pcapWriter.RotationTime = 30;
             //_pcapWriter.Start();
 
-            backgroundWorker1.RunWorkerAsync();
+
+            if(!backgroundWorker1.IsBusy)
+                backgroundWorker1.RunWorkerAsync();
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
