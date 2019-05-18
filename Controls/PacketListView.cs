@@ -32,30 +32,103 @@ namespace IPTComShark.Controls
         {
             InitializeComponent();
 
-            if(Properties.Settings.Default.ColumnSettings != null)
+            if (Properties.Settings.Default.ColumnSettings != null)
             {
-                foreach(var cset in Properties.Settings.Default.ColumnSettings)
+                foreach (var cset in Properties.Settings.Default.ColumnSettings)
                 {
                     var column = fastObjectListView1.AllColumns.Find(col => col.Text == cset.Name);
                     column.DisplayIndex = cset.DisplayIndex;
                     column.Width = cset.Width;
                     column.IsVisible = cset.IsVisible;
                 }
+
                 fastObjectListView1.RebuildColumns();
             }
 
             olvColumnMS.AspectGetter += rowObject =>
             {
-                if (rowObject == null) return null;
-
                 var packet = (CapturePacket) rowObject;
                 //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
-                return packet.Date.Millisecond;
+                return packet?.Date.Millisecond;
             };
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
             fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
-            
+
+            fastObjectListView1.FilterMenuBuildStrategy = new MyFilterMenuBuilder();
+
+            olvColumnFrom.ClusterGetter += packets =>
+            {
+                return StringsToClusters(packets.Where(p => p.Source != null)
+                    .Select(p => new IPAddress(p.Source).ToString()));
+            };
+
+            olvColumnTo.ClusterGetter += packets =>
+            {
+                return StringsToClusters(packets.Where(p => p.Source != null)
+                    .Select(p => new IPAddress(p.Destination).ToString()));
+            };
+
+            olvColumnProtocol.ClusterGetter += packets =>
+            {
+                var clusters = StringsToClusters(packets.Select(p => p.Protocol.ToString()));
+                foreach (var cluster in clusters)
+                {
+                    cluster.ClusterKey = Enum.Parse(typeof(ProtocolType), cluster.DisplayLabel);
+                }
+
+                return clusters;
+            };
+
+            olvColumnName.ClusterGetter += packets => { return StringsToClusters(packets.Select(p => p.Name)); };
+
+            olvColumnIPTWPType.ClusterGetter += packets =>
+            {
+                return StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
+                    .Select(p => p.IPTWPPacket.IPTWPType));
+            };
+
+            olvColumnComId.ClusterGetter += packets =>
+            {
+                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
+                    .Select(p => p.IPTWPPacket.Comid.ToString()));
+                foreach (var cluster in clusters)
+                {
+                    cluster.ClusterKey = uint.Parse(cluster.DisplayLabel);
+                }
+
+                return clusters;
+            };
+
+            //olvColumnDate.ClusteringStrategy = new DateTimeClusteringStrategy(DateTimePortion.Year|DateTimePortion.Month|DateTimePortion.Hour|DateTimePortion.Minute, "yyyy-MM-dd hh:mm");
+
+            //olvColumnDate.ClusterGetter += packets =>
+            //{
+            //    var cluster = new List<ICluster>();
+            //    foreach (var packet in packets)
+            //    {
+            //        var s = packet.Date.ToString("yyyy-MM-dd hh:mm");
+            //        if (cluster.Exists(c => c.DisplayLabel == s))
+            //        {
+            //            var target = cluster.Find(c => c.DisplayLabel == s);
+            //            var clusterKey = (List<DateTime>) target.ClusterKey;
+            //            clusterKey.Add(packet.Date);
+            //            target.Count++;
+            //        }
+            //        else
+            //        {
+            //            cluster.Add(new Cluster(new List<DateTime>() {packet.Date}) {DisplayLabel = s, Count = 1});
+            //        }
+            //    }
+            //
+            //    foreach (var c in cluster)
+            //    {
+            //        var keys = (List<DateTime>)c.ClusterKey;
+            //        c.ClusterKey = new object[] { keys};
+            //    }
+            //
+            //    return cluster;
+            //};
 
 
             fastObjectListView1.RowFormatter += item =>
@@ -88,29 +161,48 @@ namespace IPTComShark.Controls
                                 break;
                         }
                 }
-            };            
-            
+            };
+
             olvColumnFrom.AspectGetter += rowObject =>
             {
-                if (rowObject == null)
-                    return null;
-
                 var capturePacket = (CapturePacket) rowObject;
-                return capturePacket.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
+                return capturePacket?.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
             };
 
             olvColumnTo.AspectGetter += rowObject =>
             {
-                if (rowObject == null)
-                    return null;
                 var capturePacket = (CapturePacket) rowObject;
-
-                return capturePacket.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
+                return capturePacket?.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
             };
 
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
+        }
+
+        private static List<ICluster> StringsToClusters(IEnumerable<string> strings)
+        {
+            var dic = new Dictionary<string, int>();
+            foreach (var str in strings)
+            {
+                if (str == null)
+                    continue;
+
+                if (dic.ContainsKey(str))
+                {
+                    dic[str]++;
+                }
+                else
+                    dic.Add(str, 1);
+            }
+
+            var list = new List<ICluster>();
+            foreach (var pair in dic)
+            {
+                list.Add(new Cluster(pair.Key) {Count = pair.Value, DisplayLabel = pair.Key});
+            }
+
+            return list;
         }
 
         private void FastObjectListView1_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
@@ -128,10 +220,15 @@ namespace IPTComShark.Controls
         private void SaveColumns()
         {
             var cset = new ColumnSettings();
-            foreach(var column in fastObjectListView1.AllColumns)
+            foreach (var column in fastObjectListView1.AllColumns)
             {
-                cset.Add(new ColumnInfo() { DisplayIndex = column.DisplayIndex, Name = column.Text, Width = column.Width, IsVisible = column.IsVisible });
+                cset.Add(new ColumnInfo()
+                {
+                    DisplayIndex = column.DisplayIndex, Name = column.Text, Width = column.Width,
+                    IsVisible = column.IsVisible
+                });
             }
+
             Properties.Settings.Default.ColumnSettings = cset;
             Properties.Settings.Default.Save();
         }
@@ -376,16 +473,48 @@ namespace IPTComShark.Controls
                 UpdateFilter();
             }
         }
-                
+    }
+
+    public class MyFilterMenuBuilder : FilterMenuBuilder
+    {
+        protected override List<ICluster> Cluster(IClusteringStrategy strategy, ObjectListView listView,
+            OLVColumn column)
+        {
+            if (column is MyOLVColumn mycolumn && mycolumn.ClusterGetter != null)
+            {
+                var list = mycolumn.ClusterGetter.Invoke(listView.ObjectsForClustering.Cast<CapturePacket>());
+                if (strategy is ClusteringStrategy cstrategy)
+                {
+                    foreach (var c in list)
+                    {
+                        string format = (c.Count == 1)
+                            ? cstrategy.DisplayLabelFormatSingular
+                            : cstrategy.DisplayLabelFormatPlural;
+                        c.DisplayLabel = string.IsNullOrEmpty(format)
+                            ? c.DisplayLabel
+                            : string.Format(format, c.DisplayLabel, c.Count);
+                    }
+                }
+
+                return list;
+            }
+
+            return base.Cluster(strategy, listView, column);
+        }
+    }
+
+    public class MyOLVColumn : OLVColumn
+    {
+        public ClusterGetterDelegate ClusterGetter { get; set; }
+
+        public delegate List<ICluster> ClusterGetterDelegate(IEnumerable<CapturePacket> packets);
     }
 
     /// <summary>
     /// Empty class to be used in Settings
     /// </summary>
     public class ColumnSettings : List<ColumnInfo>
-    {      
-
-        
+    {
     }
 
     public class ColumnInfo

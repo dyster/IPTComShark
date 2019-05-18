@@ -30,17 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
-            this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnMS = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnFrom = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnTo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnProtocol = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnProtocolInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnDictionary = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnIPTWPType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnComId = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnNo = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnDate = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnMS = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnFrom = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnTo = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnProtocol = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnProtocolInfo = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnName = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnDictionary = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnIPTWPType = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnComId = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
             this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,61 +99,77 @@
             // olvColumnNo
             // 
             this.olvColumnNo.AspectName = "No";
+            this.olvColumnNo.ClusterGetter = null;
+            this.olvColumnNo.Searchable = false;
             this.olvColumnNo.Text = "No";
+            this.olvColumnNo.UseFiltering = false;
             // 
             // olvColumnDate
             // 
             this.olvColumnDate.AspectName = "Date";
+            this.olvColumnDate.ClusterGetter = null;
             this.olvColumnDate.Text = "Date";
+            this.olvColumnDate.UseFiltering = false;
             this.olvColumnDate.Width = 130;
             // 
             // olvColumnMS
             // 
+            this.olvColumnMS.ClusterGetter = null;
             this.olvColumnMS.Text = "ms";
+            this.olvColumnMS.UseFiltering = false;
             this.olvColumnMS.Width = 40;
             // 
             // olvColumnFrom
             // 
             this.olvColumnFrom.AspectName = "";
+            this.olvColumnFrom.ClusterGetter = null;
             this.olvColumnFrom.Text = "From";
             // 
             // olvColumnTo
             // 
             this.olvColumnTo.AspectName = "";
+            this.olvColumnTo.ClusterGetter = null;
             this.olvColumnTo.Text = "To";
             // 
             // olvColumnProtocol
             // 
             this.olvColumnProtocol.AspectName = "Protocol";
+            this.olvColumnProtocol.ClusterGetter = null;
             this.olvColumnProtocol.Text = "Protocol";
             this.olvColumnProtocol.Width = 100;
             // 
             // olvColumnProtocolInfo
             // 
             this.olvColumnProtocolInfo.AspectName = "ProtocolInfo";
+            this.olvColumnProtocolInfo.ClusterGetter = null;
             this.olvColumnProtocolInfo.Text = "Protocol Info";
             this.olvColumnProtocolInfo.Width = 100;
             // 
             // olvColumnName
             // 
             this.olvColumnName.AspectName = "Name";
+            this.olvColumnName.ClusterGetter = null;
             this.olvColumnName.Text = "Name";
             this.olvColumnName.Width = 150;
             // 
             // olvColumnDictionary
             // 
             this.olvColumnDictionary.AspectName = "ParsedData";
+            this.olvColumnDictionary.ClusterGetter = null;
             this.olvColumnDictionary.Text = "Parsed";
+            this.olvColumnDictionary.UseFiltering = false;
             this.olvColumnDictionary.Width = 398;
             // 
             // olvColumnIPTWPType
             // 
             this.olvColumnIPTWPType.AspectName = "IPTWPPacket.IPTWPType";
+            this.olvColumnIPTWPType.ClusterGetter = null;
             this.olvColumnIPTWPType.Text = "IPTWP Type";
             // 
             // olvColumnComId
             // 
             this.olvColumnComId.AspectName = "IPTWPPacket.Comid";
+            this.olvColumnComId.ClusterGetter = null;
             this.olvColumnComId.Text = "ComID";
             // 
             // contextMenuMouse
@@ -218,22 +234,22 @@
         #endregion
 
         private BrightIdeasSoftware.FastObjectListView fastObjectListView1;
-        private BrightIdeasSoftware.OLVColumn olvColumnNo;
-        private BrightIdeasSoftware.OLVColumn olvColumnDate;
-        private BrightIdeasSoftware.OLVColumn olvColumnFrom;
-        private BrightIdeasSoftware.OLVColumn olvColumnTo;
-        private BrightIdeasSoftware.OLVColumn olvColumnName;
-        private BrightIdeasSoftware.OLVColumn olvColumnDictionary;
-        private BrightIdeasSoftware.OLVColumn olvColumnProtocol;
-        private BrightIdeasSoftware.OLVColumn olvColumnIPTWPType;
+        private MyOLVColumn olvColumnNo;
+        private MyOLVColumn olvColumnDate;
+        private MyOLVColumn olvColumnFrom;
+        private MyOLVColumn olvColumnTo;
+        private MyOLVColumn olvColumnName;
+        private MyOLVColumn olvColumnDictionary;
+        private MyOLVColumn olvColumnProtocol;
+        private MyOLVColumn olvColumnIPTWPType;
         private System.Windows.Forms.Timer timerAddBuffer;
-        private BrightIdeasSoftware.OLVColumn olvColumnComId;
-        private BrightIdeasSoftware.OLVColumn olvColumnProtocolInfo;
+        private MyOLVColumn olvColumnComId;
+        private MyOLVColumn olvColumnProtocolInfo;
         private System.Windows.Forms.ContextMenuStrip contextMenuMouse;
         private System.Windows.Forms.ToolStripMenuItem copyRawByteshexStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
-        private BrightIdeasSoftware.OLVColumn olvColumnMS;
+        private MyOLVColumn olvColumnMS;
     }
 }
