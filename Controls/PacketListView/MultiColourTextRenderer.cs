@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using sonesson_tools.DataParsers;
 
-namespace IPTComShark
+namespace IPTComShark.Controls
 {
     public class MultiColourTextRenderer : BaseRenderer
     {
@@ -24,27 +22,27 @@ namespace IPTComShark
 
 
             //Dictionary<string, string> dic = new Dictionary<string, string>();
-            var tuples = new List<Tuple<string,string>>();
+            var tuples = new List<Tuple<string, string>>();
             if (RowObject is CapturePacket)
             {
                 var cpac = (CapturePacket) RowObject;
 
                 if (cpac.ParsedData == null)
                     return;
-                                
+
                 var delta = cpac.GetDelta();
 
-                foreach(var field in delta)
+                foreach (var field in delta)
                 {
-                    if(field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
+                    if (field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
                         tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
-                }                
+                }
             }
             else
             {
                 return;
             }
-            
+
             Font font1 = Font;
             var font2 = new Font(Font, FontStyle.Bold);
 

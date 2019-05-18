@@ -89,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CapturePacket.cs" />
+    <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
+    <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
+    <Compile Include="Controls\PacketListView\PacketSource.cs" />
     <Compile Include="Export\Export.cs" />
     <Compile Include="FileManager\DataSource.cs" />
     <Compile Include="FileManager\DatePicker.cs">
@@ -118,7 +121,7 @@
       <DependentUpon>InterfacePicker.cs</DependentUpon>
     </Compile>
     <Compile Include="IPTWPPacket.cs" />
-    <Compile Include="MultiColourTextRenderer.cs">
+    <Compile Include="Controls\PacketListView\MultiColourTextRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PacketDisplay.cs">
@@ -127,10 +130,10 @@
     <Compile Include="Controls\PacketDisplay.Designer.cs">
       <DependentUpon>PacketDisplay.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PacketListView.cs">
+    <Compile Include="Controls\PacketListView\PacketListView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PacketListView.Designer.cs">
+    <Compile Include="Controls\PacketListView\PacketListView.Designer.cs">
       <DependentUpon>PacketListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -159,7 +162,7 @@
     <EmbeddedResource Include="Controls\PacketDisplay.resx">
       <DependentUpon>PacketDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PacketListView.resx">
+    <EmbeddedResource Include="Controls\PacketListView\PacketListView.resx">
       <DependentUpon>PacketListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

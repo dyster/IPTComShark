@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using sonesson_tools;
@@ -475,34 +471,6 @@ namespace IPTComShark.Controls
         }
     }
 
-    public class MyFilterMenuBuilder : FilterMenuBuilder
-    {
-        protected override List<ICluster> Cluster(IClusteringStrategy strategy, ObjectListView listView,
-            OLVColumn column)
-        {
-            if (column is MyOLVColumn mycolumn && mycolumn.ClusterGetter != null)
-            {
-                var list = mycolumn.ClusterGetter.Invoke(listView.ObjectsForClustering.Cast<CapturePacket>());
-                if (strategy is ClusteringStrategy cstrategy)
-                {
-                    foreach (var c in list)
-                    {
-                        string format = (c.Count == 1)
-                            ? cstrategy.DisplayLabelFormatSingular
-                            : cstrategy.DisplayLabelFormatPlural;
-                        c.DisplayLabel = string.IsNullOrEmpty(format)
-                            ? c.DisplayLabel
-                            : string.Format(format, c.DisplayLabel, c.Count);
-                    }
-                }
-
-                return list;
-            }
-
-            return base.Cluster(strategy, listView, column);
-        }
-    }
-
     public class MyOLVColumn : OLVColumn
     {
         public ClusterGetterDelegate ClusterGetter { get; set; }
@@ -525,75 +493,6 @@ namespace IPTComShark.Controls
         public bool IsVisible { get; set; }
     }
 
-    public class PacketListSettings : INotifyPropertyChanged
-    {
-        private bool _ignoreLoopback = true;
-        private bool _autoScroll = true;
-        private bool _ignoreDupePd = true;
-        private bool _ignoreUnknown = true;
-        private string _ignoreComid;
-
-        public string IgnoreComid
-        {
-            get => _ignoreComid;
-            set
-            {
-                _ignoreComid = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool AutoScroll
-        {
-            get => _autoScroll;
-            set
-            {
-                _autoScroll = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IgnoreUnknownData
-        {
-            get => _ignoreUnknown;
-            set
-            {
-                _ignoreUnknown = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IgnoreDuplicatedPD
-        {
-            get => _ignoreDupePd;
-            set
-            {
-                _ignoreDupePd = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Ignore any loopback traffic (localhost to localhost)
-        /// </summary>
-        public bool IgnoreLoopback
-        {
-            get => _ignoreLoopback;
-            set
-            {
-                _ignoreLoopback = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
     public class PacketSelectedEventArgs : EventArgs
     {
         public PacketSelectedEventArgs(CapturePacket packet)
@@ -602,66 +501,5 @@ namespace IPTComShark.Controls
         }
 
         public CapturePacket Packet { get; }
-    }
-
-    public class MySource : IVirtualListDataSource
-    {
-        private List<CapturePacket> _list = new List<CapturePacket>();
-
-        public object GetNthObject(int n)
-        {
-            return _list[n];
-        }
-
-        public int GetObjectCount()
-        {
-            return _list.Count;
-        }
-
-        public int GetObjectIndex(object model)
-        {
-            var cp = (CapturePacket) model;
-            return _list.IndexOf(cp, 0);
-        }
-
-        public void PrepareCache(int first, int last)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int SearchText(string value, int first, int last, OLVColumn column)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Sort(OLVColumn column, SortOrder order)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddObjects(ICollection modelObjects)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertObjects(int index, ICollection modelObjects)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveObjects(ICollection modelObjects)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetObjects(IEnumerable collection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateObject(int index, object modelObject)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
