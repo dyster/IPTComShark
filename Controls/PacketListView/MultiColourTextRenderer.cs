@@ -23,10 +23,8 @@ namespace IPTComShark.Controls
 
             //Dictionary<string, string> dic = new Dictionary<string, string>();
             var tuples = new List<Tuple<string, string>>();
-            if (RowObject is CapturePacket)
+            if (RowObject is CapturePacket cpac)
             {
-                var cpac = (CapturePacket) RowObject;
-
                 if (cpac.ParsedData == null)
                     return;
 

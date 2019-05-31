@@ -149,6 +149,7 @@ namespace IPTComShark
 
                         Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket) ipv4.PayloadPacket;
+                        ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
                         IPTWPPacket = IPTWPPacket.Extract(udp);
                         MainForm.ParseIPTWPData(this);
                         if (IPTWPPacket != null)
@@ -162,6 +163,7 @@ namespace IPTComShark
 
                     case IPProtocolType.ICMP:
                         Protocol = ProtocolType.ICMP;
+                        ProtocolInfo = (ipv4.PayloadPacket as ICMPv4Packet).TypeCode.ToString();
                         // dunno
                         break;
 
@@ -174,9 +176,10 @@ namespace IPTComShark
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            else if (packet.PayloadPacket is ARPPacket)
+            else if (packet.PayloadPacket is ARPPacket arpPacket)
             {
                 //ARPPacket = (ARPPacket)packet.PayloadPacket;
+                ProtocolInfo = arpPacket.Operation.ToString();
 
                 Protocol = ProtocolType.ARP;
             }

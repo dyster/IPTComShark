@@ -5,15 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using IPTComShark.XmlFiles;
+using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Controls
 {
     public partial class PacketDisplay : UserControl
     {
+        private Font _startFont;
+        private int _startNameWidth;
+
         public PacketDisplay()
         {
             InitializeComponent();
+
+            _startFont = dataListViewRight.Font;
+            _startNameWidth = olvColumnDataLineName.Width;
 
             dataListViewRight.RowFormatter += item =>
             {
@@ -30,6 +37,8 @@ namespace IPTComShark.Controls
 
         public void SetObject(CapturePacket packet)
         {
+            dataListViewRight.Font = _startFont;
+
             textBoxComid.Text = string.Empty;
             textBoxRAW.Text = string.Empty;
             textBoxSize.Text = string.Empty;
@@ -38,6 +47,8 @@ namespace IPTComShark.Controls
             var dataLines = new List<DataLine>();
             if (packet.IPTWPPacket != null)
             {
+                olvColumnDataLineName.Width = _startNameWidth;
+
                 textBoxComid.Text = packet.IPTWPPacket.Comid.ToString();
                 textBoxRAW.Text = BitConverter.ToString(packet.IPTWPPacket.IPTWPPayload);
                 textBoxSize.Text = packet.IPTWPPacket.IPTWPSize.ToString();
@@ -76,6 +87,8 @@ namespace IPTComShark.Controls
 
             if (packet.SS27Packet != null)
             {
+                olvColumnDataLineName.Width = _startNameWidth;
+
                 dataLines.Add(new DataLine() {IsCategory = true, Name = "Header"});
                 dataLines.Add(new DataLine() {Name = "Level", Value = packet.SS27Packet.Level});
                 dataLines.Add(new DataLine() {Name = "Mode", Value = packet.SS27Packet.Mode});
@@ -108,9 +121,30 @@ namespace IPTComShark.Controls
                 }
             }
 
+            if (dataLines.Count == 0)
+            {
+                dataListViewRight.Font = new Font(FontFamily.GenericMonospace, _startFont.Size);
+                olvColumnDataLineName.Width = this.Width;
+
+                var dotpacket = Packet.ParsePacket((LinkLayers) packet.RawCapture.LinkLayer, packet.RawCapture.RawData);
+
+                var str = dotpacket.ToString(StringOutputType.Verbose);
+                foreach (var s in str.Split(new[] {Environment.NewLine}, StringSplitOptions.None))
+                {
+                    dataLines.Add(new DataLine() {Name = s});
+                }
+
+                var hex = dotpacket.PrintHex();
+                foreach (var s in hex.Split(new[] {Environment.NewLine}, StringSplitOptions.None))
+                {
+                    dataLines.Add(new DataLine() {Name = s});
+                }
+            }
+
             dataListViewRight.DataSource = dataLines;
         }
 
+        // TODO this is not needed anymore I believe
         private static List<DataLine> ParseDataByIpt(Dataset datasetByComId, IPTWPPacket packet)
         {
             var dataLines = new List<DataLine>();
