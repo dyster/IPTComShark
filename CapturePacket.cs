@@ -6,7 +6,6 @@ using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
-using SharpPcap;
 
 namespace IPTComShark
 {

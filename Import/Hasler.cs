@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;

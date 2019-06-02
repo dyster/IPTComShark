@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IPTComShark.Windows;
-using PacketDotNet;
 using sonesson_tools.FileReaders;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
-using System.Threading;
 
 namespace IPTComShark.FileManager
 {

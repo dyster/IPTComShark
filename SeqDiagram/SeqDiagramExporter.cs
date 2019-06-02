@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
 using sonesson_tools;
 using Svg;
 using Svg.DataTypes;

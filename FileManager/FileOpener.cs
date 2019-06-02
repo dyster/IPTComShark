@@ -1,18 +1,13 @@
-﻿using SharpCompress.Archives;
-using SharpCompress.Archives.SevenZip;
+﻿using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using sonesson_tools.FileReaders;
 using sonesson_tools.FileWriters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IPTComShark.FileManager
