@@ -2,32 +2,23 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
 using System.Windows.Forms;
-using IPTComShark.FileManager;
 using IPTComShark.Import;
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
-using PacketDotNet;
 using SharpPcap;
-using SharpPcap.LibPcap;
 using SharpPcap.WinPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
-using sonesson_tools.FileWriters;
 using sonesson_tools.Generic;
 
 namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        private static readonly VSIS210 VSIS210 = new VSIS210();
-        private static readonly TPWS TPWS = new TPWS();
-        private static DataSetCollection GDB;
+        private static readonly List<DataSetCollection> DataCollections = new List<DataSetCollection>();
 
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
@@ -53,7 +44,11 @@ namespace IPTComShark
 
             packetDisplay1.IptConfigReader = IptConfigReader;
 
-            GDB = IptConfigReader.GetDataSetCollection();
+            DataCollections.Add(new TPWS());
+            DataCollections.Add(new Parsers.ETCSDiag());
+            DataCollections.Add(new VSIS210());
+            DataCollections.Add(IptConfigReader.GetDataSetCollection());
+
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
@@ -97,7 +92,7 @@ namespace IPTComShark
             {
                 statusRight.Text = text;
                 List<Log> logs = Logger.Instance.GetLog();
-                var lastLogs = logs.Skip(Math.Max(0, logs.Count() - 10)).ToList();
+                var lastLogs = logs.Skip(Math.Max(0, logs.Count - 10)).ToList();
                 statusRight.ToolTipText = string.Join(Environment.NewLine, lastLogs);
             }
         }
@@ -125,20 +120,17 @@ namespace IPTComShark
 
             try
             {
-                DataSetDefinition dataSetDefinition;
+                DataSetDefinition dataSetDefinition = null;
 
-
-                //if (dataSetDefinition == null)
-                dataSetDefinition = TPWS.GetDataSetDefinition(iptwpPacket.Comid);
-
-                if (dataSetDefinition == null)
-                    dataSetDefinition = VSIS210.GetDataSetDefinition(iptwpPacket.Comid);
-
-                if (dataSetDefinition == null)
+                foreach (var collection in DataCollections)
                 {
-                    dataSetDefinition = GDB.FindByIdentifier(iptwpPacket.Comid.ToString());
+                    var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
+                    if (find != null)
+                    {
+                        dataSetDefinition = find;
+                        break;
+                    }
                 }
-
 
                 if (dataSetDefinition != null)
                 {
@@ -171,13 +163,13 @@ namespace IPTComShark
         private void Start()
         {
             fileToolStripMenuItem.Enabled = false;
-            
+
             //_pcapWriter = new PCAPWriter(@"c:\temp", "testfile");
             //_pcapWriter.RotationTime = 30;
             //_pcapWriter.Start();
 
 
-            if(!backgroundWorker1.IsBusy)
+            if (!backgroundWorker1.IsBusy)
                 backgroundWorker1.RunWorkerAsync();
         }
 
@@ -496,11 +488,11 @@ namespace IPTComShark
         }
     }
 
-    public enum Protocol
-    {
-        Unknown,
-        UDP,
-        TCP,
-        IPTWP
-    }
+    //public enum Protocol
+    //{
+    //    Unknown,
+    //    UDP,
+    //    TCP,
+    //    IPTWP
+    //}
 }

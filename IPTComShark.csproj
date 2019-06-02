@@ -114,6 +114,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Parsers\ETCSDiag.cs" />
     <Compile Include="Windows\InterfacePicker.cs">
       <SubType>Form</SubType>
     </Compile>
