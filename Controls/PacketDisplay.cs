@@ -55,9 +55,7 @@ namespace IPTComShark.Controls
                 textBoxType.Text = packet.IPTWPPacket.IPTWPType;
 
 
-                Dataset datasetByComId = null;
-                if (IptConfigReader != null)
-                    datasetByComId = IptConfigReader.GetDatasetByComId(packet.IPTWPPacket.Comid);
+                
 
 
                 if (packet.ParsedData?.GetDataDictionary() != null) // a parser has chugged out something
@@ -75,14 +73,12 @@ namespace IPTComShark.Controls
                             Changed = changed
                         });
                     }
-                else if (datasetByComId == null)
+                else 
                     for (var i = 0; i < packet.IPTWPPacket.IPTWPPayload.Length; i++)
                     {
                         byte b = packet.IPTWPPacket.IPTWPPayload[i];
                         dataLines.Add(new DataLine {Name = "Byte " + i, Type = "Byte", Value = $"0x{b:X2} = {b}"});
                     }
-                else
-                    dataLines.AddRange(ParseDataByIpt(datasetByComId, packet.IPTWPPacket));
             }
 
             if (packet.SS27Packet != null)
