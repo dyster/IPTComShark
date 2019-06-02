@@ -13,6 +13,8 @@ namespace IPTComShark
     [Serializable]
     public class CapturePacket : IComparable
     {
+        private readonly IPAddress _vapAddress = IPAddress.Parse("192.168.1.12");
+
         /// <summary>
         /// Constructor to create an artifical packet
         /// </summary>
@@ -149,7 +151,84 @@ namespace IPTComShark
 
                         Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket) ipv4.PayloadPacket;
-                        ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
+                        
+                        if (Equals(ipv4.SourceAddress, _vapAddress))
+                        {
+                            if (udp.DestinationPort == 50023)
+                                ProtocolInfo = "VAP->ETC (TR)";
+                            else if (udp.DestinationPort == 50030)
+                                ProtocolInfo = "VAP->ETC (DMI1 to ETC)";
+                            else if (udp.DestinationPort == 50031)
+                                ProtocolInfo = "VAP->ETC (DMI2 to ETC)";
+                            else if (udp.DestinationPort == 50032)
+                                ProtocolInfo = "VAP->ETC (DMI1 to iSTM)";
+                            else if (udp.DestinationPort == 50033)
+                                ProtocolInfo = "VAP->ETC (DMI2 to iSTM)";
+                            else if (udp.DestinationPort == 50051)
+                                ProtocolInfo = "VAP->ETC (DMI1 to gSTM)";
+                            else if (udp.DestinationPort == 50052)
+                                ProtocolInfo = "VAP->ETC (DMI2 to gSTM)";
+                            else if (udp.DestinationPort == 50024)
+                                ProtocolInfo = "VAP->ETC (DMI1 EVC-102)";
+                            else if (udp.DestinationPort == 50025)
+                                ProtocolInfo = "VAP->ETC (DMI2 EVC-102)";
+                            else if (udp.DestinationPort == 50039)
+                                ProtocolInfo = "VAP->ETC (STM to JRU)";
+                            else if (udp.DestinationPort == 50041)
+                                ProtocolInfo = "VAP->ETC (JRU Status)";
+                            else if (udp.DestinationPort == 50050)
+                                ProtocolInfo = "VAP->ETC (VAP Status)";
+                            else if (udp.DestinationPort == 50015)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                ProtocolInfo = "VAP->OPC (DMI to STM)";
+                            }
+                            else if (udp.DestinationPort == 5514)
+                                ProtocolInfo = "VAP->BDS (VAP Diag)";
+                        }
+                        else if (Equals(ipv4.DestinationAddress, _vapAddress))
+                        {
+                            if (udp.DestinationPort == 50022)
+                                ProtocolInfo = "ETC->VAP (OBU)";
+                            else if (udp.DestinationPort == 50026)
+                                ProtocolInfo = "ETC->VAP (ETC to DMI1)";
+                            else if (udp.DestinationPort == 50027)
+                                ProtocolInfo = "ETC->VAP (ETC to DMI2)";
+                            else if (udp.DestinationPort == 50037)
+                                ProtocolInfo = "ETC->VAP (EVC-1&7)";
+                            else if (udp.DestinationPort == 50035)
+                                ProtocolInfo = "ETC->VAP (EVC-1&7)";
+                            else if (udp.DestinationPort == 50028)
+                                ProtocolInfo = "ETC->VAP (iSTM to DMI1)";
+                            else if (udp.DestinationPort == 50029)
+                                ProtocolInfo = "ETC->VAP (iSTM to DMI2)";
+                            else if (udp.DestinationPort == 50055)
+                                ProtocolInfo = "ETC->VAP (gSTM to DMI1)";
+                            else if (udp.DestinationPort == 50056)
+                                ProtocolInfo = "ETC->VAP (gSTM to DMI2)";
+                            else if (udp.DestinationPort == 50034)
+                                ProtocolInfo = "ETC->VAP (to JRU)";
+                            else if (udp.DestinationPort == 50057)
+                                ProtocolInfo = "ETC->VAP (VAP COnfig)";
+                            else if (udp.DestinationPort == 50014)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                ProtocolInfo = "OPC->VAP";
+                            }
+                            else if (udp.DestinationPort == 50036)
+                                ProtocolInfo = "BDS->VAP (Diag)";
+                            else if (udp.DestinationPort == 50070)
+                                ProtocolInfo = "ETC->VAP (ATO)";
+                            else if (udp.DestinationPort == 50068)
+                                ProtocolInfo = "ETC->VAP (ATO)";
+                            else if (udp.DestinationPort == 50072)
+                                ProtocolInfo = "ETC->VAP (ATO)";
+                        }
+                        else
+                        {
+                            ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
+                        }
+                        
                         IPTWPPacket = IPTWPPacket.Extract(udp);
                         MainForm.ParseIPTWPData(this);
                         if (IPTWPPacket != null)
@@ -323,6 +402,7 @@ namespace IPTComShark
         TCP,
         UDP,
         ICMP,
-        IGMP
+        IGMP,
+        UDP_SPL
     }
 }
