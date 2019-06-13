@@ -122,19 +122,29 @@ namespace IPTComShark.Controls
                 dataListViewRight.Font = new Font(FontFamily.GenericMonospace, _startFont.Size);
                 olvColumnDataLineName.Width = this.Width;
 
-                var dotpacket = Packet.ParsePacket((LinkLayers) packet.RawCapture.LinkLayer, packet.RawCapture.RawData);
-
-                var str = dotpacket.ToString(StringOutputType.Verbose);
-                foreach (var s in str.Split(new[] {Environment.NewLine}, StringSplitOptions.None))
+                try
                 {
-                    dataLines.Add(new DataLine() {Name = s});
+                    var dotpacket = Packet.ParsePacket((LinkLayers)packet.RawCapture.LinkLayer, packet.RawCapture.RawData);
+
+                    var str = dotpacket.ToString(StringOutputType.Verbose);
+                    foreach (var s in str.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                    {
+                        dataLines.Add(new DataLine() { Name = s });
+                    }
+
+                    var hex = dotpacket.PrintHex();
+                    foreach (var s in hex.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                    {
+                        dataLines.Add(new DataLine() { Name = s });
+                    }
+                }
+                catch (Exception e)
+                {
+                    foreach (var s in e.ToString().Split(new[] {Environment.NewLine}, StringSplitOptions.None)) 
+                        dataLines.Add(new DataLine() { Name = s });
                 }
 
-                var hex = dotpacket.PrintHex();
-                foreach (var s in hex.Split(new[] {Environment.NewLine}, StringSplitOptions.None))
-                {
-                    dataLines.Add(new DataLine() {Name = s});
-                }
+                
             }
 
             dataListViewRight.DataSource = dataLines;

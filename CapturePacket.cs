@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using PacketDotNet;
@@ -150,7 +151,14 @@ namespace IPTComShark
 
                         Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket) ipv4.PayloadPacket;
-                        
+
+                        if (udp == null)
+                        {
+                            ProtocolInfo = "Malformed UDP";
+                            this.Error = "Malformed UDP";
+                            return;
+                        }
+
                         if (Equals(ipv4.SourceAddress, _vapAddress))
                         {
                             if (udp.DestinationPort == 50023)
