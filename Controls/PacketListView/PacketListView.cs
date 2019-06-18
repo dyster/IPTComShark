@@ -237,7 +237,7 @@ namespace IPTComShark.Controls
 
                 var localhost = IPAddress.Parse("127.0.0.1");
 
-                if (Settings.IgnoreLoopback && Equals(new IPAddress(capturePacket.Source), localhost) &&
+                if (Settings.IgnoreLoopback && capturePacket.Source != null && capturePacket.Destination != null && Equals(new IPAddress(capturePacket.Source), localhost) &&
                     Equals(new IPAddress(capturePacket.Destination), localhost))
                     return false;
 
