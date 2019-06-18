@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PacketDotNet;
+using System;
 using System.Collections.Generic;
-using PacketDotNet;
 
 namespace IPTComShark
 {
@@ -51,28 +51,28 @@ namespace IPTComShark
                     return null;
 
                 uint timestamp =
-                    BitConverter.ToUInt32(new[] {payload[3], payload[2], payload[1], payload[0]},
+                    BitConverter.ToUInt32(new[] { payload[3], payload[2], payload[1], payload[0] },
                         0);
                 uint protoversion =
-                    BitConverter.ToUInt32(new[] {payload[7], payload[6], payload[5], payload[4]},
+                    BitConverter.ToUInt32(new[] { payload[7], payload[6], payload[5], payload[4] },
                         0);
                 uint topocount =
-                    BitConverter.ToUInt32(new[] {payload[11], payload[10], payload[9], payload[8]},
+                    BitConverter.ToUInt32(new[] { payload[11], payload[10], payload[9], payload[8] },
                         0);
                 uint comid = BitConverter.ToUInt32(
-                    new[] {payload[15], payload[14], payload[13], payload[12]}, 0);
-                ushort type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
-                ushort datasetlength = BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0);
+                    new[] { payload[15], payload[14], payload[13], payload[12] }, 0);
+                ushort type = BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
+                ushort datasetlength = BitConverter.ToUInt16(new[] { payload[19], payload[18] }, 0);
                 ushort userstatus =
-                    BitConverter.ToUInt16(new[] {payload[21], payload[20]},
+                    BitConverter.ToUInt16(new[] { payload[21], payload[20] },
                         0); // only used in Message Data
-                ushort headerlength = BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+                ushort headerlength = BitConverter.ToUInt16(new[] { payload[23], payload[22] }, 0);
 
                 // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
                 int totalsize = headerlength + 4 + datasetlength;
 
                 // calculate the number of datasets and add the number of framechecks we should have
-                int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
+                int datasets = (int)Math.Floor((double)(datasetlength / 256)) + 1;
                 totalsize += datasets * 4;
 
                 // calculate if there should be padding

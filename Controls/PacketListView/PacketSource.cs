@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 
 namespace IPTComShark.Controls
 {
@@ -22,7 +22,7 @@ namespace IPTComShark.Controls
 
         public int GetObjectIndex(object model)
         {
-            var cp = (CapturePacket) model;
+            var cp = (CapturePacket)model;
             return _list.IndexOf(cp, 0);
         }
 

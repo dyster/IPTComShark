@@ -1,10 +1,10 @@
-﻿using System;
+﻿using sonesson_tools;
+using sonesson_tools.BitStreamParser;
+using sonesson_tools.DataParsers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Import
 {
@@ -22,7 +22,7 @@ namespace IPTComShark.Import
 
         private static byte[] MakeTcpBytes(byte[] bytes)
         {
-            var lenBytes = BitConverter.GetBytes((ushort) bytes.Length);
+            var lenBytes = BitConverter.GetBytes((ushort)bytes.Length);
             var outBytes = new byte[bytes.Length + 2];
             outBytes[0] = lenBytes[1];
             outBytes[1] = lenBytes[0];
@@ -47,11 +47,11 @@ namespace IPTComShark.Import
                 byte[] bytearray = StringToByteArray(hexstring);
 
 
-                var ss27 = (SS27Packet) ss27Parser.ParseData(bytearray);
+                var ss27 = (SS27Packet)ss27Parser.ParseData(bytearray);
 
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
-                capturePacket.ParsedData = new ParsedDataSet() {ParsedFields = new List<ParsedField>(ss27.Header)};
+                capturePacket.ParsedData = new ParsedDataSet() { ParsedFields = new List<ParsedField>(ss27.Header) };
                 capturePacket.No = sortIndex++;
                 capturePacket.SS27Packet = ss27;
 

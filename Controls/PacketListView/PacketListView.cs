@@ -1,11 +1,11 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using sonesson_tools;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
-using sonesson_tools;
 
 namespace IPTComShark.Controls
 {
@@ -43,7 +43,7 @@ namespace IPTComShark.Controls
 
             olvColumnMS.AspectGetter += rowObject =>
             {
-                var packet = (CapturePacket) rowObject;
+                var packet = (CapturePacket)rowObject;
                 //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
                 return packet?.Date.Millisecond;
             };
@@ -131,7 +131,7 @@ namespace IPTComShark.Controls
             {
                 if (item.RowObject != null)
                 {
-                    var packet = (CapturePacket) item.RowObject;
+                    var packet = (CapturePacket)item.RowObject;
                     if (packet.Error != null)
                         item.BackColor = ErrorColor;
                     else
@@ -161,13 +161,13 @@ namespace IPTComShark.Controls
 
             olvColumnFrom.AspectGetter += rowObject =>
             {
-                var capturePacket = (CapturePacket) rowObject;
+                var capturePacket = (CapturePacket)rowObject;
                 return capturePacket?.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
             };
 
             olvColumnTo.AspectGetter += rowObject =>
             {
-                var capturePacket = (CapturePacket) rowObject;
+                var capturePacket = (CapturePacket)rowObject;
                 return capturePacket?.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
             };
 
@@ -195,7 +195,7 @@ namespace IPTComShark.Controls
             var list = new List<ICluster>();
             foreach (var pair in dic)
             {
-                list.Add(new Cluster(pair.Key) {Count = pair.Value, DisplayLabel = pair.Key});
+                list.Add(new Cluster(pair.Key) { Count = pair.Value, DisplayLabel = pair.Key });
             }
 
             return list;
@@ -220,7 +220,9 @@ namespace IPTComShark.Controls
             {
                 cset.Add(new ColumnInfo()
                 {
-                    DisplayIndex = column.DisplayIndex, Name = column.Text, Width = column.Width,
+                    DisplayIndex = column.DisplayIndex,
+                    Name = column.Text,
+                    Width = column.Width,
                     IsVisible = column.IsVisible
                 });
             }
@@ -233,7 +235,7 @@ namespace IPTComShark.Controls
         {
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
-                var capturePacket = (CapturePacket) model;
+                var capturePacket = (CapturePacket)model;
 
                 var localhost = IPAddress.Parse("127.0.0.1");
 
@@ -303,7 +305,7 @@ namespace IPTComShark.Controls
         {
             if (fastObjectListView1.SelectedObject == null) return;
 
-            var packet = (CapturePacket) fastObjectListView1.SelectedObject;
+            var packet = (CapturePacket)fastObjectListView1.SelectedObject;
             OnPacketSelected(packet);
         }
 
@@ -405,7 +407,7 @@ namespace IPTComShark.Controls
 
         private void copyRawByteshexStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var s = BitConverter.ToString(o.RawCapture.RawData);
@@ -417,7 +419,7 @@ namespace IPTComShark.Controls
 
         private void copyParsedDatatextStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var s = Functions.MakeCommentString(o.ParsedData.GetDataDictionary());
@@ -429,7 +431,7 @@ namespace IPTComShark.Controls
 
         private void analyzeChainToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var linked = new LinkedList<CapturePacket>();
@@ -446,7 +448,7 @@ namespace IPTComShark.Controls
                     o = o.Next;
                 }
 
-                var saveFileDialog = new SaveFileDialog {DefaultExt = "xlsx"};
+                var saveFileDialog = new SaveFileDialog { DefaultExt = "xlsx" };
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
@@ -457,7 +459,7 @@ namespace IPTComShark.Controls
 
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var s = o.IPTWPPacket.Comid.ToString();

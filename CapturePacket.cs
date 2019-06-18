@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Net;
-using PacketDotNet;
+﻿using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace IPTComShark
 {
@@ -39,7 +38,7 @@ namespace IPTComShark
             Packet packet = null;
             try
             {
-                packet = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+                packet = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
             }
             catch (Exception e)
             {
@@ -52,7 +51,7 @@ namespace IPTComShark
 
             if (packet.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet) packet.PayloadPacket;
+                var ipv4 = (IPv4Packet)packet.PayloadPacket;
 
 
                 Source = ipv4.SourceAddress.GetAddressBytes();
@@ -62,7 +61,7 @@ namespace IPTComShark
                 switch (ipv4.Protocol)
                 {
                     case IPProtocolType.TCP:
-                        var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
+                        var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
 
                         ProtocolInfo =
@@ -88,10 +87,10 @@ namespace IPTComShark
 
                             try
                             {
-                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
-                                var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
+                                var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
 
                                 var outlist = new List<ParsedField>();
                                 outlist.Add(ParsedField.Create("Mode", ss27.Mode));
@@ -110,7 +109,7 @@ namespace IPTComShark
                                     // TODO FIX THIS SO IT WORKS
                                     var parsedFields = ss27.Events.Select(e =>
                                         ParsedField.Create(e.EventType.ToString(), e.Description)).ToList();
-                                    ParsedData = new ParsedDataSet() {ParsedFields = parsedFields};
+                                    ParsedData = new ParsedDataSet() { ParsedFields = parsedFields };
                                     //ParsedData = ParsedDataSet.Create("Event", ev);
                                 }
 
@@ -132,7 +131,7 @@ namespace IPTComShark
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
-                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 ParsedData = VSIS210.JRU_STATUS.Parse(buffer);
@@ -150,7 +149,7 @@ namespace IPTComShark
                     case IPProtocolType.UDP:
 
                         Protocol = ProtocolType.UDP;
-                        var udp = (UdpPacket) ipv4.PayloadPacket;
+                        var udp = (UdpPacket)ipv4.PayloadPacket;
 
                         if (udp == null)
                         {
@@ -235,7 +234,7 @@ namespace IPTComShark
                         {
                             ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
                         }
-                        
+
                         IPTWPPacket = IPTWPPacket.Extract(udp);
                         MainForm.ParseIPTWPData(this);
                         if (IPTWPPacket != null)
@@ -294,7 +293,7 @@ namespace IPTComShark
                 Protocol = ProtocolType.UNKNOWN;
 #if DEBUG
                 // if we are in debug, we might want to know what is in the unknown
-//                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
+                //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
 #endif
             }
         }
@@ -369,10 +368,10 @@ namespace IPTComShark
                         break;
                     ParsedField field = this.ParsedData[i];
                     ParsedField lookup = Previous.ParsedData[i];
-                                        
+
                     if (lookup.Value.Equals(field.Value))
                         delta.Remove(field);
-                    
+
                 }
             }
 
@@ -381,7 +380,7 @@ namespace IPTComShark
 
         public int CompareTo(object obj)
         {
-            var packet = (CapturePacket) obj;
+            var packet = (CapturePacket)obj;
             return this.Date.CompareTo(packet.Date);
         }
     }

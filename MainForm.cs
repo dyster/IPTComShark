@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
-using IPTComShark.Import;
+﻿using IPTComShark.Import;
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
 using SharpPcap;
@@ -13,6 +7,12 @@ using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
 using sonesson_tools.Generic;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace IPTComShark
 {
@@ -103,7 +103,7 @@ namespace IPTComShark
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             _capturedData += e.Packet.Data.Length;
-            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
+            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType)e.Packet.LinkLayerType);
             var capturePacket = new CapturePacket(raw);
             capturePacket.No = _seed++;
             packetListView1.Add(capturePacket);
@@ -305,7 +305,7 @@ namespace IPTComShark
             if (dialogResult != DialogResult.OK) return;
             using (var pcapWriter = new sonesson_tools.FileWriters.PCAPWriter(saveFileDialog.FileName))
             {
-                pcapWriter.LinkLayerType = (uint) layer;
+                pcapWriter.LinkLayerType = (uint)layer;
                 pcapWriter.Start();
                 foreach (Raw raw in allRawCaptures)
                 {
@@ -421,7 +421,7 @@ namespace IPTComShark
 
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    capturePackets = fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath});
+                    capturePackets = fileManager.OpenFiles(new[] { folderBrowserDialog.SelectedPath });
                 }
 
                 foreach (CapturePacket capturePacket in capturePackets)
@@ -474,7 +474,7 @@ namespace IPTComShark
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] data = (string[]) e.Data.GetData(DataFormats.FileDrop);
+                string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 using (var fileManager = new FileManager.FileManager())
                 {

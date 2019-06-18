@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BrightIdeasSoftware;
+using System.Collections.Generic;
 using System.Linq;
-using BrightIdeasSoftware;
 
 namespace IPTComShark.Controls
 {

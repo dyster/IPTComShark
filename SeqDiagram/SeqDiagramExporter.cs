@@ -1,3 +1,7 @@
+using sonesson_tools;
+using Svg;
+using Svg.DataTypes;
+using Svg.Pathing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -5,10 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using sonesson_tools;
-using Svg;
-using Svg.DataTypes;
-using Svg.Pathing;
 
 namespace IPTComShark.SeqDiagram
 {
@@ -59,7 +59,7 @@ namespace IPTComShark.SeqDiagram
                 ID = "baselines",
                 Stroke = new SvgColourServer(Color.Black),
                 StrokeWidth = 2,
-                StrokeDashArray = new SvgUnitCollection {10, 10}
+                StrokeDashArray = new SvgUnitCollection { 10, 10 }
             };
             var groupDescriptionBoxes = new SvgGroup
             {
@@ -90,7 +90,7 @@ namespace IPTComShark.SeqDiagram
                 MarkerHeight = 10,
                 RefX = 9,
                 RefY = 3,
-                Orient = new SvgOrient {IsAuto = true},
+                Orient = new SvgOrient { IsAuto = true },
                 MarkerUnits = SvgMarkerUnits.StrokeWidth
             };
             var svgPath = new SvgPath
@@ -125,8 +125,8 @@ namespace IPTComShark.SeqDiagram
                 {
                     Text = device.Key.ToString(),
                     Stroke = new SvgColourServer(Color.Black),
-                    X = new SvgUnitCollection {new SvgUnit(device.Value)},
-                    Y = new SvgUnitCollection {new SvgUnit(horizontalBase - unitBoxHeight / 2)},
+                    X = new SvgUnitCollection { new SvgUnit(device.Value) },
+                    Y = new SvgUnitCollection { new SvgUnit(horizontalBase - unitBoxHeight / 2) },
                     TextAnchor = SvgTextAnchor.Middle
                 });
             }
@@ -156,23 +156,23 @@ namespace IPTComShark.SeqDiagram
                 groupArrowTexts.Children.Add(new SvgText
                 {
                     Text = sequence.Name,
-                    X = new SvgUnitCollection {new SvgUnit(middle)},
-                    Y = new SvgUnitCollection {new SvgUnit(arrowgen - 2)},
+                    X = new SvgUnitCollection { new SvgUnit(middle) },
+                    Y = new SvgUnitCollection { new SvgUnit(arrowgen - 2) },
                     TextAnchor = SvgTextAnchor.Middle
                 });
 
 
                 var svgBoxText = new SvgText
                 {
-                    X = new SvgUnitCollection {new SvgUnit(descriptionBaseline + 5)},
-                    Y = new SvgUnitCollection {new SvgUnit(arrowgen - 12)}
+                    X = new SvgUnitCollection { new SvgUnit(descriptionBaseline + 5) },
+                    Y = new SvgUnitCollection { new SvgUnit(arrowgen - 12) }
                 };
                 svgBoxText.Children.Add(new SvgTextSpan
                 {
                     Text = sequence.Time,
                     TextDecoration = SvgTextDecoration.Underline,
-                    X = new SvgUnitCollection {new SvgUnit(descriptionBaseline + 5)},
-                    Dy = new SvgUnitCollection {new SvgUnit(SvgUnitType.Em, 1.2f)}
+                    X = new SvgUnitCollection { new SvgUnit(descriptionBaseline + 5) },
+                    Dy = new SvgUnitCollection { new SvgUnit(SvgUnitType.Em, 1.2f) }
                 });
 
                 int maxstrlen = TextRenderer.MeasureText(sequence.Time, font).Width;
@@ -181,8 +181,8 @@ namespace IPTComShark.SeqDiagram
                 {
                     var both = new SvgTextSpan
                     {
-                        X = new SvgUnitCollection {new SvgUnit(descriptionBaseline + 5)},
-                        Dy = new SvgUnitCollection {new SvgUnit(SvgUnitType.Em, 1.2f)}
+                        X = new SvgUnitCollection { new SvgUnit(descriptionBaseline + 5) },
+                        Dy = new SvgUnitCollection { new SvgUnit(SvgUnitType.Em, 1.2f) }
                     };
 
                     string textKey = pair.Key + ": ";
@@ -201,13 +201,13 @@ namespace IPTComShark.SeqDiagram
                             tv1 = tv1.Substring(0, tv1.Length - 1);
                         }
 
-                        var keySpan = new SvgTextSpan {Text = textKey, FontWeight = SvgFontWeight.Bold};
-                        var valueSpan1 = new SvgTextSpan {Text = tv1};
+                        var keySpan = new SvgTextSpan { Text = textKey, FontWeight = SvgFontWeight.Bold };
+                        var valueSpan1 = new SvgTextSpan { Text = tv1 };
                         var valueSpan2 = new SvgTextSpan
                         {
                             Text = tv2,
-                            X = new SvgUnitCollection {new SvgUnit(descriptionBaseline + 5)},
-                            Dy = new SvgUnitCollection {new SvgUnit(SvgUnitType.Em, 1.2f)}
+                            X = new SvgUnitCollection { new SvgUnit(descriptionBaseline + 5) },
+                            Dy = new SvgUnitCollection { new SvgUnit(SvgUnitType.Em, 1.2f) }
                         };
                         both.Children.Add(keySpan);
                         both.Children.Add(valueSpan1);
@@ -218,8 +218,8 @@ namespace IPTComShark.SeqDiagram
                     }
                     else
                     {
-                        var keySpan = new SvgTextSpan {Text = textKey, FontWeight = SvgFontWeight.Bold};
-                        var valueSpan = new SvgTextSpan {Text = textValue};
+                        var keySpan = new SvgTextSpan { Text = textKey, FontWeight = SvgFontWeight.Bold };
+                        var valueSpan = new SvgTextSpan { Text = textValue };
                         both.Children.Add(keySpan);
                         both.Children.Add(valueSpan);
                         svgBoxText.Children.Add(both);
@@ -233,7 +233,7 @@ namespace IPTComShark.SeqDiagram
 
                 // box height calc, 30 margin + 14 per line. Then have 20 between box bottom and next arrow (at least)
 
-                var boxheight = (int) (lines * font.Height * 1.02);
+                var boxheight = (int)(lines * font.Height * 1.02);
 
 
                 // draw the box

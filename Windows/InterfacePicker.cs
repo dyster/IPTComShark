@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SharpPcap.WinPcap;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using SharpPcap.WinPcap;
 
 namespace IPTComShark
 {

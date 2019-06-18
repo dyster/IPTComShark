@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 
 namespace IPTComShark.Controls
 {

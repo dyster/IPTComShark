@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SharpCompress.Archives.SevenZip;
+using SharpCompress.Readers;
+using sonesson_tools.FileReaders;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using sonesson_tools.FileReaders;
-using SharpCompress.Archives.SevenZip;
-using SharpCompress.Readers;
 
 namespace IPTComShark.FileManager
 {
@@ -26,9 +26,9 @@ namespace IPTComShark.FileManager
             {
                 PacketCounter++;
                 UpdateProgress((PacketCounter * 100) / PacketTotal);
-                var pcapBlock = (PCAPBlock) chunk;
+                var pcapBlock = (PCAPBlock)chunk;
                 var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                    (LinkLayerType) pcapBlock.Header.network);
+                    (LinkLayerType)pcapBlock.Header.network);
                 if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
 
@@ -40,9 +40,9 @@ namespace IPTComShark.FileManager
             {
                 PacketCounter++;
                 UpdateProgress((PacketCounter * 100) / PacketTotal);
-                var pcapngBlock = (PCAPNGBlock) chunk;
+                var pcapngBlock = (PCAPNGBlock)chunk;
                 var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                    (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
+                    (LinkLayerType)pcapngBlock.Interface.LinkLayerType);
                 if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
                     OnRawParsed(raw);
 

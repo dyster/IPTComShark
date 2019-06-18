@@ -1,12 +1,12 @@
-﻿using System;
+﻿using IPTComShark.XmlFiles;
+using PacketDotNet;
+using sonesson_tools.BitStreamParser;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using IPTComShark.XmlFiles;
-using PacketDotNet;
-using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Controls
 {
@@ -24,7 +24,7 @@ namespace IPTComShark.Controls
 
             dataListViewRight.RowFormatter += item =>
             {
-                DataLine line = (DataLine) item.RowObject;
+                DataLine line = (DataLine)item.RowObject;
                 if (line.Changed)
                     item.BackColor = Color.LightSeaGreen;
                 if (line.IsCategory)
@@ -55,7 +55,7 @@ namespace IPTComShark.Controls
                 textBoxType.Text = packet.IPTWPPacket.IPTWPType;
 
 
-                
+
 
 
                 if (packet.ParsedData?.GetDataDictionary() != null) // a parser has chugged out something
@@ -73,11 +73,11 @@ namespace IPTComShark.Controls
                             Changed = changed
                         });
                     }
-                else 
+                else
                     for (var i = 0; i < packet.IPTWPPacket.IPTWPPayload.Length; i++)
                     {
                         byte b = packet.IPTWPPacket.IPTWPPayload[i];
-                        dataLines.Add(new DataLine {Name = "Byte " + i, Type = "Byte", Value = $"0x{b:X2} = {b}"});
+                        dataLines.Add(new DataLine { Name = "Byte " + i, Type = "Byte", Value = $"0x{b:X2} = {b}" });
                     }
             }
 
@@ -85,17 +85,17 @@ namespace IPTComShark.Controls
             {
                 olvColumnDataLineName.Width = _startNameWidth;
 
-                dataLines.Add(new DataLine() {IsCategory = true, Name = "Header"});
-                dataLines.Add(new DataLine() {Name = "Level", Value = packet.SS27Packet.Level});
-                dataLines.Add(new DataLine() {Name = "Mode", Value = packet.SS27Packet.Mode});
-                dataLines.Add(new DataLine() {Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString()});
+                dataLines.Add(new DataLine() { IsCategory = true, Name = "Header" });
+                dataLines.Add(new DataLine() { Name = "Level", Value = packet.SS27Packet.Level });
+                dataLines.Add(new DataLine() { Name = "Mode", Value = packet.SS27Packet.Mode });
+                dataLines.Add(new DataLine() { Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString() });
 
                 dataLines.AddRange(packet.SS27Packet.Header.Select(parsedField => new DataLine(parsedField)));
 
 
                 if (packet.SS27Packet.SubMessage != null)
                 {
-                    dataLines.Add(new DataLine() {IsCategory = true, Name = "SubMessage"});
+                    dataLines.Add(new DataLine() { IsCategory = true, Name = "SubMessage" });
                     foreach (var parsedField in packet.SS27Packet.SubMessage.ParsedFields)
                     {
                         dataLines.Add(new DataLine(parsedField));
@@ -140,11 +140,11 @@ namespace IPTComShark.Controls
                 }
                 catch (Exception e)
                 {
-                    foreach (var s in e.ToString().Split(new[] {Environment.NewLine}, StringSplitOptions.None)) 
+                    foreach (var s in e.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                         dataLines.Add(new DataLine() { Name = s });
                 }
 
-                
+
             }
 
             dataListViewRight.DataSource = dataLines;
@@ -262,7 +262,7 @@ namespace IPTComShark.Controls
                         case "CHAR8":
                             var chars = new byte[arraysize];
                             Array.Copy(packet.IPTWPPayload, pointer, chars, 0, arraysize);
-                            dataLine.Value = "String: " + Encoding.ASCII.GetString(chars).Trim((char) 0) +
+                            dataLine.Value = "String: " + Encoding.ASCII.GetString(chars).Trim((char)0) +
                                              " Bytes: " + BitConverter.ToString(chars);
                             pointer += arraysize;
                             break;
@@ -285,7 +285,7 @@ namespace IPTComShark.Controls
             }
             catch (Exception exception)
             {
-                dataLines.Add(new DataLine {Name = "EXCEPTION", Type = "THROWN", Value = exception.Message});
+                dataLines.Add(new DataLine { Name = "EXCEPTION", Type = "THROWN", Value = exception.Message });
             }
 
             return dataLines;

@@ -21,7 +21,7 @@ namespace IPTComShark.Windows
         {
             InitializeComponent();
 
-            var openFileDialog = new OpenFileDialog {Multiselect = true};
+            var openFileDialog = new OpenFileDialog { Multiselect = true };
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
@@ -60,7 +60,7 @@ namespace IPTComShark.Windows
         {
             public SendPacket(DateTime dateTime, IPv4Packet ipv4)
             {
-                UdpPacket udp = (UdpPacket) ipv4.PayloadPacket;
+                UdpPacket udp = (UdpPacket)ipv4.PayloadPacket;
                 Date = dateTime;
                 PayLoad = udp.PayloadData;
                 Destination = new IPEndPoint(ipv4.DestinationAddress, udp.DestinationPort);
@@ -87,9 +87,9 @@ namespace IPTComShark.Windows
             )
             {
                 Packet packet =
-                    Packet.ParsePacket((LinkLayers) capturePacket.RawCapture.LinkLayer,
+                    Packet.ParsePacket((LinkLayers)capturePacket.RawCapture.LinkLayer,
                         capturePacket.RawCapture.RawData);
-                IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
+                IPv4Packet ipv4 = (IPv4Packet)packet.PayloadPacket;
 
 
                 var sendPacket = new SendPacket(capturePacket.Date, ipv4);
@@ -147,7 +147,7 @@ namespace IPTComShark.Windows
                 {
                     double perc = (dequeue.Date - startTime).TotalMilliseconds / totalMS;
 
-                    backgroundWorker1.ReportProgress((int) (perc * 100));
+                    backgroundWorker1.ReportProgress((int)(perc * 100));
                 }
                 else
                 {
