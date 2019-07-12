@@ -307,6 +307,99 @@ namespace IPTComShark.Parsers
             }
         };
 
+        // checked 20190712 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_202 => new DataSetDefinition
+        {
+            Name = "DIA_201 GLOBAL_ENVIRONMENT_DATA_3",
+            Comment = "Dataset definition of part 3 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "TODO",
+                "TODO"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "RBC_ID",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "RBC identification"
+                },
+                new BitField
+                {
+                    Name = "RBC_ETCS_IDENTITY",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "RBC ETCS identity number. Allowed values according to [SS026], NID_C, NID_RBC and the packet 42 description." +
+                                "The 14 least significant bits contain the value of NID_RBC, the 10 next higher bits contain NID_C."
+                },
+                new BitField
+                {
+                    Name = "BTM_TestTime",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Time at last BTM test."
+                },
+                new BitField
+                {
+                    Name = "BRAKE_TestTime",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Time at last brake test"
+                },
+                new BitField
+                {
+                    Name = "NID_RADIO_1",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "NID Radio part 1. Allowed values according to [SS026], NID_RADIO."
+                },
+                new BitField
+                {
+                    Name = "NID_RADIO_2",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "NID Radio part 2. Allowed values according to [SS026], NID_RADIO."
+                },
+                new BitField
+                {
+                    Name = "GSMR_Modem1SignalQuality",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Network Signal quality on Modem 1"
+                },
+                new BitField
+                {
+                    Name = "GSMR_Modem2SignalQuality",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Network Signal quality on Modem 2"
+                },
+                new BitField
+                {
+                    Name = "V_NVSHUNT",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Shunting mode (permitted) speed limit. Allowed values according to [SS026], V_NVSHUNT."
+                },
+                new BitField
+                {
+                    Name = "PARTIAL_BLOCK_FLAG",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Identifies if the system is in Partial Block Mode (PARTIAL_BLOCK = 1, FULL_BLOCK = 2)."
+                },
+                new BitField
+                {
+                    Name = "RBC_DATA_QUALIFIER",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "RBC data qualifier (0 = unknown; 1 = invalid; 2 = valid)."
+                }
+            }
+        };
+
         // checked 20190602 1.6 DIAG manual JS
         public static DataSetDefinition DIA_212 => new DataSetDefinition
         {
@@ -328,21 +421,21 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "V_DeviceID",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "DeviceID corresponding to a subsystem or function/application"
                 },
                 new BitField
                 {
                     Name = "V_SubDeviceID",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "If a sub device ID is available, i.e. in case of sub structured Devices"
                 },
                 new BitField
                 {
                     Name = "Number_of_Versions",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The max. number of versions from a subsystem"
                 },
@@ -364,7 +457,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "Number_of_Versions",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "not used"
                 }
