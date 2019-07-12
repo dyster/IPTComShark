@@ -33,6 +33,7 @@
             this.olvColumnDataLineType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnComment = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnChanged = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.textBoxComid = new System.Windows.Forms.TextBox();
             this.textBoxSize = new System.Windows.Forms.TextBox();
             this.textBoxType = new System.Windows.Forms.TextBox();
@@ -41,8 +42,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxRAW = new System.Windows.Forms.TextBox();
-            this.olvColumnChanged = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataListViewRight
@@ -52,9 +58,6 @@
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineValue);
             this.dataListViewRight.AllColumns.Add(this.olvColumnComment);
             this.dataListViewRight.AllColumns.Add(this.olvColumnChanged);
-            this.dataListViewRight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataListViewRight.CellEditUseWholeCell = false;
             this.dataListViewRight.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnDataLineName,
@@ -64,10 +67,11 @@
             this.olvColumnChanged});
             this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
-            this.dataListViewRight.Location = new System.Drawing.Point(-1, 104);
+            this.dataListViewRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataListViewRight.Location = new System.Drawing.Point(0, 0);
             this.dataListViewRight.Name = "dataListViewRight";
             this.dataListViewRight.ShowGroups = false;
-            this.dataListViewRight.Size = new System.Drawing.Size(337, 236);
+            this.dataListViewRight.Size = new System.Drawing.Size(314, 223);
             this.dataListViewRight.TabIndex = 17;
             this.dataListViewRight.UseCompatibleStateImageBehavior = false;
             this.dataListViewRight.View = System.Windows.Forms.View.Details;
@@ -96,13 +100,19 @@
             this.olvColumnComment.Text = "Comment";
             this.olvColumnComment.Width = 200;
             // 
+            // olvColumnChanged
+            // 
+            this.olvColumnChanged.AspectName = "Changed";
+            this.olvColumnChanged.Text = "Changed";
+            this.olvColumnChanged.Width = 0;
+            // 
             // textBoxComid
             // 
             this.textBoxComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxComid.Location = new System.Drawing.Point(42, 26);
             this.textBoxComid.Name = "textBoxComid";
-            this.textBoxComid.Size = new System.Drawing.Size(294, 20);
+            this.textBoxComid.Size = new System.Drawing.Size(272, 20);
             this.textBoxComid.TabIndex = 16;
             // 
             // textBoxSize
@@ -111,7 +121,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxSize.Location = new System.Drawing.Point(42, 52);
             this.textBoxSize.Name = "textBoxSize";
-            this.textBoxSize.Size = new System.Drawing.Size(294, 20);
+            this.textBoxSize.Size = new System.Drawing.Size(272, 20);
             this.textBoxSize.TabIndex = 15;
             // 
             // textBoxType
@@ -120,7 +130,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxType.Location = new System.Drawing.Point(42, 78);
             this.textBoxType.Name = "textBoxType";
-            this.textBoxType.Size = new System.Drawing.Size(294, 20);
+            this.textBoxType.Size = new System.Drawing.Size(272, 20);
             this.textBoxType.TabIndex = 14;
             // 
             // label4
@@ -165,20 +175,44 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxRAW.Location = new System.Drawing.Point(42, 0);
             this.textBoxRAW.Name = "textBoxRAW";
-            this.textBoxRAW.Size = new System.Drawing.Size(294, 20);
+            this.textBoxRAW.Size = new System.Drawing.Size(272, 20);
             this.textBoxRAW.TabIndex = 9;
             // 
-            // olvColumnChanged
+            // splitContainer1
             // 
-            this.olvColumnChanged.AspectName = "Changed";
-            this.olvColumnChanged.Text = "Changed";
-            this.olvColumnChanged.Width = 0;
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 104);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dataListViewRight);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
+            this.splitContainer1.Size = new System.Drawing.Size(314, 302);
+            this.splitContainer1.SplitterDistance = 223;
+            this.splitContainer1.TabIndex = 18;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Font = new System.Drawing.Font("Monospac821 BT", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(314, 75);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
             // 
             // PacketDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.dataListViewRight);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.textBoxComid);
             this.Controls.Add(this.textBoxSize);
             this.Controls.Add(this.textBoxType);
@@ -189,8 +223,12 @@
             this.Controls.Add(this.textBoxRAW);
             this.DoubleBuffered = true;
             this.Name = "PacketDisplay";
-            this.Size = new System.Drawing.Size(336, 340);
+            this.Size = new System.Drawing.Size(314, 406);
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +250,7 @@
         private System.Windows.Forms.TextBox textBoxRAW;
         private BrightIdeasSoftware.OLVColumn olvColumnComment;
         private BrightIdeasSoftware.OLVColumn olvColumnChanged;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
