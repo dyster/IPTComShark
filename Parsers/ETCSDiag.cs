@@ -310,12 +310,12 @@ namespace IPTComShark.Parsers
         // checked 20190712 1.6 DIAG manual RVV
         public static DataSetDefinition DIA_202 => new DataSetDefinition
         {
-            Name = "DIA_201 GLOBAL_ENVIRONMENT_DATA_3",
+            Name = "DIA_202 GLOBAL_ENVIRONMENT_DATA_3",
             Comment = "Dataset definition of part 3 of global environment data.",
             Identifiers = new List<string>
             {
-                "TODO",
-                "TODO"
+                "230510330",
+                "230511330"
             },
             BitFields = new List<BitField>
             {
