@@ -180,7 +180,8 @@
             this.analyzeChainToolStripMenuItem,
             this.addToIgnoredComIDsToolStripMenuItem});
             this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(230, 92);
+            this.contextMenuMouse.Size = new System.Drawing.Size(230, 114);
+            this.contextMenuMouse.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuMouse_Opening);
             // 
             // copyRawByteshexStringToolStripMenuItem
             // 

@@ -460,7 +460,7 @@ namespace IPTComShark.Controls
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
-            if (o != null)
+            if (o?.IPTWPPacket != null)
             {
                 var s = o.IPTWPPacket.Comid.ToString();
                 if (string.IsNullOrEmpty(Settings.IgnoreComid))
@@ -469,6 +469,15 @@ namespace IPTComShark.Controls
                     Settings.IgnoreComid += "," + s;
 
                 UpdateFilter();
+            }
+        }
+
+        private void ContextMenuMouse_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            if (o != null)
+            {
+                addToIgnoredComIDsToolStripMenuItem.Enabled = o.IPTWPPacket != null;
             }
         }
     }
