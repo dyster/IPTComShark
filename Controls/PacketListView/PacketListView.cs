@@ -14,6 +14,7 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _list = new List<CapturePacket>();
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
+        private CapturePacket _selectedPacket = null;
 
         private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns =
             new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
@@ -306,6 +307,7 @@ namespace IPTComShark.Controls
             if (fastObjectListView1.SelectedObject == null) return;
 
             var packet = (CapturePacket)fastObjectListView1.SelectedObject;
+            _selectedPacket = packet;
             OnPacketSelected(packet);
         }
 
