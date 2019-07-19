@@ -66,6 +66,7 @@ namespace IPTComShark
             this.eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
+            this.remoteCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -290,7 +291,8 @@ namespace IPTComShark
             this.simulateTrafficToolStripMenuItem,
             this.exportSVGSequenceDiagramToolStripMenuItem,
             this.exportXLSXToolStripMenuItem,
-            this.exportCSVToolStripMenuItem});
+            this.exportCSVToolStripMenuItem,
+            this.remoteCaptureToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -378,6 +380,13 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
+            // remoteCaptureToolStripMenuItem
+            // 
+            this.remoteCaptureToolStripMenuItem.Name = "remoteCaptureToolStripMenuItem";
+            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.remoteCaptureToolStripMenuItem.Text = "Remote Capture";
+            this.remoteCaptureToolStripMenuItem.Click += new System.EventHandler(this.RemoteCaptureToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -441,6 +450,7 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem eVA2XMLExportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportAnIssueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem remoteCaptureToolStripMenuItem;
     }
 }
 

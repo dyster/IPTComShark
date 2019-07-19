@@ -348,9 +348,22 @@ namespace IPTComShark
             DialogResult dialogResult = openCapturesDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
+                OpenPath(openCapturesDialog.FileNames);
+                
+            }
+        }
+
+        public delegate void OpenPathDelegate(string[] paths);
+
+        public void OpenPath(string[] paths)
+        {
+            if (this.InvokeRequired)
+                this.Invoke(new OpenPathDelegate(OpenPath), paths);
+            else
+            {
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    List<CapturePacket> capturePackets = fileManager.OpenFiles(openCapturesDialog.FileNames);
+                    List<CapturePacket> capturePackets = fileManager.OpenFiles(paths);
                     if (capturePackets != null)
                     {
                         foreach (CapturePacket capturePacket in capturePackets)
@@ -475,16 +488,13 @@ namespace IPTComShark
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                using (var fileManager = new FileManager.FileManager())
-                {
-                    List<CapturePacket> capturePackets = fileManager.OpenFiles(data);
-                    foreach (CapturePacket capturePacket in capturePackets)
-                    {
-                        packetListView1.Add(capturePacket);
-                    }
-                }
+                OpenPath(data);
             }
+        }
+
+        private void RemoteCaptureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new RemoteCap(this).Show();
         }
     }
 
