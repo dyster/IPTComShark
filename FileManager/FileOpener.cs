@@ -233,6 +233,13 @@ namespace IPTComShark.FileManager
             while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
             {
                 output.Write(buffer, 0, read);
+
+                // TODO out of memory exception
+                // \LOGS\Heathrow FLU19 20190118\Wire Shark.7z
+                // memstream runs out at 1074003968
+                // seen the length gone up to 1073987588
+
+
             }
 
             output.Position = 0;

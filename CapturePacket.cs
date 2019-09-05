@@ -60,12 +60,12 @@ namespace IPTComShark
 
                 switch (ipv4.Protocol)
                 {
-                    case IPProtocolType.TCP:
+                    case PacketDotNet.ProtocolType.Tcp:
                         var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
 
                         ProtocolInfo =
-                            $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Ack} AckNo={tcpPacket.AcknowledgmentNumber}";
+                            $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Acknowledgment} AckNo={tcpPacket.AcknowledgmentNumber}";
 
                         // catch a semi-rare error in PacketDotNet that cannot be checked against
                         try
@@ -146,7 +146,7 @@ namespace IPTComShark
 
                         break;
 
-                    case IPProtocolType.UDP:
+                    case PacketDotNet.ProtocolType.Udp:
 
                         Protocol = ProtocolType.UDP;
                         var udp = (UdpPacket)ipv4.PayloadPacket;
@@ -241,18 +241,13 @@ namespace IPTComShark
                             Protocol = ProtocolType.IPTWP;
                         break;
 
-                    case IPProtocolType.NONE:
-                        Protocol = ProtocolType.UNKNOWN;
-                        // dunno
-                        break;
-
-                    case IPProtocolType.ICMP:
+                    case PacketDotNet.ProtocolType.Icmp:
                         Protocol = ProtocolType.ICMP;
-                        ProtocolInfo = (ipv4.PayloadPacket as ICMPv4Packet).TypeCode.ToString();
+                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();
                         // dunno
                         break;
 
-                    case IPProtocolType.IGMP:
+                    case PacketDotNet.ProtocolType.Igmp:
                         Protocol = ProtocolType.IGMP;
                         // dunno
                         break;
@@ -261,7 +256,7 @@ namespace IPTComShark
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            else if (packet.PayloadPacket is ARPPacket arpPacket)
+            else if (packet.PayloadPacket is ArpPacket arpPacket)
             {
                 //ARPPacket = (ARPPacket)packet.PayloadPacket;
                 ProtocolInfo = arpPacket.Operation.ToString();
@@ -273,17 +268,17 @@ namespace IPTComShark
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xe1)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x88 && packet.HeaderData[13] == 0xe1)
             {
                 Protocol = ProtocolType.HomeplugAV;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x89 && packet.Header[13] == 0x12)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x89 && packet.HeaderData[13] == 0x12)
             {
                 Protocol = ProtocolType.Mediaxtream;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.Header[12] == 0x88 && packet.Header[13] == 0xcc)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x88 && packet.HeaderData[13] == 0xcc)
             {
                 Protocol = ProtocolType.LLDP;
                 // ignore
