@@ -400,6 +400,101 @@ namespace IPTComShark.Parsers
             }
         };
 
+        // checked 20190913 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_203 => new DataSetDefinition
+        {
+            Name = "DIA_203 GLOBAL_ENVIRONMENT_DATA_4",
+            Comment = "Dataset definition of part 4 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510340",
+                "230511340"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "D_NVOVTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum distance for overriding the train trip. Allowed values according to [SS026], D_NVOVTRP."
+                },
+                new BitField
+                {
+                    Name = "D_NVPOTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum distance for reversing in Post Trip mode. Allowed values according to [SS026], D_NVPOTRP."
+                },
+                new BitField
+                {
+                    Name = "D_NVROLL",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Rollaway distance limit; Allowed values according to [SS026]. D_NVROLL considering Q_SCALE. " +
+                                "Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special value infinite is here defined."
+                },
+                new BitField
+                {
+                    Name = "T_NVOVTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum time for overriding the train trip. Allowed values according to [SS026], T_NVOVTRP."
+                },
+                new BitField
+                {
+                    Name = "T_NVCONTACT",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximal time without new safe message. Allowed values according to [SS026]. " +
+                                "T_NVCONTACT considering that this document specifies ms, but the [SS026] specifies s. " +
+                                "Due to the different units the special value infinite is here defined as 25."
+                },
+                new BitField
+                {
+                    Name = "V_NVSTFF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Staff Responsible mode (permitted) speed limit. Allowed values according to [SS026], V_NVSTFF."
+                },
+                new BitField
+                {
+                    Name = "V_NVONSIGHT",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "On Sight mode (permitted) speed limit. Allowed values according to [SS026], V_NVONSIGHT."
+                },
+                new BitField
+                {
+                    Name = "V_NVUNFIT",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Unfitted mode (permitted) speed limit. Allowed values according to [SS026], V_NVUNFIT."
+                },
+                new BitField
+                {
+                    Name = "V_NVREL",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Release Speed (permitted) speed limit. Allowed values according to [SS026], V_NVREL."
+                },
+                new BitField
+                {
+                    Name = "V_NVALLOWOVTRP",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Maximum speed limit allowing the driver to select the override EOA function"
+                },
+                new BitField
+                {
+                    Name = "V_NVSUPOVTRP",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Permitted speed limit to be supervised when the override EOA function is active"
+                }
+            }
+        };
+
         // checked 20190602 1.6 DIAG manual JS
         public static DataSetDefinition DIA_212 => new DataSetDefinition
         {
