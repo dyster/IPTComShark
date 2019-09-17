@@ -659,6 +659,331 @@ namespace IPTComShark.Parsers
             }
         };
 
+        // checked 20190916 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_205 => new DataSetDefinition
+        {
+            Name = "DIA_205 GLOBAL_ENVIRONMENT_DATA_6",
+            Comment = "Dataset definition of part 6 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510360",
+                "230511360"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "NID_LRBG_1",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_2",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_3",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_4",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_5",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_6",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_7",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                },
+                new BitField
+                {
+                    Name = "NID_LRBG_8",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                }
+            }
+        };
+
+        // checked 20190916 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_206 => new DataSetDefinition
+        {
+            Name = "DIA_206 GLOBAL_ENVIRONMENT_DATA_7",
+            Comment = "Dataset definition of part 7 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510370",
+                "230511370"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "LRBG_POS_1",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_2",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_3",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_4",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_5",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_6",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_7",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                },
+                new BitField
+                {
+                    Name = "LRBG_POS_8",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last relevant Balise group position."
+                }
+            }
+        };
+
+        // checked 20190916 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_207 => new DataSetDefinition
+        {
+            Name = "DIA_207 GLOBAL_ENVIRONMENT_DATA_8",
+            Comment = "Dataset definition of part 8 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510380",
+                "230511380"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "MIN_POSITION",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Min position"
+                },
+                new BitField
+                {
+                    Name = "MAX_POSITION",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Max position"
+                },
+                new BitField
+                {
+                    Name = "NID_NETWORK",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Identity of Radio Network. Allowed values according to [SS026], NID_MN."
+                },
+                new BitField
+                {
+                    Name = "STM_ID",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Last used STM id (NID_STM). Allowed values depends on the installed STM levels. " +
+                    "Not allowed are not installed NID-STMs. Value 255 means no STM used."
+                },
+                new BitField
+                {
+                    Name = "TemperatureCPU1",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Current temperature CPU1"
+                },
+                new BitField
+                {
+                    Name = "TemperatureCPU2",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Current temperature CPU2"
+                },
+                new BitField
+                {
+                    Name = "ActiveModem",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Active modem"
+                },
+                new BitField
+                {
+                    Name = "NID_ENGINE",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "On-board ETCS identity according [ERA_VAR]. Contains information on rolling stock fleet/on-board equipment supplier. " +
+                    "Reserved ranges, numbers: 0-1023  'Range for Bombardier RCS', 17051 'Range for Bombardier.' " +
+                    "The project specific values will be provided by train Operator or by Product Owner within the Bombardier Transportation." +
+                    "Note: According SUBSET-26-7 this is a 24 Bit variable. Due to IEC 61375 data type compatibility, this variable is internally pictured on a 32-Bit value."
+                },
+                new BitField
+                {
+                    Name = "DiagValid",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Validity of all diagnostic packets (used by vehicle diagnostics). " +
+                    "0 = diagnostic data not yet valid (during initialization) " +
+                    "1 = all diagnostics data are valid"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A3",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A4",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A5",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A6",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A7",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "GLO8_0A8",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 88,
+                    Comment = "--not used--"
+                }
+            }
+        };
+
+        // checked 20190916 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_209 => new DataSetDefinition
+        {
+            Name = "DIA_209 LRU_DIAG_ENVIRONMENT",
+            Comment = "Dataset definition (container for the specific environment data to the according event).",
+            Identifiers = new List<string>
+            {
+                "230510400",
+                "230511400"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "LRU_DeviceID",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Device ID of the subsystem"
+                },
+                new BitField
+                {
+                    Name = "LRU_SubDeviceID",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "If a sub device ID is available, i.e. in case of sub structured Devices"
+                },
+                new BitField
+                {
+                    Name = "LRU_DeviceID_Env_Data_1",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "All data according to subsystem/sub product definition"
+                },
+                new BitField
+                {
+                    Name = "LRU_DeviceID_Env_Data_n",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 224,
+                    Comment = "All data according to subsystem/sub product definition"
+                }
+            }
+        };
+
         // checked 20190602 1.6 DIAG manual JS
         public static DataSetDefinition DIA_212 => new DataSetDefinition
         {
