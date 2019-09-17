@@ -11,6 +11,13 @@ namespace IPTComShark.Parsers
             this.Description = "Diagnostic Events and Environment Data of the ETCS Subsystem Components";
 
             DataSets.Add(DIA_201);
+            DataSets.Add(DIA_202);
+            DataSets.Add(DIA_203);
+            DataSets.Add(DIA_204);
+            DataSets.Add(DIA_205);
+            DataSets.Add(DIA_206);
+            DataSets.Add(DIA_207);
+            DataSets.Add(DIA_209);
             DataSets.Add(DIA_212);
         }
 
