@@ -400,6 +400,265 @@ namespace IPTComShark.Parsers
             }
         };
 
+        // checked 20190913 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_203 => new DataSetDefinition
+        {
+            Name = "DIA_203 GLOBAL_ENVIRONMENT_DATA_4",
+            Comment = "Dataset definition of part 4 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510340",
+                "230511340"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "D_NVOVTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum distance for overriding the train trip. Allowed values according to [SS026], D_NVOVTRP."
+                },
+                new BitField
+                {
+                    Name = "D_NVPOTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum distance for reversing in Post Trip mode. Allowed values according to [SS026], D_NVPOTRP."
+                },
+                new BitField
+                {
+                    Name = "D_NVROLL",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Rollaway distance limit; Allowed values according to [SS026]. D_NVROLL considering Q_SCALE. " +
+                                "Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special value infinite is here defined."
+                },
+                new BitField
+                {
+                    Name = "T_NVOVTRP",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum time for overriding the train trip. Allowed values according to [SS026], T_NVOVTRP."
+                },
+                new BitField
+                {
+                    Name = "T_NVCONTACT",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximal time without new safe message. Allowed values according to [SS026]. " +
+                                "T_NVCONTACT considering that this document specifies ms, but the [SS026] specifies s. " +
+                                "Due to the different units the special value infinite is here defined as 25."
+                },
+                new BitField
+                {
+                    Name = "V_NVSTFF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Staff Responsible mode (permitted) speed limit. Allowed values according to [SS026], V_NVSTFF."
+                },
+                new BitField
+                {
+                    Name = "V_NVONSIGHT",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "On Sight mode (permitted) speed limit. Allowed values according to [SS026], V_NVONSIGHT."
+                },
+                new BitField
+                {
+                    Name = "V_NVUNFIT",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Unfitted mode (permitted) speed limit. Allowed values according to [SS026], V_NVUNFIT."
+                },
+                new BitField
+                {
+                    Name = "V_NVREL",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Release Speed (permitted) speed limit. Allowed values according to [SS026], V_NVREL."
+                },
+                new BitField
+                {
+                    Name = "V_NVALLOWOVTRP",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Maximum speed limit allowing the driver to select the override EOA function"
+                },
+                new BitField
+                {
+                    Name = "V_NVSUPOVTRP",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Permitted speed limit to be supervised when the override EOA function is active"
+                }
+            }
+        };
+
+        // checked 20190913 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_204 => new DataSetDefinition
+        {
+            Name = "DIA_204 GLOBAL_ENVIRONMENT_DATA_5",
+            Comment = "Dataset definition of part 5 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510350",
+                "230511350"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "STANDSTILL_POS",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Stand still position."
+                },
+                new BitField
+                {
+                    Name = "LAST_BG_POS",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Last Balise group position (indicates which of stored 8 Balises the last was)."
+                },
+                new BitField
+                {
+                    Name = "D_NVSTFF",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Maximum distance for running in Staff Responsible mode. Allowed values according to [SS026]. " +
+                    "D_NVSTFF considering Q_SCALE. Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special"
+                },
+                new BitField
+                {
+                    Name = "NID_C",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "NID_C."
+                },
+                new BitField
+                {
+                    Name = "NID_C_MAX_ITER",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Number of iterations of NID_C."
+                },
+                new BitField
+                {
+                    Name = "VALID_NV",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Valid National Values. If this parameter is set to 0, the ETCS-Core application during start-up will set the National Values " +
+                    "to the default values according to requirements and values of the configuration parameters."
+                },
+                new BitField
+                {
+                    Name = "M_NVCONTACT",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Indicates the reaction to be performed when T_NVCONTACT timer elapses. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "M_NVDERUN",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Entry of Driver ID permitted while running. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "Q_NVEMRRLS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Qualifier Emergency Brake Release. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "Q_NVSRBKTRG",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Permission to use service brake when braking to a target is supervised. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "Q_NVDRIVER_ADHES",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Qualifier for the modification of trackside adhesion factor by driver. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "Q_DLRBG",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Qualifier telling on which side of the LRBG the estimated front end is. Allowed values according to [SS026]."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_1",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_2",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_3",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_4",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_5",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_6",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_7",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "QDIR_LRBG_8",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Train orientation in relation to the direction of the LRBG."
+                },
+                new BitField
+                {
+                    Name = "GLO5_0F0",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "--not used--"
+                }
+            }
+        };
+
         // checked 20190602 1.6 DIAG manual JS
         public static DataSetDefinition DIA_212 => new DataSetDefinition
         {
