@@ -11,7 +11,15 @@ namespace IPTComShark.Parsers
             this.Description = "Diagnostic Events and Environment Data of the ETCS Subsystem Components";
 
             DataSets.Add(DIA_201);
+            DataSets.Add(DIA_202);
+            DataSets.Add(DIA_203);
+            DataSets.Add(DIA_204);
+            DataSets.Add(DIA_205);
+            DataSets.Add(DIA_206);
+            DataSets.Add(DIA_207);
+            DataSets.Add(DIA_209);
             DataSets.Add(DIA_212);
+            DataSets.Add(DIA_214);
         }
 
         // checked 20190602 1.6 DIAG manual JS
@@ -1045,6 +1053,148 @@ namespace IPTComShark.Parsers
                     Length = 8,
                     Comment = "not used"
                 }
+            }
+        };
+
+        // checked 20190920 1.6 DIAG manual RVV
+        public static DataSetDefinition DIA_214 => new DataSetDefinition
+        {
+            Name = "DIA_214 DIAG_WAYSIDE_EVENT",
+            Comment = "The Wayside diagnostic packet (including the environment data set DIA_215) contains data " +
+            "delivered from the Balise transmission sub-system collected within the ETC software.",
+            Identifiers = new List<string>
+            {
+                "230510440", "230511440"
+            },
+
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "WAY_BTS_OK (IE-)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Balise OK (no BTS error detected)"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_VERSION (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Version error"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_HEADER (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Header error or Balise payload error"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_MISSING (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Balise missing in a group"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_MISSING_POS (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Max. distance of expected Balise window passed."
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_DETECT (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Balise detection error"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_UNEXPECTED (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Unexpected Balise"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_REPOS_OR_UNKNW (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Balise reposition error or Balise unknown"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_PACKET_SIZE (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Wrong packet size"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_PACKET_DUPLICATE (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Duplicate packet received"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_PACKET_UNEXPECTED (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Unexpected packet received"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_QDIR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "QDIR error"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_INFILL (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Infill Balise error"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BG_STATUS (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Reports the ETC IL handler internal BG-status"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_LOOP (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Loop error detected"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_LEU (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "LEU error detected"
+                },
+                new BitField
+                {
+                    Name = "WAY_ERR_BTS_BAL_GROUP_MISSING (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    Comment = "Complete Balise Group missing"
+                },
+                new BitField
+                {
+                    Name = "WAY_unused",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 15,
+                    Comment = "--not used--"
+                },
             }
         };
     }
