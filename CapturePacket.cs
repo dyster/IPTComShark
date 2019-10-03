@@ -49,6 +49,18 @@ namespace IPTComShark
             if (packet == null)
                 return;
 
+            // protect against corrupted data with a try read
+            try
+            {
+                var throwaway = packet.Bytes.Length + packet.HeaderData.Length;
+            }
+            catch (Exception e)
+            {
+                ProtocolInfo = "Malformed Packet or Header";
+                this.Error = "Malformed Packet or Header";
+                return;
+            }
+
             if (packet.PayloadPacket is IPv4Packet)
             {
                 var ipv4 = (IPv4Packet)packet.PayloadPacket;
@@ -152,6 +164,18 @@ namespace IPTComShark
                         var udp = (UdpPacket)ipv4.PayloadPacket;
 
                         if (udp == null)
+                        {
+                            ProtocolInfo = "Malformed UDP";
+                            this.Error = "Malformed UDP";
+                            return;
+                        }
+
+                        // protect against corrupted data with a try read
+                        try
+                        {
+                            var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                        }
+                        catch (Exception e)
                         {
                             ProtocolInfo = "Malformed UDP";
                             this.Error = "Malformed UDP";
