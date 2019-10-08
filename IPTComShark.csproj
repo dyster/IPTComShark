@@ -228,10 +228,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sonesson-tools\sonesson-toolsNETSTANDARD.csproj">
-      <Project>{b823be42-5caf-4e11-8810-e2c0cb2ebbd3}</Project>
-      <Name>sonesson-toolsNETSTANDARD</Name>
+    <ProjectReference Include="..\sonesson-tools\sonesson-tools.csproj">
+      <Project>{6b5c42cf-ab4c-4cf4-ba53-2c7dfca3fe9e}</Project>
+      <Name>sonesson-tools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
