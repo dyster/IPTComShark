@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CapturePacket.cs" />
+    <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
     <Compile Include="Controls\PacketListView\PacketSource.cs" />
@@ -152,6 +153,12 @@
     <Compile Include="Windows\RemoteCap.Designer.cs">
       <DependentUpon>RemoteCap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TextWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\TextWindow.Designer.cs">
+      <DependentUpon>TextWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\TrafficSim.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +196,9 @@
     </Compile>
     <EmbeddedResource Include="Windows\RemoteCap.resx">
       <DependentUpon>RemoteCap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\TextWindow.resx">
+      <DependentUpon>TextWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\TrafficSim.resx">
       <DependentUpon>TrafficSim.cs</DependentUpon>
@@ -228,11 +238,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sonesson-tools\sonesson-tools.csproj">
-      <Project>{6b5c42cf-ab4c-4cf4-ba53-2c7dfca3fe9e}</Project>
-      <Name>sonesson-tools</Name>
+    <ProjectReference Include="..\sonesson-tools\sonesson-toolsNETSTANDARD.csproj">
+      <Project>{e437e426-04a4-45ea-b604-b7d201634332}</Project>
+      <Name>sonesson-toolsNETSTANDARD</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
