@@ -82,7 +82,7 @@ namespace IPTComShark.Controls
             olvColumnIPTWPType.ClusterGetter += packets =>
             {
                 return StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.IPTWPType));
+                    .Select(p => p.IPTWPPacket.IPTWPType.ToString()));
             };
 
             olvColumnComId.ClusterGetter += packets =>
@@ -267,7 +267,7 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if (capturePacket.IPTWPPacket?.IPTWPType == "PD")
+                    if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
                     {
                         if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
                         {

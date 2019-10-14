@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using PacketDotNet;
 
 namespace IPTComShark.Export
 {
@@ -175,7 +176,13 @@ namespace IPTComShark.Export
 
 
                     if (packet.IPTWPPacket != null)
-                        worksheet.Cells[rowindex, 4].Value = BitConverter.ToString(packet.IPTWPPacket.IPTWPPayload);
+                    {
+                        // since we have IPT, straight cast to UDP, BAM
+                        var udp = (UdpPacket)packet.Packet.PayloadPacket.PayloadPacket;
+
+                        var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
+                        worksheet.Cells[rowindex, 4].Value = BitConverter.ToString(bytes);
+                    }
 
                     //worksheet.Cells[rowindex, 7].Value = log.SortIndex;
                 }
@@ -261,8 +268,11 @@ namespace IPTComShark.Export
                     sb.Append(@"\b0 ");
                 }
 
+                // since we have IPT, straight cast to UDP, BAM
+                var udp = (UdpPacket)packet.Packet.PayloadPacket.PayloadPacket;
 
-                sb.Append(@"\line\ul " + BitConverter.ToString(packet.IPTWPPacket.IPTWPPayload) + @"\ulnone");
+                var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
+                sb.Append(@"\line\ul " + BitConverter.ToString(bytes) + @"\ulnone");
 
 
                 sb.AppendLine(@"\line");

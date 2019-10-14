@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using PacketDotNet;
 
 namespace IPTComShark
 {
@@ -38,7 +39,7 @@ namespace IPTComShark
         {
             InitializeComponent();
 
-            this.Text = Text += " " + Application.ProductVersion;
+            Text = Text += " " + Application.ProductVersion;
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
@@ -112,10 +113,10 @@ namespace IPTComShark
         }
 
 
-        public static void ParseIPTWPData(CapturePacket packet)
+        public static void ParseIPTWPData(CapturePacket packet, UdpPacket udp)
         {
             IPTWPPacket iptwpPacket = packet.IPTWPPacket;
-            if (iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
+            if (iptwpPacket == null || iptwpPacket.IPTWPType == IPTTypes.MA)
                 return;
 
             try
@@ -134,7 +135,8 @@ namespace IPTComShark
 
                 if (dataSetDefinition != null)
                 {
-                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
+                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
+                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptPayload);
                     packet.ParsedData = parsedDataSet;
                     packet.Name = parsedDataSet.Name;
                 }
@@ -357,8 +359,8 @@ namespace IPTComShark
 
         public void OpenPath(string[] paths)
         {
-            if (this.InvokeRequired)
-                this.Invoke(new OpenPathDelegate(OpenPath), paths);
+            if (InvokeRequired)
+                Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
                 using (var fileManager = new FileManager.FileManager())
@@ -393,7 +395,7 @@ namespace IPTComShark
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
+            //GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
         }
 
         private void exportSVGSequenceDiagramToolStripMenuItem_Click(object sender, EventArgs e)

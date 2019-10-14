@@ -1,18 +1,23 @@
-﻿using PacketDotNet;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+using System.Net;
+using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace IPTComShark
 {
     [Serializable]
     public class CapturePacket : IComparable
     {
-        private readonly IPAddress _vapAddress = IPAddress.Parse("192.168.1.12");
+        private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
+        public Packet Packet = null;
+
+        private string _protocolinfo = null;
+        
 
         /// <summary>
         /// Constructor to create an artifical packet
@@ -35,10 +40,10 @@ namespace IPTComShark
             RawCapture = raw;
             Date = raw.TimeStamp;
 
-            Packet packet = null;
+            
             try
             {
-                packet = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
+                Packet = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
             }
             catch (Exception e)
             {
@@ -46,39 +51,31 @@ namespace IPTComShark
             }
 
 
-            if (packet == null)
+            if (Packet == null)
                 return;
-
+            
             // protect against corrupted data with a try read
             try
             {
-                var throwaway = packet.Bytes.Length + packet.HeaderData.Length;
+                var throwaway = Packet.Bytes.Length + Packet.HeaderData.Length;
             }
             catch (Exception e)
             {
-                ProtocolInfo = "Malformed Packet or Header";
+                _protocolinfo = "Malformed Packet or Header";
                 this.Error = "Malformed Packet or Header";
                 return;
             }
 
-            if (packet.PayloadPacket is IPv4Packet)
+            if (Packet.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet)packet.PayloadPacket;
-
-
-                Source = ipv4.SourceAddress.GetAddressBytes();
-                Destination = ipv4.DestinationAddress.GetAddressBytes();
-
-
+                var ipv4 = (IPv4Packet)Packet.PayloadPacket;
+                
                 switch (ipv4.Protocol)
                 {
                     case PacketDotNet.ProtocolType.Tcp:
                         var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
-
-                        ProtocolInfo =
-                            $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Acknowledgment} AckNo={tcpPacket.AcknowledgmentNumber}";
-
+                        
                         // catch a semi-rare error in PacketDotNet that cannot be checked against
                         try
                         {
@@ -120,7 +117,7 @@ namespace IPTComShark
                                 {
                                     // TODO FIX THIS SO IT WORKS
                                     var parsedFields = ss27.Events.Select(e =>
-                                        ParsedField.Create(e.EventType.ToString(), e.Description)).ToList();
+                                        ParsedField.Create((string) e.EventType.ToString(), e.Description)).ToList();
                                     ParsedData = new ParsedDataSet() { ParsedFields = parsedFields };
                                     //ParsedData = ParsedDataSet.Create("Event", ev);
                                 }
@@ -165,7 +162,7 @@ namespace IPTComShark
 
                         if (udp == null)
                         {
-                            ProtocolInfo = "Malformed UDP";
+                            _protocolinfo = "Malformed UDP";
                             this.Error = "Malformed UDP";
                             return;
                         }
@@ -177,97 +174,93 @@ namespace IPTComShark
                         }
                         catch (Exception e)
                         {
-                            ProtocolInfo = "Malformed UDP";
+                            _protocolinfo = "Malformed UDP";
                             this.Error = "Malformed UDP";
                             return;
                         }
 
-                        if (Equals(ipv4.SourceAddress, _vapAddress))
+                        if (Equals(ipv4.SourceAddress, VapAddress))
                         {
                             if (udp.DestinationPort == 50023)
-                                ProtocolInfo = "VAP->ETC (TR)";
+                                _protocolinfo = "VAP->ETC (TR)";
                             else if (udp.DestinationPort == 50030)
-                                ProtocolInfo = "VAP->ETC (DMI1 to ETC)";
+                                _protocolinfo = "VAP->ETC (DMI1 to ETC)";
                             else if (udp.DestinationPort == 50031)
-                                ProtocolInfo = "VAP->ETC (DMI2 to ETC)";
+                                _protocolinfo = "VAP->ETC (DMI2 to ETC)";
                             else if (udp.DestinationPort == 50032)
-                                ProtocolInfo = "VAP->ETC (DMI1 to iSTM)";
+                                _protocolinfo = "VAP->ETC (DMI1 to iSTM)";
                             else if (udp.DestinationPort == 50033)
-                                ProtocolInfo = "VAP->ETC (DMI2 to iSTM)";
+                                _protocolinfo = "VAP->ETC (DMI2 to iSTM)";
                             else if (udp.DestinationPort == 50051)
-                                ProtocolInfo = "VAP->ETC (DMI1 to gSTM)";
+                                _protocolinfo = "VAP->ETC (DMI1 to gSTM)";
                             else if (udp.DestinationPort == 50052)
-                                ProtocolInfo = "VAP->ETC (DMI2 to gSTM)";
+                                _protocolinfo = "VAP->ETC (DMI2 to gSTM)";
                             else if (udp.DestinationPort == 50024)
-                                ProtocolInfo = "VAP->ETC (DMI1 EVC-102)";
+                                _protocolinfo = "VAP->ETC (DMI1 EVC-102)";
                             else if (udp.DestinationPort == 50025)
-                                ProtocolInfo = "VAP->ETC (DMI2 EVC-102)";
+                                _protocolinfo = "VAP->ETC (DMI2 EVC-102)";
                             else if (udp.DestinationPort == 50039)
-                                ProtocolInfo = "VAP->ETC (STM to JRU)";
+                                _protocolinfo = "VAP->ETC (STM to JRU)";
                             else if (udp.DestinationPort == 50041)
-                                ProtocolInfo = "VAP->ETC (JRU Status)";
+                                _protocolinfo = "VAP->ETC (JRU Status)";
                             else if (udp.DestinationPort == 50050)
-                                ProtocolInfo = "VAP->ETC (VAP Status)";
+                                _protocolinfo = "VAP->ETC (VAP Status)";
                             else if (udp.DestinationPort == 50015)
                             {
                                 Protocol = ProtocolType.UDP_SPL;
-                                ProtocolInfo = "VAP->OPC (DMI to STM)";
+                                _protocolinfo = "VAP->OPC (DMI to STM)";
                             }
                             else if (udp.DestinationPort == 5514)
-                                ProtocolInfo = "VAP->BDS (VAP Diag)";
+                                _protocolinfo = "VAP->BDS (VAP Diag)";
                         }
-                        else if (Equals(ipv4.DestinationAddress, _vapAddress))
+                        else if (Equals(ipv4.DestinationAddress, VapAddress))
                         {
                             if (udp.DestinationPort == 50022)
-                                ProtocolInfo = "ETC->VAP (OBU)";
+                                _protocolinfo = "ETC->VAP (OBU)";
                             else if (udp.DestinationPort == 50026)
-                                ProtocolInfo = "ETC->VAP (ETC to DMI1)";
+                                _protocolinfo = "ETC->VAP (ETC to DMI1)";
                             else if (udp.DestinationPort == 50027)
-                                ProtocolInfo = "ETC->VAP (ETC to DMI2)";
+                                _protocolinfo = "ETC->VAP (ETC to DMI2)";
                             else if (udp.DestinationPort == 50037)
-                                ProtocolInfo = "ETC->VAP (EVC-1&7)";
+                                _protocolinfo = "ETC->VAP (EVC-1&7)";
                             else if (udp.DestinationPort == 50035)
-                                ProtocolInfo = "ETC->VAP (EVC-1&7)";
+                                _protocolinfo = "ETC->VAP (EVC-1&7)";
                             else if (udp.DestinationPort == 50028)
-                                ProtocolInfo = "ETC->VAP (iSTM to DMI1)";
+                                _protocolinfo = "ETC->VAP (iSTM to DMI1)";
                             else if (udp.DestinationPort == 50029)
-                                ProtocolInfo = "ETC->VAP (iSTM to DMI2)";
+                                _protocolinfo = "ETC->VAP (iSTM to DMI2)";
                             else if (udp.DestinationPort == 50055)
-                                ProtocolInfo = "ETC->VAP (gSTM to DMI1)";
+                                _protocolinfo = "ETC->VAP (gSTM to DMI1)";
                             else if (udp.DestinationPort == 50056)
-                                ProtocolInfo = "ETC->VAP (gSTM to DMI2)";
+                                _protocolinfo = "ETC->VAP (gSTM to DMI2)";
                             else if (udp.DestinationPort == 50034)
-                                ProtocolInfo = "ETC->VAP (to JRU)";
+                                _protocolinfo = "ETC->VAP (to JRU)";
                             else if (udp.DestinationPort == 50057)
-                                ProtocolInfo = "ETC->VAP (VAP COnfig)";
+                                _protocolinfo = "ETC->VAP (VAP Config)";
                             else if (udp.DestinationPort == 50014)
                             {
                                 Protocol = ProtocolType.UDP_SPL;
-                                ProtocolInfo = "OPC->VAP";
+                                _protocolinfo = "OPC->VAP";
                             }
                             else if (udp.DestinationPort == 50036)
-                                ProtocolInfo = "BDS->VAP (Diag)";
+                                _protocolinfo = "BDS->VAP (Diag)";
                             else if (udp.DestinationPort == 50070)
-                                ProtocolInfo = "ETC->VAP (ATO)";
+                                _protocolinfo = "ETC->VAP (ATO)";
                             else if (udp.DestinationPort == 50068)
-                                ProtocolInfo = "ETC->VAP (ATO)";
+                                _protocolinfo = "ETC->VAP (ATO)";
                             else if (udp.DestinationPort == 50072)
-                                ProtocolInfo = "ETC->VAP (ATO)";
+                                _protocolinfo = "ETC->VAP (ATO)";
                         }
-                        else
-                        {
-                            ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
-                        }
+                        
 
                         IPTWPPacket = IPTWPPacket.Extract(udp);
-                        MainForm.ParseIPTWPData(this);
+                        MainForm.ParseIPTWPData(this, udp);
                         if (IPTWPPacket != null)
                             Protocol = ProtocolType.IPTWP;
                         break;
 
                     case PacketDotNet.ProtocolType.Icmp:
                         Protocol = ProtocolType.ICMP;
-                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();
                         // dunno
                         break;
 
@@ -280,29 +273,26 @@ namespace IPTComShark
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            else if (packet.PayloadPacket is ArpPacket arpPacket)
+            else if (Packet.PayloadPacket is ArpPacket arpPacket)
             {
-                //ARPPacket = (ARPPacket)packet.PayloadPacket;
-                ProtocolInfo = arpPacket.Operation.ToString();
-
                 Protocol = ProtocolType.ARP;
             }
-            else if (packet.PayloadPacket is IPv6Packet)
+            else if (Packet.PayloadPacket is IPv6Packet)
             {
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x88 && packet.HeaderData[13] == 0xe1)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && Packet.HeaderData[12] == 0x88 && Packet.HeaderData[13] == 0xe1)
             {
                 Protocol = ProtocolType.HomeplugAV;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x89 && packet.HeaderData[13] == 0x12)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && Packet.HeaderData[12] == 0x89 && Packet.HeaderData[13] == 0x12)
             {
                 Protocol = ProtocolType.Mediaxtream;
                 // ignore
             }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && packet.HeaderData[12] == 0x88 && packet.HeaderData[13] == 0xcc)
+            else if (raw.LinkLayer == LinkLayerType.Ethernet && Packet.HeaderData[12] == 0x88 && Packet.HeaderData[13] == 0xcc)
             {
                 Protocol = ProtocolType.LLDP;
                 // ignore
@@ -327,8 +317,28 @@ namespace IPTComShark
         /// </summary>
         public CapturePacket Next { get; set; }
 
-        public byte[] Source { get; set; }
-        public byte[] Destination { get; set; }
+        public byte[] Source
+        {
+            get
+            {
+                if (Packet.PayloadPacket is IPv4Packet ipv4)
+                    return ipv4.SourceAddress.GetAddressBytes();
+                else
+                    return null;
+
+            }
+        }
+
+        public byte[] Destination {
+            get
+            {
+                if (Packet.PayloadPacket is IPv4Packet ipv4)
+                    return ipv4.DestinationAddress.GetAddressBytes();
+                else
+                    return null;
+
+            }
+        }
 
         //public IPv4Packet IPv4Packet { get; }
         //
@@ -353,13 +363,66 @@ namespace IPTComShark
 
         public ProtocolType Protocol { get; }
 
-        public string ProtocolInfo { get; }
+        //public ProcInfo ProtocolInfo { get; }
+        public string ProtocolInfo
+        {
+            get
+            {
+                if (_protocolinfo == null)
+                {
+                    if (Packet.PayloadPacket is IPv4Packet)
+                    {
+                        var ipv4 = (IPv4Packet)Packet.PayloadPacket;
+                        
+                        switch (ipv4.Protocol)
+                        {
+                            case PacketDotNet.ProtocolType.Tcp:
+                                var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
 
-        /// <summary>
-        /// The types of packet contained inside the data
-        /// </summary>
-        //public PacketTypes PacketTypes { get; set; }
+                                return $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Acknowledgment} AckNo={tcpPacket.AcknowledgmentNumber}";
 
+                            case PacketDotNet.ProtocolType.Udp:
+                                
+                                var udp = (UdpPacket)ipv4.PayloadPacket;
+
+
+                                return $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
+                                
+
+                            case PacketDotNet.ProtocolType.Icmp:
+                                
+                                return (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();
+                                
+                                break;
+
+                            case PacketDotNet.ProtocolType.Igmp:
+                                // TODO something useful to display
+                                return null;
+                                break;
+
+                            default:
+                                // do nothing
+                                return null;
+                                break;
+                        }
+                    }
+                    else if (Packet.PayloadPacket is ArpPacket arpPacket)
+                    {
+                        return arpPacket.Operation.ToString();
+                    }
+                    else if (Packet.PayloadPacket is IPv6Packet)
+                    {
+                        // ignore, for now
+                        return null;
+                    }
+                    else
+                        return null;
+                }
+                else
+                    return _protocolinfo;
+            }
+        }
+        
         public uint No { get; set; }
 
         public DateTime Date { get; }
@@ -402,32 +465,5 @@ namespace IPTComShark
             var packet = (CapturePacket)obj;
             return this.Date.CompareTo(packet.Date);
         }
-    }
-
-    [Flags]
-    public enum PacketTypes
-    {
-        IPv4,
-        IPv6,
-        UDP,
-        TCP,
-        ARP
-    }
-
-    public enum ProtocolType
-    {
-        UNKNOWN,
-        ARP,
-        JRU,
-        IPv6,
-        HomeplugAV,
-        Mediaxtream,
-        LLDP,
-        IPTWP,
-        TCP,
-        UDP,
-        ICMP,
-        IGMP,
-        UDP_SPL
     }
 }
