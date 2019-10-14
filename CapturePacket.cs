@@ -91,7 +91,7 @@ namespace IPTComShark
                             break;
                         }
 
-                        if (tcpPacket.DestinationPort == 50040 && tcpPacket.PayloadData.Length > 0)
+                        if ((tcpPacket.DestinationPort == 50039 || tcpPacket.DestinationPort == 50040) && tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
                             var ss27Parser = new SS27Parser();
