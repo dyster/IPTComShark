@@ -16,7 +16,10 @@ namespace IPTComShark
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         public Packet Packet = null;
 
+        // these could be null
         private string _protocolinfo = null;
+        private LinkLayerType _linkLayerType;
+        private string _customName = null;
         
 
         /// <summary>
@@ -26,7 +29,7 @@ namespace IPTComShark
         public CapturePacket(ProtocolType protocol, string name, DateTime datetime)
         {
             Protocol = protocol;
-            Name = name;
+            _customName = name;
             Date = datetime;
         }
 
@@ -35,11 +38,28 @@ namespace IPTComShark
         //{
         //}
 
+        public Raw ReconstructRaw()
+        {
+                return new Raw(Date, GetRawData(), _linkLayerType);
+        }
+
+        public byte[] GetRawData()
+        {
+            if (Packet.BytesSegment.NeedsCopyForActualBytes)
+            {
+                return Packet.BytesSegment.Bytes;
+            }
+            else
+            {
+                return Packet.Bytes;
+            }
+        }
+
         public CapturePacket(Raw raw)
         {
-            RawCapture = raw;
+            //RawCapture = raw;
             Date = raw.TimeStamp;
-
+            _linkLayerType = raw.LinkLayer;
             
             try
             {
@@ -121,16 +141,13 @@ namespace IPTComShark
                                     ParsedData = new ParsedDataSet() { ParsedFields = parsedFields };
                                     //ParsedData = ParsedDataSet.Create("Event", ev);
                                 }
-
-
-                                Name = ss27.MsgType.ToString();
-
+                                
                                 this.SS27Packet = ss27;
                             }
                             catch (Exception e)
                             {
-                                Name = "ERROR";
-                                ParsedData = ParsedDataSet.CreateError(e.Message);
+                                Error = e.Message;
+                                
                             }
                         }
 
@@ -144,12 +161,11 @@ namespace IPTComShark
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 ParsedData = VSIS210.JRU_STATUS.Parse(buffer);
-                                Name = "JRU_STATUS";
+                                
                             }
                             catch (Exception e)
                             {
-                                Name = "ERROR";
-                                ParsedData = ParsedDataSet.CreateError(e.Message);
+                                Error = e.Message;
                             }
                         }
 
@@ -426,14 +442,32 @@ namespace IPTComShark
         public uint No { get; set; }
 
         public DateTime Date { get; }
-
-        public Raw RawCapture { get; }
-
+        
         public ParsedDataSet ParsedData { get; set; }
 
         public string Error { get; set; } = null;
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                if (_customName == null)
+                {
+                    if(!string.IsNullOrEmpty(Error))
+                        return "ERROR";
+                    else if (SS27Packet != null)
+                        return SS27Packet.MsgType.ToString();
+                    else if (ParsedData != null)
+                        return ParsedData.Name;
+                    else if (IPTWPPacket != null)
+                        return "Unknown Comid " + IPTWPPacket.Comid;
+
+                    return null;
+                }
+                else
+                    return _customName;
+            }
+        }
 
         /// <summary>
         /// If this packet is part of a chain, get only the ParsedData that has changed

@@ -138,20 +138,11 @@ namespace IPTComShark
                     var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
                     ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptPayload);
                     packet.ParsedData = parsedDataSet;
-                    packet.Name = parsedDataSet.Name;
-                }
-                else
-                {
-                    //Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
-                    //if (telegram == null)
-                    packet.Name = "Unknown ComID " + iptwpPacket.Comid;
-                    //else
-                    //    packet.Name = telegram.Name;
                 }
             }
             catch (Exception e)
             {
-                packet.Name = e.Message;
+                packet.Error = e.Message;
                 //throw;
             }
         }

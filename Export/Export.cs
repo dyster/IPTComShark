@@ -300,7 +300,7 @@ namespace IPTComShark.Export
                     csvExport["Data"] = Functions.MakeCommentString(packet.ParsedData.GetDataDictionary());
 
 
-                csvExport["Raw"] = BitConverter.ToString(packet.RawCapture.RawData);
+                csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());
             }
 
             string export = csvExport.Export();

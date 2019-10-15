@@ -384,7 +384,7 @@ namespace IPTComShark.Controls
         {
             lock (_listAddLock)
             {
-                return _list.Select(l => l.RawCapture).ToList();
+                return _list.Select(l => l.ReconstructRaw()).ToList();
             }
         }
 
@@ -412,7 +412,7 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var s = BitConverter.ToString(o.RawCapture.RawData);
+                var s = BitConverter.ToString(o.GetRawData());
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
 
