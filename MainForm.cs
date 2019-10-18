@@ -389,6 +389,8 @@ namespace IPTComShark
                         }
                     }
                 }
+
+                GC.Collect();
             }
         }
 
