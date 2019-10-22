@@ -42,7 +42,7 @@ namespace IPTComShark.Controls
             var dataLines = new List<DataLine>();
             if (packet.IPTWPPacket != null)
             {
-                
+                dataLines.Add(new DataLine() {IsCategory = true, Name = "IPTCom Data"});
 
                 textBoxComid.Text = packet.IPTWPPacket.Comid.ToString();
                 
@@ -66,10 +66,14 @@ namespace IPTComShark.Controls
                         });
                     }
             }
+            
 
             if (packet.SS27Packet != null)
             {
+                dataLines.Add(new DataLine() { IsCategory = true, Name = "JRU Data" });
+
                 dataLines.Add(new DataLine() {IsCategory = true, Name = "Header"});
+                dataLines.Add(new DataLine() { Name = "Timestamp", Value = packet.SS27Packet.DateTime.ToString() + ":" + packet.SS27Packet.DateTime.Millisecond });
                 dataLines.Add(new DataLine() {Name = "Level", Value = packet.SS27Packet.Level});
                 dataLines.Add(new DataLine() {Name = "Mode", Value = packet.SS27Packet.Mode});
                 dataLines.Add(new DataLine() {Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString()});
@@ -98,6 +102,16 @@ namespace IPTComShark.Controls
                     {
                         dataLines.Add(new DataLine(parsedField));
                     }
+                }
+            }
+
+            if (packet.IPTWPPacket == null && packet.SS27Packet == null && packet.ParsedData != null)
+            {
+                dataLines.Add(new DataLine() { IsCategory = true, Name = packet.ParsedData.Name });
+
+                foreach (var field in packet.ParsedData.ParsedFields)
+                {
+                    dataLines.Add(new DataLine(field));
                 }
             }
 
