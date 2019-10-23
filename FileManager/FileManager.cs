@@ -209,8 +209,8 @@ namespace IPTComShark.FileManager
             var dialogresult = fo.ShowDialog();
             if (dialogresult == DialogResult.OK)
             {
-                this.FilterFrom = fo.DateTimeFrom;
-                this.FilterTo = fo.DateTimeTo;
+                FilterFrom = fo.DateTimeFrom;
+                FilterTo = fo.DateTimeTo;
 
                 var packets = new List<CapturePacket>();
 

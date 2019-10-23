@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using IPTComShark.Windows;
 
 namespace IPTComShark.Controls
 {
@@ -36,20 +37,24 @@ namespace IPTComShark.Controls
             textBoxSize.Text = string.Empty;
             textBoxType.Text = string.Empty;
 
+             
+
             var dataLines = new List<DataLine>();
             if (packet.IPTWPPacket != null)
             {
+                dataLines.Add(new DataLine() {IsCategory = true, Name = "IPTCom Data"});
+
                 textBoxComid.Text = packet.IPTWPPacket.Comid.ToString();
-                textBoxRAW.Text = BitConverter.ToString(packet.IPTWPPacket.IPTWPPayload);
+                
                 textBoxSize.Text = packet.IPTWPPacket.IPTWPSize.ToString();
-                textBoxType.Text = packet.IPTWPPacket.IPTWPType;
+                textBoxType.Text = packet.IPTWPPacket.IPTWPType.ToString();
 
 
                 if (packet.ParsedData?.GetDataDictionary() != null) // a parser has chugged out something
                     foreach (var field in packet.ParsedData.ParsedFields)
                     {
                         bool changed = false;
-                        if (packet.Previous != null && packet.IPTWPPacket.IPTWPType == "PD")
+                        if (packet.Previous != null && packet.IPTWPPacket.IPTWPType == IPTTypes.PD)
                         {
                             // not checking for null because frankly it shouldn't happen and we want an exception
                             changed = !packet.Previous.ParsedData.GetField(field.Name).Value.Equals(field.Value);
@@ -61,10 +66,14 @@ namespace IPTComShark.Controls
                         });
                     }
             }
+            
 
             if (packet.SS27Packet != null)
             {
+                dataLines.Add(new DataLine() { IsCategory = true, Name = "JRU Data" });
+
                 dataLines.Add(new DataLine() {IsCategory = true, Name = "Header"});
+                dataLines.Add(new DataLine() { Name = "Timestamp", Value = packet.SS27Packet.DateTime.ToString() + ":" + packet.SS27Packet.DateTime.Millisecond });
                 dataLines.Add(new DataLine() {Name = "Level", Value = packet.SS27Packet.Level});
                 dataLines.Add(new DataLine() {Name = "Mode", Value = packet.SS27Packet.Mode});
                 dataLines.Add(new DataLine() {Name = "Speed", Value = packet.SS27Packet.V_TRAIN.ToString()});
@@ -96,12 +105,22 @@ namespace IPTComShark.Controls
                 }
             }
 
+            if (packet.IPTWPPacket == null && packet.SS27Packet == null && packet.ParsedData != null)
+            {
+                dataLines.Add(new DataLine() { IsCategory = true, Name = packet.ParsedData.Name });
+
+                foreach (var field in packet.ParsedData.ParsedFields)
+                {
+                    dataLines.Add(new DataLine(field));
+                }
+            }
+
             try
             {
-                var dotpacket = Packet.ParsePacket((LinkLayers) packet.RawCapture.LinkLayer, packet.RawCapture.RawData);
+                
 
 
-                var text = new StringBuilder(dotpacket.ToString(StringOutputType.Verbose));
+                var text = new StringBuilder(packet.Packet.ToString(StringOutputType.Verbose));
 
 
                 if (packet.IPTWPPacket != null)
@@ -110,7 +129,12 @@ namespace IPTComShark.Controls
                     text.AppendLine("IPT: size: " + packet.IPTWPPacket.IPTWPSize);
                     text.AppendLine("IPT: type: " + packet.IPTWPPacket.IPTWPType);
 
-                    var bytes = packet.IPTWPPacket.IPTWPPayload;
+                    // since we have IPT, straight cast to UDP, BAM
+                    var udp = (UdpPacket)packet.Packet.PayloadPacket.PayloadPacket;
+                    
+                    var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
+                    textBoxRAW.Text = BitConverter.ToString(bytes);
+
                     string str1 = "";
                     string str2 = "";
                     text.AppendLine("IPT:  ******* Raw Hex Output - length=" + (object) bytes.Length + " bytes");
@@ -159,6 +183,7 @@ namespace IPTComShark.Controls
         }
 
         // TODO this is not needed anymore I believe
+        /*
         private static List<DataLine> ParseDataByIpt(Dataset datasetByComId, IPTWPPacket packet)
         {
             var dataLines = new List<DataLine>();
@@ -297,17 +322,35 @@ namespace IPTComShark.Controls
             }
 
             return dataLines;
+        }*/
+
+        private void analyzeValueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataListViewRight.SelectedObject != null)
+            {
+                var dataline = (DataLine)dataListViewRight.SelectedObject;
+
+                var parsedField = dataline.GetField();
+                if (parsedField != null)
+                {
+                    var textWindow = new TextWindow(parsedField.ToStringExtended());
+                    textWindow.Show();
+                }
+            }
         }
     }
 
     public class DataLine
     {
+        private readonly ParsedField _field;
+
         public DataLine()
         {
         }
 
         public DataLine(ParsedField field)
         {
+            _field = field;
             string typestring = field.Value.GetType().ToString();
 
             Name = field.Name;
@@ -324,5 +367,10 @@ namespace IPTComShark.Controls
         public string Comment { get; set; }
         public bool Changed { get; set; }
         public bool IsCategory { get; set; }
+
+        public ParsedField GetField()
+        {
+            return _field;
+        }
     }
 }

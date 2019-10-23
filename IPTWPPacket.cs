@@ -4,6 +4,19 @@ using System.Collections.Generic;
 
 namespace IPTComShark
 {
+    public enum IPTTypes
+    {
+        PD,
+        MD,
+        Md,
+        Mg,
+        MQ,
+        Mq,
+        MG,
+        MA,
+        Ma,
+        MR
+    }
     [Serializable]
     public class IPTWPPacket
     {
@@ -17,24 +30,44 @@ namespace IPTComShark
         //0x4D41(‘MA’) Message Data Acknowledgement for point to point message
         //0x4D61(‘Ma’) Message Data Acknowledgement for a message to a function redundancy group
         //0x4D52(‘MR’) Message Data Response with acknowledgement
-        public static readonly Dictionary<uint, string> MessageTypes = new Dictionary<uint, string>
+        private static readonly Dictionary<uint, IPTTypes> MessageTypes = new Dictionary<uint, IPTTypes>
         {
-            {0x5044, "PD"},
-            {0x4D44, "MD"},
-            {0x4D64, "Md"},
-            {0x4D67, "Mg"},
-            {0x4D51, "MQ"},
-            {0x4D71, "Mq"},
-            {0x4D47, "MG"},
-            {0x4D41, "MA"},
-            {0x4D61, "Ma"},
-            {0x4D52, "MR"}
+            {0x5044, IPTTypes.PD},
+            {0x4D44, IPTTypes.MD},
+            {0x4D64, IPTTypes.Md},
+            {0x4D67, IPTTypes.Mg},
+            {0x4D51, IPTTypes.MQ},
+            {0x4D71, IPTTypes.Mq},
+            {0x4D47, IPTTypes.MG},
+            {0x4D41, IPTTypes.MA},
+            {0x4D61, IPTTypes.Ma},
+            {0x4D52, IPTTypes.MR}
         };
 
         public uint Comid { get; set; }
-        public string IPTWPType { get; set; }
+        public IPTTypes IPTWPType { get; set; }
         public uint IPTWPSize { get; set; }
-        public byte[] IPTWPPayload { get; set; }
+        //public byte[] IPTWPPayload { get; set; }
+
+        public static byte[] GetIPTPayload(UdpPacket udp, IPTWPPacket packet)
+        {
+            byte[] payload = udp.PayloadData;
+            ushort headerlength = BitConverter.ToUInt16(new[] { payload[23], payload[22] }, 0);
+
+            var data = new byte[packet.IPTWPSize];
+            ushort readpos =
+                headerlength; // the first framecheck will be skipped by the i % 256 modulus when it parses 0
+
+            for (var i = 0; i < packet.IPTWPSize; i++)
+            {
+                if (i % 256 == 0)
+                    readpos += 4;
+                data[i] = payload[readpos];
+                readpos++;
+            }
+
+            return data;
+        }
 
         public static IPTWPPacket Extract(UdpPacket udp)
         {
@@ -92,21 +125,6 @@ namespace IPTComShark
                 iptPacket.Comid = comid;
                 iptPacket.IPTWPSize = datasetlength;
                 iptPacket.IPTWPType = MessageTypes[type];
-
-
-                var data = new byte[datasetlength];
-                ushort readpos =
-                    headerlength; // the first framecheck will be skipped by the i % 256 modulus when it parses 0
-
-                for (var i = 0; i < datasetlength; i++)
-                {
-                    if (i % 256 == 0)
-                        readpos += 4;
-                    data[i] = payload[readpos];
-                    readpos++;
-                }
-
-                iptPacket.IPTWPPayload = data;
             }
             else
             {

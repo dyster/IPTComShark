@@ -3,8 +3,11 @@ using sonesson_tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Windows.Forms;
 
 namespace IPTComShark.Controls
@@ -82,7 +85,7 @@ namespace IPTComShark.Controls
             olvColumnIPTWPType.ClusterGetter += packets =>
             {
                 return StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.IPTWPType));
+                    .Select(p => p.IPTWPPacket.IPTWPType.ToString()));
             };
 
             olvColumnComId.ClusterGetter += packets =>
@@ -267,30 +270,14 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if (capturePacket.IPTWPPacket?.IPTWPType == "PD")
+                    if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
                     {
                         if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
                         {
-                            var before = capturePacket.Previous.ParsedData.GetStringDictionary();
-                            var now = capturePacket.ParsedData.GetStringDictionary();
-
-                            if (before.Count != now.Count)
-                                return true;
-
-                            foreach (KeyValuePair<string, string> pair in now)
-                            {
-                                if (before.ContainsKey(pair.Key))
-                                {
-                                    if (pair.Value != before[pair.Key])
-                                        return true;
-                                }
-                                else
-                                {
-                                    return true;
-                                }
-                            }
-
-                            return false;
+                            return !capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData);
+                            
+                            
+                            
                         }
                     }
                 }
@@ -347,6 +334,8 @@ namespace IPTComShark.Controls
                     o.Previous = _lastKnowns[tupleKey];
                     _lastKnowns[tupleKey].Next = o;
                     _lastKnowns[tupleKey] = o;
+
+                    
                 }
                 else
                 {
@@ -384,7 +373,7 @@ namespace IPTComShark.Controls
         {
             lock (_listAddLock)
             {
-                return _list.Select(l => l.RawCapture).ToList();
+                return _list.Select(l => l.ReconstructRaw()).ToList();
             }
         }
 
@@ -412,7 +401,7 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var s = BitConverter.ToString(o.RawCapture.RawData);
+                var s = BitConverter.ToString(o.GetRawData());
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
 

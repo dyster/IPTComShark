@@ -86,9 +86,8 @@ namespace IPTComShark.Windows
             foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source.ToString() == _ip.ToString())
             )
             {
-                Packet packet =
-                    Packet.ParsePacket((LinkLayers)capturePacket.RawCapture.LinkLayer,
-                        capturePacket.RawCapture.RawData);
+                Packet packet = capturePacket.Packet;
+                    
                 IPv4Packet ipv4 = (IPv4Packet)packet.PayloadPacket;
 
 

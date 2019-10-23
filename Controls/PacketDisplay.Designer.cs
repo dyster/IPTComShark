@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataListViewRight = new BrightIdeasSoftware.DataListView();
             this.olvColumnDataLineName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -44,11 +45,14 @@
             this.textBoxRAW = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.analyzeValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataListViewRight
@@ -65,9 +69,11 @@
             this.olvColumnDataLineValue,
             this.olvColumnComment,
             this.olvColumnChanged});
+            this.dataListViewRight.ContextMenuStrip = this.contextMenuStrip1;
             this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
             this.dataListViewRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataListViewRight.HideSelection = false;
             this.dataListViewRight.Location = new System.Drawing.Point(0, 0);
             this.dataListViewRight.Name = "dataListViewRight";
             this.dataListViewRight.ShowGroups = false;
@@ -208,6 +214,20 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.analyzeValueToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // analyzeValueToolStripMenuItem
+            // 
+            this.analyzeValueToolStripMenuItem.Name = "analyzeValueToolStripMenuItem";
+            this.analyzeValueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.analyzeValueToolStripMenuItem.Text = "Analyze value";
+            this.analyzeValueToolStripMenuItem.Click += new System.EventHandler(this.analyzeValueToolStripMenuItem_Click);
+            // 
             // PacketDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,6 +249,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,5 +273,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumnChanged;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem analyzeValueToolStripMenuItem;
     }
 }

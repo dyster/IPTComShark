@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
+            this.olvColumnError = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +65,7 @@
             this.fastObjectListView1.AllColumns.Add(this.olvColumnDictionary);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnIPTWPType);
             this.fastObjectListView1.AllColumns.Add(this.olvColumnComId);
+            this.fastObjectListView1.AllColumns.Add(this.olvColumnError);
             this.fastObjectListView1.AllowColumnReorder = true;
             this.fastObjectListView1.CellEditUseWholeCell = false;
             this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -77,9 +79,9 @@
             this.olvColumnName,
             this.olvColumnDictionary,
             this.olvColumnIPTWPType,
-            this.olvColumnComId});
+            this.olvColumnComId,
+            this.olvColumnError});
             this.fastObjectListView1.ContextMenuStrip = this.contextMenuMouse;
-            this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fastObjectListView1.EmptyListMsg = "No files loaded, use File->Open or Drag&Drop";
             this.fastObjectListView1.FullRowSelect = true;
@@ -98,6 +100,11 @@
             this.fastObjectListView1.View = System.Windows.Forms.View.Details;
             this.fastObjectListView1.VirtualMode = true;
             this.fastObjectListView1.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
+            // 
+            // olvColumnError
+            // 
+            this.olvColumnError.AspectName = "Error";
+            this.olvColumnError.Text = "Error";
             // 
             // contextMenuMouse
             // 
@@ -202,7 +209,7 @@
             // 
             // olvColumnDictionary
             // 
-            this.olvColumnDictionary.AspectName = "ParsedData";
+            this.olvColumnDictionary.AspectName = "No";
             this.olvColumnDictionary.ClusterGetter = null;
             this.olvColumnDictionary.Text = "Parsed";
             this.olvColumnDictionary.UseFiltering = false;
@@ -255,5 +262,6 @@
         private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
         private MyOLVColumn olvColumnMS;
+        private BrightIdeasSoftware.OLVColumn olvColumnError;
     }
 }

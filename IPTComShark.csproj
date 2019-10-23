@@ -93,7 +93,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CapturePacket.cs" />
+    <Compile Include="CapturePacket\CapturePacket.cs" />
     <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
@@ -121,6 +121,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Parsers\ETCSDiag.cs" />
+    <Compile Include="CapturePacket\ProtocolType.cs" />
+    <Compile Include="Parsers\NTP.cs" />
     <Compile Include="Windows\InterfacePicker.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -25,16 +25,28 @@ namespace IPTComShark.Controls
             var tuples = new List<Tuple<string, string>>();
             if (RowObject is CapturePacket cpac)
             {
-                if (cpac.ParsedData == null)
-                    return;
-
-                var delta = cpac.GetDelta();
-
-                foreach (var field in delta)
+                if (cpac.DisplayFields.Count > 0)
                 {
-                    if (field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
-                        tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
+                    foreach (var displayField in cpac.DisplayFields)
+                    {
+                        tuples.Add(new Tuple<string, string>(displayField.Item1, displayField.Item2.ToString()));
+                    }
                 }
+                else
+                {
+                    if (cpac.ParsedData == null)
+                        return;
+
+                    var delta = cpac.GetDelta();
+
+                    foreach (var field in delta)
+                    {
+                        if (field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
+                            tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
+                    }
+                }
+
+                
             }
             else
             {

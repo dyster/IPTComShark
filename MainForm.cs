@@ -11,8 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using PacketDotNet;
 
 namespace IPTComShark
 {
@@ -38,7 +40,7 @@ namespace IPTComShark
         {
             InitializeComponent();
 
-            this.Text = Text += " " + Application.ProductVersion;
+            Text = Text += " " + Application.ProductVersion;
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
@@ -68,7 +70,7 @@ namespace IPTComShark
             packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
             packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
             packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
-
+            
             InitData();
 
             Logger.Log("IPTComShark started", Severity.Info);
@@ -112,10 +114,10 @@ namespace IPTComShark
         }
 
 
-        public static void ParseIPTWPData(CapturePacket packet)
+        public static void ParseIPTWPData(CapturePacket packet, UdpPacket udp)
         {
             IPTWPPacket iptwpPacket = packet.IPTWPPacket;
-            if (iptwpPacket == null || iptwpPacket.IPTWPType == "MA")
+            if (iptwpPacket == null || iptwpPacket.IPTWPType == IPTTypes.MA)
                 return;
 
             try
@@ -134,22 +136,14 @@ namespace IPTComShark
 
                 if (dataSetDefinition != null)
                 {
-                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptwpPacket.IPTWPPayload);
+                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
+                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptPayload);
                     packet.ParsedData = parsedDataSet;
-                    packet.Name = parsedDataSet.Name;
-                }
-                else
-                {
-                    //Telegram telegram = IptConfigReader.GetTelegramByComId(iptwpPacket.Comid);
-                    //if (telegram == null)
-                    packet.Name = "Unknown ComID " + iptwpPacket.Comid;
-                    //else
-                    //    packet.Name = telegram.Name;
                 }
             }
             catch (Exception e)
             {
-                packet.Name = e.Message;
+                packet.Error = e.Message;
                 //throw;
             }
         }
@@ -243,6 +237,12 @@ namespace IPTComShark
 
         private void timerFlicker_Tick(object sender, EventArgs e)
         {
+            var totalMemory = GC.GetTotalMemory(false);
+
+            Process proc = Process.GetCurrentProcess();
+            var memorySize64 = proc.PrivateMemorySize64;
+            
+
             var sizestring = "";
             if (_capturedData > 1024 * 1024)
                 sizestring = _capturedData / 1024 / 1024 + " mb";
@@ -251,15 +251,32 @@ namespace IPTComShark
             else
                 sizestring = _capturedData + " b";
 
-            var sizestring2 = "";
-            if (_discardedData > 1024 * 1024)
-                sizestring2 = _discardedData / 1024 / 1024 + " mb";
-            else if (_discardedData > 1024)
-                sizestring2 = _discardedData / 1024 + " kb";
-            else
-                sizestring2 = _discardedData + " b";
-            statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
-                              " discarded packets, " + sizestring2 + ".";
+            //var sizestring2 = "";
+            //if (_discardedData > 1024 * 1024)
+            //    sizestring2 = _discardedData / 1024 / 1024 + " mb";
+            //else if (_discardedData > 1024)
+            //    sizestring2 = _discardedData / 1024 + " kb";
+            //else
+            //    sizestring2 = _discardedData + " b";
+            //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
+            //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
+
+            var tuples = new List<Tuple<Color, string>>();
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, packetListView1.Count().ToString()));
+            tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));
+            tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _discaredPackets.ToString()));
+            tuples.Add(new Tuple<Color, string>(Color.Black, "discarded packets | GC mem:"));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(totalMemory)));
+            tuples.Add(new Tuple<Color, string>(Color.Black, "| Proc mem:"));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(memorySize64)));
+            tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
+
+
+            var renderStatusText = RenderStatusText(statusLeft.BackColor, statusLeft.Height, statusLeft.Font, tuples);
+
+            statusLeft.Image = renderStatusText;
         }
 
 
@@ -357,8 +374,8 @@ namespace IPTComShark
 
         public void OpenPath(string[] paths)
         {
-            if (this.InvokeRequired)
-                this.Invoke(new OpenPathDelegate(OpenPath), paths);
+            if (InvokeRequired)
+                Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
                 using (var fileManager = new FileManager.FileManager())
@@ -372,6 +389,8 @@ namespace IPTComShark
                         }
                     }
                 }
+
+                GC.Collect();
             }
         }
 
@@ -496,6 +515,44 @@ namespace IPTComShark
         {
             new RemoteCap(this).Show();
         }
+
+        public static Image RenderStatusText(Color backcolor, int height, Font font, List<Tuple<Color, string>> texts)
+        {
+            var totalMemory = GC.GetTotalMemory(false);
+            
+            var img = new Bitmap(200, height);
+            Graphics gx = Graphics.FromImage(img);
+
+
+            int totalwidth = 0;
+            foreach (var pair in texts)
+            {
+                totalwidth += (int)gx.MeasureString(pair.Item2, font).Width;
+            }
+
+            
+            img = new Bitmap(totalwidth, height);
+            gx = Graphics.FromImage(img);
+            SolidBrush brush = new SolidBrush(backcolor);
+            gx.FillRectangle(brush, 0, 0, img.Width, img.Height);
+
+            int renderbar = 0;
+
+            foreach (var pair in texts)
+            {
+                var piecewidth = gx.MeasureString(pair.Item2, font).Width;
+                var piecebrush = new SolidBrush(pair.Item1);
+                gx.DrawString(pair.Item2, font, piecebrush, renderbar, 0);
+
+                renderbar += (int)piecewidth;
+            }
+            
+            return img;
+        }
+
+
+
+    
     }
 
     //public enum Protocol
