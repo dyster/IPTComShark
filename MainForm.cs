@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using IPTComShark.Parsers;
 using PacketDotNet;
 
 namespace IPTComShark
@@ -48,6 +49,7 @@ namespace IPTComShark
 
             DataCollections.Add(new TPWS());
             DataCollections.Add(new Parsers.ETCSDiag());
+            DataCollections.Add(new VSISDMI());
             DataCollections.Add(new VSIS210());
             DataCollections.Add(IptConfigReader.GetDataSetCollection());
 
