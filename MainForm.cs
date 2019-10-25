@@ -218,15 +218,17 @@ namespace IPTComShark
 
                 // Print out the available network devices
                 _device = interfacePicker.SelectedDevice;
+
+                // Register our handler function to the
+                // 'packet arrival' event
+                _device.OnPacketArrival +=
+                    device_OnPacketArrival;
             }
 
 
             UpdateStatus("Recording from " + _device.Interface.FriendlyName);
 
-            // Register our handler function to the
-            // 'packet arrival' event
-            _device.OnPacketArrival +=
-                device_OnPacketArrival;
+            
 
             // Open the device for capturing
             var readTimeoutMilliseconds = 1000;
