@@ -57,6 +57,98 @@ namespace IPTComShark
             }
         }
 
+        public static ParsedDataSet ExtractParsedData(CapturePacket packet,
+            out List<Tuple<string, object>> displayfields)
+        {
+            return ExtractParsedData(packet, out displayfields, false);
+        }
+
+        public static ParsedDataSet ExtractParsedData(CapturePacket packet, out List<Tuple<string, object>> displayfields, bool extensive)
+        {
+            displayfields = new List<Tuple<string, object>>();
+
+            if (packet.Packet.PayloadPacket is IPv4Packet)
+            {
+                var ipv4 = (IPv4Packet)packet.Packet.PayloadPacket;
+
+                if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+                {
+                    var udp = (UdpPacket) ipv4.PayloadPacket;
+
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    if (packet.Protocol == ProtocolType.NTP)
+                    {
+                        var data = NTP.NTPDataSet.Parse(udp.PayloadData);
+
+                        var refTime = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Integer")
+                            .Value;
+                        var refFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Fraction")
+                            .Value;
+
+                        var OrgTime = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Integer")
+                            .Value;
+                        var OrgFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Fraction")
+                            .Value;
+
+                        var RecTime = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Integer")
+                            .Value;
+                        var RecFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Fraction")
+                            .Value;
+
+                        var transmitTime = (UInt32) data.ParsedFields
+                            .First(f => f.Name == "Transmit Timestamp Integer").Value;
+                        var transmitFrac = (UInt32) data.ParsedFields
+                            .First(f => f.Name == "Transmit Timestamp Fraction").Value;
+
+                        var list = new List<ParsedField>();
+
+                        if (refTime != 0)
+                            list.Add(
+                                ParsedField.Create("Reference Time", ParseNTPDate(refTime, refFrac).ToString()));
+                        if (OrgTime != 0)
+                            list.Add(ParsedField.Create("Origin Time", ParseNTPDate(OrgTime, OrgFrac).ToString()));
+                        if (RecTime != 0)
+                            list.Add(ParsedField.Create("Receive Time", ParseNTPDate(RecTime, RecFrac).ToString()));
+                        if (transmitTime != 0)
+                            list.Add(ParsedField.Create("Transmit Time",
+                                ParseNTPDate(transmitTime, transmitFrac).ToString()));
+
+                        if (OrgTime != 0 && RecTime != 0)
+                        {
+                            var rec = TimeSpan.FromSeconds(RecTime);
+                            var org = TimeSpan.FromSeconds(OrgTime);
+                            var timeSpan = rec.Subtract(org);
+                            list.Add(ParsedField.Create("Seconds difference", timeSpan.ToString()));
+                        }
+
+                        foreach (var parsedField in list)
+                        {
+                            data.ParsedFields.Add(parsedField);
+                            displayfields.Add(new Tuple<string, object>(parsedField.Name, parsedField.Value));
+                        }
+
+                        return data;
+                    }
+                    else if (packet.Protocol == ProtocolType.IPTWP)
+                    {
+                        return MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
+                    }
+                }
+                
+            }
+
+            return null;
+        }
+
         public CapturePacket(Raw raw)
         {
             //RawCapture = raw;
@@ -114,25 +206,15 @@ namespace IPTComShark
                             tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
-                            var ss27Parser = new SS27Parser();
-                            var jruload = tcpPacket.PayloadData;
+                            
 
                             try
                             {
-                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
-                                var buffer = new byte[jrulen];
-                                Array.Copy(jruload, 2, buffer, 0, jrulen);
-                                var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
 
-                                var outlist = new List<ParsedField>();
-                                outlist.Add(ParsedField.Create("Mode", ss27.Mode));
-                                outlist.Add(ParsedField.Create("Level", ss27.Level));
-                                outlist.Add(ParsedField.Create("Speed", ss27.V_TRAIN.ToString()));
-
-                                string ev = string.Join(", ", ss27.Events);
+                                var ss27 = ExtractSS27Packet(tcpPacket);
 
                                 DisplayFields.Add(new Tuple<string, object>("time", ss27.DateTime));
-                                if (string.IsNullOrEmpty(ev))
+                                if (ss27.Events.Count == 0)
                                 {
                                     // if there is no event, chuck some other data in there, maybe
                                     // ParsedData = new ParsedDataSet() { ParsedFields = new List<ParsedField>(ss27.Header) };
@@ -140,9 +222,8 @@ namespace IPTComShark
                                 else
                                 {
                                     // TODO FIX THIS SO IT WORKS
-                                    
                                     ss27.Events.ForEach(e => DisplayFields.Add(new Tuple<string, object>(e.EventType.ToString(), e.Description)));
-                                    //ParsedData = ParsedDataSet.Create("Event", ev);
+                                    
                                 }
 
                                 this.SS27Packet = ss27;
@@ -200,57 +281,6 @@ namespace IPTComShark
                         if (udp.SourcePort == 123 && udp.DestinationPort == 123)
                         {
                             Protocol = ProtocolType.NTP;
-
-                            var data = NTP.NTPDataSet.Parse(udp.PayloadData);
-
-                            var refTime = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Integer")
-                                .Value;
-                            var refFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Fraction")
-                                .Value;
-
-                            var OrgTime = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Integer")
-                                .Value;
-                            var OrgFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Fraction")
-                                .Value;
-
-                            var RecTime = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Integer")
-                                .Value;
-                            var RecFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Fraction")
-                                .Value;
-
-                            var transmitTime = (UInt32) data.ParsedFields
-                                .First(f => f.Name == "Transmit Timestamp Integer").Value;
-                            var transmitFrac = (UInt32) data.ParsedFields
-                                .First(f => f.Name == "Transmit Timestamp Fraction").Value;
-
-                            var list = new List<ParsedField>();
-
-                            if (refTime != 0)
-                                list.Add(
-                                    ParsedField.Create("Reference Time", ParseNTPDate(refTime, refFrac).ToString()));
-                            if (OrgTime != 0)
-                                list.Add(ParsedField.Create("Origin Time", ParseNTPDate(OrgTime, OrgFrac).ToString()));
-                            if (RecTime != 0)
-                                list.Add(ParsedField.Create("Receive Time", ParseNTPDate(RecTime, RecFrac).ToString()));
-                            if (transmitTime != 0)
-                                list.Add(ParsedField.Create("Transmit Time",
-                                    ParseNTPDate(transmitTime, transmitFrac).ToString()));
-
-                            if (OrgTime != 0 && RecTime != 0)
-                            {
-                                var rec = TimeSpan.FromSeconds(RecTime);
-                                var org = TimeSpan.FromSeconds(OrgTime);
-                                var timeSpan = rec.Subtract(org);
-                                list.Add(ParsedField.Create("Seconds difference", timeSpan.ToString()));
-                            }
-
-                            foreach (var parsedField in list)
-                            {
-                                data.ParsedFields.Add(parsedField);
-                                DisplayFields.Add(new Tuple<string, object>(parsedField.Name, parsedField.Value));
-                            }
-
-                            this.ParsedData = data;
                         }
                         else if (Equals(ipv4.SourceAddress, VapAddress))
                         {
@@ -327,7 +357,7 @@ namespace IPTComShark
 
 
                         IPTWPPacket = IPTWPPacket.Extract(udp);
-                        MainForm.ParseIPTWPData(this, udp);
+                        
                         if (IPTWPPacket != null)
                             Protocol = ProtocolType.IPTWP;
                         break;
@@ -381,9 +411,25 @@ namespace IPTComShark
                 //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
 #endif
             }
+
+            var extractParsedData = ExtractParsedData(this, out var displayfields);
+            this.DisplayFields.AddRange(displayfields);
+            this.ParsedData = extractParsedData;
         }
 
-        public DateTime ParseNTPDate(uint integer, uint fraction)
+        private static SS27Packet ExtractSS27Packet(TcpPacket tcpPacket)
+        {
+            var ss27Parser = new SS27Parser();
+            var jruload = tcpPacket.PayloadData;
+
+            ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+            var buffer = new byte[jrulen];
+            Array.Copy(jruload, 2, buffer, 0, jrulen);
+            var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
+            return ss27;
+        }
+
+        public static DateTime ParseNTPDate(uint integer, uint fraction)
         {
             var epoc = new DateTime(1900, 1, 1, 0, 0, 0);
             var ms = (Int32) (((Double) fraction / UInt32.MaxValue) * 1000);
