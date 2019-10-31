@@ -131,6 +131,7 @@
             this.Controls.Add(this.labelStart);
             this.Name = "TrafficSim";
             this.Text = "TrafficSim";
+            this.Load += new System.EventHandler(this.TrafficSim_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

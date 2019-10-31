@@ -20,40 +20,6 @@ namespace IPTComShark.Windows
         public TrafficSim()
         {
             InitializeComponent();
-
-            var openFileDialog = new OpenFileDialog { Multiselect = true };
-            DialogResult dialogResult = openFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                var fileManager = new FileManager.FileManager();
-                _packets = fileManager.OpenFiles(openFileDialog.FileNames);
-            }
-            else
-            {
-                this.Close();
-                return;
-            }
-
-            // remove all non IPTCom packets
-            _packets.RemoveAll(packet => packet.IPTWPPacket == null);
-
-            foreach (var packet1 in _packets)
-            {
-                IPAddress ip = new IPAddress(packet1.Source);
-
-                if (!_ips.Contains(ip))
-                    _ips.Add(ip);
-            }
-
-            _packets.Sort();
-
-            var startTime = _packets.First().Date;
-
-
-            comboBox1.DataSource = _ips;
-
-            labelStart.Text += " " + _packets.First().Date;
-            labelEnd.Text += " " + _packets.Last().Date;
         }
 
         private class SendPacket
@@ -179,6 +145,43 @@ namespace IPTComShark.Windows
             ThreadPool.GetAvailableThreads(out int workerThreads, out int completionPortThreads);
 
             label2.Text = "Threads = " + (maxworkerThreads - workerThreads);
+        }
+
+        private void TrafficSim_Load(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog { Multiselect = true };
+            DialogResult dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var fileManager = new FileManager.FileManager();
+                _packets = fileManager.OpenFiles(openFileDialog.FileNames);
+            }
+            else
+            {
+                this.Close();
+                return;
+            }
+
+            // remove all non IPTCom packets
+            _packets.RemoveAll(packet => packet.IPTWPPacket == null);
+
+            foreach (var packet1 in _packets)
+            {
+                IPAddress ip = new IPAddress(packet1.Source);
+
+                if (!_ips.Contains(ip))
+                    _ips.Add(ip);
+            }
+
+            _packets.Sort();
+
+            var startTime = _packets.First().Date;
+
+
+            comboBox1.DataSource = _ips;
+
+            labelStart.Text += " " + _packets.First().Date;
+            labelEnd.Text += " " + _packets.Last().Date;
         }
     }
 }
