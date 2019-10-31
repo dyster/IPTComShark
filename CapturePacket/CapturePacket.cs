@@ -356,7 +356,14 @@ namespace IPTComShark
                         }
 
 
-                        IPTWPPacket = IPTWPPacket.Extract(udp);
+                        try
+                        {
+                            IPTWPPacket = IPTWPPacket.Extract(udp);
+                        }
+                        catch (Exception e)
+                        {
+                            Error = e.Message;
+                        }
                         
                         if (IPTWPPacket != null)
                             Protocol = ProtocolType.IPTWP;
