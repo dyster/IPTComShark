@@ -571,7 +571,7 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Current gradient value",
-                    LookupTable = new Dictionary<string, string>{ { "-255", "No current gradient profile" } }
+                    LookupTable = new Dictionary<string, string> {{"-255", "No current gradient profile"}}
                 },
                 new BitField
                 {
@@ -605,7 +605,8 @@ namespace IPTComShark.Parsers
                                 BitFieldType = BitFieldType.Int16,
                                 Length = 16,
                                 Comment = "New gradient value",
-                                LookupTable = new Dictionary<string, string>{ { "-255", "The gradient profile ends at the defined position" } }
+                                LookupTable = new Dictionary<string, string>
+                                    {{"-255", "The gradient profile ends at the defined position"}}
                             },
                             new BitField
                             {
@@ -639,9 +640,10 @@ namespace IPTComShark.Parsers
                     Name = "MMI_M_ABSOLUTPOS",
                     BitFieldType = BitFieldType.Int32,
                     Length = 32,
-                    Comment = "This is the train’s current geographical position, in absolute co-ordinates as defined by trackside. " +
-                              "In case of single balises it indicates the absolute position of the last passed balise",
-                    LookupTable = new Dictionary<string, string>{ { "-1", "No more geo position report after this" } }
+                    Comment =
+                        "This is the train’s current geographical position, in absolute co-ordinates as defined by trackside. " +
+                        "In case of single balises it indicates the absolute position of the last passed balise",
+                    LookupTable = new Dictionary<string, string> {{"-1", "No more geo position report after this"}}
                 },
                 new BitField
                 {
@@ -649,7 +651,8 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Train’s current geographical position given as an offset from last passed balise",
-                    LookupTable = new Dictionary<string, string>{ { "-1", "N/A (i.e. MMI shall display _ABSOLUTPOS only)" } }
+                    LookupTable = new Dictionary<string, string>
+                        {{"-1", "N/A (i.e. MMI shall display _ABSOLUTPOS only)"}}
                 }
             }
         };
@@ -680,7 +683,8 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
                     Comment = "Max. train length",
-                    LookupTable = new Dictionary<string, string>{ {"0", "'No default value' => TD entry field shall remain empty"} }
+                    LookupTable = new Dictionary<string, string>
+                        {{"0", "'No default value' => TD entry field shall remain empty"}}
                 },
                 new BitField
                 {
@@ -688,7 +692,8 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
                     Comment = "Max. train speed",
-                    LookupTable = new Dictionary<string, string>{ {"0", "'No default value' => TD entry field shall remain empty"} }
+                    LookupTable = new Dictionary<string, string>
+                        {{"0", "'No default value' => TD entry field shall remain empty"}}
                 },
                 new BitField
                 {
@@ -744,8 +749,8 @@ namespace IPTComShark.Parsers
                     Comment = "ID of preconfigured train data set",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "Train data entry method by train data set is not selected --> use 'flexible TDE'" },
-                        {"15", "no Train data set specified" }
+                        {"0", "Train data entry method by train data set is not selected --> use 'flexible TDE'"},
+                        {"15", "no Train data set specified"}
                     }
                 },
                 new BitField
@@ -756,8 +761,14 @@ namespace IPTComShark.Parsers
                     Comment = "Control variable for alternative train data entry method",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "No alternative train data entry method enabled (covers 'fixed train data entry' and 'flexible train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.a+b)" },
-                        {"15", "Flexible train data entry <-> train data entry for Train Sets (covers 'switchable train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.c)" }
+                        {
+                            "0",
+                            "No alternative train data entry method enabled (covers 'fixed train data entry' and 'flexible train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.a+b)"
+                        },
+                        {
+                            "15",
+                            "Flexible train data entry <-> train data entry for Train Sets (covers 'switchable train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.c)"
+                        }
                     }
                 },
                 new BitField
@@ -1005,12 +1016,7 @@ namespace IPTComShark.Parsers
                 },
                 SSW1,
                 SSW2,
-                SSW3,
-                new BitField
-                {
-                    Length = 1,
-                    NestedDataSet = SDT_Trailer
-                }
+                SSW3
             }
         };
 
@@ -1091,8 +1097,9 @@ namespace IPTComShark.Parsers
         public static DataSetDefinition EVC_10 => new DataSetDefinition
         {
             Name = "EVC_10 MMI_ECHOED_TRAIN_DATA",
-            Comment = "This packet will be sent from ETC to MMI when the driver has finished the data entry by pressing the \"Yes\" button and all checks have passed. " +
-                      "The packet starts the Train Data Validation window/procedure at MMI.",
+            Comment =
+                "This packet will be sent from ETC to MMI when the driver has finished the data entry by pressing the \"Yes\" button and all checks have passed. " +
+                "The packet starts the Train Data Validation window/procedure at MMI.",
             Identifiers = new List<string>
             {
                 "230530090",
@@ -1146,7 +1153,8 @@ namespace IPTComShark.Parsers
                                             Name = "MMI_X_CAPTION_TRAINSET_",
                                             BitFieldType = BitFieldType.StringLatin,
                                             VariableLengthSettings =
-                                                new VariableLengthSettings {Name = "MMI_N_CAPTION_TRAINSET_", ScalingFactor = 8},
+                                                new VariableLengthSettings
+                                                    {Name = "MMI_N_CAPTION_TRAINSET_", ScalingFactor = 8},
                                             Comment = "Train data set caption text"
                                         }
                                     }
@@ -1282,20 +1290,7 @@ namespace IPTComShark.Parsers
                             MMI_NID_DATA,
                             MMI_Q_DATA_CHECK,
                             MMI_N_TEXT,
-                            new BitField
-                            {
-                                VariableLengthSettings = new VariableLengthSettings
-                                {
-                                    Name = "MMI_N_TEXT"
-                                },
-                                NestedDataSet = new DataSetDefinition
-                                {
-                                    BitFields = new List<BitField>
-                                    {
-                                        MMI_X_TEXT
-                                    }
-                                }
-                            }
+                            MMI_X_TEXT
                         }
                     }
                 },
@@ -1346,8 +1341,9 @@ namespace IPTComShark.Parsers
                     Name = "MMI_NID_KEY_AXLE_LOAD",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Axle load category (coded as MMI key according to NID_KEY) of the train. For Axle Load Category the keys number 21 to 33 are applicable. " +
-                              "\"No dedicated key\" may be used for \"entry data field\"."
+                    Comment =
+                        "Axle load category (coded as MMI key according to NID_KEY) of the train. For Axle Load Category the keys number 21 to 33 are applicable. " +
+                        "\"No dedicated key\" may be used for \"entry data field\"."
                 },
                 MMI_NID_RADIO,
                 MMI_NID_RBC,
@@ -1435,8 +1431,9 @@ namespace IPTComShark.Parsers
                     Name = "MMI_NID_KEY_TRAIN_CAT",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Train category (label, coded as MMI_NID_KEY) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. " +
-                              "For Train Category the keys number 3 to 20 are applicable. \"No dedicated key\" may be used for \"entry data view field\"."
+                    Comment =
+                        "Train category (label, coded as MMI_NID_KEY) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. " +
+                        "For Train Category the keys number 3 to 20 are applicable. \"No dedicated key\" may be used for \"entry data view field\"."
                 }
             }
         };
@@ -1445,7 +1442,8 @@ namespace IPTComShark.Parsers
         public static DataSetDefinition EVC_14 => new DataSetDefinition
         {
             Name = "EVC_14 MMI_CURRENT_DRIVER_ID",
-            Comment = "This packet shall be sent when the driver is intended to enter/validate /view driver identity number.",
+            Comment =
+                "This packet shall be sent when the driver is intended to enter/validate /view driver identity number.",
             Identifiers = new List<string>
             {
                 "230530120",
@@ -1482,7 +1480,8 @@ namespace IPTComShark.Parsers
         public static DataSetDefinition EVC_16 => new DataSetDefinition
         {
             Name = "EVC_16 MMI_CURRENT_TRAIN_NUMBER",
-            Comment = "This packet shall be sent when the driver is intended to enter/validate/view train running number",
+            Comment =
+                "This packet shall be sent when the driver is intended to enter/validate/view train running number",
             Identifiers = new List<string>
             {
                 "230530130",
@@ -1500,11 +1499,12 @@ namespace IPTComShark.Parsers
         public static DataSetDefinition EVC_18 => new DataSetDefinition
         {
             Name = "EVC_18 MMI_SET_VBC",
-            Comment = "This packet is sent sporadically from ETC when the 'Set VBC' procedure is ongoing and is intended to support the following use cases:" +
-                      "\r\n1.) Prompt the driver to enter a VBC code" +
-                      "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
-                      "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
-                      "\r\n\r\nNote: Parameter 'MMI_N_VBC' distinguishes between use case 1.) and 2.)",
+            Comment =
+                "This packet is sent sporadically from ETC when the 'Set VBC' procedure is ongoing and is intended to support the following use cases:" +
+                "\r\n1.) Prompt the driver to enter a VBC code" +
+                "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
+                "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
+                "\r\n\r\nNote: Parameter 'MMI_N_VBC' distinguishes between use case 1.) and 2.)",
             Identifiers = new List<string>
             {
                 "230530140",
@@ -1626,8 +1626,9 @@ namespace IPTComShark.Parsers
         public static DataSetDefinition EVC_20 => new DataSetDefinition
         {
             Name = "EVC_20 MMI_SELECT_LEVEL",
-            Comment = "This packet shall be sent when the ETC requests the driver to select level. The packet contains a list of ETCS and NTC levels and related additional status information. " +
-                      "Possible use cases are display of 'default level list', display of 'trackside supported level list', display of 'inhibit level list'.",
+            Comment =
+                "This packet shall be sent when the ETC requests the driver to select level. The packet contains a list of ETCS and NTC levels and related additional status information. " +
+                "Possible use cases are display of 'default level list', display of 'trackside supported level list', display of 'inhibit level list'.",
             Identifiers = new List<string>
             {
                 "230530160",
@@ -2465,14 +2466,14 @@ namespace IPTComShark.Parsers
             }
         };
 
-#endregion
+        #endregion
 
         // checked 25-10-2019 RVV
         public static DataSetDefinition IPT_ECHO => new DataSetDefinition
         {
             Name = "IPT_ECHO IPT_ECHO",
             Comment = "ECHO telegram structure",
-            Identifiers = new List<string>{"110"},
+            Identifiers = new List<string> {"110"},
             BitFields = new List<BitField>
             {
                 new BitField
@@ -2559,7 +2560,6 @@ namespace IPTComShark.Parsers
 
 
         #region DMI->EVC (EVC-100 to EVC-152)
-
 
         #endregion
     }
