@@ -116,38 +116,31 @@ namespace IPTComShark
         }
 
 
-        public static void ParseIPTWPData(CapturePacket packet, UdpPacket udp)
+        public static ParsedDataSet ParseIPTWPData(IPTWPPacket iptwpPacket, UdpPacket udp, bool extensive)
         {
-            IPTWPPacket iptwpPacket = packet.IPTWPPacket;
             if (iptwpPacket == null || iptwpPacket.IPTWPType == IPTTypes.MA)
-                return;
+                return null;
+        
+            DataSetDefinition dataSetDefinition = null;
 
-            try
+            foreach (var collection in DataCollections)
             {
-                DataSetDefinition dataSetDefinition = null;
-
-                foreach (var collection in DataCollections)
+                var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
+                if (find != null)
                 {
-                    var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
-                    if (find != null)
-                    {
-                        dataSetDefinition = find;
-                        break;
-                    }
-                }
-
-                if (dataSetDefinition != null)
-                {
-                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
-                    ParsedDataSet parsedDataSet = dataSetDefinition.Parse(iptPayload);
-                    packet.ParsedData = parsedDataSet;
+                    dataSetDefinition = find;
+                    break;
                 }
             }
-            catch (Exception e)
+
+            if (dataSetDefinition != null)
             {
-                packet.Error = e.Message;
-                //throw;
+                var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
+                return dataSetDefinition.Parse(iptPayload, extensive);
+                
             }
+
+            return null;
         }
 
 
@@ -218,15 +211,17 @@ namespace IPTComShark
 
                 // Print out the available network devices
                 _device = interfacePicker.SelectedDevice;
+
+                // Register our handler function to the
+                // 'packet arrival' event
+                _device.OnPacketArrival +=
+                    device_OnPacketArrival;
             }
 
 
             UpdateStatus("Recording from " + _device.Interface.FriendlyName);
 
-            // Register our handler function to the
-            // 'packet arrival' event
-            _device.OnPacketArrival +=
-                device_OnPacketArrival;
+            
 
             // Open the device for capturing
             var readTimeoutMilliseconds = 1000;

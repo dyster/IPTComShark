@@ -35,6 +35,8 @@
             this.olvColumnDataLineValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnComment = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnChanged = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.analyzeValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxComid = new System.Windows.Forms.TextBox();
             this.textBoxSize = new System.Windows.Forms.TextBox();
             this.textBoxType = new System.Windows.Forms.TextBox();
@@ -45,18 +47,18 @@
             this.textBoxRAW = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.analyzeValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataListViewRight
             // 
+            this.dataListViewRight.AllColumns.Add(this.olvColumnNo);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineName);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineType);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineValue);
@@ -64,6 +66,7 @@
             this.dataListViewRight.AllColumns.Add(this.olvColumnChanged);
             this.dataListViewRight.CellEditUseWholeCell = false;
             this.dataListViewRight.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumnNo,
             this.olvColumnDataLineName,
             this.olvColumnDataLineType,
             this.olvColumnDataLineValue,
@@ -111,6 +114,20 @@
             this.olvColumnChanged.AspectName = "Changed";
             this.olvColumnChanged.Text = "Changed";
             this.olvColumnChanged.Width = 0;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.analyzeValueToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(147, 26);
+            // 
+            // analyzeValueToolStripMenuItem
+            // 
+            this.analyzeValueToolStripMenuItem.Name = "analyzeValueToolStripMenuItem";
+            this.analyzeValueToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.analyzeValueToolStripMenuItem.Text = "Analyze value";
+            this.analyzeValueToolStripMenuItem.Click += new System.EventHandler(this.analyzeValueToolStripMenuItem_Click);
             // 
             // textBoxComid
             // 
@@ -214,19 +231,11 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
-            // contextMenuStrip1
+            // olvColumnNo
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.analyzeValueToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            // 
-            // analyzeValueToolStripMenuItem
-            // 
-            this.analyzeValueToolStripMenuItem.Name = "analyzeValueToolStripMenuItem";
-            this.analyzeValueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.analyzeValueToolStripMenuItem.Text = "Analyze value";
-            this.analyzeValueToolStripMenuItem.Click += new System.EventHandler(this.analyzeValueToolStripMenuItem_Click);
+            this.olvColumnNo.AspectName = "No";
+            this.olvColumnNo.Text = "No";
+            this.olvColumnNo.Width = 26;
             // 
             // PacketDisplay
             // 
@@ -245,11 +254,11 @@
             this.Name = "PacketDisplay";
             this.Size = new System.Drawing.Size(314, 406);
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,5 +284,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem analyzeValueToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumnNo;
     }
 }

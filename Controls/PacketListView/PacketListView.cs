@@ -84,8 +84,15 @@ namespace IPTComShark.Controls
 
             olvColumnIPTWPType.ClusterGetter += packets =>
             {
-                return StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
+                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
                     .Select(p => p.IPTWPPacket.IPTWPType.ToString()));
+                foreach (var cluster in clusters)
+                {
+                    cluster.ClusterKey = Enum.Parse(typeof(IPTTypes), cluster.DisplayLabel);
+                }
+
+                return clusters;
+
             };
 
             olvColumnComId.ClusterGetter += packets =>
