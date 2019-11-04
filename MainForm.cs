@@ -48,6 +48,7 @@ namespace IPTComShark
             packetDisplay1.IptConfigReader = IptConfigReader;
 
             DataCollections.Add(new TPWS());
+            DataCollections.Add(new STM());
             DataCollections.Add(new Parsers.ETCSDiag());
             DataCollections.Add(new VSISDMI());
             DataCollections.Add(new VSIS210());

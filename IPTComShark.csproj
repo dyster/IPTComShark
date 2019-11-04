@@ -123,6 +123,7 @@
     <Compile Include="Parsers\ETCSDiag.cs" />
     <Compile Include="CapturePacket\ProtocolType.cs" />
     <Compile Include="Parsers\NTP.cs" />
+    <Compile Include="Parsers\STM.cs" />
     <Compile Include="Parsers\VSISDMI.cs" />
     <Compile Include="Windows\InterfacePicker.cs">
       <SubType>Form</SubType>
