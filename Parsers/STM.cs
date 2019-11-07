@@ -8,7 +8,7 @@ namespace IPTComShark.Parsers
         public STM()
         {
             this.Name = "STM";
-            this.Description = "VSIS 2.11 STM definitions";
+            this.Description = "VSIS 2.13 STM definitions";
 
             DataSets.Add(IP_STM_1);
             DataSets.Add(IP_STM_15);
