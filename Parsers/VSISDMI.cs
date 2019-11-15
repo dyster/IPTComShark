@@ -2194,15 +2194,35 @@ namespace IPTComShark.Parsers
             },
             BitFields = new List<BitField>
             {
-                MMI_M_PACKET,
-                MMI_L_PACKET,
+               new BitField
+               {
+                    Length = 1,
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_M_PACKET,
+                            MMI_L_PACKET,
+                        }
+                    }
+                },
                 new BitField
                 {
-                    // TODO How do you set just this BitField with the InvertBits parameter?
-                    Name = "MMI_M_VBC_CODE_",
-                    BitFieldType = BitFieldType.UInt32,
-                    Length = 32,
-                    Comment = "VBC Identifier, bit inverted"
+                    Length = 1,
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        InvertBits = true,
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "MMI_M_VBC_CODE_",
+                                BitFieldType = BitFieldType.UInt32,
+                                Length = 32,
+                                Comment = "VBC Identifier, bit inverted"
+                            }
+                        }
+                    }
                 }
             }
         };
