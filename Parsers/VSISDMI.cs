@@ -1654,7 +1654,7 @@ namespace IPTComShark.Parsers
                             new BitField
                             {
                                 Name = "MMI_Q_LEVEL_NTC_ID",
-                                BitFieldType = BitFieldType.UInt8,
+                                BitFieldType = BitFieldType.Uint8,
                                 Length = 1,
                                 Comment = "Qualifier for the variable MMI_M_LEVEL_NTC_ID",
                                 LookupTable = new Dictionary<string, string>
