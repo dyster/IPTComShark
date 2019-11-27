@@ -31,7 +31,7 @@ namespace IPTComShark
 
         private WinPcapDevice _device;
         private long _discardedData;
-        private long _discaredPackets;
+        private long _discardedPackets;
 
         private uint _seed = 1;
 
@@ -86,7 +86,7 @@ namespace IPTComShark
 
             _capturedData = 0;
             _discardedData = 0;
-            _discaredPackets = 0;
+            _discardedPackets = 0;
         }
 
         private void UpdateStatus(string text)
@@ -264,7 +264,7 @@ namespace IPTComShark
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));
             tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
-            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _discaredPackets.ToString()));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _discardedPackets.ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, "discarded packets | GC mem:"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(totalMemory)));
             tuples.Add(new Tuple<Color, string>(Color.Black, "| Proc mem:"));
