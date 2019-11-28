@@ -52,32 +52,31 @@ namespace IPTComShark.Parsers
             DataSets.Add(EVC_41);
             DataSets.Add(EVC_50);
             DataSets.Add(EVC_51);
+
+            DataSets.Add(EVC_100);
+            DataSets.Add(EVC_101);
+            DataSets.Add(EVC_102);
+            DataSets.Add(EVC_104);
+            DataSets.Add(EVC_106);
+            DataSets.Add(EVC_107);
+            DataSets.Add(EVC_109);
+            DataSets.Add(EVC_110);
+            DataSets.Add(EVC_111);
+            DataSets.Add(EVC_112);
+            DataSets.Add(EVC_116);
+            DataSets.Add(EVC_118);
+            //DataSets.Add(EVC_119);
+            //DataSets.Add(EVC_121);
+            //DataSets.Add(EVC_122);
+            //DataSets.Add(EVC_123);
+            //DataSets.Add(EVC_128);
+            //DataSets.Add(EVC_129);
+            //DataSets.Add(EVC_140);
+            //DataSets.Add(EVC_141);
+            //DataSets.Add(EVC_150);
+            //DataSets.Add(EVC_151);
+            //DataSets.Add(EVC_152);
         }
-        //{230531000, EVC_100},
-        //{230536000, EVC_100},
-        //{230531010, EVC_101},
-        //{230536010, EVC_101},
-        //{230531020, EVC_102},
-        //{230536020, EVC_102},
-        ////{230531021, EVC_102},      {230536021, EVC_102}, specified redundant telegram, I don't think this is correct (in VSIS)
-        //{230531030, EVC_104},
-        //{230536030, EVC_104},
-        //{230531040, EVC_106},
-        //{230536040, EVC_106},
-        //{230531050, EVC_107},
-        //{230536050, EVC_107},
-        //{230531060, EVC_109},
-        //{230536060, EVC_109},
-        //{230531070, EVC_110},
-        //{230536070, EVC_110},
-        //{230531080, EVC_111},
-        //{230536080, EVC_111},
-        //{230531090, EVC_112},
-        //{230536090, EVC_112},
-        //{230531100, EVC_116},
-        //{230536100, EVC_116},
-        //{230531110, EVC_118},
-        //{230536110, EVC_118},
         //{230531120, EVC_119},
         //{230536120, EVC_119},
         //{230531130, EVC_121},
@@ -101,7 +100,7 @@ namespace IPTComShark.Parsers
         //{230531220, EVC_152},
         //{230536220, EVC_152},
 
-        #region EVC->DMI (EVC-0 to EVC-99)
+        #region EVC-0 to EVC-99 (EVC->DMI)
 
         // checked RVV 26-10-2019 2.11
         public static DataSetDefinition EVC_0 => new DataSetDefinition
@@ -659,100 +658,16 @@ namespace IPTComShark.Parsers
                 MMI_M_PACKET,
                 MMI_L_PACKET,
                 MMI_M_DATA_ENABLE,
-                new BitField
-                {
-                    Name = "MMI_L_TRAIN",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Max. train length",
-                    LookupTable = new Dictionary<string, string>{{"0", "'No default value' => TD entry field shall remain empty"}}
-                },
-                new BitField
-                {
-                    Name = "MMI_V_MAXTRAIN",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Max. train speed",
-                    LookupTable = new Dictionary<string, string>{{"0", "'No default value' => TD entry field shall remain empty"}}
-                },
-                new BitField
-                {
-                    Name = "MMI_NID_KEY_TRAIN_CAT",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment =
-                        "Train category (label, coded as MMI_NID_KEY) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. " +
-                        "For Train Category the keys number 3 to 20 are applicable. \"No dedicated key\" may be used for \"entry data entry field\"."
-                },
-                new BitField
-                {
-                    Name = "MMI_M_BRAKE_PERC",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Brake percentage"
-                },
-                new BitField
-                {
-                    Name = "MMI_NID_KEY_AXLE_LOAD",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment =
-                        "Axle load category (coded as MMI key according to NID_KEY) of the train. " +
-                        "For Axle Load Category the keys number 21 to 33 are applicable. \"No dedicated key\" may be used for \"entry data entry field\"."
-                },
-                new BitField
-                {
-                    Name = "MMI_M_AIRTIGHT",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Train equipped with airtight system",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"0", "Not equipped"},
-                        {"1", "Equipped"},
-                        {"2", "'No default value' => TD entry field shall remain empty"}
-                    }
-                },
-                new BitField
-                {
-                    Name = "MMI_NID_KEY_LOAD_GAUGE",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment =
-                        "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. " +
-                        "For Train Category the keys number 34 to 38 are applicable. \"No dedicated key\" may be used for \"entry data entry field\"."
-                },
+                MMI_L_TRAIN,
+                MMI_V_MAXTRAIN,
+                MMI_NID_KEY_TRAIN_CAT,
+                MMI_M_BRAKE_PERC,
+                MMI_NID_KEY_AXLE_LOAD,
+                MMI_M_AIRTIGHT,
+                MMI_NID_KEY_LOAD_GAUGE,
                 MMI_M_BUTTONS,
-                new BitField
-                {
-                    Name = "MMI_M_TRAINSET_ID",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 4,
-                    Comment = "ID of preconfigured train data set",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"0", "Train data entry method by train data set is not selected --> use 'flexible TDE'"},
-                        {"15", "no Train data set specified"}
-                    }
-                },
-                new BitField
-                {
-                    Name = "MMI_M_ALT_DEM",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 2,
-                    Comment = "Control variable for alternative train data entry method",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {
-                            "0",
-                            "No alternative train data entry method enabled (covers 'fixed train data entry' and 'flexible train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.a+b)"
-                        },
-                        {
-                            "15",
-                            "Flexible train data entry <-> train data entry for Train Sets (covers 'switchable train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.c)"
-                        }
-                    }
-                },
+                MMI_M_TRAINSET_ID,
+                MMI_M_ALT_DEM,
                 new BitField
                 {
                     Name = "evc6_spare1",
@@ -1063,13 +978,7 @@ namespace IPTComShark.Parsers
                         {"5", "Text still incomplete. Another instance of EVC-8 follows."}
                     }
                 },
-                new BitField
-                {
-                    Name = "MMI_I_TEXT",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Text identifier"
-                },
+                MMI_I_TEXT,
                 MMI_Q_TEXT,
                 MMI_N_TEXT,
                 MMI_X_TEXT
@@ -1224,7 +1133,7 @@ namespace IPTComShark.Parsers
             }
         };
 
-        // checked RVV 28-10-2019 2.11
+        // checked RVV 22-11-2019 2.13
         public static DataSetDefinition EVC_11 => new DataSetDefinition
         {
             Name = "EVC_11 MMI_CURRENT_SR_RULES",
@@ -1243,20 +1152,8 @@ namespace IPTComShark.Parsers
             {
                 MMI_M_PACKET,
                 MMI_L_PACKET,
-                new BitField
-                {
-                    Name = "MMI_L_STFF",
-                    BitFieldType = BitFieldType.UInt32,
-                    Length = 32,
-                    Comment = "Max distance in Staff responsible"
-                },
-                new BitField
-                {
-                    Name = "MMI_V_STFF",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Max Staff Responsible speed"
-                },
+                MMI_L_STFF,
+                MMI_V_STFF,
                 MMI_N_DATA_ELEMENTS,
                 new BitField
                 {
@@ -1362,13 +1259,7 @@ namespace IPTComShark.Parsers
                     {
                         BitFields = new List<BitField>
                         {
-                            new BitField
-                            {
-                                Name = "MMI_M_VBC_CODE",
-                                BitFieldType = BitFieldType.UInt32,
-                                Length = 32,
-                                Comment = "VBC Identifier"
-                            }
+                            MMI_M_VBC_CODE
                         }
                     }
                 },
@@ -1521,13 +1412,7 @@ namespace IPTComShark.Parsers
                     {
                         BitFields = new List<BitField>
                         {
-                            new BitField
-                            {
-                                Name = "MMI_M_VBC_CODE",
-                                BitFieldType = BitFieldType.UInt32,
-                                Length = 32,
-                                Comment = "VBC Identifier"
-                            },
+                            MMI_M_VBC_CODE,
                             MMI_Q_DATA_CHECK,
                             new BitField
                             {
@@ -1544,7 +1429,7 @@ namespace IPTComShark.Parsers
             }
         };
 
-        // checked 20190510 2.11
+        // checked RVV 26-11-2019 2.13
         public static DataSetDefinition EVC_19 => new DataSetDefinition
         {
             Name = "EVC_19 MMI_REMOVE_VBC",
@@ -1588,13 +1473,7 @@ namespace IPTComShark.Parsers
                     {
                         BitFields = new List<BitField>
                         {
-                            new BitField
-                            {
-                                Name = "MMI_M_VBC_CODE",
-                                BitFieldType = BitFieldType.UInt32,
-                                Length = 32,
-                                Comment = "VBC Identifier"
-                            },
+                            MMI_M_VBC_CODE,
                             MMI_N_TEXT,
                             MMI_X_TEXT,
                             MMI_Q_DATA_CHECK
@@ -3035,7 +2914,712 @@ namespace IPTComShark.Parsers
 
         #endregion
 
-        #region DMI->EVC (EVC-100 to EVC-152)
+        #region EVC-100 to EVC-152 (DMI->EVC)
+
+        // checked RVV 21-11-2019 2.11
+        public static DataSetDefinition EVC_100 => new DataSetDefinition
+        {
+            Name = "EVC_100 MMI_START_MMI",
+            Comment =
+                "This packet shall be sent as the MMI's answer to MMI_START_ATP and contains version and status information.",
+            Identifiers = new List<string>
+            {
+                "230531000",
+                "230536000"
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                new BitField
+                {
+                    Name = "MMI_M_IF_VER",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "MMI IF version"
+                },
+                new BitField
+                {
+                    Name = "MMI_M_SW_VER",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "MMI SW version"
+                },
+                new BitField
+                {
+                    Name = "MMI_M_START_STATUS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "MMI start-up status" +
+                              "\r\nBits:" +
+                              "\r\n0..7 = X" +
+                              "\r\n8..15 = Y" +
+                              "\r\n16..23 = Z" +
+                              "\r\n24..31 = spare" +
+                              "\r\nNote: 255 = This digit is not used"
+                }
+            }
+        };
+
+        // checked RVV 21-11-2019 2.11
+        public static DataSetDefinition EVC_101 => new DataSetDefinition
+        {
+            Name = "EVC_101 MMI_DRIVER_REQUEST",
+            Comment =
+                "This packet shall be sent when the driver requests for an action from the ATP, typically by pressing a button.",
+            Identifiers = new List<string>
+            {
+                "230531010",
+                "230536010"
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_T_BUTTONEVENT,
+                new BitField
+                {
+                    Name = "MMI_M_REQUEST",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Request type, one request at the time",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Spare"},
+                        {"1", "Start Shunting"},
+                        {"2", "Exit Shunting"},
+                        {"3", "Start Train Data Entry"},
+                        {"4", "Exit Train Data Entry"},
+                        {"5", "Start Non-Leading"},
+                        {"6", "Exit Non-Leading"},
+                        {"7", "Start Override EOA (Pass stop)"},
+                        {"8", "Geographical position request"},
+                        {"9", "Start"},
+                        {"10", "Restore adhesion coefficient to 'non-slippery rail'"},
+                        {"11", "Set adhesion coefficient to 'slippery rail'"},
+                        {"12", "Exit Change SR rules"},
+                        {"13", "Change SR rules"},
+                        {"14", "Continue shunting on desk closure"},
+                        {"15", "Spare"},
+                        {"16", "Spare"},
+                        {"17", "Spare"},
+                        {"18", "Spare"},
+                        {"19", "Spare"},
+                        {"20", "Change Driver identity"},
+                        {"21", "Start Train Data View"},
+                        {"22", "Start Brake Test"},
+                        {"23", "Start Set VBC"},
+                        {"24", "Start Remove VBC"},
+                        {"25", "Exit Set VBC"},
+                        {"26", "Exit Remove VBC"},
+                        {"27", "Change Level (or inhibit status)"},
+                        {"28", "Start RBC Data Entry"},
+                        {"29", "System Info request"},
+                        {"30", "Change Train Running Number"},
+                        {"31", "Exit Change Train Running Number"},
+                        {"32", "Exit Change Level (or inhibit status)"},
+                        {"33", "Exit RBC Data Entry"},
+                        {"34", "Exit Driver Data Entry"},
+                        {"35", "Spare"},
+                        {"36", "Spare"},
+                        {"37", "Spare"},
+                        {"38", "Start procedure 'Train Integrity'"},
+                        {"39", "Exit RBC contact"},
+                        {"40", "Level entered"},
+                        {"41", "start NTC 1 data entry"},
+                        {"42", "start NTC 2 data entry"},
+                        {"43", "start NTC 3 data entry"},
+                        {"44", "start NTC 4 data entry"},
+                        {"45", "start NTC 5 data entry"},
+                        {"46", "start NTC 6 data entry"},
+                        {"47", "start NTC 7 data entry"},
+                        {"48", "start NTC 8 data entry"},
+                        {"49", "Exit NTC data entry"},
+                        {"50", "Exit NTC data entry selection"},
+                        {"51", "Change Brake Percentage"},
+                        {"52", "Change Doppler"},
+                        {"53", "Change Wheel Diameter"},
+                        {"54", "Exit maintenance"},
+                        {"55", "System Version request"},
+                        {"56", "Start Network ID"},
+                        {"57", "Contact last RBC"},
+                        {"58", "Settings"},
+                        {"59", "Switch"},
+                        {"60", "Exit brake percentage"},
+                        {"61", "Exit RBC Network ID"}
+                    }
+                },
+                MMI_Q_BUTTON,
+                new BitField
+                {
+                    Name = "evc101_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "Spare for byte alignment"
+                },
+                new BitField
+                {
+                    Name = "evc101_spare2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 2,
+                    Comment = "Spare for byte alignment"
+                },
+                new BitField
+                {
+                    Name = "evc101_spare3",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 4,
+                    Comment = "Spare for byte alignment"
+                }
+            }
+        };
+
+        // checked RVV 21-11-2019 2.13
+        public static DataSetDefinition EVC_102 => new DataSetDefinition
+        {
+            Name = "EVC_102 MMI_STATUS_REPORT",
+            Comment =
+                "This packet shall be sent cyclically as an alive and status signal." +
+                "\r\nNote: This packet is routed via dedicated port and thus no header nor length information is contained in the (plain) data set. It is also protected via SDTv2.",
+
+            Identifiers = new List<string>
+            {
+                "230531020",
+                "230536020",
+                "230531021",
+                "230536021"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "MMI_M_LX_STATUS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 2,
+                    Comment = "Indicates validity of shown \"LX not protected\" text",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "'LX not protected' text has not been requested"},
+                        {"1", "'LX not protected' text has been requested and shown properly"},
+                        {"2", "'LX not protected' text has been requested but not shown properly"},
+                        {"3", "Unknown"}
+                    }
+                },
+                MMI_M_ACTIVE_CABIN,
+                new BitField
+                {
+                    Name = "MMI_M_SPEED_STATUS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 2,
+                    Comment = "MMI speed data consistency",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Speed correctly shown"},
+                        {"1", "Speed wrongly shown"},
+                        {"2", "Unknown"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "MMI_M_MODE_STATUS",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 2,
+                    Comment = "Indicates validity of shown mode",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Mode presentation failed"},
+                        {"1", "Mode presentation passed"},
+                        {"2", "Unknown"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "MMI_M_MMI_STATUS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 4,
+                    Comment = "The current health status of MMI",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Unknown"},
+                        {"1", "Failure"},
+                        {"2", "Idle"},
+                        {"3", "Active"},
+                        {"4", "spare"},
+                        {"5", "ATP Down, NACK"},
+                        {"6", "ATP Down, ACK"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "evc102_Spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 4,
+                    Comment = "Spare"
+                },
+                new BitField
+                {
+                    Name = "MMI_M_MODE_READBACK",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Contains the current mode as shown on the DMI"
+                },
+                MMI_I_TEXT,
+                new BitField
+                {
+                    Name = "MMI_V_NEEDLESPEED",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Train speed shown as analogue information"
+                },
+                new BitField
+                {
+                    Name = "MMI_V_DIGSPEED",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Train speed shown as digital information"
+                },
+                new BitField
+                {
+                    Name = "MMI_Q_TEXT_READBACK",
+                    BitFieldType = BitFieldType.Int16,
+                    Length = 16,
+                    Comment = "Gives back a Q_TEXT for \"LX not protected\""
+                },
+                new BitField
+                {
+                    Name = "evc102_Spare2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Spare"
+                },
+                new BitField
+                {
+                    Name = "MMI_T_DMILM",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Time stamp (EVC running time in milliseconds)"
+                },
+                new BitField
+                {
+                    Name = "evc102_Spare3",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 32,
+                    Comment = "Spare"
+                },
+                new BitField
+                {
+                    Name = "evc102_Spare4",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Spare"
+                },
+                new BitField
+                {
+                    Name = "EVC102_Validity1",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment =
+                        "Validity1 bits" +
+                        "\r\n0 = MMI_M_LX_STATUS" +
+                        "\r\n1 not used (set to invalid)" +
+                        "\r\n2 = MMI_M_ACTIVE_CABIN" +
+                        "\r\n3 not used (set to invalid)" +
+                        "\r\n4 = MMI_M_SPEED_STATUS" +
+                        "\r\n5 not used (set to invalid)" +
+                        "\r\n6 = MMI_M_MODE_STATUS" +
+                        "\r\n7 not used (set to invalid)" +
+                        "\r\n8 = MMI_M_MMI_STATUS" +
+                        "\r\n9..15 not used (set to invalid)"
+                },
+                new BitField
+                {
+                    Name = "EVC102_Validity2",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment =
+                        "Validity2 bits" +
+                        "\r\n0..5 not used (set to invalid)" +
+                        "\r\n6 = MMI_T_DMILM" +
+                        "\r\n7..15 not used (set to invalid)"
+                },
+                SSW1,
+                SSW2,
+                SSW3
+            }
+        };
+
+        // checked RVV 22-11-2019 2.13
+        public static DataSetDefinition EVC_104 => new DataSetDefinition
+        {
+            Name = "EVC_104 MMI_NEW_DRIVER_DATA",
+            Comment = "This packet shall be sent when the driver has entered or validated driver identity number.",
+            Identifiers = new List<string>
+            {
+                "230531030",
+                "230536030",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_X_DRIVER_ID
+            }
+        };
+
+        // checked RVV 22-11-2019 2.13
+        public static DataSetDefinition EVC_106 => new DataSetDefinition
+        {
+            Name = "EVC_106 MMI_NEW_SR_RULES",
+            Comment =
+                "This packet shall be sent sporadically from DMI when the driver has submitted data in the 'SR speed / distance' window.",
+            Identifiers = new List<string>
+            {
+                "230531040",
+                "230536040",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_L_STFF,
+                MMI_V_STFF,
+                MMI_N_DATA_ELEMENTS,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "MMI_N_DATA_ELEMENTS"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_NID_DATA
+                        }
+                    }
+                },
+                MMI_M_BUTTONS
+            }
+        };
+
+        // checked RVV 22-11-2019 2.13
+        public static DataSetDefinition EVC_107 => new DataSetDefinition
+        {
+            Name = "EVC_107 MMI_NEW_TRAIN_DATA",
+            Comment =
+                "This packet shall be sent when the driver acts during the Train Data Entry procedure. It covers the following use cases:" +
+                "\r\n1. Driver accepts a data element by pressing 'Enter'" +
+                "\r\n2. Driver accepts a data element by pressing 'Enter_Delay_Type'" +
+                "\r\n3. Driver completes entering a data block by pressing 'Yes'" +
+                "\r\n4. Driver overrules an operational check rule by pressing 'Delay Type Yes'",
+            Identifiers = new List<string>
+            {
+                "230531050",
+                "230536050",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_L_TRAIN,
+                MMI_V_MAXTRAIN,
+                MMI_NID_KEY_TRAIN_CAT,
+                MMI_M_BRAKE_PERC,
+                MMI_NID_KEY_AXLE_LOAD,
+                MMI_M_AIRTIGHT,
+                MMI_NID_KEY_LOAD_GAUGE,
+                MMI_M_TRAINSET_ID,
+                MMI_M_ALT_DEM,
+                new BitField
+                {
+                    Name = "evc107_spare",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 2,
+                    Comment = "Spare for alignment"
+                },
+                MMI_N_DATA_ELEMENTS,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "MMI_N_DATA_ELEMENTS"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_NID_DATA
+                        }
+                    }
+                },
+                MMI_M_BUTTONS
+            }
+        };
+
+        // checked RVV 22-11-2019 2.13
+        public static DataSetDefinition EVC_109 => new DataSetDefinition
+        {
+            Name = "EVC_109 MMI_SET_TIME_MMI",
+            Comment =
+                "This packet shall be sent whenever the time is changed in the MMI clock function. The content is the same as in packet 3.",
+            Identifiers = new List<string>
+            {
+                "230531060",
+                "230536060",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_T_UTC,
+                MMI_T_ZONE_OFFSET
+            }
+        };
+
+        // checked RVV 22-11-2019 2.13
+        public static DataSetDefinition EVC_110 => new DataSetDefinition
+        {
+            Name = "EVC_110 MMI_CONFIRMED_TRAIN_DATA",
+            Comment =
+                "This packet shall be sent when the driver has confirmed the presented train data during Train Data Validation.",
+            Identifiers = new List<string>
+            {
+                "230531070",
+                "230536070",
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Length = 1,
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_M_PACKET,
+                            MMI_L_PACKET,
+                        }
+                    }
+                },
+                new BitField
+                {
+                    Length = 1,
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        InvertBits = true,
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "MMI_V_MAXTRAIN_",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 16,
+                                Comment = "Maximum train speed"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_L_TRAIN_",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 16,
+                                Comment = "Maximum train length"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_M_ALT_DEM_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 2,
+                                Comment = "Control variable for alternative train data entry method"
+                            },
+                            new BitField
+                            {
+                                Name = "evc110_spare",
+                                BitFieldType = BitFieldType.Spare,
+                                Length = 2,
+                                Comment = "Spare for alignment"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_M_TRAINSET_ID_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 4,
+                                Comment = "ID of preconfigured train data set"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_NID_KEY_LOAD_GAUGE_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment =
+                                    "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. For Train Category the keys number 34 to 38 are applicable."
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_M_AIRTIGHT_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment = "Train equipped with airtight system"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_NID_KEY_AXLE_LOAD_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment =
+                                    "Axle load category (coded as MMI key according to NID_KEY) of the train. For Axle Load Category the keys number 21 to 33 are applicable."
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_M_BRAKE_PERC_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment = "Brake percentage"
+                            },
+                            new BitField
+                            {
+                                Name = "MMI_NID_KEY_TRAIN_CAT_",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment =
+                                    "Train category (label) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. For Train Category the keys number 3 to 20 are applicable."
+                            }
+                        }
+                    }
+                },
+            }
+        };
+
+        // checked RVV 25-11-2019 2.13
+        public static DataSetDefinition EVC_111 => new DataSetDefinition
+        {
+            Name = "EVC_111 MMI_DRIVER_MESSAGE_ACK",
+            Comment =
+                "This packet shall be sent as a positive/negative response, if required, on the “Driver Message” packet from the ETC.",
+            Identifiers = new List<string>
+            {
+                "230531080",
+                "230536080",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_T_BUTTONEVENT,
+                MMI_I_TEXT,
+                new BitField
+                {
+                    Name = "MMI_Q_ACK",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 4,
+                    Comment = "Logical Ack or Nack",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Spare"},
+                        {"1", "Acknowledge / YES"},
+                        {"2", "Not Acknowledge / NO"}
+                    }
+                },
+                MMI_Q_BUTTON,
+                new BitField
+                {
+                    Name = "evc111_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "Spare for alignment"
+                },
+                new BitField
+                {
+                    Name = "evc111_spare2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 2,
+                    Comment = "Spare for alignment"
+                }
+            }
+        };
+
+        // checked RVV 25-11-2019 2.13
+        public static DataSetDefinition EVC_112 => new DataSetDefinition
+        {
+            Name = "EVC_112 MMI_NEW_RBC_DATA",
+            Comment =
+                "This packet shall be sent when the driver has entered new RBC data. It covers the following use cases:" +
+                "\r\n1.) Driver accepts a data element by pressing 'Enter'" +
+                "\r\n2.) Driver accepts a data element by pressing 'Enter_Delay_Type'" +
+                "\r\n3.) Driver completes entering a data block by pressing 'Yes'" +
+                "\r\n4.) Driver overrules an operational check rule by pressing 'Delay Type Yes'",
+            Identifiers = new List<string>
+            {
+                "230531090",
+                "230536090",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_NID_RBC,
+                MMI_NID_RADIO,
+                new BitField
+                {
+                    Name = "MMI_NID_MN",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Selected radio Network ID index starting from 0."
+                },
+                MMI_N_DATA_ELEMENTS,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "MMI_N_DATA_ELEMENTS"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_NID_DATA
+                        }
+                    }
+                },
+                MMI_M_BUTTONS
+            }
+        };
+
+        // checked RVV 26-11-2019 2.13
+        public static DataSetDefinition EVC_116 => new DataSetDefinition
+        {
+            Name = "EVC_116 MMI_NEW_TRAIN_NUMBER",
+            Comment = "This packet shall be sent when the driver has entered or validated train running number. ",
+            Identifiers = new List<string>
+            {
+                "230531100",
+                "230536100",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                Subset26.NID_OPERATIONAL
+            }
+        };
+
+        // checked RVV 26-11-2019 2.13
+        public static DataSetDefinition EVC_118 => new DataSetDefinition
+        {
+            Name = "EVC_118 MMI_NEW_SET_VBC",
+            Comment =
+                "This packet shall be sent sporadically from DMI when the driver has submitted data in the 'Set VBC' window.",
+            Identifiers = new List<string>
+            {
+                "230531110",
+                "230536110",
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_M_VBC_CODE,
+                MMI_M_BUTTONS
+            }
+        };
 
         #endregion
 
@@ -3147,6 +3731,15 @@ namespace IPTComShark.Parsers
             }
         };
 
+        public static BitField MMI_I_TEXT => new BitField
+        {
+            Name = "MMI_I_TEXT",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 8,
+            Comment =
+                "The identifier of the transmitted text. Used to identify the text for addressing, acknowledgment and removing."
+        };
+
         public static BitField MMI_L_CAPTION => new BitField
         {
             Name = "MMI_L_CAPTION",
@@ -3163,6 +3756,24 @@ namespace IPTComShark.Parsers
             Comment = "Packet Length"
         };
 
+        public static BitField MMI_L_STFF => new BitField
+        {
+            Name = "MMI_L_STFF",
+            BitFieldType = BitFieldType.UInt32,
+            Length = 32,
+            Comment = "Max distance in Staff responsible",
+            AppendString = " m"
+        };
+
+        public static BitField MMI_L_TRAIN => new BitField
+        {
+            Name = "MMI_L_TRAIN",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Maximum train length",
+            LookupTable = new Dictionary<string, string> { { "0", "'No default value' => TD entry field shall remain empty" } }
+        };
+
         public static BitField MMI_M_ACTIVE_CABIN => new BitField
         {
             Name = "MMI_M_ACTIVE_CABIN",
@@ -3176,6 +3787,49 @@ namespace IPTComShark.Parsers
                 {"2", "Cabin 2 is active"},
                 {"3", "Spare"}
             }
+        };
+
+        public static BitField MMI_M_AIRTIGHT => new BitField
+        {
+            Name = "MMI_M_AIRTIGHT",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 8,
+            Comment = "Train equipped with airtight system",
+            LookupTable = new Dictionary<string, string>
+            {
+                {"0", "Not equipped"},
+                {"1", "Equipped"},
+                {"2", "'No default value' => TD entry field shall remain empty"}
+            }
+        };
+
+        public static BitField MMI_M_ALT_DEM => new BitField
+        {
+            Name = "MMI_M_ALT_DEM",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 2,
+            Comment = "Control variable for alternative train data entry method",
+            LookupTable = new Dictionary<string, string>
+            {
+                {
+                    "0",
+                    "No alternative train data entry method enabled (covers 'fixed train data entry' and 'flexible train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.a+b)"
+                },
+                {
+                    "15",
+                    "Flexible train data entry <-> train data entry for Train Sets (covers 'switchable train data entry' according to ERA_ERTMS_15560, v3.4.0, ch. 11.3.9.6.c)"
+                }
+            }
+        };
+
+        public static BitField MMI_M_BRAKE_PERC => new BitField
+        {
+            Name = "MMI_M_BRAKE_PERC",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 8,
+            Comment = "Brake percentage",
+            LookupTable = new Dictionary<string, string> {{ "0", "'No default value' => Data field shall remain empty" }},
+            AppendString = " %"
         };
 
         public static BitField MMI_M_BUTTONS => new BitField
@@ -3416,6 +4070,27 @@ namespace IPTComShark.Parsers
             }
         };
 
+        public static BitField MMI_M_TRAINSET_ID => new BitField
+        {
+            Name = "MMI_M_TRAINSET_ID",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 4,
+            Comment = "ID of preconfigured train data set",
+            LookupTable = new Dictionary<string, string>
+            {
+                {"0", "Train data entry method by train data set is not selected --> use 'flexible TDE'"},
+                {"15", "no Train data set specified"}
+            }
+        };
+
+        public static BitField MMI_M_VBC_CODE => new BitField
+        {
+            Name = "MMI_M_VBC_CODE",
+            BitFieldType = BitFieldType.UInt32,
+            Length = 32,
+            Comment = "VBC Identifier"
+        };
+
         public static BitField MMI_M_WHEEL_SIZE_ERR => new BitField
         {
             Name = "MMI_M_WHEEL_SIZE_ERR",
@@ -3445,7 +4120,11 @@ namespace IPTComShark.Parsers
             Name = "MMI_N_DATA_ELEMENTS",
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
-            Comment = "Number of data elements (range: 0-8)"
+            Comment = "Number of data elements" +
+                      "\r\nEVC-6 range: 0-9" +
+                      "\r\nEVC-11 & EVC-106 range: 0-2" +
+                      "\r\nEVC 22, 107, 112 range: 0-8"
+
         };
 
         public static BitField MMI_N_ITER => new BitField
@@ -3494,6 +4173,38 @@ namespace IPTComShark.Parsers
                 {"19", "Remove VBC code"},
                 {"255", "no specific data element defined"}
             }
+        };
+
+        public static BitField MMI_NID_KEY_AXLE_LOAD => new BitField
+        {
+            Name = "MMI_NID_KEY_AXLE_LOAD",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 8,
+            Comment =
+                "Axle load category (coded as MMI key according to NID_KEY) of the train. " +
+                "For Axle Load Category the keys number 21 to 33 are applicable. \"No dedicated key\" may be used for \"entry data entry field\".",
+            LookupTable = new Dictionary<string, string> { { "0", "'No default value' => Data field shall remain empty" } }
+        };
+
+        public static BitField MMI_NID_KEY_LOAD_GAUGE => new BitField
+        {
+            Name = "MMI_NID_KEY_LOAD_GAUGE",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 8,
+            Comment =
+                "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. For Train Category the keys number 34 to 38 are applicable.",
+            LookupTable = new Dictionary<string, string> { { "0", "'No default value' => Data field shall remain empty" } }
+        };
+
+        public static BitField MMI_NID_KEY_TRAIN_CAT => new BitField
+        {
+            Name = "MMI_NID_KEY_TRAIN_CAT",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 8,
+            Comment =
+                "Train category (label, coded as MMI_NID_KEY) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. " +
+                "For Train Category the keys number 3 to 20 are applicable. \"No dedicated key\" may be used for \"entry data entry field\".",
+            LookupTable = new Dictionary<string, string> { { "0", "'No default value' => Data field shall remain empty" } }
         };
 
         public static BitField MMI_NID_NTC => new BitField
@@ -3586,6 +4297,20 @@ namespace IPTComShark.Parsers
                 {"253", "Language"},
                 {"254", "close current window, return to parent"},
                 {"255", "no window specified"}
+            }
+        };
+
+        public static BitField MMI_Q_BUTTON => new BitField
+        {
+            Name = "MMI_Q_BUTTON",
+            BitFieldType = BitFieldType.UInt8,
+            Length = 1,
+            Comment =
+                "Button Event (pressed or released)",
+            LookupTable = new Dictionary<string, string>
+            {
+                {"0", "Released"},
+                {"1", "Pressed"}
             }
         };
 
@@ -3860,14 +4585,12 @@ namespace IPTComShark.Parsers
             }
         };
 
-        public static BitField MMI_T_ZONE_OFFSET => new BitField
+        public static BitField MMI_T_BUTTONEVENT => new BitField
         {
-            Name = "MMI_T_ZONE_OFFSET",
-            BitFieldType = BitFieldType.Int8,
-            Length = 8,
-            Comment = "Time zone offset",
-            Scaling = 0.25d,
-            AppendString = "h"
+            Name = "MMI_T_BUTTONEVENT",
+            BitFieldType = BitFieldType.UInt32,
+            Length = 32,
+            Comment = "Time stamp for button event (DMI running time in milliseconds)"
         };
 
         public static BitField MMI_T_UTC => new BitField
@@ -3878,11 +4601,46 @@ namespace IPTComShark.Parsers
             Comment = "UTC time as seconds since 01.01.1970, 00:00:00"
         };
 
+        public static BitField MMI_T_ZONE_OFFSET => new BitField
+        {
+            Name = "MMI_T_ZONE_OFFSET",
+            BitFieldType = BitFieldType.Int8,
+            Length = 8,
+            Comment = "Time zone offset",
+            Scaling = 0.25d,
+            AppendString = " h"
+        };
+
+        public static BitField MMI_V_MAXTRAIN => new BitField
+        {
+            Name = "MMI_V_MAXTRAIN",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Maximum train speed",
+            LookupTable = new Dictionary<string, string> {{ "0", "'No default value' => TD entry field shall remain empty" }},
+            AppendString = " km/h"
+        };
+
+        public static BitField MMI_V_STFF => new BitField
+        {
+            Name = "MMI_V_STFF",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Max speed in Staff Responsible",
+            AppendString = " km/h"
+        };
+
         public static BitField MMI_X_DRIVER_ID => new BitField
         {
             Name = "MMI_X_DRIVER_ID",
             BitFieldType = BitFieldType.StringLatin,
-            Length = 128
+            Length = 128,
+            Comment = "This is the driver’s identity(max 16 character long)" +
+                      "0 = Empty string (null character)" +
+                      "\r\nNote 1: 16 alphanumeric characters (ISO 8859-1, also known as Latin Alphabet #1)." +
+                      "\r\nNote 2: If the value is unknown the table will be filled with null characters (0, not '0')." +
+                      "\r\nNote 3: If Driver ID is shorter than 16 characters the free characters will be filled with null characters." +
+                      "\r\nNote 4: If Driver ID is 16 characters there will be no null character in the string."
         };
 
         public static BitField MMI_X_CAPTION_NETWORK => new BitField
