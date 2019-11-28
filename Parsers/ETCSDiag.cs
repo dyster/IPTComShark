@@ -12,6 +12,8 @@ namespace IPTComShark.Parsers
 
             DataSets.Add(DIA_1);
             DataSets.Add(DIA_130);
+            DataSets.Add(DIA_152);
+            DataSets.Add(DIA_158);
 
             DataSets.Add(DIA_201);
             DataSets.Add(DIA_202);
@@ -1720,6 +1722,728 @@ namespace IPTComShark.Parsers
                     Comment = "EVC: lost/no connection with VAP - Code 82FF  FF",
                     SkipIfValue = false
                 },
+            }
+        };
+
+        // checked 20191127 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_152 => new DataSetDefinition
+        {
+            Name = "DIA_152 DMI1_Events",
+            Comment = "Dataset definition of DMI1 Events",
+            Identifiers = new List<string>
+            {
+                "230510230",
+                "230511230"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "DMI1_CL_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Configuration load error - Code 8380  00"
+                },
+                new BitField
+                {
+                    Name = "DMI1_RL_ERR (OS-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Resource load error - Code 8381  01"
+                },
+                new BitField
+                {
+                    Name = "DMI1_HW_ERR (OS-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "HW error - Code 8382  02"
+                },
+                new BitField
+                {
+                    Name = "DMI1_SW_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "SW failure - Code 8383  03"
+                },
+                new BitField
+                {
+                    Name = "DMI1_DIS_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Display failure - Code 8384  04"
+                },
+                new BitField
+                {
+                    Name = "DMI1_CDIS_ERR (OS-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Critical display failure - Code 8385  05"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0386",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8386  06"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0387",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8387  07"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0388",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "--not used-- (8 bit) - Code 8388  08"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0390",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8390  10"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0391",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8391  11"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0392",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8392  12"
+                },
+                new BitField
+                {
+                    Name = "DMI1_0393",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8393  13"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Rx_ETC_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Rx ETC packet error - Code 8394  14"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Rx_STM_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Rx STM packet error - Code 8395  15"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Tx_ETC_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tx ETC packet error - Code 8396  16"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Tx_STM_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tx STM packet error - Code 8397  17"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Rx_ETC_UNK_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Rx unknown value from ETC - Code 8398  18"
+                },
+                new BitField
+                {
+                    Name = "DMI1_Rx_STM_UNK_ERR (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Rx unknown value from STM - Code 8399  19"
+                },
+                new BitField
+                {
+                    Name = "DMI1_ITER_EXCEED (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Iterator exceeded - Code 839A  1A"
+                },
+                new BitField
+                {
+                    Name = "DMI1_039B",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 839B  1B"
+                },
+                new BitField
+                {
+                    Name = "DMI1_039C",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 839C  1C"
+                },
+                new BitField
+                {
+                    Name = "DMI1_DRV_TIME (OS-P)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Driver changed time - Code 839D  1D"
+                },
+                new BitField
+                {
+                    Name = "DMI1_STATISTICS (OS-P)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Statistics - Code 839E  1E"
+                },
+                new BitField
+                {
+                    Name = "DMI1_ATP_DOWN (OS-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "ATP-DOWN - Code 839F  1F"
+                },
+            }
+        };
+
+        // checked 20191126 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_158 => new DataSetDefinition
+        {
+            Name = "DIA_158 COD_Events",
+            Comment = "Dataset definition of COD Events",
+            Identifiers = new List<string>
+            {
+                "230510290",
+                "230511290"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "COD_EVT0 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "No service - Code 8480  00"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT1 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Internal SDP failure - Code 8481  01"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT2 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "OSU agent failure - Code 8482  02"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT3 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "OSU unit failure - Code 8483  03"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT4 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "OSU unit failure local - Code 8484  04"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT5 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "OSU unit failure remote - Code 8485  05"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT6 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Another odometer failure - Code 8486  06"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT7 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Faulty configuration data received - Code 8487  07"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT8 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Degraded mode - Code 8488  08"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT9 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "SPL (GISU/CMD) failure - Code 8489  09"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT10 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "GISU communication failure - Code 848A  0A"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT11 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "GISU configuration failure - Code 848B  0B"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT12 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "CMD communication failure - Code 848C  0C"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT13 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "CMD connection down temporarily - Code 848D  0D"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT14 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "GISU failure - Code 848E  0E"
+                },
+                new BitField
+                {
+                    Name = "COD_15",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 848F  0F"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT16 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - OSU A/B data mismatch - Code 8490  10"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT17 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - OSU A/B status mismatch - Code 8491  11"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT18 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - OSU current error - Code 8492  12"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT19 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - OSU voltage error - Code 8493  13"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT20 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Error counter fault - Code 8494  14"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT21 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Lag error counter fault - Code 8495  15"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT22 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Phase speed difference - Code 8496  16"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT23 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - High wheel speed - Code 8497  17"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT24 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - No pulses detected - Code 8498  18"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT25 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Permanent No pulses detected - Code 8499  19"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT26 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Wheel speed difference - Code 849A  1A"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT27 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Permanent Wheel Speed difference - Code 849B  1B"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT28 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 1 invalid - Direction opposite to train direction - Code 849C  1C"
+                },
+                new BitField
+                {
+                    Name = "COD_29",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 849D  1D"
+                },
+                new BitField
+                {
+                    Name = "COD_30",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 849E  1E"
+                },
+                new BitField
+                {
+                    Name = "COD_31",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 849F  1F"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT32 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - OSU A/B data mismatch - Code 84A0  20"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT33 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - OSU A/B status mismatch - Code 84A1  21"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT34 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - OSU current error - Code 84A2  22"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT35 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - OSU voltage error - Code 84A3  23"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT36 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Error counter fault - Code 84A4  24"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT37 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Lag error counter fault - Code 84A5  25"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT38 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Phase speed difference - Code 84A6  26"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT39 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - High wheel speed - Code 84A7  27"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT40 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - No pulses detected - Code 84A8  28"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT41 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Permanent No pulses detected - Code 84A9  29"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT42 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Wheel speed difference - Code 84AA  2A"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT43 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Permanent Wheel Speed Difference - Code 84AB  2B"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT44 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Tachometer 2 invalid - Direction opposite to train direction - Code 84AC  2C"
+                },
+                new BitField
+                {
+                    Name = "COD_45",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84AD  2D"
+                },
+                new BitField
+                {
+                    Name = "COD_46",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84AE  2E"
+                },
+                new BitField
+                {
+                    Name = "COD_47",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84AF  2F"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT48 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - OSU A/B data mismatch - Code 84B0  30"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT49 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - OSU A/B status mismatch - Code 84B1  31"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT50 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - OSU current error - Code 84B2  32"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT51 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - OSU voltage error - Code 84B3  33"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT52 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - Error counter fault - Code 84B4  34"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT53 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - No pulses detected - Code 84B5  35"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT54 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - Speed is stuck - Code 84B6  36"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT55 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - High acceleration or high noise - Code 84B7  37"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT56 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - Doppler Tacho Speed difference - Code 84B8  38"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT57 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar invalid - High speed - Code 84B9  39"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT58 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Doppler radar needs maintenance - Code 84BA  3A"
+                },
+                new BitField
+                {
+                    Name = "COD_59",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84BB  3B"
+                },
+                new BitField
+                {
+                    Name = "COD_60",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84BC  3C"
+                },
+                new BitField
+                {
+                    Name = "COD_61",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84BD  3D"
+                },
+                new BitField
+                {
+                    Name = "COD_62",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 84BE  3E"
+                },
+                new BitField
+                {
+                    Name = "COD_EVT63 (OS-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "GISU invalid - Code 84BF  3F"
+                }
             }
         };
 
