@@ -12,6 +12,7 @@ namespace IPTComShark.Parsers
 
             DataSets.Add(DIA_1);
             DataSets.Add(DIA_130);
+            DataSets.Add(DIA_131);
             DataSets.Add(DIA_152);
             DataSets.Add(DIA_158);
 
@@ -1721,6 +1722,244 @@ namespace IPTComShark.Parsers
                     Length = 1,
                     Comment = "EVC: lost/no connection with VAP - Code 82FF  FF",
                     SkipIfValue = false
+                },
+            }
+        };
+
+        // checked 20191205 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_131 => new DataSetDefinition
+        {
+            Name = "DIA_131 ETC_Environment",
+            Comment = "Dataset definition of ETC Environment" +
+                      "\r\nNote: Module specific application area starts at bit position 128 (byte 16). Data that are not used are set to 0",
+            Identifiers = new List<string>
+            {
+                "230510030",
+                "230511030"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "ETC_sw_error",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "SW failure (a value greater than zero means this is an internal SW failure)"
+                },
+                new BitField
+                {
+                    Name = "ETC_sw_failure_class",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "SW failure class"
+                },
+                new BitField
+                {
+                    Name = "ETC_sw_error_level",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "SW error level"
+                },
+                new BitField
+                {
+                    Name = "ETC_currend_speed",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Estimated train speed in km/h at the actual time"
+                },
+                new BitField
+                {
+                    Name = "ETC_last_nid_c",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Identification of the last national area(s)." +
+                              "\r\nLast national area(s) to which the set applies (see Subset-26)."
+                },
+                new BitField
+                {
+                    Name = "ETC_last_nid_bg",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Identity of the last Balise group"
+                },
+                new BitField
+                {
+                    Name = "ETC_distance_lrbg",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Distance of the last relevant Balise group."
+                },
+                new BitField
+                {
+                    Name = "ETC_etcs_level",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "The current ETCS level (0-4, 255, 5-254 not used)",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Level 0"},
+                        {"1", "Level 1"},
+                        {"2", "Level 2"},
+                        {"3", "Level 3"},
+                        {"20", "TPWS"},
+                        {"50", "CBTC"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "ETC_etcs_mode",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "The current ETCS mode (0-15, 16-255 = not used)",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Full Supervision"},
+                        {"1", "On Sight"},
+                        {"2", "Staff Responsible"},
+                        {"3", "Shunting"},
+                        {"4", "Unfitted"},
+                        {"5", "Sleeping"},
+                        {"6", "Stand By"},
+                        {"7", "Trip"},
+                        {"8", "Post Trip"},
+                        {"9", "System Failure"},
+                        {"10", "Isolation"},
+                        {"11", "Non Leading"},
+                        {"12", "Limited Supervision"},
+                        {"13", "National System"},
+                        {"14", "Reversing"},
+                        {"15", "Passive Shunting"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte1",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information area begin\r\n" +
+                              "Note: ETC_sw_error specific environment data (depending" +
+                              "on the error code this area may have different content meaning)",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte2",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte3",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte4",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte5",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte6",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte7",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte8",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte9",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte10",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte11",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte12",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte13",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte14",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte15",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
+                },
+                new BitField
+                {
+                    Name = "ETC_app_byte16",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "ETC_sw_error specific information",
+                    SkipIfValue = 0
                 },
             }
         };
