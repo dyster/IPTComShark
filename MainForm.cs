@@ -136,8 +136,17 @@ namespace IPTComShark
 
             if (dataSetDefinition != null)
             {
-                var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
-                return dataSetDefinition.Parse(iptPayload, extensive);
+                try
+                {
+                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
+
+                    return dataSetDefinition.Parse(iptPayload, extensive);
+                }
+                catch (Exception e)
+                {
+                    return ParsedDataSet.CreateError(e.Message);
+                }
+                
                 
             }
 
@@ -548,9 +557,10 @@ namespace IPTComShark
             return img;
         }
 
+        private void bDSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
-
-    
+        }
     }
 
     //public enum Protocol
