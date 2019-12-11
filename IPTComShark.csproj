@@ -124,7 +124,14 @@
     <Compile Include="CapturePacket\ProtocolType.cs" />
     <Compile Include="Parsers\NTP.cs" />
     <Compile Include="Parsers\STM.cs" />
+    <Compile Include="Parsers\VAP.cs" />
     <Compile Include="Parsers\VSISDMI.cs" />
+    <Compile Include="Windows\FileDropper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\FileDropper.Designer.cs">
+      <DependentUpon>FileDropper.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\InterfacePicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\FileDropper.resx">
+      <DependentUpon>FileDropper.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\InterfacePicker.resx">
       <DependentUpon>InterfacePicker.cs</DependentUpon>
