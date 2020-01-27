@@ -52,6 +52,18 @@ namespace IPTComShark.Controls
                 return packet?.Date.Millisecond;
             };
 
+            olvColumnComId.AspectGetter += rowObject =>
+            {
+                var packet = (CapturePacket)rowObject;
+                return packet?.IPTWPPacket?.Comid;
+            };
+
+            olvColumnIPTWPType.AspectGetter += rowObject =>
+            {
+                var packet = (CapturePacket)rowObject;
+                return packet?.IPTWPPacket?.IPTWPType;
+            };
+
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
             fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
 
