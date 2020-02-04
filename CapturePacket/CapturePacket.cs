@@ -6,6 +6,7 @@ using System.Net;
 using System.Windows.Forms.VisualStyles;
 using IPTComShark.Parsers;
 using PacketDotNet;
+using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
@@ -344,6 +345,21 @@ namespace IPTComShark
                             {
                                 Protocol = ProtocolType.UDP_SPL;
                                 _protocolinfo = "OPC->VAP";
+
+                                var payload = udp.PayloadData;
+                                var spl = VAP.UDP_SPL.Parse(payload);
+                                this.DisplayFields =
+                                    spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList();
+                                
+                                if (spl.ParsedFields.Last().Value.Equals("C9"))
+                                {
+                                    var nextBytes = Functions.SubArrayGetter(payload, 81);
+                                    var stm = VAP.STM_Packet.Parse(nextBytes);
+                                    DisplayFields.AddRange(stm.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
+                                }
+                                
+
+
                             }
                             else if (udp.DestinationPort == 50036)
                                 _protocolinfo = "BDS->VAP (Diag)";
@@ -457,6 +473,8 @@ namespace IPTComShark
         {
             get
             {
+                if (Packet == null)
+                    return null;
                 try
                 {
                     if (Packet.PayloadPacket is IPv4Packet ipv4)
@@ -477,6 +495,8 @@ namespace IPTComShark
         {
             get
             {
+                if (Packet == null)
+                    return null;
                 try
                 {
                     if (Packet.PayloadPacket is IPv4Packet ipv4)
@@ -523,6 +543,8 @@ namespace IPTComShark
             {
                 if (_protocolinfo == null)
                 {
+                    if (Packet == null)
+                        return "VIRTUAL";
                     if (Packet.PayloadPacket is IPv4Packet)
                     {
                         var ipv4 = (IPv4Packet) Packet.PayloadPacket;
