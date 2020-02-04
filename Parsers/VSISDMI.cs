@@ -383,7 +383,12 @@ namespace IPTComShark.Parsers
                 },
                 SSW1,
                 SSW2,
-                SSW3
+                SSW3,
+                new BitField
+                {
+                    NestedDataSet = SDT_Trailer,
+                    Length = 1
+                }
             }
         };
 
@@ -897,7 +902,12 @@ namespace IPTComShark.Parsers
                 },
                 SSW1,
                 SSW2,
-                SSW3
+                SSW3,
+                new BitField
+                {
+                    NestedDataSet = SDT_Trailer,
+                    Length = 1
+                }
             }
         };
 
@@ -3183,7 +3193,12 @@ namespace IPTComShark.Parsers
                 },
                 SSW1,
                 SSW2,
-                SSW3
+                SSW3,
+                new BitField
+                {
+                    NestedDataSet = SDT_Trailer,
+                    Length = 1
+                }
             }
         };
 
@@ -4164,7 +4179,7 @@ namespace IPTComShark.Parsers
 
         #endregion
 
-        #region Safe Words
+        #region Safe Status Words
 
         public static BitField SSW1 => new BitField
         {
@@ -4189,8 +4204,59 @@ namespace IPTComShark.Parsers
             Length = 16,
             Comment = "Safe status word for IPTCom (variables > 16)"
         };
-
+                
         #endregion
+
+        public static DataSetDefinition SDT_Trailer => new DataSetDefinition
+        {
+            Name = "SDT_2 SDT_IP_TRAILER",
+            Comment = "SDTv2 structure",
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "SDT_RES1",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Safe data trailer, reserved"
+                },
+                new BitField
+                {
+                    Name = "SDT_RES2",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Safe data trailer, reserved"
+                },
+                new BitField
+                {
+                    Name = "SDT_UDV_MainVersion",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "User Data Main Version"
+                },
+                new BitField
+                {
+                    Name = "SDT_RES3",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Safe data trailer, reserved"
+                },
+                new BitField
+                {
+                    Name = "SDT_SSC",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Safe Sequence Counter"
+                },
+                new BitField
+                {
+                    Name = "SDT_CRC",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Safety Code"
+                }
+            }
+        };
 
         #region Common MMI Variables
 
