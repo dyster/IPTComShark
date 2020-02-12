@@ -13,9 +13,12 @@ namespace IPTComShark.Parsers
             DataSets.Add(DIA_1);
             DataSets.Add(DIA_130);
             DataSets.Add(DIA_131);
+            DataSets.Add(DIA_148);
+            DataSets.Add(DIA_149);
             DataSets.Add(DIA_152);
             DataSets.Add(DIA_158);
 
+            DataSets.Add(DIA_200);
             DataSets.Add(DIA_201);
             DataSets.Add(DIA_202);
             DataSets.Add(DIA_203);
@@ -1964,6 +1967,264 @@ namespace IPTComShark.Parsers
             }
         };
 
+        // checked 20202007 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_148 => new DataSetDefinition
+        {
+            Name = "DIA_148 JRU_Events",
+            Comment = "Dataset definition of JRU Events",
+            Identifiers = new List<string>
+            {
+                "230510190",
+                "230511190"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "JRU_0060",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8060  00"
+                },
+                new BitField
+                {
+                    Name = "JRU_0061",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 8061  01"
+                },
+                new BitField
+                {
+                    Name = "JRU_FatalError (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Recording not possible (DIA_1 FatalError) - Code 8062  02"
+                },
+                new BitField
+                {
+                    Name = "JRU_FatError_Int_Ext (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Recorder failure (DIA_1 FatError_Int/FatError_Ext) - Code 8063  03"
+                },
+                new BitField
+                {
+                    Name = "JRU_Warning (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Recorder warning (DIA_1 Warning) - Code 8064  04"
+                },
+                new BitField
+                {
+                    Name = "JRU_STblocked (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Recorder short-term memory locked (DIA_1 STblocked) - Code 8065  05"
+                },
+                new BitField
+                {
+                    Name = "JRU_LifeSign_lost (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "MVB recorder life signs lost (DIA_1 LifeSign check) - Code 8066  06"
+                },
+                new BitField
+                {
+                    Name = "JRU_BatteryChange (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Battery change necessary (DIA_1 BatteryChange) - Code 8067  07"
+                },
+                new BitField
+                {
+                    Name = "JRU_MemoryDownload (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Memory download active (DIA_1 MemoryDownload) - Code 8068  08"
+                },
+                new BitField
+                {
+                    Name = "JRU_CommError (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Communication error (DIA_1 CommError) - Code 8069  09"
+                },
+                new BitField
+                {
+                    Name = "JRU_Mem_FillLevel_80 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Memory fill level 80% (DIA_1 Mem_FillLevel_80) - Code 806A  0A"
+                },
+                new BitField
+                {
+                    Name = "JRU_Mem_FillLevel_100 (SR-W)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Memory fill level 100% (DIA_1 Mem_FillLevel_100) - Code 806B  0B"
+                },
+                new BitField
+                {
+                    Name = "JRU_Vsens1_defect (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Fallback Speed Sensor 1 failed (DIA_1 Vsens1_defect) - Code 806C  0C"
+                },
+                new BitField
+                {
+                    Name = "JRU_Vsens2_defect (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "Fallback Speed Sensor 2 failed (DIA_1 Vsens2_defect) - Code 806D  0D"
+                },
+                new BitField
+                {
+                    Name = "JRU_006E",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 806E  0E"
+                },
+                new BitField
+                {
+                    Name = "JRU_006F",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 1,
+                    Comment = "--not used-- - Code 806F  0F"
+                },
+            }
+        };
+
+        // checked 20202007 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_149 => new DataSetDefinition
+        {
+            Name = "DIA_149 JRU_Environment",
+            Comment = "Dataset definition of JRU Environment",
+            Identifiers = new List<string>
+            {
+                "230510200",
+                "230511200"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "JRU_HW_version",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Hardware version"
+                },
+                new BitField
+                {
+                    Name = "JRU_Config_version",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Configuration version"
+                },
+                new BitField
+                {
+                    Name = "JRU_SW_version",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Software version"
+                },
+                new BitField
+                {
+                    Name = "JRU_DeviceAddress",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Device Address"
+                },
+                new BitField
+                {
+                    Name = "JRU_ConfigIssueNo",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Configuration issue number"
+                },
+                new BitField
+                {
+                    Name = "JRU_ErrorNumber",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Contains the decimal fatal error number"
+                },
+                new BitField
+                {
+                    Name = "JRU_OD_LTMemLoad",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Load value of the operational data long term memory 0-100 [%]",
+                    AppendString = " %"
+                },
+                new BitField
+                {
+                    Name = "JRU_DiagMemLoad",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Load value of diagnostic memory 0-100 [%]",
+                    AppendString = " %"
+                },
+                new BitField
+                {
+                    Name = "JRU_OD_STMemLoad",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Load value of the operational data short term memory 0-100 [%]",
+                    AppendString = " %"
+                },
+                new BitField
+                {
+                    Name = "JRU_81MemLoad",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Load value of the JRU 81 memory 0-100 [%]",
+                    AppendString = " %"
+                },
+                new BitField
+                {
+                    Name = "JRU_ETCSMemLoad",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Load value of the ETCS JRU memory 0-100 [%].",
+                    AppendString = " %"
+                    
+                },
+                new BitField
+                {
+                    Name = "JRU_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "--not used--"
+                },
+                new BitField
+                {
+                    Name = "JRU_ConfigName",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Configuration name, 4 characters"
+                },
+                new BitField
+                {
+                    Name = "JRU_spare2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 32,
+                    Comment = "--not used--"
+                },
+            }
+        };
+
         // checked 20191127 1.6 DIAG manual CD
         public static DataSetDefinition DIA_152 => new DataSetDefinition
         {
@@ -2683,6 +2944,107 @@ namespace IPTComShark.Parsers
                     SkipIfValue = false,
                     Comment = "GISU invalid - Code 84BF  3F"
                 }
+            }
+        };
+
+        
+        
+        // checked 20202007 1.6 DIAG manual CD
+        public static DataSetDefinition DIA_200 => new DataSetDefinition
+        {
+            Name = "DIA_200 GLOBAL_ENVIRONMENT_DATA_1",
+            Comment = "Dataset definition of part 1 of global environment data.",
+            Identifiers = new List<string>
+            {
+                "230510310",
+                "230511310"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "T_REFERENCE_TIME_HIGH",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Global reference time in ms (high byte)"
+                },
+                new BitField
+                {
+                    Name = "T_REFERENCE_TIME_LOW",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Global reference time in ms (low byte)"
+                },
+                new BitField
+                {
+                    Name = "System_Release_Version",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Complete System Release Version"
+                },
+                new BitField
+                {
+                    Name = "UICVehicleNumber",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "National Block of the UIC Code (0-0xFFFFFFFF)"
+                },
+                new BitField
+                {
+                    Name = "GPSLongitude",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "GPS Longitude\r\n"+
+                       "meaning of bits for Longitude:\r\n"+
+                       "31 = Data valid (1 = valid)\r\n"+
+                       "30 = East/West (1/0)\r\n"+
+                       "22-29 = Degrees\r\n"+
+                       "16-21 = Minutes\r\n"+
+                       "10-15 = Seconds\r\n"+
+                       "0-9 = Milliseconds"
+                },
+                new BitField
+                {
+                    Name = "GPSLatitude",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "GPS Latitude\r\n"+
+                       "meaning of bits for Latitude:\r\n"+
+                       "31 = Data valid (1 = valid)\r\n"+
+                       "30 = North/South (1/0)\r\n"+
+                       "22-29 = Degrees\r\n"+
+                       "16-21 = Minutes\r\n"+
+                       "10-15 = Seconds\r\n"+
+                       "0-9 = Milliseconds"
+                },
+                new BitField
+                {
+                    Name = "UTC_REFTIME_SEC",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                    Comment = "Time of the event occurrence in subsystem [s]"
+                },
+                new BitField
+                {
+                    Name = "UTC_REFTIME_MSEC",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Time of the event occurrence in subsystem [ms]"
+                },
+                new BitField
+                {
+                    Name = "UTC_OFFSET",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UTC time offset (valid for UTC_REFTIME)"
+                },
+                new BitField
+                {
+                    Name = "GPSValid",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "GPS information is valid"
+                },
             }
         };
 
