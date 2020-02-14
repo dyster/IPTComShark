@@ -61,6 +61,7 @@
             this.buttonFinish.TabIndex = 2;
             this.buttonFinish.Text = "FINISHED";
             this.buttonFinish.UseVisualStyleBackColor = true;
+            this.buttonFinish.Click += new System.EventHandler(this.buttonFinish_Click);
             // 
             // FileDropper
             // 

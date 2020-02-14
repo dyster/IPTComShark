@@ -12,7 +12,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Parsers;
 using PacketDotNet;
@@ -73,7 +76,7 @@ namespace IPTComShark
             packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
             packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
             packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
-            
+
             InitData();
 
             Logger.Log("IPTComShark started", Severity.Info);
@@ -108,7 +111,7 @@ namespace IPTComShark
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             _capturedData += e.Packet.Data.Length;
-            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType)e.Packet.LinkLayerType);
+            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
             var capturePacket = new CapturePacket(raw);
             capturePacket.No = _seed++;
             packetListView1.Add(capturePacket);
@@ -121,7 +124,7 @@ namespace IPTComShark
         {
             if (iptwpPacket == null || iptwpPacket.IPTWPType == IPTTypes.MA)
                 return null;
-        
+
             DataSetDefinition dataSetDefinition = null;
 
             foreach (var collection in DataCollections)
@@ -146,8 +149,6 @@ namespace IPTComShark
                 {
                     return ParsedDataSet.CreateError(e.Message);
                 }
-                
-                
             }
 
             return null;
@@ -231,7 +232,6 @@ namespace IPTComShark
 
             UpdateStatus("Recording from " + _device.Interface.FriendlyName);
 
-            
 
             // Open the device for capturing
             var readTimeoutMilliseconds = 1000;
@@ -248,7 +248,7 @@ namespace IPTComShark
 
             Process proc = Process.GetCurrentProcess();
             var memorySize64 = proc.PrivateMemorySize64;
-            
+
 
             var sizestring = "";
             if (_capturedData > 1024 * 1024)
@@ -329,7 +329,7 @@ namespace IPTComShark
             if (dialogResult != DialogResult.OK) return;
             using (var pcapWriter = new sonesson_tools.FileWriters.PCAPWriter(saveFileDialog.FileName))
             {
-                pcapWriter.LinkLayerType = (uint)layer;
+                pcapWriter.LinkLayerType = (uint) layer;
                 pcapWriter.Start();
                 foreach (Raw raw in allRawCaptures)
                 {
@@ -373,7 +373,6 @@ namespace IPTComShark
             if (dialogResult == DialogResult.OK)
             {
                 OpenPath(openCapturesDialog.FileNames);
-                
             }
         }
 
@@ -460,7 +459,7 @@ namespace IPTComShark
 
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    capturePackets = fileManager.OpenFiles(new[] { folderBrowserDialog.SelectedPath });
+                    capturePackets = fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath});
                 }
 
                 foreach (CapturePacket capturePacket in capturePackets)
@@ -513,7 +512,7 @@ namespace IPTComShark
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string[] data = (string[]) e.Data.GetData(DataFormats.FileDrop);
                 OpenPath(data);
             }
         }
@@ -526,7 +525,7 @@ namespace IPTComShark
         public static Image RenderStatusText(Color backcolor, int height, Font font, List<Tuple<Color, string>> texts)
         {
             var totalMemory = GC.GetTotalMemory(false);
-            
+
             var img = new Bitmap(200, height);
             Graphics gx = Graphics.FromImage(img);
 
@@ -534,10 +533,10 @@ namespace IPTComShark
             int totalwidth = 0;
             foreach (var pair in texts)
             {
-                totalwidth += (int)gx.MeasureString(pair.Item2, font).Width;
+                totalwidth += (int) gx.MeasureString(pair.Item2, font).Width;
             }
 
-            
+
             img = new Bitmap(totalwidth, height);
             gx = Graphics.FromImage(img);
             SolidBrush brush = new SolidBrush(backcolor);
@@ -551,23 +550,97 @@ namespace IPTComShark
                 var piecebrush = new SolidBrush(pair.Item1);
                 gx.DrawString(pair.Item2, font, piecebrush, renderbar, 0);
 
-                renderbar += (int)piecewidth;
+                renderbar += (int) piecewidth;
             }
-            
+
             return img;
         }
 
         private void bDSToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var fileDropper = new FileDropper();
+            fileDropper.ShowDialog(this);
+            var files = fileDropper.DroppedFiles;
 
+            var regex = new Regex(
+                @"^(LOG|ERR|WRN|FTL),(TXT|BIN|BDS|ELG),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),([\d:_; ]+),\s*(\d+),\s*(\d+),\s*(\d+),(0x\d+),(0x\d+),(.*)$");
+
+            foreach (var file in files)
+            {
+                var lines = File.ReadAllLines(file);
+                foreach (var line in lines)
+                {
+                    var match = regex.Match(line);
+
+                    if (match.Groups.Count != 15)
+                    {
+                        // stuff we missed
+                    }
+                    else
+                    {
+                        var NC_SEVERITY = match.Groups[1].Value;
+                        var N_COMMAND = match.Groups[2].Value;
+                        var L_PACKET = int.Parse(match.Groups[3].Value);
+                        var N_VER = int.Parse(match.Groups[4].Value);
+                        var ServiceID = int.Parse(match.Groups[5].Value);
+                        var deviceID = int.Parse(match.Groups[6].Value);
+                        var N_SEQ = int.Parse(match.Groups[7].Value);
+                        var UTC_REFTIME = match.Groups[8].Value;
+                        var UTC_OFFSET = int.Parse(match.Groups[9].Value);
+                        var T_REFTIME = int.Parse(match.Groups[10].Value);
+                        var Receive_Time = int.Parse(match.Groups[11].Value);
+                        var Classification = match.Groups[12].Value;
+                        var MessageId = match.Groups[13].Value;
+                        var M_MSG = match.Groups[14].Value;
+
+                        if (ServiceID == 208 && deviceID == 200)
+                        {
+                            continue;
+                            var hexes = M_MSG.Split(',');
+                            var bytes = new byte[hexes.Length];
+                            for (var index = 0; index < hexes.Length; index++)
+                            {
+                                var hex = hexes[index];
+                                bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
+                            }
+
+                            var action = new byte[32];
+                            Array.Copy(bytes, 14, action, 0, 32);
+
+                            var parsedDataSet = ETCSDiag.DIA_130.Parse(action);
+
+                            var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
+                            capturePacket.ParsedData = parsedDataSet;
+                            packetListView1.Add(capturePacket);
+                        }
+                        else if (ServiceID == 205 && deviceID == 3)
+                        {
+                            var hexes = M_MSG.Split(',');
+                            var bytes = new byte[hexes.Length];
+                            for (var index = 0; index < hexes.Length; index++)
+                            {
+                                var hex = hexes[index];
+                                bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
+                            }
+                            
+                            var V_NOM = BitConverter.ToInt16(new byte[] {bytes[13], bytes[12]}, 0);
+                            
+                            var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
+                            var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
+                            capturePacket.ParsedData = parsedDataSet;
+                            packetListView1.Add(capturePacket);
+                        }
+                    }
+                }
+            }
         }
-    }
 
-    //public enum Protocol
-    //{
-    //    Unknown,
-    //    UDP,
-    //    TCP,
-    //    IPTWP
-    //}
+        //public enum Protocol
+        //{
+        //    Unknown,
+        //    UDP,
+        //    TCP,
+        //    IPTWP
+        //}
+    }
 }
