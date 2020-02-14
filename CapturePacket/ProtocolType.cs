@@ -15,6 +15,7 @@
         ICMP,
         IGMP,
         UDP_SPL,
-        NTP
+        NTP,
+        Virtual
     }
 }

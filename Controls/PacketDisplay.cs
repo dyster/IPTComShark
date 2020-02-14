@@ -41,6 +41,20 @@ namespace IPTComShark.Controls
 
             var dataLines = new List<DataLine>();
 
+            if (originalpacket.Protocol == ProtocolType.Virtual)
+            {
+                if (originalpacket.ParsedData != null)
+                {
+                    foreach (var parsedField in originalpacket.ParsedData.ParsedFields)
+                    {
+                        dataLines.Add(new DataLine(parsedField, ticker++));
+                    }
+
+                    dataListViewRight.DataSource = dataLines;
+                    return;
+                }
+            }
+
             try
             {
                 var extensiveData = CapturePacket.ExtractParsedData(originalpacket, out var displayfields, true);
