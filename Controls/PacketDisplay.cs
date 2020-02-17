@@ -435,19 +435,21 @@ namespace IPTComShark.Controls
             No = tick;
 
             _field = field;
-            string typestring = field.Value.GetType().ToString();
+            //string typestring = field.Value.GetType().ToString();
 
             Name = field.Name;
             Value = field.Value.ToString();
             TrueValue = field.TrueValue;
-            Type = typestring.Substring(typestring.LastIndexOf(".") + 1);
+            //Type = typestring.Substring(typestring.LastIndexOf(".") + 1);
             Comment = field.Comment;
         }
 
         public uint No { get; set; }
 
         public string Name { get; set; }
-        public string Type { get; set; }
+
+        public string Type => _field?.UsedBitField.BitFieldType.ToString();
+
         public string Value { get; set; }
         public object TrueValue { get; set; }
         public string Comment { get; set; }
