@@ -65,15 +65,23 @@ namespace IPTComShark
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -129,13 +137,7 @@ namespace IPTComShark
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxIgnoreComid);
-            this.splitContainer1.Panel2.Controls.Add(this.checkBoxIgnoreLoopback);
-            this.splitContainer1.Panel2.Controls.Add(this.checkBoxAutoScroll);
-            this.splitContainer1.Panel2.Controls.Add(this.packetDisplay1);
-            this.splitContainer1.Panel2.Controls.Add(this.checkBoxHideDupes);
-            this.splitContainer1.Panel2.Controls.Add(this.checkBoxParserOnly);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Size = new System.Drawing.Size(1433, 545);
             this.splitContainer1.SplitterDistance = 1030;
             this.splitContainer1.TabIndex = 7;
@@ -161,7 +163,7 @@ namespace IPTComShark
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 92);
+            this.label1.Location = new System.Drawing.Point(6, 120);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(170, 13);
             this.label1.TabIndex = 13;
@@ -171,9 +173,9 @@ namespace IPTComShark
             // 
             this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(3, 108);
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 136);
             this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(393, 20);
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(391, 20);
             this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // checkBoxIgnoreLoopback
@@ -198,13 +200,11 @@ namespace IPTComShark
             // 
             // packetDisplay1
             // 
-            this.packetDisplay1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.packetDisplay1.IptConfigReader = null;
-            this.packetDisplay1.Location = new System.Drawing.Point(0, 134);
+            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
             this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(396, 411);
+            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
             this.packetDisplay1.TabIndex = 0;
             // 
             // checkBoxHideDupes
@@ -373,9 +373,16 @@ namespace IPTComShark
             // eVA2XMLExportToolStripMenuItem
             // 
             this.eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
             this.eVA2XMLExportToolStripMenuItem.Click += new System.EventHandler(this.eVA2XMLExportToolStripMenuItem_Click);
+            // 
+            // bDSToolStripMenuItem
+            // 
+            this.bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
+            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.bDSToolStripMenuItem.Text = "BDS";
+            this.bDSToolStripMenuItem.Click += new System.EventHandler(this.bDSToolStripMenuItem_Click);
             // 
             // reportAnIssueToolStripMenuItem
             // 
@@ -390,12 +397,53 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // bDSToolStripMenuItem
+            // tabControl1
             // 
-            this.bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bDSToolStripMenuItem.Text = "BDS";
-            this.bDSToolStripMenuItem.Click += new System.EventHandler(this.bDSToolStripMenuItem_Click);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(399, 545);
+            this.tabControl1.TabIndex = 14;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.packetDisplay1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(391, 519);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Data";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.flowLayoutPanel1);
+            this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(391, 519);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Filters";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxParserOnly);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxAutoScroll);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxIgnoreLoopback);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(385, 101);
+            this.flowLayoutPanel1.TabIndex = 14;
             // 
             // MainForm
             // 
@@ -416,11 +464,16 @@ namespace IPTComShark
             this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,6 +515,10 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem reportAnIssueToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteCaptureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bDSToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 
