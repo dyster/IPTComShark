@@ -3071,7 +3071,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "MMI_M_MODE_STATUS",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "Indicates validity of shown mode",
                     LookupTable = new Dictionary<string, string>
@@ -4105,7 +4105,7 @@ namespace IPTComShark.Parsers
                 new BitField {Name = "LX01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "LS01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
-                //DMI System Status as per Subset27
+                // DMI System Status as per Subset27
                 new BitField {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
@@ -5045,7 +5045,7 @@ namespace IPTComShark.Parsers
         public static BitField MMI_NID_KEY_LOAD_GAUGE => new BitField
         {
             Name = "MMI_NID_KEY_LOAD_GAUGE",
-            BitFieldType = BitFieldType.UInt16,
+            BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment =
                 "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. For Train Category the keys number 34 to 38 are applicable.",

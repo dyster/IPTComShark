@@ -26,7 +26,7 @@ namespace IPTComShark
 
 
         /// <summary>
-        /// Constructor to create an artifical packet
+        /// Constructor to create an artificial packet
         /// </summary>
         /// <param name="protocol"></param>
         public CapturePacket(ProtocolType protocol, string name, DateTime datetime)
@@ -357,8 +357,6 @@ namespace IPTComShark
                                     var stm = VAP.STM_Packet.Parse(nextBytes);
                                     DisplayFields.AddRange(stm.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
                                 }
-                                
-
 
                             }
                             else if (udp.DestinationPort == 50036)
@@ -370,7 +368,6 @@ namespace IPTComShark
                             else if (udp.DestinationPort == 50072)
                                 _protocolinfo = "ETC->VAP (ATO)";
                         }
-
 
                         try
                         {
@@ -532,7 +529,6 @@ namespace IPTComShark
         public IPTWPPacket IPTWPPacket { get; }
 
         public SS27Packet SS27Packet { get; set; }
-
 
         public ProtocolType Protocol { get; }
 

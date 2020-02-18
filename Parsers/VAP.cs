@@ -109,7 +109,7 @@ namespace IPTComShark.Parsers
                 new BitField()
                 {
                     Name = "First Niblet",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 4
                 },
                 new BitField()

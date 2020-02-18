@@ -833,7 +833,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "MMI_STM_NID_XMESSAGE",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Sequence number of the acknowledged message."
                 },

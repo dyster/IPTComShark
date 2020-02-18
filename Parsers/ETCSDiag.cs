@@ -3140,7 +3140,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "Brake Test",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3151,7 +3151,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "Isolation",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3162,7 +3162,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "EB1cutoff",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3173,7 +3173,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "EB2cutoff",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3185,19 +3185,22 @@ namespace IPTComShark.Parsers
                 {
                     Name = "SB Error",
                     BitFieldType = BitFieldType.Bool,
-                    Length = 1
+                    Length = 1,
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "Bypass relay error",
                     BitFieldType = BitFieldType.Bool,
-                    Length = 1
+                    Length = 1,
+                    SkipIfValue = false
                 },
                 new BitField
                 {
-                    Name = "TCO red HW failure",
+                    Name = "TCO redundant HW failure",
                     BitFieldType = BitFieldType.Bool,
-                    Length = 1
+                    Length = 1,
+                    SkipIfValue = false
                 },
                 new BitField
                 {
@@ -3208,7 +3211,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "Cab Status",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3221,7 +3224,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "Direction Controller",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3258,49 +3261,51 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "LastDriverAction",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Last driver action (button, iso, brake)"
                 },
                 new BitField
                 {
                     Name = "ETC Mode",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The current ETCS Mode"
                 },
                 new BitField
                 {
                     Name = "ETC Level",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The current ETCS Level"
                 },
                 new BitField
                 {
                     Name = "ETC_BrakeError",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = ""
+                    Comment = "SB_ERROR_IND\n" +
+                              "BYPASS_RELAY_ERROR_IND\n" +
+                              "TCO_REDUNDANT_HW_FAILURE"
                 },
                 new BitField
                 {
                     Name = "SDP_SlipSlideInformation",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Odometer slip slide information"
                 },
                 new BitField
                 {
                     Name = "SDP_DrivingDirection",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Odometer driving direction"
                 },
                 new BitField
                 {
                     Name = "WheelDiameterCompensation",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3311,7 +3316,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "ColdMovementDetection",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     LookupTable = new Dictionary<string, string>
                     {
@@ -3328,7 +3333,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "NID_STM_in_DA",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The current NID_STM of the STM which is in DA."
                 },
@@ -4107,112 +4112,128 @@ namespace IPTComShark.Parsers
                     Name = "WAY_ERR_BTS_VERSION (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Version error"
+                    Comment = "Version error",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_HEADER (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Header error or Balise payload error"
+                    Comment = "Header error or Balise payload error",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_MISSING (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Balise missing in a group"
+                    Comment = "Balise missing in a group",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_MISSING_POS (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Max. distance of expected Balise window passed."
+                    Comment = "Max. distance of expected Balise window passed.",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_DETECT (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Balise detection error"
+                    Comment = "Balise detection error",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_UNEXPECTED (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Unexpected Balise"
+                    Comment = "Unexpected Balise",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_REPOS_OR_UNKNW (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Balise reposition error or Balise unknown"
+                    Comment = "Balise reposition error or Balise unknown",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_PACKET_SIZE (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Wrong packet size"
+                    Comment = "Wrong packet size",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_PACKET_DUPLICATE (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Duplicate packet received"
+                    Comment = "Duplicate packet received",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_PACKET_UNEXPECTED (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Unexpected packet received"
+                    Comment = "Unexpected packet received",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_QDIR (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "QDIR error"
+                    Comment = "QDIR error",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_INFILL (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Infill Balise error"
+                    Comment = "Infill Balise error",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BG_STATUS (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Reports the ETC IL handler internal BG-status"
+                    Comment = "Reports the ETC IL handler internal BG-status",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_LOOP (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Loop error detected"
+                    Comment = "Loop error detected",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_LEU (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "LEU error detected"
+                    Comment = "LEU error detected",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
                     Name = "WAY_ERR_BTS_BAL_GROUP_MISSING (OS-W)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Complete Balise Group missing"
+                    Comment = "Complete Balise Group missing",
+                    SkipIfValue = false
                 },
                 new BitField
                 {
