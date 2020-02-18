@@ -371,6 +371,28 @@ namespace IPTComShark
                                 _protocolinfo = "ETC->VAP (ATO)";
                         }
 
+                        if (Protocol == ProtocolType.UDP)
+                        {
+                            // EXPERIMENT
+                            
+                            /*
+                            Protocol = ProtocolType.UNKNOWN;
+                            _protocolinfo = "EXPERIMENT";
+
+                            var payload = udp.PayloadData;
+                            var spl = VAP.UDP_SPL.Parse(payload);
+                            this.DisplayFields =
+                                spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList();
+
+                            if (spl.ParsedFields.Last().Value.Equals("C9"))
+                            {
+                                var nextBytes = Functions.SubArrayGetter(payload, 81);
+                                var stm = VAP.STM_Packet.Parse(nextBytes);
+                                DisplayFields.AddRange(stm.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
+                            }
+                            */
+                        }
+
 
                         try
                         {
@@ -637,19 +659,36 @@ namespace IPTComShark
         /// </summary>
         public List<ParsedField> GetDelta()
         {
-            List<ParsedField> delta = new List<ParsedField>(this.ParsedData.ParsedFields);
+            return GetDelta(new List<string>());
+        }
 
-            if (Previous != null)
+        /// <summary>
+        /// If this packet is part of a chain, get only the ParsedData that has changed
+        /// </summary>
+        public List<ParsedField> GetDelta(List<string> ignores)
+        {
+            List<ParsedField> delta = new List<ParsedField>();
+
+            if (Previous != null && ParsedData.ParsedFields.Count == Previous.ParsedData.ParsedFields.Count)
             {
                 for (int i = 0; i < ParsedData.ParsedFields.Count; i++)
                 {
-                    if (Previous.ParsedData.ParsedFields.Count == i)
-                        break;
+
                     ParsedField field = this.ParsedData[i];
                     ParsedField lookup = Previous.ParsedData[i];
-
-                    if (lookup.Value.Equals(field.Value))
-                        delta.Remove(field);
+                    
+                    if (!lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
+                    {
+                        delta.Add(field);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var field in ParsedData.ParsedFields)
+                {
+                    if(!ignores.Contains(field.Name))
+                        delta.Add(field);
                 }
             }
 

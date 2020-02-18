@@ -635,6 +635,13 @@ namespace IPTComShark
             }
         }
 
+        private void textBoxIgnoreVars_TypingFinished(object sender, EventArgs e)
+        {
+            packetListView1.UpdateFilter();
+        }
+
+
+
         //public enum Protocol
         //{
         //    Unknown,

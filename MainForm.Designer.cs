@@ -39,14 +39,17 @@ namespace IPTComShark
             this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.packetListView1 = new IPTComShark.Controls.PacketListView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
-            this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
-            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
-            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
-            this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
+            this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
+            this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
+            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,20 +71,19 @@ namespace IPTComShark
             this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.packetListView1 = new IPTComShark.Controls.PacketListView();
+            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
+            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -142,51 +144,76 @@ namespace IPTComShark
             this.splitContainer1.SplitterDistance = 1030;
             this.splitContainer1.TabIndex = 7;
             // 
-            // packetListView1
+            // tabControl1
             // 
-            this.packetListView1.AllowDrop = true;
-            this.packetListView1.AutoScroll = true;
-            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Name = "packetListView1";
-            packetListSettings1.AutoScroll = true;
-            packetListSettings1.IgnoreComid = null;
-            packetListSettings1.IgnoreDuplicatedPD = true;
-            packetListSettings1.IgnoreLoopback = true;
-            packetListSettings1.IgnoreUnknownData = true;
-            this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
-            this.packetListView1.TabIndex = 0;
-            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
-            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(399, 545);
+            this.tabControl1.TabIndex = 14;
             // 
-            // label1
+            // tabPage1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 120);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Ignore Comid (separate by comma)";
+            this.tabPage1.Controls.Add(this.packetDisplay1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(391, 519);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Data";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // textBoxIgnoreComid
+            // tabPage2
             // 
-            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 136);
-            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(391, 20);
-            this.textBoxIgnoreComid.TabIndex = 12;
+            this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.flowLayoutPanel1);
+            this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(391, 519);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Filters";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // checkBoxIgnoreLoopback
+            // label2
             // 
-            this.checkBoxIgnoreLoopback.AutoSize = true;
-            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(3, 49);
-            this.checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
-            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxIgnoreLoopback.TabIndex = 11;
-            this.checkBoxIgnoreLoopback.Text = "Ignore Loopback";
-            this.checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 159);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(186, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Ignore Variables (separate by newline)";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxParserOnly);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxAutoScroll);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxIgnoreLoopback);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(385, 101);
+            this.flowLayoutPanel1.TabIndex = 14;
+            // 
+            // checkBoxParserOnly
+            // 
+            this.checkBoxParserOnly.AutoSize = true;
+            this.checkBoxParserOnly.Checked = true;
+            this.checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxParserOnly.Location = new System.Drawing.Point(3, 3);
+            this.checkBoxParserOnly.Name = "checkBoxParserOnly";
+            this.checkBoxParserOnly.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxParserOnly.TabIndex = 8;
+            this.checkBoxParserOnly.Text = "Show only known data";
+            this.checkBoxParserOnly.UseVisualStyleBackColor = true;
             // 
             // checkBoxAutoScroll
             // 
@@ -198,14 +225,15 @@ namespace IPTComShark
             this.checkBoxAutoScroll.Text = "AutoScroll";
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
-            // packetDisplay1
+            // checkBoxIgnoreLoopback
             // 
-            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetDisplay1.IptConfigReader = null;
-            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
-            this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
-            this.packetDisplay1.TabIndex = 0;
+            this.checkBoxIgnoreLoopback.AutoSize = true;
+            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(3, 49);
+            this.checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
+            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxIgnoreLoopback.TabIndex = 11;
+            this.checkBoxIgnoreLoopback.Text = "Ignore Loopback";
+            this.checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
             // 
             // checkBoxHideDupes
             // 
@@ -219,17 +247,23 @@ namespace IPTComShark
             this.checkBoxHideDupes.Text = "Ignore Duplicated ProcessData";
             this.checkBoxHideDupes.UseVisualStyleBackColor = true;
             // 
-            // checkBoxParserOnly
+            // textBoxIgnoreComid
             // 
-            this.checkBoxParserOnly.AutoSize = true;
-            this.checkBoxParserOnly.Checked = true;
-            this.checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxParserOnly.Location = new System.Drawing.Point(3, 3);
-            this.checkBoxParserOnly.Name = "checkBoxParserOnly";
-            this.checkBoxParserOnly.Size = new System.Drawing.Size(134, 17);
-            this.checkBoxParserOnly.TabIndex = 8;
-            this.checkBoxParserOnly.Text = "Show only known data";
-            this.checkBoxParserOnly.UseVisualStyleBackColor = true;
+            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 136);
+            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(391, 20);
+            this.textBoxIgnoreComid.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 120);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(170, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Ignore Comid (separate by comma)";
             // 
             // menuStrip1
             // 
@@ -397,53 +431,45 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // tabControl1
+            // packetListView1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(399, 545);
-            this.tabControl1.TabIndex = 14;
+            this.packetListView1.AllowDrop = true;
+            this.packetListView1.AutoScroll = true;
+            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetListView1.Location = new System.Drawing.Point(0, 0);
+            this.packetListView1.Name = "packetListView1";
+            packetListSettings1.AutoScroll = true;
+            packetListSettings1.IgnoreComid = null;
+            packetListSettings1.IgnoreDuplicatedPD = true;
+            packetListSettings1.IgnoreLoopback = true;
+            packetListSettings1.IgnoreUnknownData = true;
+            this.packetListView1.Settings = packetListSettings1;
+            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
+            this.packetListView1.TabIndex = 0;
+            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
+            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
             // 
-            // tabPage1
+            // packetDisplay1
             // 
-            this.tabPage1.Controls.Add(this.packetDisplay1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(391, 519);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Data";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetDisplay1.IptConfigReader = null;
+            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
+            this.packetDisplay1.Name = "packetDisplay1";
+            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
+            this.packetDisplay1.TabIndex = 0;
             // 
-            // tabPage2
+            // textBoxIgnoreVars
             // 
-            this.tabPage2.Controls.Add(this.flowLayoutPanel1);
-            this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
-            this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(391, 519);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Filters";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxParserOnly);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxAutoScroll);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxIgnoreLoopback);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(385, 101);
-            this.flowLayoutPanel1.TabIndex = 14;
+            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 175);
+            this.textBoxIgnoreVars.Multiline = true;
+            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
+            this.textBoxIgnoreVars.Size = new System.Drawing.Size(391, 147);
+            this.textBoxIgnoreVars.TabIndex = 17;
+            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
+            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
             // 
             // MainForm
             // 
@@ -466,14 +492,14 @@ namespace IPTComShark
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -519,6 +545,8 @@ namespace IPTComShark
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label label2;
+        private TypeDelayTextBox textBoxIgnoreVars;
     }
 }
 

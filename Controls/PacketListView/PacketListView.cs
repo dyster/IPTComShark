@@ -293,7 +293,9 @@ namespace IPTComShark.Controls
                     {
                         if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
                         {
-                            return !capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData);
+                            var ignores = Properties.Settings.Default.IgnoreVariables.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                            
+                            return !capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData, ignores);
                             
                             
                             
