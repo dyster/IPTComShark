@@ -22,7 +22,7 @@ namespace IPTComShark.Controls
 
         public int GetObjectIndex(object model)
         {
-            var cp = (CapturePacket)model;
+            var cp = (CapturePacket) model;
             return _list.IndexOf(cp, 0);
         }
 

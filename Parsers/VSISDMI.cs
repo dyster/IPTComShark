@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
 
@@ -4106,32 +4102,72 @@ namespace IPTComShark.Parsers
                 new BitField {Name = "LS01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
                 //DMI System Status as per Subset27
-                new BitField {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                
+                new BitField
+                    {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                {
+                    Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false
+                },
+                new BitField
+                    {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                {
+                    Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+                new BitField
+                {
+                    Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+                new BitField
+                    {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                {
+                    Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+                new BitField
+                {
+                    Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+                new BitField
+                {
+                    Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+                new BitField
+                {
+                    Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,
+                    SkipIfValue = false
+                },
+
                 MMI_V_SETSPEED,
-                
+
                 new BitField
                 {
                     Name = "MMI_M_TTI",
@@ -4156,15 +4192,18 @@ namespace IPTComShark.Parsers
 
                 // DMI Sound Status as per Subset27
                 new BitField {Name = "Sound Sinfo", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Sound S1 Over-speed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Sound S2 Warning", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Sound S1 Over-speed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Sound S2 Warning", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
                 new BitField
                 {
                     Name = "MMI_Q_DISPLAY_CHANGE",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Status of the packet contents of EVC-153. Set corresponding bit to 1 when the content of the variable changes since last message sent.",
+                    Comment =
+                        "Status of the packet contents of EVC-153. Set corresponding bit to 1 when the content of the variable changes since last message sent.",
                     LookupTable = new Dictionary<string, string>
                     {
                         {"0", "MMI_M_SYMB_STATUS changed"},
@@ -4204,7 +4243,7 @@ namespace IPTComShark.Parsers
             Length = 16,
             Comment = "Safe status word for IPTCom (variables > 16)"
         };
-                
+
         #endregion
 
         public static DataSetDefinition SDT_Trailer => new DataSetDefinition
@@ -5513,7 +5552,7 @@ namespace IPTComShark.Parsers
             LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}},
             AppendString = " km/h"
         };
-        
+
         public static BitField MMI_V_SETSPEED => new BitField
         {
             Name = "MMI_V_SETSPEED",

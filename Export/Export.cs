@@ -178,7 +178,7 @@ namespace IPTComShark.Export
                     if (packet.IPTWPPacket != null)
                     {
                         // since we have IPT, straight cast to UDP, BAM
-                        var udp = (UdpPacket)packet.Packet.PayloadPacket.PayloadPacket;
+                        var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
 
                         var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
                         worksheet.Cells[rowindex, 4].Value = BitConverter.ToString(bytes);
@@ -269,7 +269,7 @@ namespace IPTComShark.Export
                 }
 
                 // since we have IPT, straight cast to UDP, BAM
-                var udp = (UdpPacket)packet.Packet.PayloadPacket.PayloadPacket;
+                var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
 
                 var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
                 sb.Append(@"\line\ul " + BitConverter.ToString(bytes) + @"\ulnone");

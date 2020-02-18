@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms.VisualStyles;
 using IPTComShark.Parsers;
 using PacketDotNet;
 using sonesson_tools;
@@ -64,13 +62,14 @@ namespace IPTComShark
             return ExtractParsedData(packet, out displayfields, false);
         }
 
-        public static ParsedDataSet ExtractParsedData(CapturePacket packet, out List<Tuple<string, object>> displayfields, bool extensive)
+        public static ParsedDataSet ExtractParsedData(CapturePacket packet,
+            out List<Tuple<string, object>> displayfields, bool extensive)
         {
             displayfields = new List<Tuple<string, object>>();
 
             if (packet.Packet.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet)packet.Packet.PayloadPacket;
+                var ipv4 = (IPv4Packet) packet.Packet.PayloadPacket;
 
                 if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
                 {
@@ -144,7 +143,6 @@ namespace IPTComShark
                         return MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
                     }
                 }
-                
             }
 
             return null;
@@ -207,11 +205,10 @@ namespace IPTComShark
                             tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
-                            
+
 
                             try
                             {
-
                                 var ss27 = ExtractSS27Packet(tcpPacket);
 
                                 DisplayFields.Add(new Tuple<string, object>("time", ss27.DateTime));
@@ -223,8 +220,9 @@ namespace IPTComShark
                                 else
                                 {
                                     // TODO FIX THIS SO IT WORKS
-                                    ss27.Events.ForEach(e => DisplayFields.Add(new Tuple<string, object>(e.EventType.ToString(), e.Description)));
-                                    
+                                    ss27.Events.ForEach(e =>
+                                        DisplayFields.Add(new Tuple<string, object>(e.EventType.ToString(),
+                                            e.Description)));
                                 }
 
                                 this.SS27Packet = ss27;
@@ -350,16 +348,14 @@ namespace IPTComShark
                                 var spl = VAP.UDP_SPL.Parse(payload);
                                 this.DisplayFields =
                                     spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList();
-                                
+
                                 if (spl.ParsedFields.Last().Value.Equals("C9"))
                                 {
                                     var nextBytes = Functions.SubArrayGetter(payload, 81);
                                     var stm = VAP.STM_Packet.Parse(nextBytes);
-                                    DisplayFields.AddRange(stm.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
+                                    DisplayFields.AddRange(stm.ParsedFields
+                                        .Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
                                 }
-                                
-
-
                             }
                             else if (udp.DestinationPort == 50036)
                                 _protocolinfo = "BDS->VAP (Diag)";
@@ -374,7 +370,7 @@ namespace IPTComShark
                         if (Protocol == ProtocolType.UDP)
                         {
                             // EXPERIMENT
-                            
+
                             /*
                             Protocol = ProtocolType.UNKNOWN;
                             _protocolinfo = "EXPERIMENT";
@@ -402,7 +398,7 @@ namespace IPTComShark
                         {
                             Error = e.Message;
                         }
-                        
+
                         if (IPTWPPacket != null)
                             Protocol = ProtocolType.IPTWP;
                         break;
@@ -673,10 +669,9 @@ namespace IPTComShark
             {
                 for (int i = 0; i < ParsedData.ParsedFields.Count; i++)
                 {
-
                     ParsedField field = this.ParsedData[i];
                     ParsedField lookup = Previous.ParsedData[i];
-                    
+
                     if (!lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
                     {
                         delta.Add(field);
@@ -687,7 +682,7 @@ namespace IPTComShark
             {
                 foreach (var field in ParsedData.ParsedFields)
                 {
-                    if(!ignores.Contains(field.Name))
+                    if (!ignores.Contains(field.Name))
                         delta.Add(field);
                 }
             }

@@ -27,13 +27,14 @@ namespace IPTComShark.Controls
             var tuples = new List<Tuple<string, string>>();
             if (RowObject is CapturePacket cpac)
             {
-                var ignores = Settings.Default.IgnoreVariables.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var ignores = Settings.Default.IgnoreVariables
+                    .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 if (cpac.DisplayFields.Count > 0)
                 {
                     foreach (var displayField in cpac.DisplayFields)
                     {
-                        if(!ignores.Contains(displayField.Item1))
+                        if (!ignores.Contains(displayField.Item1))
                             tuples.Add(new Tuple<string, string>(displayField.Item1, displayField.Item2.ToString()));
                     }
                 }
@@ -41,8 +42,8 @@ namespace IPTComShark.Controls
                 {
                     if (cpac.ParsedData == null)
                         return;
-                    
-                    
+
+
                     var delta = cpac.GetDelta(ignores);
 
                     foreach (var field in delta)
@@ -50,8 +51,6 @@ namespace IPTComShark.Controls
                         tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
                     }
                 }
-
-                
             }
             else
             {

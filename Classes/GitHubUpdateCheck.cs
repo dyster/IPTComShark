@@ -27,15 +27,15 @@ namespace IPTComShark
                         "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
 
                     ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                    
-                    byte[] downloadData = webClient.DownloadData($"https://api.github.com/repos/{owner}/{repo}/releases/latest");
+
+                    byte[] downloadData =
+                        webClient.DownloadData($"https://api.github.com/repos/{owner}/{repo}/releases/latest");
 
                     string s = Encoding.ASCII.GetString(downloadData);
 
                     Match match = Regex.Match(s, "\"tag_name\":\"([\\.\\d]*)\",");
                     return match.Groups[1].Value;
                 }
-                
             }
             catch (Exception e)
             {
@@ -54,7 +54,6 @@ namespace IPTComShark
         {
             ThreadPool.QueueUserWorkItem(thing =>
             {
-                
                 string latestVersion = GetLatestVersion(owner, repo);
                 if (latestVersion == null)
                     return;
@@ -65,7 +64,8 @@ namespace IPTComShark
 
                 if (compare < 0)
                 {
-                    Logger.Log($"Version check success, new version is available ({currentVersion} vs {latestVersion})", Severity.Info);
+                    Logger.Log($"Version check success, new version is available ({currentVersion} vs {latestVersion})",
+                        Severity.Info);
                     if (MessageBox.Show(
                             $"New version of {repo} is available, {latestVersion}{Environment.NewLine}Go there now?",
                             "New Version Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk
@@ -76,7 +76,9 @@ namespace IPTComShark
                 }
                 else if (compare > 0)
                 {
-                    Logger.Log($"Version check success, application is newer then the one on github ({currentVersion} vs {latestVersion})", Severity.Info);
+                    Logger.Log(
+                        $"Version check success, application is newer then the one on github ({currentVersion} vs {latestVersion})",
+                        Severity.Info);
                 }
                 else
                 {

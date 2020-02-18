@@ -6,7 +6,6 @@ using SharpPcap.WinPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
-using sonesson_tools.Generic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +13,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Parsers;
@@ -622,9 +620,9 @@ namespace IPTComShark
                                 var hex = hexes[index];
                                 bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
                             }
-                            
+
                             var V_NOM = BitConverter.ToInt16(new byte[] {bytes[13], bytes[12]}, 0);
-                            
+
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
                             capturePacket.ParsedData = parsedDataSet;
@@ -639,7 +637,6 @@ namespace IPTComShark
         {
             packetListView1.UpdateFilter();
         }
-
 
 
         //public enum Protocol

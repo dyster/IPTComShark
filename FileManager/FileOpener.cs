@@ -74,8 +74,8 @@ namespace IPTComShark.FileManager
                 {
                     var reader = new PCAPReader();
                     var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
+                    var first = (PCAPBlock) fileReadObjects.First().ReadObject;
+                    var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
 
                     var dsource = new DataSource
                     {
@@ -92,8 +92,8 @@ namespace IPTComShark.FileManager
                 {
                     var reader = new PCAPNGReader();
                     var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
-                    var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
+                    var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
+                    var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
                     var dsource = new DataSource
                     {
                         FileInfo = finfo,
@@ -192,8 +192,8 @@ namespace IPTComShark.FileManager
 
                                 var pcapreader = new PCAPReader();
                                 var fileReadObjects = pcapreader.ReadStream(memstream);
-                                var first = (PCAPBlock)fileReadObjects.First().ReadObject;
-                                var last = (PCAPBlock)fileReadObjects.Last().ReadObject;
+                                var first = (PCAPBlock) fileReadObjects.First().ReadObject;
+                                var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
                                 dsource.StartTime = first.DateTime;
                                 dsource.EndTime = last.DateTime;
                                 dsource.Packets = fileReadObjects.Count();
@@ -207,8 +207,8 @@ namespace IPTComShark.FileManager
 
                                 var pcapngreader = new PCAPNGReader();
                                 var fileReadObjects = pcapngreader.ReadStream(memstream);
-                                var first = (PCAPNGBlock)fileReadObjects.First().ReadObject;
-                                var last = (PCAPNGBlock)fileReadObjects.Last().ReadObject;
+                                var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
+                                var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
                                 dsource.StartTime = first.Timestamp;
                                 dsource.EndTime = last.Timestamp;
                                 dsource.Packets = fileReadObjects.Count();
@@ -238,8 +238,6 @@ namespace IPTComShark.FileManager
                 // \LOGS\Heathrow FLU19 20190118\Wire Shark.7z
                 // memstream runs out at 1074003968
                 // seen the length gone up to 1073987588
-
-
             }
 
             output.Position = 0;
@@ -351,7 +349,7 @@ namespace IPTComShark.FileManager
                 {
                     if (!started)
                     {
-                        pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
+                        pcapWriter.LinkLayerType = (uint) raw.LinkLayer;
 
                         started = true;
                     }

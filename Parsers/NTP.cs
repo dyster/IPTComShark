@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Parsers
@@ -12,7 +7,6 @@ namespace IPTComShark.Parsers
     {
         public NTP()
         {
-
         }
 
         public static DataSetDefinition NTPDataSet => new DataSetDefinition()
@@ -124,6 +118,5 @@ namespace IPTComShark.Parsers
                 },
             }
         };
-
     }
 }
