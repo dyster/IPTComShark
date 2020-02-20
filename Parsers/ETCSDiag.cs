@@ -30,7 +30,7 @@ namespace IPTComShark.Parsers
             DataSets.Add(DIA_212);
             DataSets.Add(DIA_214);
         }
-        
+
         // checked 20191125 1.6 DIAG manual CD
         public static DataSetDefinition DIA_1 => new DataSetDefinition
         {
@@ -216,7 +216,8 @@ namespace IPTComShark.Parsers
                     Name = "ETC_0201 (OS-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "EVC software failure, cumulative for all SW failures with system reaction - Code 8201  01",
+                    Comment =
+                        "EVC software failure, cumulative for all SW failures with system reaction - Code 8201  01",
                     SkipIfValue = false
                 },
                 new BitField
@@ -1005,7 +1006,8 @@ namespace IPTComShark.Parsers
                     Name = "ETC_0266 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Waiting for reply to Cold Movement Detection Distance Telegram (no distance will be reported) - Code 8266  66",
+                    Comment =
+                        "Waiting for reply to Cold Movement Detection Distance Telegram (no distance will be reported) - Code 8266  66",
                     SkipIfValue = false
                 },
                 new BitField
@@ -2199,7 +2201,6 @@ namespace IPTComShark.Parsers
                     Length = 8,
                     Comment = "Load value of the ETCS JRU memory 0-100 [%].",
                     AppendString = " %"
-                    
                 },
                 new BitField
                 {
@@ -2947,8 +2948,7 @@ namespace IPTComShark.Parsers
             }
         };
 
-        
-        
+
         // checked 20202007 1.6 DIAG manual CD
         public static DataSetDefinition DIA_200 => new DataSetDefinition
         {
@@ -2994,28 +2994,28 @@ namespace IPTComShark.Parsers
                     Name = "GPSLongitude",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "GPS Longitude\r\n"+
-                       "meaning of bits for Longitude:\r\n"+
-                       "31 = Data valid (1 = valid)\r\n"+
-                       "30 = East/West (1/0)\r\n"+
-                       "22-29 = Degrees\r\n"+
-                       "16-21 = Minutes\r\n"+
-                       "10-15 = Seconds\r\n"+
-                       "0-9 = Milliseconds"
+                    Comment = "GPS Longitude\r\n" +
+                              "meaning of bits for Longitude:\r\n" +
+                              "31 = Data valid (1 = valid)\r\n" +
+                              "30 = East/West (1/0)\r\n" +
+                              "22-29 = Degrees\r\n" +
+                              "16-21 = Minutes\r\n" +
+                              "10-15 = Seconds\r\n" +
+                              "0-9 = Milliseconds"
                 },
                 new BitField
                 {
                     Name = "GPSLatitude",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "GPS Latitude\r\n"+
-                       "meaning of bits for Latitude:\r\n"+
-                       "31 = Data valid (1 = valid)\r\n"+
-                       "30 = North/South (1/0)\r\n"+
-                       "22-29 = Degrees\r\n"+
-                       "16-21 = Minutes\r\n"+
-                       "10-15 = Seconds\r\n"+
-                       "0-9 = Milliseconds"
+                    Comment = "GPS Latitude\r\n" +
+                              "meaning of bits for Latitude:\r\n" +
+                              "31 = Data valid (1 = valid)\r\n" +
+                              "30 = North/South (1/0)\r\n" +
+                              "22-29 = Degrees\r\n" +
+                              "16-21 = Minutes\r\n" +
+                              "10-15 = Seconds\r\n" +
+                              "0-9 = Milliseconds"
                 },
                 new BitField
                 {
@@ -3370,8 +3370,9 @@ namespace IPTComShark.Parsers
                     Name = "RBC_ETCS_IDENTITY",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "RBC ETCS identity number. Allowed values according to [SS026], NID_C, NID_RBC and the packet 42 description." +
-                                "The 14 least significant bits contain the value of NID_RBC, the 10 next higher bits contain NID_C."
+                    Comment =
+                        "RBC ETCS identity number. Allowed values according to [SS026], NID_C, NID_RBC and the packet 42 description." +
+                        "The 14 least significant bits contain the value of NID_RBC, the 10 next higher bits contain NID_C."
                 },
                 new BitField
                 {
@@ -3456,29 +3457,33 @@ namespace IPTComShark.Parsers
                     Name = "D_NVOVTRP",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Maximum distance for overriding the train trip. Allowed values according to [SS026], D_NVOVTRP."
+                    Comment =
+                        "Maximum distance for overriding the train trip. Allowed values according to [SS026], D_NVOVTRP."
                 },
                 new BitField
                 {
                     Name = "D_NVPOTRP",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Maximum distance for reversing in Post Trip mode. Allowed values according to [SS026], D_NVPOTRP."
+                    Comment =
+                        "Maximum distance for reversing in Post Trip mode. Allowed values according to [SS026], D_NVPOTRP."
                 },
                 new BitField
                 {
                     Name = "D_NVROLL",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Rollaway distance limit; Allowed values according to [SS026]. D_NVROLL considering Q_SCALE. " +
-                                "Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special value infinite is here defined."
+                    Comment =
+                        "Rollaway distance limit; Allowed values according to [SS026]. D_NVROLL considering Q_SCALE. " +
+                        "Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special value infinite is here defined."
                 },
                 new BitField
                 {
                     Name = "T_NVOVTRP",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Maximum time for overriding the train trip. Allowed values according to [SS026], T_NVOVTRP."
+                    Comment =
+                        "Maximum time for overriding the train trip. Allowed values according to [SS026], T_NVOVTRP."
                 },
                 new BitField
                 {
@@ -3486,15 +3491,16 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
                     Comment = "Maximal time without new safe message. Allowed values according to [SS026]. " +
-                                "T_NVCONTACT considering that this document specifies ms, but the [SS026] specifies s. " +
-                                "Due to the different units the special value infinite is here defined as 25."
+                              "T_NVCONTACT considering that this document specifies ms, but the [SS026] specifies s. " +
+                              "Due to the different units the special value infinite is here defined as 25."
                 },
                 new BitField
                 {
                     Name = "V_NVSTFF",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Staff Responsible mode (permitted) speed limit. Allowed values according to [SS026], V_NVSTFF."
+                    Comment =
+                        "Staff Responsible mode (permitted) speed limit. Allowed values according to [SS026], V_NVSTFF."
                 },
                 new BitField
                 {
@@ -3565,8 +3571,9 @@ namespace IPTComShark.Parsers
                     Name = "D_NVSTFF",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Maximum distance for running in Staff Responsible mode. Allowed values according to [SS026]. " +
-                    "D_NVSTFF considering Q_SCALE. Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special"
+                    Comment =
+                        "Maximum distance for running in Staff Responsible mode. Allowed values according to [SS026]. " +
+                        "D_NVSTFF considering Q_SCALE. Due to the fact that this parameter is stored in CM, but the [SS026] parameter depends on Q_SCALE, the special"
                 },
                 new BitField
                 {
@@ -3587,15 +3594,17 @@ namespace IPTComShark.Parsers
                     Name = "VALID_NV",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Valid National Values. If this parameter is set to 0, the ETCS-Core application during start-up will set the National Values " +
-                    "to the default values according to requirements and values of the configuration parameters."
+                    Comment =
+                        "Valid National Values. If this parameter is set to 0, the ETCS-Core application during start-up will set the National Values " +
+                        "to the default values according to requirements and values of the configuration parameters."
                 },
                 new BitField
                 {
                     Name = "M_NVCONTACT",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Indicates the reaction to be performed when T_NVCONTACT timer elapses. Allowed values according to [SS026]."
+                    Comment =
+                        "Indicates the reaction to be performed when T_NVCONTACT timer elapses. Allowed values according to [SS026]."
                 },
                 new BitField
                 {
@@ -3616,21 +3625,24 @@ namespace IPTComShark.Parsers
                     Name = "Q_NVSRBKTRG",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Permission to use service brake when braking to a target is supervised. Allowed values according to [SS026]."
+                    Comment =
+                        "Permission to use service brake when braking to a target is supervised. Allowed values according to [SS026]."
                 },
                 new BitField
                 {
                     Name = "Q_NVDRIVER_ADHES",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Qualifier for the modification of trackside adhesion factor by driver. Allowed values according to [SS026]."
+                    Comment =
+                        "Qualifier for the modification of trackside adhesion factor by driver. Allowed values according to [SS026]."
                 },
                 new BitField
                 {
                     Name = "Q_DLRBG",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Qualifier telling on which side of the LRBG the estimated front end is. Allowed values according to [SS026]."
+                    Comment =
+                        "Qualifier telling on which side of the LRBG the estimated front end is. Allowed values according to [SS026]."
                 },
                 new BitField
                 {
@@ -3715,56 +3727,64 @@ namespace IPTComShark.Parsers
                     Name = "NID_LRBG_1",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_2",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_3",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_4",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_5",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_6",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_7",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 },
                 new BitField
                 {
                     Name = "NID_LRBG_8",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
+                    Comment =
+                        "Country/region identity + Balise identity of last relevant Balise group (NID_C + NID_BG)."
                 }
             }
         };
@@ -3879,7 +3899,7 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Last used STM id (NID_STM). Allowed values depends on the installed STM levels. " +
-                    "Not allowed are not installed NID-STMs. Value 255 means no STM used."
+                              "Not allowed are not installed NID-STMs. Value 255 means no STM used."
                 },
                 new BitField
                 {
@@ -3907,10 +3927,11 @@ namespace IPTComShark.Parsers
                     Name = "NID_ENGINE",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "On-board ETCS identity according [ERA_VAR]. Contains information on rolling stock fleet/on-board equipment supplier. " +
-                    "Reserved ranges, numbers: 0-1023  'Range for Bombardier RCS', 17051 'Range for Bombardier.' " +
-                    "The project specific values will be provided by train Operator or by Product Owner within the Bombardier Transportation." +
-                    "Note: According SUBSET-26-7 this is a 24 Bit variable. Due to IEC 61375 data type compatibility, this variable is internally pictured on a 32-Bit value."
+                    Comment =
+                        "On-board ETCS identity according [ERA_VAR]. Contains information on rolling stock fleet/on-board equipment supplier. " +
+                        "Reserved ranges, numbers: 0-1023  'Range for Bombardier RCS', 17051 'Range for Bombardier.' " +
+                        "The project specific values will be provided by train Operator or by Product Owner within the Bombardier Transportation." +
+                        "Note: According SUBSET-26-7 this is a 24 Bit variable. Due to IEC 61375 data type compatibility, this variable is internally pictured on a 32-Bit value."
                 },
                 new BitField
                 {
@@ -3918,8 +3939,8 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Validity of all diagnostic packets (used by vehicle diagnostics). " +
-                    "0 = diagnostic data not yet valid (during initialization) " +
-                    "1 = all diagnostics data are valid"
+                              "0 = diagnostic data not yet valid (during initialization) " +
+                              "1 = all diagnostics data are valid"
                 },
                 new BitField
                 {
@@ -4092,7 +4113,7 @@ namespace IPTComShark.Parsers
         {
             Name = "DIA_214 DIAG_WAYSIDE_EVENT",
             Comment = "The Wayside diagnostic packet (including the environment data set DIA_215) contains data " +
-            "delivered from the Balise transmission sub-system collected within the ETC software.",
+                      "delivered from the Balise transmission sub-system collected within the ETC software.",
             Identifiers = new List<string>
             {
                 "230510440", "230511440"

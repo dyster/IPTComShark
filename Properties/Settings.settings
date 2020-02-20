@@ -1,5 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IPTComShark.Properties" GeneratedClassName="Settings">
+
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="IPTComShark.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="IgnoredComIds" Type="System.String" Scope="User">
@@ -37,6 +39,12 @@
     </Setting>
     <Setting Name="RemoteCapPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="IgnoreVariables" Type="System.String" Scope="User">
+      <Value Profile="(Default)">
+        MMI_M_PACKET
+        MMI_L_PACKET
+      </Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -30,11 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataListViewRight = new BrightIdeasSoftware.DataListView();
+            this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDataLineValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnTrueValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnComment = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnChanged = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnIsCategory = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.analyzeValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxComid = new System.Windows.Forms.TextBox();
@@ -47,7 +50,6 @@
             this.textBoxRAW = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.dataListViewRight)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -60,18 +62,20 @@
             // 
             this.dataListViewRight.AllColumns.Add(this.olvColumnNo);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineName);
-            this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineType);
             this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineValue);
+            this.dataListViewRight.AllColumns.Add(this.olvColumnDataLineType);
+            this.dataListViewRight.AllColumns.Add(this.olvColumnTrueValue);
             this.dataListViewRight.AllColumns.Add(this.olvColumnComment);
             this.dataListViewRight.AllColumns.Add(this.olvColumnChanged);
+            this.dataListViewRight.AllColumns.Add(this.olvColumnIsCategory);
             this.dataListViewRight.CellEditUseWholeCell = false;
             this.dataListViewRight.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnNo,
             this.olvColumnDataLineName,
-            this.olvColumnDataLineType,
             this.olvColumnDataLineValue,
-            this.olvColumnComment,
-            this.olvColumnChanged});
+            this.olvColumnDataLineType,
+            this.olvColumnTrueValue,
+            this.olvColumnComment});
             this.dataListViewRight.ContextMenuStrip = this.contextMenuStrip1;
             this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
@@ -85,6 +89,12 @@
             this.dataListViewRight.UseCompatibleStateImageBehavior = false;
             this.dataListViewRight.View = System.Windows.Forms.View.Details;
             // 
+            // olvColumnNo
+            // 
+            this.olvColumnNo.AspectName = "No";
+            this.olvColumnNo.Text = "No";
+            this.olvColumnNo.Width = 26;
+            // 
             // olvColumnDataLineName
             // 
             this.olvColumnDataLineName.AspectName = "Name";
@@ -94,14 +104,22 @@
             // olvColumnDataLineType
             // 
             this.olvColumnDataLineType.AspectName = "Type";
+            this.olvColumnDataLineType.DisplayIndex = 2;
             this.olvColumnDataLineType.Text = "Type";
-            this.olvColumnDataLineType.Width = 50;
+            this.olvColumnDataLineType.Width = 64;
             // 
             // olvColumnDataLineValue
             // 
             this.olvColumnDataLineValue.AspectName = "Value";
+            this.olvColumnDataLineValue.DisplayIndex = 3;
             this.olvColumnDataLineValue.Text = "Value";
-            this.olvColumnDataLineValue.Width = 100;
+            this.olvColumnDataLineValue.Width = 150;
+            // 
+            // olvColumnTrueValue
+            // 
+            this.olvColumnTrueValue.AspectName = "TrueValue";
+            this.olvColumnTrueValue.Text = "True Value";
+            this.olvColumnTrueValue.Width = 100;
             // 
             // olvColumnComment
             // 
@@ -112,8 +130,17 @@
             // olvColumnChanged
             // 
             this.olvColumnChanged.AspectName = "Changed";
+            this.olvColumnChanged.DisplayIndex = 5;
+            this.olvColumnChanged.IsVisible = false;
             this.olvColumnChanged.Text = "Changed";
             this.olvColumnChanged.Width = 0;
+            // 
+            // olvColumnIsCategory
+            // 
+            this.olvColumnIsCategory.AspectName = "IsCategory";
+            this.olvColumnIsCategory.DisplayIndex = 6;
+            this.olvColumnIsCategory.IsVisible = false;
+            this.olvColumnIsCategory.Text = "IsCategory";
             // 
             // contextMenuStrip1
             // 
@@ -231,12 +258,6 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
-            // olvColumnNo
-            // 
-            this.olvColumnNo.AspectName = "No";
-            this.olvColumnNo.Text = "No";
-            this.olvColumnNo.Width = 26;
-            // 
             // PacketDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -285,5 +306,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem analyzeValueToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnNo;
+        private BrightIdeasSoftware.OLVColumn olvColumnTrueValue;
+        private BrightIdeasSoftware.OLVColumn olvColumnIsCategory;
     }
 }

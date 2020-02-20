@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Parsers
@@ -11,7 +7,6 @@ namespace IPTComShark.Parsers
     {
         public VAP()
         {
-
         }
 
         public static DataSetDefinition UDP_SPL => new DataSetDefinition()
@@ -105,7 +100,7 @@ namespace IPTComShark.Parsers
                     BitFieldType = BitFieldType.UInt16,
                     Length = 13
                 },
-                
+
                 new BitField()
                 {
                     Name = "First Niblet",

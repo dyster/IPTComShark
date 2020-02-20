@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using IPTComShark.Properties;
 
 namespace IPTComShark.Controls
 {
@@ -25,11 +27,15 @@ namespace IPTComShark.Controls
             var tuples = new List<Tuple<string, string>>();
             if (RowObject is CapturePacket cpac)
             {
+                var ignores = Settings.Default.IgnoreVariables
+                    .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).ToList();
+
                 if (cpac.DisplayFields.Count > 0)
                 {
                     foreach (var displayField in cpac.DisplayFields)
                     {
-                        tuples.Add(new Tuple<string, string>(displayField.Item1, displayField.Item2.ToString()));
+                        if (!ignores.Contains(displayField.Item1))
+                            tuples.Add(new Tuple<string, string>(displayField.Item1, displayField.Item2.ToString()));
                     }
                 }
                 else
@@ -37,16 +43,14 @@ namespace IPTComShark.Controls
                     if (cpac.ParsedData == null)
                         return;
 
-                    var delta = cpac.GetDelta();
+
+                    var delta = cpac.GetDelta(ignores);
 
                     foreach (var field in delta)
                     {
-                        if (field.Name != "MMI_M_PACKET" && field.Name != "MMI_L_PACKET")
-                            tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
+                        tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
                     }
                 }
-
-                
             }
             else
             {

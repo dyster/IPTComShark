@@ -16,10 +16,10 @@ namespace IPTComShark.XmlFiles
         public IPTConfigReader(string path)
         {
             var xmlSerializer = new XmlSerializer(typeof(cpu));
-            var deserialize = (cpu)xmlSerializer.Deserialize(File.OpenRead(path));
+            var deserialize = (cpu) xmlSerializer.Deserialize(File.OpenRead(path));
             foreach (cpuBusinterfacelist o in deserialize.Items.Where(i => i is cpuBusinterfacelist))
-                foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
-                    Telegrams.AddRange(businterface.Telegram);
+            foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
+                Telegrams.AddRange(businterface.Telegram);
             foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
                 Datasets.AddRange(cpuDatasetlist.Dataset);
         }
@@ -73,7 +73,7 @@ namespace IPTComShark.XmlFiles
                 var comid = t.Comid.ToString();
                 var set = Datasets.First(dataset => dataset.Datasetid == t.Datasetid);
 
-                var dud = new DataSetDefinition() { BitFields = ExtractDataset(set) };
+                var dud = new DataSetDefinition() {BitFields = ExtractDataset(set)};
                 var serial = dud.Serialize();
 
                 var datasetdef = datasetdic[serial];

@@ -98,6 +98,12 @@
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
     <Compile Include="Controls\PacketListView\PacketSource.cs" />
+    <Compile Include="Controls\TypeDelayTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TypeDelayTextBox.Designer.cs">
+      <DependentUpon>TypeDelayTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Export\Export.cs" />
     <Compile Include="FileManager\DataSource.cs" />
     <Compile Include="FileManager\DatePicker.cs">
@@ -177,6 +183,9 @@
       <DependentUpon>TrafficSim.cs</DependentUpon>
     </Compile>
     <Compile Include="XmlFiles\IPTConfigReader.cs" />
+    <EmbeddedResource Include="Controls\TypeDelayTextBox.resx">
+      <DependentUpon>TypeDelayTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FileManager\DatePicker.resx">
       <DependentUpon>DatePicker.cs</DependentUpon>
     </EmbeddedResource>
