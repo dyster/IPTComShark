@@ -5332,6 +5332,7 @@ namespace IPTComShark.Parsers
                 {"572", "No Track Description"},
                 {"573", "#2 needs data"},
                 {"574", "Cabin Reactivation required in #1 hours"},
+                {"577", "Default National Values (NV) applied"},
                 {"580", "Procedure Brake Percentage Entry terminated by ATP"},
                 {"581", "Procedure Wheel Diameter Entry terminated by ATP"},
                 {"582", "Procedure Doppler Radar Entry terminated by ATP"},
