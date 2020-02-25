@@ -3067,7 +3067,7 @@ namespace IPTComShark.Parsers
                 new BitField
                 {
                     Name = "MMI_M_MODE_STATUS",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "Indicates validity of shown mode",
                     LookupTable = new Dictionary<string, string>
@@ -4101,70 +4101,30 @@ namespace IPTComShark.Parsers
                 new BitField {Name = "LX01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "LS01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
-                //DMI System Status as per Subset27
-                new BitField
-                    {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                // DMI System Status as per Subset27
+                new BitField {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                {
-                    Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false
-                },
-                new BitField
-                    {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                {
-                    Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-                new BitField
-                {
-                    Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-                new BitField
-                    {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                {
-                    Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-                new BitField
-                {
-                    Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-                new BitField
-                {
-                    Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-                new BitField
-                {
-                    Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                new BitField {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
                 MMI_V_SETSPEED,
 
@@ -5084,7 +5044,7 @@ namespace IPTComShark.Parsers
         public static BitField MMI_NID_KEY_LOAD_GAUGE => new BitField
         {
             Name = "MMI_NID_KEY_LOAD_GAUGE",
-            BitFieldType = BitFieldType.UInt16,
+            BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment =
                 "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. For Train Category the keys number 34 to 38 are applicable.",
@@ -5372,6 +5332,7 @@ namespace IPTComShark.Parsers
                 {"572", "No Track Description"},
                 {"573", "#2 needs data"},
                 {"574", "Cabin Reactivation required in #1 hours"},
+                {"577", "Default National Values (NV) applied"},
                 {"580", "Procedure Brake Percentage Entry terminated by ATP"},
                 {"581", "Procedure Wheel Diameter Entry terminated by ATP"},
                 {"582", "Procedure Doppler Radar Entry terminated by ATP"},
