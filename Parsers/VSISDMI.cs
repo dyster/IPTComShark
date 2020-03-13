@@ -3713,7 +3713,7 @@ namespace IPTComShark.Parsers
             Identifiers = new List<string>
             {
                 "230531160",
-                "230536160",
+                "230536160"
             },
             BitFields = new List<BitField>
             {
@@ -3747,13 +3747,13 @@ namespace IPTComShark.Parsers
         // checked RVV 05-12-2019 2.13
         public static DataSetDefinition EVC_129 => new DataSetDefinition
         {
-            Name = "EVC_128 MMI_CONFIRMED_SET_VBC",
+            Name = "EVC_129 MMI_CONFIRMED_REMOVE_VBC",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has confirmed data in the 'Remove VBC' validation window.",
             Identifiers = new List<string>
             {
                 "230531170",
-                "230536170",
+                "230536170"
             },
             BitFields = new List<BitField>
             {
