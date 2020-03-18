@@ -6,9 +6,12 @@ using sonesson_tools.Generic;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
+using System.Linq;
 using System.Text;
 using PacketDotNet;
+using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Export
 {
@@ -139,12 +142,12 @@ namespace IPTComShark.Export
 
                 //Add the headers
                 worksheet.Cells[1, 1].Value = "Time";
-                //worksheet.Cells[1, 2].Value = "RecordedTime";
                 worksheet.Cells[1, 2].Value = "Name";
-                //worksheet.Cells[1, 4].Value = "DataType";
-                worksheet.Cells[1, 3].Value = "Data";
-                worksheet.Cells[1, 4].Value = "Raw";
-                // worksheet.Cells[1, 7].Value = "Sortindex";
+                worksheet.Cells[1, 3].Value = "Displayfields";
+                worksheet.Cells[1, 4].Value = "Delta";
+                worksheet.Cells[1, 5].Value = "Data";
+                worksheet.Cells[1, 6].Value = "Raw";
+                
 
 
                 for (var index = 0; index < packets.Count; index++)
@@ -153,12 +156,18 @@ namespace IPTComShark.Export
                     int rowindex = index + 2;
 
                     worksheet.Cells[rowindex, 1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                    //worksheet.Cells[rowindex, 2].Value = log.RecordedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     worksheet.Cells[rowindex, 2].Value = packet.Name;
+                    worksheet.Cells[rowindex, 3].Value =
+                        Functions.MakeCommentString(packet.DisplayFields.ToDictionary(f => f.Item1, f => f.Item2));
 
+                    if (packet.Previous != null)
+                    {
+                        worksheet.Cells[rowindex, 4].Value =
+                            string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
+                    }
 
                     if (packet.ParsedData != null)
-                        worksheet.Cells[rowindex, 3].Value =
+                        worksheet.Cells[rowindex, 5].Value =
                             Functions.MakeCommentString(packet.ParsedData.GetDataDictionary());
 
                     //worksheet.Cells[rowindex, 5].IsRichText = true;
@@ -174,19 +183,41 @@ namespace IPTComShark.Export
                     //    excelRichText.UnderLine = true;
                     //}
 
+                    if (packet.SS27Packet != null)
+                    {
+                        if (packet.Previous != null)
+                        {
+                            var prev = SS27tolist(packet.Previous.SS27Packet);
+                            var ss27Tolist = SS27tolist(packet.SS27Packet);
+                            var sb = new StringBuilder();
+                            for (var i = 0; i < ss27Tolist.Count; i++)
+                            {
+                                var s = "";
+                                var tuples = ss27Tolist[i];
+                                tuples.RemoveAll(tuple =>
+                                    prev[0].Exists(p => p.Item1 == tuple.Item1 && p.Item2 == tuple.Item2));
+                                sb.AppendLine(string.Join(" ", tuples.Select(t => t.Item1 + ": " + t.Item2)));
+                            }
 
-                    if (packet.IPTWPPacket != null)
+                            worksheet.Cells[rowindex, 4].Value = sb.ToString();
+                        }
+                        
+
+                        worksheet.Cells[rowindex, 5].Value = SS27tostring(packet.SS27Packet);
+
+                        worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(packet.SS27Packet.RawData); 
+                    }
+                    else if (packet.IPTWPPacket != null)
                     {
                         // since we have IPT, straight cast to UDP, BAM
                         var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
 
                         var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
-                        worksheet.Cells[rowindex, 4].Value = BitConverter.ToString(bytes);
+                        worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
                     }
 
-                    //worksheet.Cells[rowindex, 7].Value = log.SortIndex;
+                    
                 }
-
 
                 //Ok now format the values;
                 using (ExcelRange range = worksheet.Cells[1, 1, 1, 4])
@@ -241,6 +272,45 @@ namespace IPTComShark.Export
                 // save our new workbook and we are done!
                 package.Save();
             }
+        }
+
+        private static string SS27tostring(SS27Packet packet)
+        {
+            var sb = new StringBuilder(Functions.MakeCommentString(
+                packet.Header.ToDictionary(h => h.Name, h => h.Value)));
+            
+            if (packet.SubMessage != null)
+            {
+                sb.Append(Environment.NewLine);
+                sb.Append(Functions.MakeCommentString(
+                    packet.SubMessage.GetDataDictionary()));
+            }
+
+            foreach (var ss27PacketExtraMessage in packet.ExtraMessages)
+            {
+                sb.Append(Environment.NewLine);
+                sb.AppendLine(Functions.MakeCommentString(ss27PacketExtraMessage.GetDataDictionary()));
+            }
+
+            return sb.ToString();
+        }
+
+        private static List<List<Tuple<string, string>>> SS27tolist(SS27Packet packet)
+        {
+            var list = new List<List<Tuple<string, string>>>();
+
+            list.Add(packet.Header.Select(h => new Tuple<string,string>(h.Name, h.Value.ToString())).ToList());
+            if (packet.SubMessage != null)
+            {
+                list.Add(packet.SubMessage.ParsedFields.Select(f => new Tuple<string, string>(f.Name,f.Value.ToString())).ToList());
+            }
+
+            foreach (var ss27PacketExtraMessage in packet.ExtraMessages)
+            {
+                list.Add(ss27PacketExtraMessage.ParsedFields.Select(f => new Tuple<string, string>(f.Name, f.Value.ToString())).ToList());
+            }
+
+            return list;
         }
 
         public static string MakeRTF(List<CapturePacket> packets)
