@@ -581,7 +581,7 @@ namespace IPTComShark
 
 
                                 return
-                                    $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length} ChkSum={udp.Checksum}";
+                                    $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length}";
 
 
                             case PacketDotNet.ProtocolType.Icmp:
