@@ -665,6 +665,9 @@ namespace IPTComShark
         {
             List<ParsedField> delta = new List<ParsedField>();
 
+            if (ParsedData == null)
+                return delta;
+
             if (Previous != null && ParsedData.ParsedFields.Count == Previous.ParsedData.ParsedFields.Count)
             {
                 for (int i = 0; i < ParsedData.ParsedFields.Count; i++)
