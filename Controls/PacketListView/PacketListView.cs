@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Controls
 {
@@ -18,6 +19,8 @@ namespace IPTComShark.Controls
 
         private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns =
             new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
+        private readonly Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket> _lastKnownsJRU =
+            new Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket>();
 
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
@@ -354,6 +357,20 @@ namespace IPTComShark.Controls
                 else
                 {
                     _lastKnowns.Add(tupleKey, o);
+                }
+            }
+            else if (o.SS27Packet != null)
+            {
+                var tupleKey = new Tuple<SS27MsgType, IPAddress>(o.SS27Packet.MsgType, new IPAddress(o.Source));
+                if (_lastKnownsJRU.ContainsKey(tupleKey))
+                {
+                    o.Previous = _lastKnownsJRU[tupleKey];
+                    _lastKnownsJRU[tupleKey].Next = o;
+                    _lastKnownsJRU[tupleKey] = o;
+                }
+                else
+                {
+                    _lastKnownsJRU.Add(tupleKey, o);
                 }
             }
 
