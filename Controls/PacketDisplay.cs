@@ -120,9 +120,9 @@ namespace IPTComShark.Controls
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
                             {
-                                // not checking for null because frankly it shouldn't happen and we want an exception
-                                changed = !originalpacket.Previous.ParsedData.GetField(field.Name).Value
-                                    .Equals(field.Value);
+                                var parsedField = originalpacket.Previous.ParsedData.GetField(field.Name);
+                                if(parsedField != null)
+                                    changed = !parsedField.Value.Equals(field.Value);
                             }
 
                             dataLines.Add(new DataLine(field, ticker++)
