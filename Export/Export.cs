@@ -19,6 +19,8 @@ namespace IPTComShark.Export
     {
         public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile)
         {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
             var newFile = new FileInfo(outputfile);
             if (newFile.Exists)
             {
@@ -128,6 +130,8 @@ namespace IPTComShark.Export
 
         public static void MakeXLSX(List<CapturePacket> packets, string outputfile)
         {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
             var newFile = new FileInfo(outputfile);
             if (newFile.Exists)
             {

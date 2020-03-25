@@ -2,7 +2,6 @@
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
 using SharpPcap;
-using SharpPcap.WinPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
@@ -17,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Parsers;
 using PacketDotNet;
+using SharpPcap.Npcap;
 
 namespace IPTComShark
 {
@@ -30,7 +30,7 @@ namespace IPTComShark
 
         private long _capturedData;
 
-        private WinPcapDevice _device;
+        private NpcapDevice _device;
         private long _discardedData;
         private long _discardedPackets;
 
@@ -201,14 +201,17 @@ namespace IPTComShark
             if (_device == null)
             {
                 // Retrieve the device list
-                CaptureDeviceList devices = CaptureDeviceList.Instance;
+                var devices = CaptureDeviceList.Instance.ToList();
 
                 // If no devices were found print an error
                 if (devices.Count < 1)
                     return;
 
-                List<WinPcapDevice> captureDevices =
-                    devices.Where(d => d is WinPcapDevice).Cast<WinPcapDevice>().ToList();
+                List<NpcapDevice> captureDevices =
+                    devices.Where(d => d is NpcapDevice).Cast<NpcapDevice>().ToList();
+
+                captureDevices.RemoveAll(d => d.Loopback || d.Addresses.Count == 0);
+                
 
                 var interfacePicker = new InterfacePicker(captureDevices);
                 interfacePicker.ShowDialog();
@@ -290,7 +293,7 @@ namespace IPTComShark
             try
             {
                 // Close the pcap device
-                _device.Close();
+                _device?.Close();
             }
             catch (Exception exception)
             {
