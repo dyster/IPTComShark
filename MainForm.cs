@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Parsers;
+using IPTComShark.Properties;
 using PacketDotNet;
 using SharpPcap.Npcap;
 
@@ -42,7 +43,7 @@ namespace IPTComShark
         {
             InitializeComponent();
 
-            Text = Text += " " + Application.ProductVersion;
+            Text = Text += " " + Application.ProductVersion + " codename \"Cliff\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
@@ -639,6 +640,11 @@ namespace IPTComShark
         private void textBoxIgnoreVars_TypingFinished(object sender, EventArgs e)
         {
             packetListView1.UpdateFilter();
+        }
+
+        private void typeDelayTextBox1_TypingFinished(object sender, EventArgs e)
+        {
+            packetListView1.SearchString = textBoxSearch.Text;
         }
 
 

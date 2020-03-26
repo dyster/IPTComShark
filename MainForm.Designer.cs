@@ -39,9 +39,12 @@ namespace IPTComShark
             this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.packetListView1 = new IPTComShark.Controls.PacketListView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
@@ -71,9 +74,8 @@ namespace IPTComShark
             this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.packetListView1 = new IPTComShark.Controls.PacketListView();
-            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
-            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -144,6 +146,24 @@ namespace IPTComShark
             this.splitContainer1.SplitterDistance = 1030;
             this.splitContainer1.TabIndex = 7;
             // 
+            // packetListView1
+            // 
+            this.packetListView1.AllowDrop = true;
+            this.packetListView1.AutoScroll = true;
+            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetListView1.Location = new System.Drawing.Point(0, 0);
+            this.packetListView1.Name = "packetListView1";
+            packetListSettings1.AutoScroll = true;
+            packetListSettings1.IgnoreComid = null;
+            packetListSettings1.IgnoreDuplicatedPD = true;
+            packetListSettings1.IgnoreLoopback = true;
+            packetListSettings1.IgnoreUnknownData = true;
+            this.packetListView1.Settings = packetListSettings1;
+            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
+            this.packetListView1.TabIndex = 0;
+            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
+            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -166,8 +186,19 @@ namespace IPTComShark
             this.tabPage1.Text = "Data";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // packetDisplay1
+            // 
+            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetDisplay1.IptConfigReader = null;
+            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
+            this.packetDisplay1.Name = "packetDisplay1";
+            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
+            this.packetDisplay1.TabIndex = 0;
+            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.textBoxSearch);
+            this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.flowLayoutPanel1);
@@ -180,6 +211,19 @@ namespace IPTComShark
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // textBoxIgnoreVars
+            // 
+            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 175);
+            this.textBoxIgnoreVars.Multiline = true;
+            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
+            this.textBoxIgnoreVars.Size = new System.Drawing.Size(391, 147);
+            this.textBoxIgnoreVars.TabIndex = 17;
+            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
+            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
             // 
             // label2
             // 
@@ -330,40 +374,40 @@ namespace IPTComShark
             this.exportCSVToolStripMenuItem,
             this.remoteCaptureToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
             // 
             this.simulateTrafficToolStripMenuItem.Name = "simulateTrafficToolStripMenuItem";
-            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
             this.simulateTrafficToolStripMenuItem.Click += new System.EventHandler(this.simulateTrafficToolStripMenuItem_Click);
             // 
             // exportSVGSequenceDiagramToolStripMenuItem
             // 
             this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
             this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
             // 
             // exportXLSXToolStripMenuItem
             // 
             this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
-            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
             this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
             // 
             // exportCSVToolStripMenuItem
             // 
             this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
-            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.exportCSVToolStripMenuItem.Text = "Export CSV";
             // 
             // remoteCaptureToolStripMenuItem
             // 
             this.remoteCaptureToolStripMenuItem.Name = "remoteCaptureToolStripMenuItem";
-            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.remoteCaptureToolStripMenuItem.Text = "Remote Capture";
             this.remoteCaptureToolStripMenuItem.Click += new System.EventHandler(this.RemoteCaptureToolStripMenuItem_Click);
             // 
@@ -407,14 +451,14 @@ namespace IPTComShark
             // eVA2XMLExportToolStripMenuItem
             // 
             this.eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
             this.eVA2XMLExportToolStripMenuItem.Click += new System.EventHandler(this.eVA2XMLExportToolStripMenuItem_Click);
             // 
             // bDSToolStripMenuItem
             // 
             this.bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.bDSToolStripMenuItem.Text = "BDS";
             this.bDSToolStripMenuItem.Click += new System.EventHandler(this.bDSToolStripMenuItem_Click);
             // 
@@ -431,45 +475,24 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // packetListView1
+            // label3
             // 
-            this.packetListView1.AllowDrop = true;
-            this.packetListView1.AutoScroll = true;
-            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Name = "packetListView1";
-            packetListSettings1.AutoScroll = true;
-            packetListSettings1.IgnoreComid = null;
-            packetListSettings1.IgnoreDuplicatedPD = true;
-            packetListSettings1.IgnoreLoopback = true;
-            packetListSettings1.IgnoreUnknownData = true;
-            this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
-            this.packetListView1.TabIndex = 0;
-            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
-            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 325);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Search";
             // 
-            // packetDisplay1
+            // textBoxSearch
             // 
-            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetDisplay1.IptConfigReader = null;
-            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
-            this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
-            this.packetDisplay1.TabIndex = 0;
-            // 
-            // textBoxIgnoreVars
-            // 
-            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 175);
-            this.textBoxIgnoreVars.Multiline = true;
-            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
-            this.textBoxIgnoreVars.Size = new System.Drawing.Size(391, 147);
-            this.textBoxIgnoreVars.TabIndex = 17;
-            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
-            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 341);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(391, 20);
+            this.textBoxSearch.TabIndex = 19;
+            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
             // 
             // MainForm
             // 
@@ -547,6 +570,8 @@ namespace IPTComShark
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label2;
         private TypeDelayTextBox textBoxIgnoreVars;
+        private TypeDelayTextBox textBoxSearch;
+        private System.Windows.Forms.Label label3;
     }
 }
 

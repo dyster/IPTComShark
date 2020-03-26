@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using sonesson_tools.DataParsers;
 
@@ -22,11 +23,26 @@ namespace IPTComShark.Controls
         private readonly Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket> _lastKnownsJRU =
             new Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket>();
 
+        private string _searchString;
+
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
         private static readonly Color UdpColor = Color.FromArgb(218, 238, 255);
         private static readonly Color IptwpColor = Color.FromArgb(170, 223, 255);
         private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
         private static readonly Color ErrorColor = Color.Crimson;
+
+        public string SearchString
+        {
+            get => _searchString;
+            set
+            {
+                var input = value.Trim();
+                if(input.Equals(_searchString))
+                    return;
+                _searchString = input; 
+                UpdateFilter();
+            }
+        }
 
         public PacketListView()
         {
@@ -286,7 +302,7 @@ namespace IPTComShark.Controls
                             return false;
                     }
                 }
-
+                
                 if (Settings.IgnoreDuplicatedPD)
                 {
                     if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
@@ -296,9 +312,30 @@ namespace IPTComShark.Controls
                             var ignores = Properties.Settings.Default.IgnoreVariables.Split(new[] {Environment.NewLine},
                                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                            return !capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData, ignores);
+                            if (!capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData, ignores))
+                            {
+                                // PD is different
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
                     }
+                }
+
+                if (!string.IsNullOrEmpty(_searchString))
+                {
+                    var regex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
+                    if (capturePacket.Name != null && regex.IsMatch(capturePacket.Name))
+                        return true;
+                    if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Item1)))
+                        return true;
+                    if (capturePacket.ParsedData != null &&
+                        capturePacket.ParsedData.ParsedFields.Exists(p => regex.IsMatch(p.Name)))
+                        return true;
+
+                    return false;
                 }
 
                 return true;
