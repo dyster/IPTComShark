@@ -143,6 +143,12 @@
     <Compile Include="Windows\RemoteCap.Designer.cs">
       <DependentUpon>RemoteCap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TestWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\TestWindow.Designer.cs">
+      <DependentUpon>TestWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\TextWindow.cs">
       <SubType>Form</SubType>
     </Compile>
