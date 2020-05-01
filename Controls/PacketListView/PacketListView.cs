@@ -36,6 +36,8 @@ namespace IPTComShark.Controls
             get => _searchString;
             set
             {
+                if(value == null)
+                    return;
                 var input = value.Trim();
                 if(input.Equals(_searchString))
                     return;
