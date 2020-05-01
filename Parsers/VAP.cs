@@ -14,15 +14,15 @@ namespace IPTComShark.Parsers
             Name = "UDP_SPL",
             BitFields = new List<BitField>()
             {
+                //new BitField()
+                //{
+                //    Name = "SPL Seq",
+                //    BitFieldType = BitFieldType.UInt8,
+                //    Length = 8
+                //},
                 new BitField()
                 {
-                    Name = "SPL Seq",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "SPL Frame len",
+                    Name = "SPLFrameLen",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16
                 },
@@ -54,18 +54,6 @@ namespace IPTComShark.Parsers
                 {
                     Name = "FDL mode",
                     BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "SLL Seq",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "SLL Cmd",
-                    BitFieldType = BitFieldType.HexString,
                     Length = 8
                 },
             }

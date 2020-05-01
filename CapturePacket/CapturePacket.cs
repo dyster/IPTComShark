@@ -8,6 +8,8 @@ using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
+using sonesson_toolsNETSTANDARD.DataParsers.Subset57;
+using sonesson_toolsNETSTANDARD.DataSets;
 
 namespace IPTComShark
 {
@@ -15,6 +17,8 @@ namespace IPTComShark
     public class CapturePacket : IComparable
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
+        private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
+
         public Packet Packet = null;
 
         // these could be null
@@ -339,24 +343,6 @@ namespace IPTComShark
                                 _protocolinfo = "ETC->VAP (to JRU)";
                             else if (udp.DestinationPort == 50057)
                                 _protocolinfo = "ETC->VAP (VAP Config)";
-                            else if (udp.DestinationPort == 50014)
-                            {
-                                Protocol = ProtocolType.UDP_SPL;
-                                _protocolinfo = "OPC->VAP";
-
-                                var payload = udp.PayloadData;
-                                var spl = VAP.UDP_SPL.Parse(payload);
-                                this.DisplayFields =
-                                    spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList();
-
-                                if (spl.ParsedFields.Last().Value.Equals("C9"))
-                                {
-                                    var nextBytes = Functions.SubArrayGetter(payload, 81);
-                                    var stm = VAP.STM_Packet.Parse(nextBytes);
-                                    DisplayFields.AddRange(stm.ParsedFields
-                                        .Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
-                                }
-                            }
                             else if (udp.DestinationPort == 50036)
                                 _protocolinfo = "BDS->VAP (Diag)";
                             else if (udp.DestinationPort == 50070)
@@ -365,6 +351,34 @@ namespace IPTComShark
                                 _protocolinfo = "ETC->VAP (ATO)";
                             else if (udp.DestinationPort == 50072)
                                 _protocolinfo = "ETC->VAP (ATO)";
+                        }
+                        else if (Equals(ipv4.SourceAddress, OpcAddress))
+                        {
+                            if (udp.DestinationPort == 50010)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (SPL)";
+
+                                ParseSPL(udp);
+                            }
+                            else if (udp.DestinationPort == 50012)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                                ParseSPL(udp);
+                            }
+                            else if (udp.DestinationPort == 50014)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                                ParseSPL(udp);
+                            }
+                            else if (udp.DestinationPort == 50015)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                                ParseSPL(udp);
+                            }
                         }
 
                         if (Protocol == ProtocolType.UDP)
@@ -456,6 +470,62 @@ namespace IPTComShark
             var extractParsedData = ExtractParsedData(this, out var displayfields);
             this.DisplayFields.AddRange(displayfields);
             this.ParsedData = extractParsedData;
+        }
+
+        private void ParseSPL(UdpPacket udp)
+        {
+            
+
+            var payload = udp.PayloadData;
+            var seqNr = payload[0];
+            var position = 9;
+
+            int remainer = 0;
+            
+            do
+            {
+                payload = Functions.SubArrayGetter(payload, position);
+                position = 1;
+                var spl = VAP.UDP_SPL.Parse(payload);
+                position += spl.BitsRead;
+
+                this.DisplayFields.AddRange(spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
+
+                var frameLen = (ushort)spl.GetField("SPLFrameLen").Value;
+                var splframeArray = Functions.SubArrayGetter(payload, position, frameLen * 8);
+
+                position += frameLen * 8;
+
+                var sll = SS57Parser.Parse(splframeArray);
+
+                this.ExtraData.AddRange(sll);
+
+                int sllread = 0;
+                foreach (var parsedDataSet in sll)
+                {
+                    sllread += parsedDataSet.BitsRead;
+                    this.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(field => new Tuple<string, object>(field.Name, field.Value)));
+                }
+
+                if (splframeArray.Length * 8 > sllread)
+                {
+                    var sllPayload = Functions.SubArrayGetter(splframeArray, sllread + 1);
+
+                    this.DisplayFields.Add(new Tuple<string, object>("SLLPayload", BitConverter.ToString(sllPayload)));
+                }
+                
+
+                remainer = payload.Length * 8 - (position);
+            } while (remainer > 0);
+
+            
+            this.DisplayFields.Add(new Tuple<string, object>("Remaining bits", remainer));
+
+            //if (remainer > 0)
+            //{
+            //    var subArrayGetter = Functions.SubArrayGetter(payload, position);
+            //    this.DisplayFields.Add(new Tuple<string, object>("Remainer", BitConverter.ToString(subArrayGetter)));
+            //}
         }
 
         private static SS27Packet ExtractSS27Packet(TcpPacket tcpPacket)
@@ -623,6 +693,8 @@ namespace IPTComShark
         public DateTime Date { get; }
 
         public ParsedDataSet ParsedData { get; set; }
+
+        public List<ParsedDataSet> ExtraData { get; set; } = new List<ParsedDataSet>();
 
         public List<Tuple<string, object>> DisplayFields { get; set; } = new List<Tuple<string, object>>();
 
