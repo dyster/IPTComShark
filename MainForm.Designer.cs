@@ -44,6 +44,8 @@ namespace IPTComShark
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -74,8 +76,7 @@ namespace IPTComShark
             this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -153,6 +154,7 @@ namespace IPTComShark
             this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.packetListView1.Location = new System.Drawing.Point(0, 0);
             this.packetListView1.Name = "packetListView1";
+            this.packetListView1.SearchString = null;
             packetListSettings1.AutoScroll = true;
             packetListSettings1.IgnoreComid = null;
             packetListSettings1.IgnoreDuplicatedPD = true;
@@ -211,6 +213,25 @@ namespace IPTComShark
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 341);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(391, 20);
+            this.textBoxSearch.TabIndex = 19;
+            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 325);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Search";
             // 
             // textBoxIgnoreVars
             // 
@@ -372,7 +393,8 @@ namespace IPTComShark
             this.exportSVGSequenceDiagramToolStripMenuItem,
             this.exportXLSXToolStripMenuItem,
             this.exportCSVToolStripMenuItem,
-            this.remoteCaptureToolStripMenuItem});
+            this.remoteCaptureToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -475,24 +497,12 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // label3
+            // testToolStripMenuItem
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 325);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Search";
-            // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 341);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(391, 20);
-            this.textBoxSearch.TabIndex = 19;
-            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -572,6 +582,7 @@ namespace IPTComShark
         private TypeDelayTextBox textBoxIgnoreVars;
         private TypeDelayTextBox textBoxSearch;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
 
