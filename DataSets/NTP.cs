@@ -5,10 +5,6 @@ namespace IPTComShark.DataSets
 {
     public class NTP : DataSetCollection
     {
-        public NTP()
-        {
-        }
-
         public static DataSetDefinition NTPDataSet => new DataSetDefinition()
         {
             Name = "NTP",

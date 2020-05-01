@@ -331,7 +331,7 @@ namespace IPTComShark.Controls
                     var regex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
                     if (capturePacket.Name != null && regex.IsMatch(capturePacket.Name))
                         return true;
-                    if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Item1)))
+                    if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
                         return true;
                     if (capturePacket.ParsedData != null &&
                         capturePacket.ParsedData.ParsedFields.Exists(p => regex.IsMatch(p.Name)))

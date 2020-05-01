@@ -34,8 +34,8 @@ namespace IPTComShark.Controls
                 {
                     foreach (var displayField in cpac.DisplayFields)
                     {
-                        if (!ignores.Contains(displayField.Item1))
-                            tuples.Add(new Tuple<string, string>(displayField.Item1, displayField.Item2.ToString()));
+                        if (!ignores.Contains(displayField.Name))
+                            tuples.Add(new Tuple<string, string>(displayField.Name, displayField.Val.ToString()));
                     }
                 }
                 else

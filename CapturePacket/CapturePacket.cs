@@ -9,7 +9,6 @@ using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
 using sonesson_toolsNETSTANDARD.DataParsers.Subset57;
-using sonesson_toolsNETSTANDARD.DataSets;
 
 namespace IPTComShark
 {
@@ -61,15 +60,15 @@ namespace IPTComShark
         }
 
         public static ParsedDataSet ExtractParsedData(CapturePacket packet,
-            out List<Tuple<string, object>> displayfields)
+            out List<DisplayField> displayfields)
         {
             return ExtractParsedData(packet, out displayfields, false);
         }
 
         public static ParsedDataSet ExtractParsedData(CapturePacket packet,
-            out List<Tuple<string, object>> displayfields, bool extensive)
+            out List<DisplayField> displayfields, bool extensive)
         {
-            displayfields = new List<Tuple<string, object>>();
+            displayfields = new List<DisplayField>();
 
             if (packet.Packet.PayloadPacket is IPv4Packet)
             {
@@ -137,7 +136,7 @@ namespace IPTComShark
                         foreach (var parsedField in list)
                         {
                             data.ParsedFields.Add(parsedField);
-                            displayfields.Add(new Tuple<string, object>(parsedField.Name, parsedField.Value));
+                            displayfields.Add(new DisplayField(parsedField.Name, parsedField.Value));
                         }
 
                         return data;
@@ -215,7 +214,7 @@ namespace IPTComShark
                             {
                                 var ss27 = ExtractSS27Packet(tcpPacket);
 
-                                DisplayFields.Add(new Tuple<string, object>("time", ss27.DateTime));
+                                DisplayFields.Add( new DisplayField("time", ss27.DateTime));
                                 if (ss27.Events.Count == 0)
                                 {
                                     // if there is no event, chuck some other data in there, maybe
@@ -225,7 +224,7 @@ namespace IPTComShark
                                 {
                                     // TODO FIX THIS SO IT WORKS
                                     ss27.Events.ForEach(e =>
-                                        DisplayFields.Add(new Tuple<string, object>(e.EventType.ToString(),
+                                        DisplayFields.Add(new DisplayField(e.EventType.ToString(),
                                             e.Description)));
                                 }
 
@@ -489,7 +488,7 @@ namespace IPTComShark
                 var spl = VAP.UDP_SPL.Parse(payload);
                 position += spl.BitsRead;
 
-                this.DisplayFields.AddRange(spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
+                this.DisplayFields.AddRange(spl.ParsedFields.Select(f => new DisplayField(f)).ToList());
 
                 var frameLen = (ushort)spl.GetField("SPLFrameLen").Value;
                 var splframeArray = Functions.SubArrayGetter(payload, position, frameLen * 8);
@@ -504,14 +503,14 @@ namespace IPTComShark
                 foreach (var parsedDataSet in sll)
                 {
                     sllread += parsedDataSet.BitsRead;
-                    this.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(field => new Tuple<string, object>(field.Name, field.Value)));
+                    this.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
                 }
 
                 if (splframeArray.Length * 8 > sllread)
                 {
                     var sllPayload = Functions.SubArrayGetter(splframeArray, sllread + 1);
 
-                    this.DisplayFields.Add(new Tuple<string, object>("SLLPayload", BitConverter.ToString(sllPayload)));
+                    this.DisplayFields.Add(new DisplayField("SLLPayload", BitConverter.ToString(sllPayload)));
                 }
                 
 
@@ -519,7 +518,7 @@ namespace IPTComShark
             } while (remainer > 0);
 
             
-            this.DisplayFields.Add(new Tuple<string, object>("Remaining bits", remainer));
+            this.DisplayFields.Add(new DisplayField("Remaining bits", remainer));
 
             //if (remainer > 0)
             //{
@@ -696,7 +695,7 @@ namespace IPTComShark
 
         public List<ParsedDataSet> ExtraData { get; set; } = new List<ParsedDataSet>();
 
-        public List<Tuple<string, object>> DisplayFields { get; set; } = new List<Tuple<string, object>>();
+        public List<DisplayField> DisplayFields { get; set; } = new List<DisplayField>();
 
         public string Error { get; set; } = null;
 

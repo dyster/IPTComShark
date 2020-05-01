@@ -162,7 +162,7 @@ namespace IPTComShark.Export
                     worksheet.Cells[rowindex, 1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     worksheet.Cells[rowindex, 2].Value = packet.Name;
                     worksheet.Cells[rowindex, 3].Value =
-                        Functions.MakeCommentString(packet.DisplayFields.ToDictionary(f => f.Item1, f => f.Item2));
+                        Functions.MakeCommentString(packet.DisplayFields.ToDictionary(f => f.Name, f => f.Val));
 
                     if (packet.Previous != null)
                     {
