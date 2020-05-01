@@ -5,7 +5,7 @@ using sonesson_tools.DataSets;
 // ReSharper disable InconsistentNaming
 #pragma warning disable 1591
 
-namespace IPTComShark.Parsers
+namespace IPTComShark.DataSets
 {
     public class VSISDMI : DataSetCollection
     {

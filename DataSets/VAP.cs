@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using sonesson_tools.BitStreamParser;
 
-namespace IPTComShark.Parsers
+namespace IPTComShark.DataSets
 {
     public class VAP : DataSetCollection
     {

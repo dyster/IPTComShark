@@ -1,7 +1,7 @@
-﻿using sonesson_tools.BitStreamParser;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using sonesson_tools.BitStreamParser;
 
-namespace IPTComShark.Parsers
+namespace IPTComShark.DataSets
 {
     public class ETCSDiag : DataSetCollection
     {

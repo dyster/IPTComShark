@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using IPTComShark.Parsers;
+using IPTComShark.DataSets;
 using IPTComShark.Properties;
 using PacketDotNet;
 using SharpPcap.Npcap;
@@ -51,7 +51,7 @@ namespace IPTComShark
 
             DataCollections.Add(new TPWS());
             DataCollections.Add(new STM());
-            DataCollections.Add(new Parsers.ETCSDiag());
+            DataCollections.Add(new ETCSDiag());
             DataCollections.Add(new VSISDMI());
             DataCollections.Add(new VSIS210());
             DataCollections.Add(IptConfigReader.GetDataSetCollection());
