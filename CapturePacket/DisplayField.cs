@@ -18,5 +18,10 @@ namespace IPTComShark
             Name = field.Name;
             Val = field.Value;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}: {Val}";
+        }
     }
 }
