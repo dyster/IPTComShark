@@ -51,7 +51,7 @@ namespace IPTComShark.Import
 
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
-                capturePacket.ParsedData = new ParsedDataSet() {ParsedFields = new List<ParsedField>(ss27.Header)};
+                capturePacket.ParsedData.Add(new ParsedDataSet() {ParsedFields = new List<ParsedField>(ss27.Header)});
                 capturePacket.No = sortIndex++;
                 capturePacket.SS27Packet = ss27;
 

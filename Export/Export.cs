@@ -43,7 +43,8 @@ namespace IPTComShark.Export
                 worksheet.Cells[3, 4].Value = "Raw";
 
                 int topcol = 4;
-                foreach (ParsedField field in packets.First.Value.ParsedData.ParsedFields)
+                // TODO fix so it uses the whole list
+                foreach (ParsedField field in packets.First.Value.ParsedData[0].ParsedFields)
                 {
                     worksheet.Cells[3, topcol++].Value = field.Name;
                 }
@@ -71,7 +72,7 @@ namespace IPTComShark.Export
                     List<ParsedField> deltaFields = packet.GetDelta();
 
                     int col = 4;
-                    foreach (ParsedField field in packet.ParsedData.ParsedFields)
+                    foreach (ParsedField field in packet.ParsedData[0].ParsedFields)
                     {
                         worksheet.Cells[rowindex, col].Value = field.Value;
 
@@ -172,7 +173,7 @@ namespace IPTComShark.Export
 
                     if (packet.ParsedData != null)
                         worksheet.Cells[rowindex, 5].Value =
-                            Functions.MakeCommentString(packet.ParsedData.GetDataDictionary());
+                            string.Join(" ", packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f=>new DisplayField(f))));
 
                     //worksheet.Cells[rowindex, 5].IsRichText = true;
                     //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;
@@ -332,13 +333,13 @@ namespace IPTComShark.Export
                 sb.Append(packet.Name);
                 sb.Append(@" ");
 
-
-                foreach (KeyValuePair<string, object> pair in packet.ParsedData.GetDataDictionary())
+                var displayFields = packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                foreach (var pair in displayFields)
                 {
                     sb.Append(" ");
-                    sb.Append(pair.Key);
+                    sb.Append(pair.Name);
                     sb.Append(@" \b ");
-                    sb.Append(pair.Value);
+                    sb.Append(pair.Val);
                     sb.Append(@"\b0 ");
                 }
 
@@ -370,8 +371,8 @@ namespace IPTComShark.Export
 
                 csvExport["Name"] = packet.Name;
 
-                if (packet.ParsedData != null)
-                    csvExport["Data"] = Functions.MakeCommentString(packet.ParsedData.GetDataDictionary());
+                var displayFields = packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                csvExport["Data"] = string.Join(" ", displayFields);
 
 
                 csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());

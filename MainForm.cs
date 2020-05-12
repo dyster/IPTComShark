@@ -612,7 +612,7 @@ namespace IPTComShark
                             var parsedDataSet = ETCSDiag.DIA_130.Parse(action);
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
-                            capturePacket.ParsedData = parsedDataSet;
+                            capturePacket.ParsedData.Add(parsedDataSet);
                             packetListView1.Add(capturePacket);
                         }
                         else if (ServiceID == 205 && deviceID == 3)
@@ -629,7 +629,7 @@ namespace IPTComShark
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
-                            capturePacket.ParsedData = parsedDataSet;
+                            capturePacket.ParsedData.Add(parsedDataSet);
                             packetListView1.Add(capturePacket);
                         }
                     }

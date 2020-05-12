@@ -309,12 +309,13 @@ namespace IPTComShark.Controls
                 {
                     if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
                     {
-                        if (capturePacket.Previous?.ParsedData != null && capturePacket.ParsedData != null)
+                        if (capturePacket.Previous?.ParsedData.Count > 0 && capturePacket.ParsedData.Count > 0)
                         {
                             var ignores = Properties.Settings.Default.IgnoreVariables.Split(new[] {Environment.NewLine},
                                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                            if (!capturePacket.Previous.ParsedData.Equals(capturePacket.ParsedData, ignores))
+                            // will wildly assume that PD will only ever have one dataset and see how that goes
+                            if (!capturePacket.Previous.ParsedData[0].Equals(capturePacket.ParsedData[0], ignores))
                             {
                                 // PD is different
                             }
@@ -333,9 +334,16 @@ namespace IPTComShark.Controls
                         return true;
                     if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
                         return true;
-                    if (capturePacket.ParsedData != null &&
-                        capturePacket.ParsedData.ParsedFields.Exists(p => regex.IsMatch(p.Name)))
+                    if (capturePacket.ParsedData.Count != 0 )
+                    {
+                        foreach (var parsedDataSet in capturePacket.ParsedData)
+                        {
+                            if (parsedDataSet.ParsedFields.Exists(p => regex.IsMatch(p.Name)))
+                                return true;
+                        }
+
                         return true;
+                    }
 
                     return false;
                 }
@@ -483,7 +491,13 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var s = Functions.MakeCommentString(o.ParsedData.GetDataDictionary());
+                var list = new List<DisplayField>();
+                foreach (var parsedDataSet in o.ParsedData)
+                {
+                    list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                }
+
+                var s = string.Join(" ", list);
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
 

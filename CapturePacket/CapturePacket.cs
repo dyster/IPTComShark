@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using IPTComShark.DataSets;
+using IPTComShark.Parsers;
 using PacketDotNet;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
@@ -17,6 +18,8 @@ namespace IPTComShark
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
+
+        private static readonly ParserFactory _parseFactory = new ParserFactory();
 
         public Packet Packet = null;
 
@@ -88,63 +91,17 @@ namespace IPTComShark
                         return null;
                     }
 
-                    if (packet.Protocol == ProtocolType.NTP)
-                    {
-                        var data = NTP.NTPDataSet.Parse(udp.PayloadData);
+                    
 
-                        var refTime = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Integer")
-                            .Value;
-                        var refFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Fraction")
-                            .Value;
 
-                        var OrgTime = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Integer")
-                            .Value;
-                        var OrgFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Fraction")
-                            .Value;
-
-                        var RecTime = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Integer")
-                            .Value;
-                        var RecFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Fraction")
-                            .Value;
-
-                        var transmitTime = (UInt32) data.ParsedFields
-                            .First(f => f.Name == "Transmit Timestamp Integer").Value;
-                        var transmitFrac = (UInt32) data.ParsedFields
-                            .First(f => f.Name == "Transmit Timestamp Fraction").Value;
-
-                        var list = new List<ParsedField>();
-
-                        if (refTime != 0)
-                            list.Add(
-                                ParsedField.Create("Reference Time", ParseNTPDate(refTime, refFrac).ToString()));
-                        if (OrgTime != 0)
-                            list.Add(ParsedField.Create("Origin Time", ParseNTPDate(OrgTime, OrgFrac).ToString()));
-                        if (RecTime != 0)
-                            list.Add(ParsedField.Create("Receive Time", ParseNTPDate(RecTime, RecFrac).ToString()));
-                        if (transmitTime != 0)
-                            list.Add(ParsedField.Create("Transmit Time",
-                                ParseNTPDate(transmitTime, transmitFrac).ToString()));
-
-                        if (OrgTime != 0 && RecTime != 0)
-                        {
-                            var rec = TimeSpan.FromSeconds(RecTime);
-                            var org = TimeSpan.FromSeconds(OrgTime);
-                            var timeSpan = rec.Subtract(org);
-                            list.Add(ParsedField.Create("Seconds difference", timeSpan.ToString()));
-                        }
-
-                        foreach (var parsedField in list)
-                        {
-                            data.ParsedFields.Add(parsedField);
-                            displayfields.Add(new DisplayField(parsedField.Name, parsedField.Value));
-                        }
-
-                        return data;
-                    }
-                    else if (packet.Protocol == ProtocolType.IPTWP)
+                   
+                    if (packet.Protocol == ProtocolType.IPTWP)
                     {
                         return MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
                     }
+
+                    var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
+                    displayfields = parse.DisplayFields;
                 }
             }
 
@@ -245,7 +202,7 @@ namespace IPTComShark
                                 ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
-                                ParsedData = VSIS210.JRU_STATUS.Parse(buffer);
+                                ParsedData.Add(VSIS210.JRU_STATUS.Parse(buffer));
                             }
                             catch (Exception e)
                             {
@@ -357,26 +314,21 @@ namespace IPTComShark
                             {
                                 Protocol = ProtocolType.UDP_SPL;
                                 _protocolinfo = "OPC->CoHP (SPL)";
-
-                                ParseSPL(udp);
                             }
                             else if (udp.DestinationPort == 50012)
                             {
                                 Protocol = ProtocolType.UDP_SPL;
                                 _protocolinfo = "OPC->CoHP (Profibus)";
-                                ParseSPL(udp);
                             }
                             else if (udp.DestinationPort == 50014)
                             {
                                 Protocol = ProtocolType.UDP_SPL;
                                 _protocolinfo = "OPC->CoHP (Profibus)";
-                                ParseSPL(udp);
                             }
                             else if (udp.DestinationPort == 50015)
                             {
                                 Protocol = ProtocolType.UDP_SPL;
                                 _protocolinfo = "OPC->CoHP (Profibus)";
-                                ParseSPL(udp);
                             }
                         }
 
@@ -467,66 +419,14 @@ namespace IPTComShark
             }
 
             var extractParsedData = ExtractParsedData(this, out var displayfields);
-            this.DisplayFields.AddRange(displayfields);
-            this.ParsedData = extractParsedData;
-        }
-
-        private void ParseSPL(UdpPacket udp)
-        {
             
-
-            var payload = udp.PayloadData;
-            var seqNr = payload[0];
-            var position = 9;
-
-            int remainer = 0;
-            
-            do
+            if (extractParsedData != null)
             {
-                payload = Functions.SubArrayGetter(payload, position);
-                position = 1;
-                var spl = VAP.UDP_SPL.Parse(payload);
-                position += spl.BitsRead;
-
-                this.DisplayFields.AddRange(spl.ParsedFields.Select(f => new DisplayField(f)).ToList());
-
-                var frameLen = (ushort)spl.GetField("SPLFrameLen").Value;
-                var splframeArray = Functions.SubArrayGetter(payload, position, frameLen * 8);
-
-                position += frameLen * 8;
-
-                var sll = SS57Parser.Parse(splframeArray);
-
-                this.ExtraData.AddRange(sll);
-
-                int sllread = 0;
-                foreach (var parsedDataSet in sll)
-                {
-                    sllread += parsedDataSet.BitsRead;
-                    this.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
-                }
-
-                if (splframeArray.Length * 8 > sllread)
-                {
-                    var sllPayload = Functions.SubArrayGetter(splframeArray, sllread + 1);
-
-                    this.DisplayFields.Add(new DisplayField("SLLPayload", BitConverter.ToString(sllPayload)));
-                }
-                
-
-                remainer = payload.Length * 8 - (position);
-            } while (remainer > 0);
-
-            
-            this.DisplayFields.Add(new DisplayField("Remaining bits", remainer));
-
-            //if (remainer > 0)
-            //{
-            //    var subArrayGetter = Functions.SubArrayGetter(payload, position);
-            //    this.DisplayFields.Add(new Tuple<string, object>("Remainer", BitConverter.ToString(subArrayGetter)));
-            //}
+                this.ParsedData.Add(extractParsedData);
+                this.DisplayFields.AddRange(displayfields);
+            }
         }
-
+        
         private static SS27Packet ExtractSS27Packet(TcpPacket tcpPacket)
         {
             var ss27Parser = new SS27Parser();
@@ -539,12 +439,7 @@ namespace IPTComShark
             return ss27;
         }
 
-        public static DateTime ParseNTPDate(uint integer, uint fraction)
-        {
-            var epoc = new DateTime(1900, 1, 1, 0, 0, 0);
-            var ms = (Int32) (((Double) fraction / UInt32.MaxValue) * 1000);
-            return epoc.AddSeconds(integer).AddMilliseconds(ms);
-        }
+        
 
         /// <summary>
         /// If part of a chain
@@ -691,9 +586,7 @@ namespace IPTComShark
 
         public DateTime Date { get; }
 
-        public ParsedDataSet ParsedData { get; set; }
-
-        public List<ParsedDataSet> ExtraData { get; set; } = new List<ParsedDataSet>();
+        public List<ParsedDataSet> ParsedData { get; set; } = new List<ParsedDataSet>();
 
         public List<DisplayField> DisplayFields { get; set; } = new List<DisplayField>();
 
@@ -709,8 +602,8 @@ namespace IPTComShark
                         return "ERROR";
                     else if (SS27Packet != null)
                         return SS27Packet.MsgType.ToString();
-                    else if (ParsedData != null)
-                        return ParsedData.Name;
+                    else if (ParsedData.Count > 0)
+                        return ParsedData[0].Name;
                     else if (IPTWPPacket != null)
                         return "Unknown Comid " + IPTWPPacket.Comid;
 
@@ -736,29 +629,54 @@ namespace IPTComShark
         {
             List<ParsedField> delta = new List<ParsedField>();
 
-            if (ParsedData == null)
+            if (ParsedData == null || ParsedData.Count == 0)
                 return delta;
 
-            if (Previous != null && ParsedData.ParsedFields.Count == Previous.ParsedData.ParsedFields.Count)
-            {
-                for (int i = 0; i < ParsedData.ParsedFields.Count; i++)
-                {
-                    ParsedField field = this.ParsedData[i];
-                    ParsedField lookup = Previous.ParsedData[i];
 
-                    if (!lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
+
+            if (Previous != null && ParsedData.Count == Previous.ParsedData.Count)
+            {
+                for (int i = 0; i < ParsedData.Count; i++)
+                {
+                    var thisdataset = ParsedData[i];
+                    var thatdataset = Previous.ParsedData[i];
+
+                    if (thatdataset.ParsedFields.Count == thisdataset.ParsedFields.Count)
                     {
-                        delta.Add(field);
+                        for (int x = 0; x < thisdataset.ParsedFields.Count; x++)
+                        {
+                            ParsedField field = thisdataset[x];
+                            ParsedField lookup = thatdataset[x];
+
+                            if (!lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
+                            {
+                                delta.Add(field);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var field in thatdataset.ParsedFields)
+                        {
+                            if (!ignores.Contains(field.Name))
+                                delta.Add(field);
+                        }
                     }
                 }
+                
             }
             else
             {
-                foreach (var field in ParsedData.ParsedFields)
+                foreach (var parsedDataSet in ParsedData)
                 {
-                    if (!ignores.Contains(field.Name))
-                        delta.Add(field);
+                    foreach (var field in parsedDataSet.ParsedFields)
+                    {
+                        if (!ignores.Contains(field.Name))
+                            delta.Add(field);
+                    }
                 }
+
+                
             }
 
             return delta;

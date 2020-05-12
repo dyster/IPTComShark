@@ -108,6 +108,7 @@
     <Compile Include="DataSets\VSISDMI.cs" />
     <Compile Include="Parsers\NTPParser.cs" />
     <Compile Include="Parsers\ParserFactory.cs" />
+    <Compile Include="Parsers\SPLParser.cs" />
     <Compile Include="Windows\FileDropper.cs">
       <SubType>Form</SubType>
     </Compile>

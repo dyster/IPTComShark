@@ -443,14 +443,16 @@ namespace IPTComShark.SeqDiagram
 
                 if (packet.ParsedData == null)
                     continue;
-                var now = packet.ParsedData.GetStringDictionary()
+                //TODO fix so it uses all datasets
+                var now = packet.ParsedData[0].GetStringDictionary()
                     .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
                 if (packet.Previous?.ParsedData != null)
                 {
-                    var before = packet.Previous.ParsedData.GetStringDictionary();
+                    // TODO fix so it uses all datasets
+                    var before = packet.Previous.ParsedData[0].GetStringDictionary();
 
                     foreach (KeyValuePair<string, string> pair in now)
                     {

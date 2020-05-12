@@ -43,16 +43,13 @@ namespace IPTComShark.Controls
 
             if (originalpacket.Protocol == ProtocolType.Virtual)
             {
-                if (originalpacket.ParsedData != null)
+                foreach (var parsedField in originalpacket.ParsedData.SelectMany(dataset => dataset.ParsedFields))
                 {
-                    foreach (var parsedField in originalpacket.ParsedData.ParsedFields)
-                    {
-                        dataLines.Add(new DataLine(parsedField, ticker++));
-                    }
-
-                    dataListViewRight.DataSource = dataLines;
-                    return;
+                    dataLines.Add(new DataLine(parsedField, ticker++));
                 }
+
+                dataListViewRight.DataSource = dataLines;
+                return;
             }
 
             try
@@ -120,8 +117,8 @@ namespace IPTComShark.Controls
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
                             {
-                                var parsedField = originalpacket.Previous.ParsedData.GetField(field.Name);
-                                if(parsedField != null)
+                                var parsedField = originalpacket.Previous.ParsedData[0].GetField(field.Name);
+                                if (parsedField != null)
                                     changed = !parsedField.Value.Equals(field.Value);
                             }
 
