@@ -354,7 +354,7 @@ namespace IPTComShark.FileManager
                         started = true;
                     }
 
-                    var capturePacket = new CapturePacket(raw);
+                    //var capturePacket = new CapturePacket(raw);
                     pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
                     //if (capturePacket.Protocol == ProtocolType.JRU)
                     //{
