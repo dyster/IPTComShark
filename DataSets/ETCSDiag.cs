@@ -4275,8 +4275,6 @@ namespace IPTComShark.DataSets
                     Length = 32,
                     Comment =
                         "On-board ETCS identity according [ERA_VAR]. Contains information on rolling stock fleet/on-board equipment supplier. " +
-                        "Reserved ranges, numbers: 0-1023  'Range for Bombardier RCS', 17051 'Range for Bombardier.' " +
-                        "The project specific values will be provided by train Operator or by Product Owner within the Bombardier Transportation." +
                         "Note: According SUBSET-26-7 this is a 24 Bit variable. Due to IEC 61375 data type compatibility, this variable is internally pictured on a 32-Bit value."
                 },
                 new BitField
