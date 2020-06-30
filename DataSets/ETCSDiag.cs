@@ -2228,7 +2228,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // Checked RVV 21-05-2020 Diagnostic Manual v1.5
+        // Checked RVV 30-05-2020 NTC (TPWS) Diagnostic Manual v1.0
         public static DataSetDefinition DIA_150 => new DataSetDefinition
         {
             Name = "DIA_150 TPWS_EVENTS",
@@ -2242,205 +2242,150 @@ namespace IPTComShark.DataSets
             {
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_1 (SR-W)",
+                    Name = "TPWS_M_DATA_1 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test AWS Acknowledgement Device Input (0 = Pass, 1 = Fail) - Code 8040"
+                    Comment = "AWS North & AWS South Non-Complementary (0 = Pass, 1 = Fail) - Code 00"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_2 (SR-W)",
+                    Name = "TPWS_M_DATA_2 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test AWS Acknowledge Late Input (0 = Pass, 1 = Failed late Input) - Code 8041"
+                    Comment = "AWS RX SELECT A & AWS RX SELECT B Non-Complementary (0 = Pass, 1 = Fail) - Code 01"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_3 (SR-W)",
+                    Name = "TPWS_M_DATA_3 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test Brake Demand On State (0 = Pass, 1 = Fail On State) - Code 8042"
+                    Comment = "AWS SOUTH HI when AWS RESET applied (0 = Pass, 1 = Fail) - Code 02"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_4 (SR-W)",
+                    Name = "TPWS_M_DATA_4 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test Brake Demand Off State (0 = Pass, 1 = Fail Off State) - Code 8043"
+                    Comment = "+36V ISO-1 HEALTHY = LO (0 = Pass, 1 = Fail) - Code 03"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_5 (SR-W)",
+                    Name = "TPWS_M_DATA_5 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test AWS Both On (0 = Pass, 1 = Fail Both On) - Code 8044"
+                    Comment = "TPWS ANT FAULT = HI (0 = Pass, 1 = Fail) - Code 04"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_6 (SR-W)",
+                    Name = "TPWS_M_DATA_6 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test AWS Both Off (0 = Pass, 1 = Fail Both Off) - Code 8045"
+                    Comment = "Brake really is in an incorrect state (0 = Pass, 1 = Fail) - Code 05"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_7 (SR-W)",
+                    Name = "TPWS_M_DATA_7 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test AWS Fail Reset (0 = Pass, 1 = Fail Reset) - Code 8046"
+                    Comment = "+12V ISO-1 HEALTHY = LO (0 = Pass, 1 = Fail) - Code 06"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_8 (SR-W)",
+                    Name = "TPWS_M_DATA_8 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test TPWS No Tone (0 = Pass, 1 = Fail No Tone) - Code 8047"
+                    Comment = "+3v3 ISO-1 HEALTHY LO (0 = Pass, 1 = Fail) - Code 07"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_9 (SR-W)",
+                    Name = "TPWS_M_DATA_9 (SR-T)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     SkipIfValue = false,
-                    Comment = "Self-Test TPWS Incorrect Tone (0 = Pass, 1 = Incorrect Tone) - Code 8048"
+                    Comment = "SELF TEST FAIL due to NO ACK (0 = Pass, 1 = Fail) - Code 08"
                 },
                 new BitField
                 {
-                    Name = "TPWS_M_DATA_10 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "Self-Test TPWS Reset (0 = Pass, 1 = Fail Reset) - Code 8049"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_11 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring AWS Both On (0 = Pass, 1 = Fail Both On) - Code 804A"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_12 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring AWS Both Off (0 = Pass, 1 = Fail Both Off) - Code 804B"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_13 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring AWS Both Off (0 = Pass, 1 = Fail Reset) - Code 804C"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_14 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring TPWS No Tone (0 = Pass, 1 = Fail No Tone) - Code 804D"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_15 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring TPWS Incorrect Tone (0 = Pass, 1 = Incorrect Tone) - Code 804E"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_16 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring TPWS Continuity (0 = Pass, 1 = Fail Continuity) - Code 804F"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_17 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "In Service Monitoring System Watchdog (0 = Pass, 1 = Fail) - Code 8050"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_18 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "POST (0 = Pass, 1 = Fail) - Code 8051"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_19 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "STM Control Function (0 = Connected, 1 = Disconnected) - Code 8052"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_20 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "ETCS DMI Function (0 = Connected, 1 = Disconnected) - Code 8053"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_21 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "TCMS(IPTCom) Communication Status (0 = Connected, 1 = Disconnected) - Code 8054"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_DATA_22 (SR-W)",
-                    BitFieldType = BitFieldType.Bool,
-                    Length = 1,
-                    SkipIfValue = false,
-                    Comment = "Maintenance Laptop (0 = Connected, 1 = Disconnected) - Code 8055"
-                },
-                new BitField
-                {
-                    Name = "TPWS_0056",
+                    Name = "TPWS_M_DATA_10 (SR-T)",
                     BitFieldType = BitFieldType.Spare,
                     Length = 1,
-                    Comment = "--not used-- - Code 8056"
+                    Comment = "--not used-- - Code 09"
                 },
                 new BitField
                 {
-                    Name = "TPWS_0057",
+                    Name = "TPWS_M_DATA_11 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "SELF TEST FAIL due to TPWS TONE ERROR (0 = Pass, 1 = Fail) - Code 0A"
+                },
+                new BitField
+                {
+                    Name = "TPWS_M_DATA_12 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "LifeSign not incrementing when ETCS is Isolated (0 = Pass, 1 = Fail) - Code 0B"
+                },
+                new BitField
+                {
+                    Name = "TPWS_M_DATA_13 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "ETCS requests an illegal state transition (0 = Pass, 1 = Fail) - Code 0C"
+                },
+                new BitField
+                {
+                    Name = "TPWS_M_DATA_14 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "TPWS Temporary Isolation Text Message not acknowledged (0 = Pass, 1 = Fail) - Code 0D"
+                },
+                new BitField
+                {
+                    Name = "TPWS_M_DATA_15 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "TPWS Fault Text Message not acknowledged (0 = Pass, 1 = Fail) - Code 0E"
+                },
+                new BitField
+                {
+                    Name = "TPWS_M_DATA_16 (SR-T)",
                     BitFieldType = BitFieldType.Spare,
                     Length = 1,
-                    Comment = "--not used-- - Code 8057"
+                    SkipIfValue = false,
+                    Comment = "--not used-- - Code 0F"
                 },
                 new BitField
                 {
-                    Name = "TPWS_0058",
+                    Name = "TPWS_M_DATA_17 (SR-T)",
+                    BitFieldType = BitFieldType.Bool,
+                    Length = 1,
+                    SkipIfValue = false,
+                    Comment = "AWS Fault Text Message not acknowledged (0 = Pass, 1 = Fail) - Code 10"
+                },
+                new BitField
+                {
+                    Name = "Reserved",
                     BitFieldType = BitFieldType.Spare,
-                    Length = 8,
-                    Comment = "--not used-- - Code 8058"
+                    Length = 15,
+                    Comment = "--not used-- - Code 16"
                 }
             }
         };
 
-        // Checked RVV 21-05-2020 Diagnostic Manual v1.5
+       // Checked RVV 30-05-2020 NTC (TPWS) Diagnostic Manual v1.0
         public static DataSetDefinition DIA_151 => new DataSetDefinition
         {
             Name = "DIA_151 TPWS_ENVIRONMENT",
@@ -2452,6 +2397,69 @@ namespace IPTComShark.DataSets
             },
             BitFields = new List<BitField>
             {
+                new BitField
+                {
+                    Name = "TPWS_IntErrorCode",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Internal Error Code to differentiate error situations within the same DIAG_DATA event ID. Default 0."
+                },
+                new BitField
+                {
+                    Name = "TPWS_NTXTNTC_STMSTATE_SUB",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Bit using (0=MSB):\r\n" +
+                                "bit 0-3    NTXTNTC_STMSTATE, Current STM State as active in STM\r\n" +
+                                "bit 4-7    STMSubState, Internal substate to NTXTNTC_STM_STATE"
+                },
+                new BitField
+                {
+                    Name = "TPWS_MODE_SC",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Bit using (0=MSB):\r\n" +
+                              "bit 0-3  M-MODE, Current STM State as active in STM\r\n" +
+                              "bit 4-7  SC_STMState, last STM State command received via STM-14"
+                },
+                new BitField
+                {
+                    Name = "TPWS_TICAB_TIDIR",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Bit using (0=MSB):\r\n" +
+                              "bit 0-3  M_TICAB_STATUS, Cabin Status from STM-139\r\n" +
+                              "bit 4-7  M_TIDIR_STATUS, Direction Controller Status from STM-139"
+                },
+                new BitField
+                {
+                    Name = "TPWS_Current_Speed",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Not used"
+                },
+                new BitField
+                {
+                    Name = "TPWS_EB_STATUS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Current status of the emergency brake",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Fail state"},
+                        {"1", "Applied"},
+                        {"2", "Released"},
+                        {"3", "No information"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "TPWS_LAST_NTXTNTC_C",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Last received NTXTNTC_C. " +
+                              "Since this is information that is not available by the TPWS STM the LAST_NTXTNTC_C value shall be set to 0."
+                },
                 new BitField
                 {
                     Name = "TPWS_HW_version",
@@ -2475,100 +2483,11 @@ namespace IPTComShark.DataSets
                 },
                 new BitField
                 {
-                    Name = "TPWS_IntErrorCode",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Internal Error Code to differentiate error situations within the same DIAG_DATA event ID."
-                },
-                new BitField
-                {
-                    Name = "TPWS_NID_STM_state",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Current STM State as active in STM"
-                },
-                new BitField
-                {
-                    Name = "TPWS_LAST_NID_C",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 16,
-                    Comment = "Last received NID_C (10 bit, delivered e.g. by STM_222)",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"0", "Reserved (NP)"},
-                        {"1", "Power On (PO)"},
-                        {"2", "Configuration (CO)"},
-                        {"3", "Data Entry (DE)"},
-                        {"4", "Cold Standby (CS)"},
-                        {"5", "Reserved (CS)"},
-                        {"6", "Hot Standby (HS)"},
-                        {"7", "Data Available (DA)"},
-                        {"8", "Failure (FA)"}
-                    }
-                },
-                new BitField
-                {
-                    Name = "TPWS_SUB_M_MODE",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Bit using from left (MSB=7) to right (LSB=0):\r\n"+
-                              "7..4 Current STM Sub state within STM State\r\n"+
-                                "Note: DA_TRIP = 1 (only if STM State = DA), in case of Emergency Brake, default = 0\r\n\r\n"+
-                                "3..0 Current M_MODE (ETCS mode, see 5.2.2.1) value as received on the last STM-5."
-                },
-                new BitField
-                {
-                    Name = "TPWS_SC_TICAB",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Bit using from left (MSB=7) to right (LSB=0):\r\n"+
-
-                                "7..0 SC_STMState, Last STM State command received upon STM-14.\r\n"+
-
-                                "Note: In general equal to STM State, except in the situation of invalid transition command, where SC_STM State shows the invalid destination state (values: see STM State).\r\n\r\n"+
-                                "3..0 M_TICAB_STATUS, Cabin Status M_TICAB_STATUS from STM-139.\r\n"+
-                                "0: Fail State\r\n"+
-                                "1: Desk A open\r\n"+
-                                "2: Desk A & B closed\r\n"+
-                                "3: --\r\n"+
-                                "4: Desk B open\r\n"+
-                                "5: Desk A & B open\r\n"+
-                                "6: --\r\n"+
-                                "7: No information\r\n"+
-                                "8..15: not used (set to 0)"
-                },
-                new BitField
-                {
-                    Name = "TPWS_M_TIDIR_EB_STATUS",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment = "Bit using from left (MSB=7) to right (LSB=0):"+
-                              "7..4 M_TIDIR_STATUS, Direction Controller Status M_TIDIR_STATUS from STM-139.\r\n"+
-                              "0: Fail State\r\n"+
-                              "1: Forward\r\n"+
-                              "2: Neutral\r\n"+
-                              "3: --\r\n"+
-                              "4: Reverse\r\n"+
-                              "5: --\r\n"+
-                              "6: --\r\n"+
-                              "7: No information\r\n"+
-                              "8..15: not used (set to 0)\r\n"+
-                              "\r\n"+
-                              "3..2 EB_Status, Current status of the emergency brake\r\n"+
-                              "0: Fail State\r\n"+
-                              "1: Applied\r\n"+
-                              "2: Released\r\n"+
-                              "3: No Information\r\n"+
-                              "\r\n"+
-                              "1..0 spare, not used (set to zero)\r\n"
-                },
-                new BitField
-                {
-                    Name = "TPWS_A8",
+                    Name = "TPWS_reserved",
                     BitFieldType = BitFieldType.Spare,
-                    Length = 88,
+                    Length = 80,
                     Comment = "--not used--"
-                },
+                }
             }
         };
 
