@@ -2861,7 +2861,7 @@ namespace IPTComShark.DataSets
 
         #region EVC-100 to EVC-152 (DMI->EVC)
 
-        // checked RVV 21-11-2019 2.11
+        // checked RVV 01-07-2020 2.14
         public static DataSetDefinition EVC_100 => new DataSetDefinition
         {
             Name = "EVC_100 MMI_START_MMI",
@@ -2879,14 +2879,14 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "MMI_M_IF_VER",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "MMI IF version"
                 },
                 new BitField
                 {
                     Name = "MMI_M_SW_VER",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "MMI SW version"
                 },
@@ -2895,13 +2895,12 @@ namespace IPTComShark.DataSets
                     Name = "MMI_M_START_STATUS",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "MMI start-up status" +
-                              "\r\nBits:" +
-                              "\r\n0..7 = X" +
-                              "\r\n8..15 = Y" +
-                              "\r\n16..23 = Z" +
-                              "\r\n24..31 = spare" +
-                              "\r\nNote: 255 = This digit is not used"
+                    Comment = "This variable indicates the meaning of the MMI_START_ATP packet",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "'MMI is OK"},
+                        {"1", "'Error"}
+                    }
                 }
             }
         };
