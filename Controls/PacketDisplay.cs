@@ -108,11 +108,12 @@ namespace IPTComShark.Controls
                     }
 
 
-                    if (extensiveData != null && extensiveData.ParsedFields.Count > 0
-                    ) // a parser has chugged out something
+                    if (extensiveData.Count == 1)
                     {
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "IPTCom Data"});
-                        foreach (var field in extensiveData.ParsedFields)
+                        // if only one set we can do change detection
+
+                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData[0].Name});
+                        foreach (var field in extensiveData[0].ParsedFields)
                         {
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
@@ -126,6 +127,17 @@ namespace IPTComShark.Controls
                             {
                                 Changed = changed
                             });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var parsedDataSet in extensiveData)
+                        {
+                            dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                            foreach (var field in parsedDataSet.ParsedFields)
+                            {
+                                dataLines.Add(new DataLine(field, ticker++));
+                            }
                         }
                     }
                 }
@@ -175,14 +187,19 @@ namespace IPTComShark.Controls
                     }
                 }
 
-                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null && extensiveData != null)
+                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null)
                 {
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Name});
-
-                    foreach (var field in extensiveData.ParsedFields)
+                    foreach (var parsedDataSet in extensiveData)
                     {
-                        dataLines.Add(new DataLine(field, ticker++));
+                        dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                        foreach (var field in parsedDataSet.ParsedFields)
+                        {
+                            dataLines.Add(new DataLine(field, ticker++));
+                        }
                     }
+                    
+
+                    
                 }
             }
             catch (Exception e)

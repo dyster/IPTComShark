@@ -43,7 +43,7 @@ namespace IPTComShark
         {
             InitializeComponent();
 
-            Text = Text += " " + Application.ProductVersion + " codename \"Cliff\"";
+            Text = Text += " " + Application.ProductVersion + " codename \"Gupta\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 

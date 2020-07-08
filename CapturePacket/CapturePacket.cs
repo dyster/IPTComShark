@@ -62,16 +62,17 @@ namespace IPTComShark
             }
         }
 
-        public static ParsedDataSet ExtractParsedData(CapturePacket packet,
+        public static List<ParsedDataSet> ExtractParsedData(CapturePacket packet,
             out List<DisplayField> displayfields)
         {
             return ExtractParsedData(packet, out displayfields, false);
         }
 
-        public static ParsedDataSet ExtractParsedData(CapturePacket packet,
+        public static List<ParsedDataSet> ExtractParsedData(CapturePacket packet,
             out List<DisplayField> displayfields, bool extensive)
         {
             displayfields = new List<DisplayField>();
+            var datasets = new List<ParsedDataSet>();
 
             if (packet.Packet.PayloadPacket is IPv4Packet)
             {
@@ -97,15 +98,22 @@ namespace IPTComShark
                    
                     if (packet.Protocol == ProtocolType.IPTWP)
                     {
-                        return MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
+                        var parsedDataSet = MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
+                        if(parsedDataSet != null)
+                            datasets.Add(parsedDataSet);
                     }
 
                     var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
-                    displayfields = parse.DisplayFields;
+                    if (!parse.NoParserInstalled)
+                    {
+                        displayfields = parse.DisplayFields;
+                        datasets.AddRange(parse.ParsedData);
+                    }
+                    
                 }
             }
 
-            return null;
+            return datasets;
         }
 
         public CapturePacket(Raw raw)
@@ -202,7 +210,13 @@ namespace IPTComShark
                                 ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
-                                ParsedData.Add(VSIS210.JRU_STATUS.Parse(buffer));
+                                var parsedDataSet = VSIS210.JRU_STATUS.Parse(buffer);
+                                if(parsedDataSet != null)
+                                    ParsedData.Add(parsedDataSet);
+                                else
+                                {
+                                    // why?
+                                }
                             }
                             catch (Exception e)
                             {
@@ -240,6 +254,48 @@ namespace IPTComShark
                         if (udp.SourcePort == 123 && udp.DestinationPort == 123)
                         {
                             Protocol = ProtocolType.NTP;
+                        }
+                        else if (Equals(ipv4.SourceAddress, OpcAddress))
+                        {
+                            if (udp.DestinationPort == 50010)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (SPL)";
+                            }
+                            else if (udp.DestinationPort == 50012)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                            }
+                            else if (udp.DestinationPort == 50014)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                            }
+                            else if (udp.DestinationPort == 50015)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "OPC->CoHP (Profibus)";
+                            }
+                        }
+                        else if (Equals(ipv4.DestinationAddress, OpcAddress))
+                        {
+                            if (udp.DestinationPort == 50011)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "CoHP->OPC (SPL)";
+                            }
+                            else if (udp.DestinationPort == 50013)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "CoHP->OPC (Profibus)";
+                            }
+                            else if (udp.DestinationPort == 50015)
+                            {
+                                Protocol = ProtocolType.UDP_SPL;
+                                _protocolinfo = "CoHP->OPC (Profibus)";
+                            }
+
                         }
                         else if (Equals(ipv4.SourceAddress, VapAddress))
                         {
@@ -308,29 +364,7 @@ namespace IPTComShark
                             else if (udp.DestinationPort == 50072)
                                 _protocolinfo = "ETC->VAP (ATO)";
                         }
-                        else if (Equals(ipv4.SourceAddress, OpcAddress))
-                        {
-                            if (udp.DestinationPort == 50010)
-                            {
-                                Protocol = ProtocolType.UDP_SPL;
-                                _protocolinfo = "OPC->CoHP (SPL)";
-                            }
-                            else if (udp.DestinationPort == 50012)
-                            {
-                                Protocol = ProtocolType.UDP_SPL;
-                                _protocolinfo = "OPC->CoHP (Profibus)";
-                            }
-                            else if (udp.DestinationPort == 50014)
-                            {
-                                Protocol = ProtocolType.UDP_SPL;
-                                _protocolinfo = "OPC->CoHP (Profibus)";
-                            }
-                            else if (udp.DestinationPort == 50015)
-                            {
-                                Protocol = ProtocolType.UDP_SPL;
-                                _protocolinfo = "OPC->CoHP (Profibus)";
-                            }
-                        }
+                        
 
                         if (Protocol == ProtocolType.UDP)
                         {
@@ -422,7 +456,15 @@ namespace IPTComShark
             
             if (extractParsedData != null)
             {
-                this.ParsedData.Add(extractParsedData);
+                foreach (var parsedDataSet in extractParsedData)
+                {
+                    if (parsedDataSet == null)
+                    {
+                        //no!
+                    }
+                }
+
+                this.ParsedData.AddRange(extractParsedData);
                 this.DisplayFields.AddRange(displayfields);
             }
         }
