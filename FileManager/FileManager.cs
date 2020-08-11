@@ -201,7 +201,7 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<CapturePacket> OpenFiles(string[] inputs)
+        public List<Raw> OpenFiles(string[] inputs)
         {
             List<string> fileNames = new List<string>();
 
@@ -212,19 +212,13 @@ namespace IPTComShark.FileManager
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
 
-                var packets = new List<CapturePacket>();
+                var raws = new List<Raw>();
 
-                RawParsed += (sender, raw) => { packets.Add(new CapturePacket(raw)); };
+                RawParsed += (sender, raw) => { raws.Add(raw); };
 
                 EnumerateFiles(fo.DataSources);
-
-
-                uint seed = 1;
-
-
-                packets.ForEach(p => p.No = seed++);
-
-                return packets;
+                
+                return raws;
             }
 
             return null;

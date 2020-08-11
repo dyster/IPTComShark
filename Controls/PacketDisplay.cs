@@ -187,7 +187,7 @@ namespace IPTComShark.Controls
                     }
                 }
 
-                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null)
+                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null && extensiveData != null)
                 {
                     foreach (var parsedDataSet in extensiveData)
                     {

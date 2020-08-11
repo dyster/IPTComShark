@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 using IPTComShark.DataSets;
 using IPTComShark.Properties;
 using PacketDotNet;
@@ -29,13 +30,15 @@ namespace IPTComShark
 
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
 
+        private static readonly BackStore _backStore = new BackStore();
+
         private long _capturedData;
 
         private NpcapDevice _device;
         private long _discardedData;
         private long _discardedPackets;
 
-        private uint _seed = 1;
+        
 
         //private PCAPWriter _pcapWriter;
 
@@ -78,12 +81,15 @@ namespace IPTComShark
 
             InitData();
 
+            _backStore.NewCapturePacket += (sender, packet) => packetListView1.Add(packet);
+
             Logger.Log("IPTComShark started", Severity.Info);
         }
 
         private void InitData()
         {
             packetListView1.Clear();
+            _backStore.Clear();
 
 
             _capturedData = 0;
@@ -111,9 +117,8 @@ namespace IPTComShark
         {
             _capturedData += e.Packet.Data.Length;
             var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
-            var capturePacket = new CapturePacket(raw);
-            capturePacket.No = _seed++;
-            packetListView1.Add(capturePacket);
+
+            _backStore.Add(raw);
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
         }
@@ -307,6 +312,8 @@ namespace IPTComShark
             Properties.Settings.Default.IgnoreLoopback = packetListView1.Settings.IgnoreLoopback;
             Properties.Settings.Default.IgnoreUnknownData = packetListView1.Settings.IgnoreUnknownData;
             Properties.Settings.Default.Save();
+
+            _backStore.Close();
         }
 
         private void buttonSaveAll_Click(object sender, EventArgs e)
@@ -388,12 +395,12 @@ namespace IPTComShark
             {
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    List<CapturePacket> capturePackets = fileManager.OpenFiles(paths);
-                    if (capturePackets != null)
+                    List<Raw> raws = fileManager.OpenFiles(paths);
+                    if (raws != null)
                     {
-                        foreach (CapturePacket capturePacket in capturePackets)
+                        foreach (Raw raw in raws)
                         {
-                            packetListView1.Add(capturePacket);
+                            _backStore.Add(raw);
                         }
                     }
                 }
@@ -457,17 +464,15 @@ namespace IPTComShark
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                List<CapturePacket> capturePackets;
-
                 using (var fileManager = new FileManager.FileManager())
                 {
-                    capturePackets = fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath});
+                    foreach (var raw in fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath}))
+                    {
+                        _backStore.Add(raw);
+                    }
                 }
 
-                foreach (CapturePacket capturePacket in capturePackets)
-                {
-                    packetListView1.Add(capturePacket);
-                }
+                
             }
         }
 

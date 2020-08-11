@@ -117,21 +117,19 @@ namespace IPTComShark
             return datasets;
         }
 
-        public CapturePacket(Raw raw)
+        public CapturePacket(Raw raw) : this (raw, Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData))
+        {
+            // TODO obsolete this constructor
+        }
+
+        public CapturePacket(Raw raw, Packet topPacket)
         {
             //RawCapture = raw;
             Date = raw.TimeStamp;
             _linkLayerType = raw.LinkLayer;
 
-            try
-            {
-                Packet = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
-            }
-            catch (Exception e)
-            {
-                Error = e.Message;
-            }
 
+            Packet = topPacket;
 
             if (Packet == null)
                 return;
@@ -151,6 +149,12 @@ namespace IPTComShark
             if (Packet.PayloadPacket is IPv4Packet)
             {
                 var ipv4 = (IPv4Packet) Packet.PayloadPacket;
+
+                if ((ipv4.FragmentFlags & 0x01) == 0x01)
+                {
+                    this._protocolinfo = "IP Fragment";
+                    return;
+                }
 
                 switch (ipv4.Protocol)
                 {
@@ -238,6 +242,8 @@ namespace IPTComShark
                             this.Error = "Malformed UDP";
                             return;
                         }
+
+                        
 
                         // protect against corrupted data with a try read
                         try

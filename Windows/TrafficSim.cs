@@ -154,7 +154,11 @@ namespace IPTComShark.Windows
             if (dialogResult == DialogResult.OK)
             {
                 var fileManager = new FileManager.FileManager();
-                _packets = fileManager.OpenFiles(openFileDialog.FileNames);
+                var raws = fileManager.OpenFiles(openFileDialog.FileNames);
+                foreach (var raw in raws)
+                {
+                    _packets.Add(new CapturePacket(raw));
+                }
             }
             else
             {
