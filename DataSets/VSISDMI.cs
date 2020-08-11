@@ -934,8 +934,8 @@ namespace IPTComShark.DataSets
                     Comment = "Text class",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "Auxiliary Information"},
-                        {"1", "Important Information"}
+                        {"False", "Auxiliary Information"},
+                        {"True", "Important Information"}
                     }
                 },
                 new BitField
