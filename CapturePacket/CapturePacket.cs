@@ -81,7 +81,8 @@ namespace IPTComShark
                 if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
                 {
                     var udp = (UdpPacket) ipv4.PayloadPacket;
-
+                    if (udp == null)
+                        return null;
                     // protect against corrupted data with a try read
                     try
                     {
