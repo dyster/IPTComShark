@@ -56,6 +56,7 @@
             this.olvColumn4});
             this.dataListView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListView1.DataSource = null;
+            this.dataListView1.FullRowSelect = true;
             this.dataListView1.HideSelection = false;
             this.dataListView1.Location = new System.Drawing.Point(0, 0);
             this.dataListView1.Name = "dataListView1";
