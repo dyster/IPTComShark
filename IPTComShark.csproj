@@ -79,6 +79,8 @@
     <Compile Include="Controls\TypeDelayTextBox.Designer.cs">
       <DependentUpon>TypeDelayTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSets\ABDO.cs" />
+    <Compile Include="DataSets\IPT.cs" />
     <Compile Include="Export\Export.cs" />
     <Compile Include="FileManager\DataSource.cs" />
     <Compile Include="FileManager\DatePicker.cs">

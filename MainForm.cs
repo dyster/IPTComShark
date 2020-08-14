@@ -46,19 +46,35 @@ namespace IPTComShark
         {
             InitializeComponent();
 
-            Text = Text += " " + Application.ProductVersion + " codename \"Gupta\"";
+            Text = Text += " " + Application.ProductVersion + " DEBUG VERSION";//  codename \"Gupta\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
             packetDisplay1.IptConfigReader = IptConfigReader;
 
+            DataCollections.Add(new IPT());
             DataCollections.Add(new TPWS());
             DataCollections.Add(new STM());
             DataCollections.Add(new ETCSDiag());
             DataCollections.Add(new VSISDMI());
+            DataCollections.Add(new ABDO());
             DataCollections.Add(new VSIS210());
-            DataCollections.Add(IptConfigReader.GetDataSetCollection());
+            
+            // indexer not used at moment, only used to detect collisions
+            var index = new Dictionary<string, DataSetDefinition>();
+            foreach (var dataSetCollection in DataCollections)
+            {
+                foreach (var dataSetDefinition in dataSetCollection.DataSets)
+                {
+                    foreach (var identifier in dataSetDefinition.Identifiers)
+                    {
+                        index.Add(identifier, dataSetDefinition);
+                    }
+                }
+            }
 
+            // iptconfig file not searched for collisions as it has a lot
+            DataCollections.Add(IptConfigReader.GetDataSetCollection());
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
