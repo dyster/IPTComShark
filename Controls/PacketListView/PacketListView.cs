@@ -13,7 +13,7 @@ namespace IPTComShark.Controls
 {
     public partial class PacketListView : UserControl
     {
-        private readonly List<CapturePacket> _list = new List<CapturePacket>();
+        private readonly List<CapturePacket> _list = new List<CapturePacket>(500000);
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
         private CapturePacket _selectedPacket = null;
@@ -437,9 +437,10 @@ namespace IPTComShark.Controls
 
             _list.Clear();
             _lastKnowns.Clear();
+            _lastKnownsJRU.Clear();
+            _selectedPacket = null;
             fastObjectListView1.ClearObjects();
             fastObjectListView1.SetObjects(_list);
-            GC.Collect();
         }
 
         public int Count()

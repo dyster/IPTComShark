@@ -24,9 +24,13 @@ namespace IPTComShark.FileManager
         public DateTime DateTimeFrom { get; private set; }
         public DateTime DateTimeTo { get; private set; }
 
-        public FileOpener(string[] inputs)
+        private bool _openAll;
+
+        public FileOpener(string[] inputs, bool openAll = false)
         {
             InitializeComponent();
+
+            _openAll = openAll;
 
             _inputstrings = inputs;
 
@@ -308,6 +312,13 @@ namespace IPTComShark.FileManager
             UpdateList("BackgroundWorker finished");
             buttonGO.Enabled = true;
             buttonMerge.Enabled = true;
+
+            if (_openAll)
+            {
+                this.DialogResult = DialogResult.OK;
+                SetData();
+                this.Close();
+            }
         }
 
         private void SetData()

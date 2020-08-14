@@ -111,6 +111,7 @@ namespace IPTComShark
             _capturedData = 0;
             _discardedData = 0;
             _discardedPackets = 0;
+
         }
 
         private void UpdateStatus(string text)
@@ -439,6 +440,9 @@ namespace IPTComShark
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InitData();
+
+            // and then go all in on the garbagecollection
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -671,6 +675,88 @@ namespace IPTComShark
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Shift && e.Control && e.KeyCode == Keys.B)
+            {
+                RunBenchmark();
+            }
+
+        }
+
+        private static void RunBenchmark()
+        {
+            var file = @"c:\temp\benchmark1.pcap";
+            var totalMemory = GC.GetTotalMemory(false);
+
+            Process myProcess = Process.GetCurrentProcess();
+
+            var privateMemorySize64 = myProcess.PrivateMemorySize64;
+            var workingSet64 = myProcess.WorkingSet64;
+            var pagedSystemMemorySize64 = myProcess.PagedSystemMemorySize64;
+            var pagedMemorySize64 = myProcess.PagedMemorySize64;
+
+            var userProcessorTime = myProcess.UserProcessorTime;
+            var privilegedProcessorTime = myProcess.PrivilegedProcessorTime;
+            var totalProcessorTime = myProcess.TotalProcessorTime;
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+
+            using (var fileManager = new FileManager.FileManager())
+            {
+                foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
+                {
+                    _backStore.Add(raw);
+                }
+            }
+
+            stopwatch.Stop();
+
+            myProcess = Process.GetCurrentProcess();
+
+            var totalMemory2 = GC.GetTotalMemory(false);
+
+            var privateMemorySize64_2 = myProcess.PrivateMemorySize64;
+            var workingSet64_2 = myProcess.WorkingSet64;
+            var pagedSystemMemorySize64_2 = myProcess.PagedSystemMemorySize64;
+            var pagedMemorySize64_2 = myProcess.PagedMemorySize64;
+
+            var userProcessorTime_2 = myProcess.UserProcessorTime;
+            var privilegedProcessorTime_2 = myProcess.PrivilegedProcessorTime;
+            var totalProcessorTime_2 = myProcess.TotalProcessorTime;
+
+
+            var peakPagedMem = myProcess.PeakPagedMemorySize64;
+            var peakVirtualMem = myProcess.PeakVirtualMemorySize64;
+            var peakWorkingSet = myProcess.PeakWorkingSet64;
+
+            var text = "-------------------------------------";
+            text += DateTime.Now.ToString() + Environment.NewLine;
+            text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) + Environment.NewLine;
+            text += "PrivateMemorySize64 increase = " + Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
+            text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) + Environment.NewLine;
+            text += "PagedSystemMemorySize64 increase = " + Functions.PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) + Environment.NewLine;
+            text += "PagedMemorySize64 increase = " + Functions.PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
+
+            text += "UserProcessorTime increase = " + (userProcessorTime_2 - userProcessorTime) + Environment.NewLine;
+            text += "PrivilegedProcessorTime increase = " + (privilegedProcessorTime_2 - privilegedProcessorTime) + Environment.NewLine;
+            text += "TotalProcessorTime increase = " + (totalProcessorTime_2 - totalProcessorTime) + Environment.NewLine;
+
+            text += "Time taken " + stopwatch.Elapsed + Environment.NewLine;
+
+            MessageBox.Show(text);
+
+            File.AppendAllText(file + ".txt", text);
         }
 
 

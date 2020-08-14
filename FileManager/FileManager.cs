@@ -201,11 +201,11 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<Raw> OpenFiles(string[] inputs)
+        public List<Raw> OpenFiles(string[] inputs, bool openAll = false)
         {
             List<string> fileNames = new List<string>();
 
-            var fo = new FileOpener(inputs);
+            var fo = new FileOpener(inputs, openAll);
             var dialogresult = fo.ShowDialog();
             if (dialogresult == DialogResult.OK)
             {
@@ -223,6 +223,8 @@ namespace IPTComShark.FileManager
 
             return null;
         }
+
+
 
         public DateTime FilterTo { get; set; }
 

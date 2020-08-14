@@ -15,8 +15,8 @@ namespace IPTComShark.Classes
     {
         private uint _seed = 1;
 
-        private Dictionary<uint, Raw> _rawStore = new Dictionary<uint, Raw>();
-        private Dictionary<ushort, Fragment> _fragmentStore = new Dictionary<ushort, Fragment>();
+        private readonly Dictionary<uint, Raw> _rawStore = new Dictionary<uint, Raw>(500000);
+        private readonly Dictionary<ushort, Fragment> _fragmentStore = new Dictionary<ushort, Fragment>();
 
         //private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
         //private FileStream fileStream;
@@ -90,6 +90,7 @@ namespace IPTComShark.Classes
         {
             _seed = 1;
             _rawStore.Clear();
+            _fragmentStore.Clear();
         }
     }
 
