@@ -89,6 +89,7 @@ namespace IPTComShark.Classes
         public void Clear()
         {
             _seed = 1;
+            _rawStore.Clear();
         }
     }
 
