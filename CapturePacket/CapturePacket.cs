@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using IPTComShark.DataSets;
 using IPTComShark.Parsers;
+using Newtonsoft.Json;
 using PacketDotNet;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
@@ -21,6 +22,7 @@ namespace IPTComShark
 
         private static readonly ParserFactory _parseFactory = new ParserFactory();
 
+        [JsonIgnore]
         public Packet Packet = null;
 
         // these could be null
@@ -103,13 +105,17 @@ namespace IPTComShark
                         if(parsedDataSet != null)
                             datasets.Add(parsedDataSet);
                     }
-
-                    var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
-                    if (!parse.NoParserInstalled)
+                    else
                     {
-                        displayfields = parse.DisplayFields;
-                        datasets.AddRange(parse.ParsedData);
+                        var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
+                        if (!parse.NoParserInstalled)
+                        {
+                            displayfields = parse.DisplayFields;
+                            datasets.AddRange(parse.ParsedData);
+                        }
                     }
+
+                    
                     
                 }
             }
@@ -493,13 +499,16 @@ namespace IPTComShark
         /// <summary>
         /// If part of a chain
         /// </summary>
+        [JsonIgnore]
         public CapturePacket Previous { get; set; }
 
         /// <summary>
         /// If part of a chain
         /// </summary>
+        [JsonIgnore]
         public CapturePacket Next { get; set; }
 
+        
         public byte[] Source
         {
             get

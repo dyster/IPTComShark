@@ -12,13 +12,23 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 using IPTComShark.Classes;
 using IPTComShark.DataSets;
 using IPTComShark.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PacketDotNet;
 using SharpPcap.Npcap;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace IPTComShark
 {
@@ -31,6 +41,8 @@ namespace IPTComShark
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
 
         private static readonly BackStore _backStore = new BackStore();
+
+        private static Dictionary<uint, DataSetDefinition> _comidIndex = new Dictionary<uint, DataSetDefinition>();
 
         private long _capturedData;
 
@@ -65,17 +77,18 @@ namespace IPTComShark
             DataCollections.Add(IptConfigReader.GetDataSetCollection());
 
             // indexer not used at moment, only used to detect collisions
-            var index = new Dictionary<string, DataSetDefinition>();
+            
             foreach (var dataSetCollection in DataCollections)
             {
                 foreach (var dataSetDefinition in dataSetCollection.DataSets)
                 {
                     foreach (var identifier in dataSetDefinition.Identifiers)
                     {
-                        if(index.ContainsKey(identifier))
+                        var i = uint.Parse(identifier);
+                        if(_comidIndex.ContainsKey(i))
                             Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
                         else
-                            index.Add(identifier, dataSetDefinition);
+                            _comidIndex.Add(i, dataSetDefinition);
                     }
                 }
             }
@@ -156,15 +169,20 @@ namespace IPTComShark
 
             DataSetDefinition dataSetDefinition = null;
 
-            foreach (var collection in DataCollections)
+            if (_comidIndex.ContainsKey(iptwpPacket.Comid))
             {
-                var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
-                if (find != null)
-                {
-                    dataSetDefinition = find;
-                    break;
-                }
+                dataSetDefinition = _comidIndex[iptwpPacket.Comid];
             }
+
+            //foreach (var collection in DataCollections)
+            //{
+            //    var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
+            //    if (find != null)
+            //    {
+            //        dataSetDefinition = find;
+            //        break;
+            //    }
+            //}
 
             if (dataSetDefinition != null)
             {
@@ -697,12 +715,122 @@ namespace IPTComShark
             {
                 RunBenchmark();
             }
-
+            if (e.Shift && e.Control && e.KeyCode == Keys.V)
+            {
+                Validate();
+            }
         }
+
+        private void Validate()
+        {
+            //var file = @"c:\temp\validate1.pcapng";
+            var file = @"c:\temp\validate5.pcap";
+
+
+            // validate1 = 16-96-F9-EC-E8-D4-FA-8E-5F-FA-F9-DB-EB-C3-F4-9D
+            // validate2 = 4F-F1-AC-79-2B-F1-12-9D-BD-CC-F7-DD-1A-F1-41-1D
+            // validate3 = F8-2A-AD-F4-9B-A0-29-D5-AD-E7-41-D1-36-1D-75-C6
+            // validate4 = 4A-C8-9B-5C-69-1F-7F-49-BC-B2-7E-F3-F4-A4-81-78
+            // validate5 = 5A-82-DE-F5-04-F9-97-65-EB-04-95-7A-67-D4-E6-B2
+            var count = 0;
+            var list = new List<CapturePacket>();
+
+            _backStore.NewCapturePacket += (sender, packet) => list.Add(packet);
+
+            using (var fileManager = new FileManager.FileManager())
+            {
+                foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
+                {
+                    _backStore.Add(raw);
+                    count++;
+                }
+            }
+
+            while (list.Count != count)
+            {
+                Application.DoEvents();
+                Thread.Sleep(500);
+            }
+
+            using (var fileStream = File.Create(file + ".validate.json"))
+            {
+                var streamWriter = new StreamWriter(fileStream);
+
+                
+
+                var jsonSerializer = new JsonSerializer();
+                jsonSerializer.Formatting = Formatting.Indented;
+                //jsonSerializer.Converters.Add(new IPAddressConverter());
+                //jsonSerializer.Converters.Add(new IPEndPointConverter());
+
+                
+                
+
+                foreach (var capturePacket in list)
+                {
+                    jsonSerializer.Serialize(streamWriter, capturePacket);
+                    
+                }
+            }
+
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(file + ".validate.json"))
+                {
+                    var computeHash = md5.ComputeHash(stream);
+                    File.WriteAllText(file + ".validate.md5", BitConverter.ToString(computeHash));
+                }
+            }
+             
+        }
+
+        //class IPEndPointConverter : JsonConverter
+        //{
+        //    public override bool CanConvert(Type objectType)
+        //    {
+        //        return (objectType == typeof(IPEndPoint));
+        //    }
+        //
+        //    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        //    {
+        //        IPEndPoint ep = (IPEndPoint)value;
+        //        JObject jo = new JObject();
+        //        jo.Add("Address", JToken.FromObject(ep.Address, serializer));
+        //        jo.Add("Port", ep.Port);
+        //        jo.WriteTo(writer);
+        //    }
+        //
+        //    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        //    {
+        //        JObject jo = JObject.Load(reader);
+        //        IPAddress address = jo["Address"].ToObject<IPAddress>(serializer);
+        //        int port = (int)jo["Port"];
+        //        return new IPEndPoint(address, port);
+        //    }
+        //}
+        //
+        //class IPAddressConverter : JsonConverter
+        //{
+        //    public override bool CanConvert(Type objectType)
+        //    {
+        //        return (objectType == typeof(IPAddress));
+        //    }
+        //
+        //    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        //    {
+        //        writer.WriteValue(value.ToString());
+        //    }
+        //
+        //    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        //    {
+        //        return IPAddress.Parse((string)reader.Value);
+        //    }
+        //}
 
         private static void RunBenchmark()
         {
-            var file = @"c:\temp\benchmark3.pcap";
+            //var file = @"c:\temp\benchmark1.pcap";
+            var file = @"c:\temp\benchmark2.pcapng";
             var totalMemory = GC.GetTotalMemory(false);
 
             Process myProcess = Process.GetCurrentProcess();
@@ -719,17 +847,24 @@ namespace IPTComShark
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-
+            var count = 0;
             using (var fileManager = new FileManager.FileManager())
             {
                 foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
                 {
                     _backStore.Add(raw);
+                    count++;
                 }
             }
 
-            stopwatch.Stop();
+            while (_backStore.Count != count)
+            {
+                Application.DoEvents();
+                Thread.Sleep(500);
+            }
 
+            stopwatch.Stop();
+            
             myProcess = Process.GetCurrentProcess();
 
             var totalMemory2 = GC.GetTotalMemory(false);
