@@ -44,6 +44,9 @@ namespace IPTComShark
 
         public MainForm()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             InitializeComponent();
 
             Text = Text += " " + Application.ProductVersion + " DEBUG VERSION";//  codename \"Gupta\"";
@@ -59,7 +62,8 @@ namespace IPTComShark
             DataCollections.Add(new VSISDMI());
             DataCollections.Add(new ABDO());
             DataCollections.Add(new VSIS210());
-            
+            DataCollections.Add(IptConfigReader.GetDataSetCollection());
+
             // indexer not used at moment, only used to detect collisions
             var index = new Dictionary<string, DataSetDefinition>();
             foreach (var dataSetCollection in DataCollections)
@@ -68,13 +72,16 @@ namespace IPTComShark
                 {
                     foreach (var identifier in dataSetDefinition.Identifiers)
                     {
-                        index.Add(identifier, dataSetDefinition);
+                        if(index.ContainsKey(identifier))
+                            Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
+                        else
+                            index.Add(identifier, dataSetDefinition);
                     }
                 }
             }
 
-            // iptconfig file not searched for collisions as it has a lot
-            DataCollections.Add(IptConfigReader.GetDataSetCollection());
+            
+            
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
@@ -99,7 +106,8 @@ namespace IPTComShark
 
             _backStore.NewCapturePacket += (sender, packet) => packetListView1.Add(packet);
 
-            Logger.Log("IPTComShark started", Severity.Info);
+            stopwatch.Stop();
+            Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
         }
 
         private void InitData()
@@ -694,7 +702,7 @@ namespace IPTComShark
 
         private static void RunBenchmark()
         {
-            var file = @"c:\temp\benchmark1.pcap";
+            var file = @"c:\temp\benchmark3.pcap";
             var totalMemory = GC.GetTotalMemory(false);
 
             Process myProcess = Process.GetCurrentProcess();
@@ -740,8 +748,8 @@ namespace IPTComShark
             var peakVirtualMem = myProcess.PeakVirtualMemorySize64;
             var peakWorkingSet = myProcess.PeakWorkingSet64;
 
-            var text = "-------------------------------------";
-            text += DateTime.Now.ToString() + Environment.NewLine;
+            var text = "-------------------------------------"+Environment.NewLine;
+            text += DateTime.Now.ToString() + "  " + Application.ProductVersion + Environment.NewLine;
             text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) + Environment.NewLine;
             text += "PrivateMemorySize64 increase = " + Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
             text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) + Environment.NewLine;
@@ -757,6 +765,12 @@ namespace IPTComShark
             MessageBox.Show(text);
 
             File.AppendAllText(file + ".txt", text);
+        }
+
+        private void statusStrip1_DoubleClick(object sender, EventArgs e)
+        {
+            var textWindow = new TextWindow(string.Join(Environment.NewLine, Logger.Instance.GetLog().Select(log => log.ToString())));
+            textWindow.Show(this);
         }
 
 
