@@ -54,7 +54,7 @@ namespace IPTComShark.Controls
 
             try
             {
-                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, out var displayfields, true);
+                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, true);
 
 
                 if (originalpacket.IPTWPPacket != null)
@@ -108,12 +108,12 @@ namespace IPTComShark.Controls
                     }
 
 
-                    if (extensiveData.Count == 1)
+                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1)
                     {
                         // if only one set we can do change detection
 
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData[0].Name});
-                        foreach (var field in extensiveData[0].ParsedFields)
+                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
+                        foreach (var field in extensiveData.Value.ParsedData[0].ParsedFields)
                         {
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
@@ -129,9 +129,9 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                    else
+                    else if(extensiveData.HasValue)
                     {
-                        foreach (var parsedDataSet in extensiveData)
+                        foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                         {
                             dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
                             foreach (var field in parsedDataSet.ParsedFields)
@@ -141,55 +141,9 @@ namespace IPTComShark.Controls
                         }
                     }
                 }
-
-
-                if (originalpacket.SS27Packet != null)
+                else if(extensiveData.HasValue)
                 {
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "JRU Data"});
-
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "Header"});
-                    dataLines.Add(new DataLine(ticker++)
-                    {
-                        Name = "Timestamp",
-                        Value = originalpacket.SS27Packet.DateTime.ToString() + ":" +
-                                originalpacket.SS27Packet.DateTime.Millisecond
-                    });
-                    dataLines.Add(new DataLine(ticker++) {Name = "Level", Value = originalpacket.SS27Packet.Level});
-                    dataLines.Add(new DataLine(ticker++) {Name = "Mode", Value = originalpacket.SS27Packet.Mode});
-                    dataLines.Add(new DataLine(ticker++)
-                        {Name = "Speed", Value = originalpacket.SS27Packet.V_TRAIN.ToString()});
-
-                    dataLines.AddRange(
-                        originalpacket.SS27Packet.Header.Select(parsedField => new DataLine(parsedField, ticker++)));
-
-
-                    if (originalpacket.SS27Packet.SubMessage != null)
-                    {
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "SubMessage"});
-                        foreach (var parsedField in originalpacket.SS27Packet.SubMessage.ParsedFields)
-                        {
-                            dataLines.Add(new DataLine(parsedField, ticker++));
-                        }
-                    }
-
-                    foreach (var ss27PacketExtraMessage in originalpacket.SS27Packet.ExtraMessages)
-                    {
-                        dataLines.Add(new DataLine(ticker++)
-                        {
-                            IsCategory = true,
-                            Name = ss27PacketExtraMessage.Name,
-                            Comment = ss27PacketExtraMessage.Comment
-                        });
-                        foreach (var parsedField in ss27PacketExtraMessage.ParsedFields)
-                        {
-                            dataLines.Add(new DataLine(parsedField, ticker++));
-                        }
-                    }
-                }
-
-                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null && extensiveData != null)
-                {
-                    foreach (var parsedDataSet in extensiveData)
+                    foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                     {
                         dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
                         foreach (var field in parsedDataSet.ParsedFields)
@@ -197,9 +151,6 @@ namespace IPTComShark.Controls
                             dataLines.Add(new DataLine(field, ticker++));
                         }
                     }
-                    
-
-                    
                 }
             }
             catch (Exception e)

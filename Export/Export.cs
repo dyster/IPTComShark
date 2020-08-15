@@ -188,31 +188,7 @@ namespace IPTComShark.Export
                     //    excelRichText.UnderLine = true;
                     //}
 
-                    if (packet.SS27Packet != null)
-                    {
-                        if (packet.Previous != null)
-                        {
-                            var prev = SS27tolist(packet.Previous.SS27Packet);
-                            var ss27Tolist = SS27tolist(packet.SS27Packet);
-                            var sb = new StringBuilder();
-                            for (var i = 0; i < ss27Tolist.Count; i++)
-                            {
-                                var s = "";
-                                var tuples = ss27Tolist[i];
-                                tuples.RemoveAll(tuple =>
-                                    prev[0].Exists(p => p.Item1 == tuple.Item1 && p.Item2 == tuple.Item2));
-                                sb.AppendLine(string.Join(" ", tuples.Select(t => t.Item1 + ": " + t.Item2)));
-                            }
-
-                            worksheet.Cells[rowindex, 4].Value = sb.ToString();
-                        }
-                        
-
-                        worksheet.Cells[rowindex, 5].Value = SS27tostring(packet.SS27Packet);
-
-                        worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(packet.SS27Packet.RawData); 
-                    }
-                    else if (packet.IPTWPPacket != null)
+                    if (packet.IPTWPPacket != null)
                     {
                         // since we have IPT, straight cast to UDP, BAM
                         var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
@@ -282,7 +258,7 @@ namespace IPTComShark.Export
         private static string SS27tostring(SS27Packet packet)
         {
             var sb = new StringBuilder(Functions.MakeCommentString(
-                packet.Header.ToDictionary(h => h.Name, h => h.Value)));
+                packet.Header.GetStringDictionary()));
             
             if (packet.SubMessage != null)
             {
@@ -303,8 +279,8 @@ namespace IPTComShark.Export
         private static List<List<Tuple<string, string>>> SS27tolist(SS27Packet packet)
         {
             var list = new List<List<Tuple<string, string>>>();
-
-            list.Add(packet.Header.Select(h => new Tuple<string,string>(h.Name, h.Value.ToString())).ToList());
+            
+            list.Add(packet.Header.ParsedFields.Select(h => new Tuple<string,string>(h.Name, h.Value.ToString())).ToList());
             if (packet.SubMessage != null)
             {
                 list.Add(packet.SubMessage.ParsedFields.Select(f => new Tuple<string, string>(f.Name,f.Value.ToString())).ToList());

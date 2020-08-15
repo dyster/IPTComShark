@@ -64,16 +64,14 @@ namespace IPTComShark
             }
         }
 
-        public static List<ParsedDataSet> ExtractParsedData(CapturePacket packet,
-            out List<DisplayField> displayfields)
+        public static Parse? ExtractParsedData(CapturePacket packet)
         {
-            return ExtractParsedData(packet, out displayfields, false);
+            return ExtractParsedData(packet, false);
         }
 
-        public static List<ParsedDataSet> ExtractParsedData(CapturePacket packet,
-            out List<DisplayField> displayfields, bool extensive)
+        public static Parse? ExtractParsedData(CapturePacket packet, bool extensive)
         {
-            displayfields = new List<DisplayField>();
+            
             var datasets = new List<ParsedDataSet>();
 
             if (packet.Packet.PayloadPacket is IPv4Packet)
@@ -103,24 +101,44 @@ namespace IPTComShark
                     {
                         var parsedDataSet = MainForm.ParseIPTWPData(packet.IPTWPPacket, udp, extensive);
                         if(parsedDataSet != null)
-                            datasets.Add(parsedDataSet);
+                            return new Parse(){ParsedData = new List<ParsedDataSet>(){parsedDataSet}};
                     }
                     else
                     {
                         var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
                         if (!parse.NoParserInstalled)
                         {
-                            displayfields = parse.DisplayFields;
-                            datasets.AddRange(parse.ParsedData);
+                            return parse;
                         }
                     }
 
                     
                     
                 }
+                else if(ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+                {
+                    var tcp = (TcpPacket)ipv4.PayloadPacket;
+                    if (tcp == null)
+                        return null;
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    var parse = _parseFactory.DoPacket(packet.Protocol, tcp.PayloadData);
+                    if (!parse.NoParserInstalled)
+                    {
+                        return parse;
+                    }
+                }
             }
 
-            return datasets;
+            return null;
         }
 
         public CapturePacket(Raw raw) : this (raw, Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData))
@@ -184,37 +202,9 @@ namespace IPTComShark
                             tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
-
-
-                            try
-                            {
-                                var ss27 = ExtractSS27Packet(tcpPacket);
-
-                                DisplayFields.Add( new DisplayField("time", ss27.DateTime));
-                                if (ss27.Events.Count == 0)
-                                {
-                                    // if there is no event, chuck some other data in there, maybe
-                                    // ParsedData = new ParsedDataSet() { ParsedFields = new List<ParsedField>(ss27.Header) };
-                                }
-                                else
-                                {
-                                    // TODO FIX THIS SO IT WORKS
-                                    ss27.Events.ForEach(e =>
-                                        DisplayFields.Add(new DisplayField(e.EventType.ToString(),
-                                            e.Description)));
-                                }
-
-                                this.SS27Packet = ss27;
-                            }
-                            catch (Exception e)
-                            {
-                                Error = e.Message;
-                            }
-                        }
-
-                        if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
+                        } else if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
                         {
-                            Protocol = ProtocolType.JRU;
+                            Protocol = ProtocolType.JRUStatus;
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
@@ -465,37 +455,31 @@ namespace IPTComShark
 #endif
             }
 
-            var extractParsedData = ExtractParsedData(this, out var displayfields);
+            var extractParsedData = ExtractParsedData(this);
             
-            if (extractParsedData != null)
+            if (extractParsedData.HasValue)
             {
-                foreach (var parsedDataSet in extractParsedData)
+                var parse = extractParsedData.Value;
+                foreach (var parsedDataSet in parse.ParsedData)
                 {
                     if (parsedDataSet == null)
                     {
                         //no!
                     }
+                    else
+                    {
+                        this.ParsedData.Add(parsedDataSet);
+                    }
                 }
 
-                this.ParsedData.AddRange(extractParsedData);
-                this.DisplayFields.AddRange(displayfields);
+                
+                if (parse.DisplayFields != null) this.DisplayFields.AddRange(parse.DisplayFields);
+                if (!string.IsNullOrEmpty(parse.Name))
+                    _customName = parse.Name;
+
             }
         }
         
-        private static SS27Packet ExtractSS27Packet(TcpPacket tcpPacket)
-        {
-            var ss27Parser = new SS27Parser();
-            var jruload = tcpPacket.PayloadData;
-
-            ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
-            var buffer = new byte[jrulen];
-            Array.Copy(jruload, 2, buffer, 0, jrulen);
-            var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
-            return ss27;
-        }
-
-        
-
         /// <summary>
         /// If part of a chain
         /// </summary>
@@ -570,10 +554,7 @@ namespace IPTComShark
         //public ARPPacket ARPPacket { get; }
 
         public IPTWPPacket IPTWPPacket { get; }
-
-        public SS27Packet SS27Packet { get; set; }
-
-
+        
         public ProtocolType Protocol { get; }
 
         //public ProcInfo ProtocolInfo { get; }
@@ -658,8 +639,6 @@ namespace IPTComShark
                 {
                     if (!string.IsNullOrEmpty(Error))
                         return "ERROR";
-                    else if (SS27Packet != null)
-                        return SS27Packet.MsgType.ToString();
                     else if (ParsedData.Count > 0)
                         return ParsedData[0].Name;
                     else if (IPTWPPacket != null)

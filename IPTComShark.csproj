@@ -109,6 +109,7 @@
     <Compile Include="DataSets\STM.cs" />
     <Compile Include="DataSets\VAP.cs" />
     <Compile Include="DataSets\VSISDMI.cs" />
+    <Compile Include="Parsers\JRUParser.cs" />
     <Compile Include="Parsers\NTPParser.cs" />
     <Compile Include="Parsers\ParserFactory.cs" />
     <Compile Include="Parsers\SPLParser.cs" />

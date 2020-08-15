@@ -16,6 +16,7 @@
         IGMP,
         UDP_SPL,
         NTP,
-        Virtual
+        Virtual,
+        JRUStatus
     }
 }

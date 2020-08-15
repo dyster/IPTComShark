@@ -20,8 +20,8 @@ namespace IPTComShark.Controls
 
         private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns =
             new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
-        private readonly Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket> _lastKnownsJRU =
-            new Dictionary<Tuple<SS27MsgType, IPAddress>, CapturePacket>();
+        private readonly Dictionary<Tuple<string, IPAddress>, CapturePacket> _lastKnownsJRU =
+            new Dictionary<Tuple<string, IPAddress>, CapturePacket>();
 
         private string _searchString;
 
@@ -286,7 +286,7 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreUnknownData)
                 {
-                    if (capturePacket.ParsedData != null || capturePacket.SS27Packet != null)
+                    if (capturePacket.ParsedData != null)
                     {
                         // we have data
                     }
@@ -406,9 +406,9 @@ namespace IPTComShark.Controls
                     _lastKnowns.Add(tupleKey, o);
                 }
             }
-            else if (o.SS27Packet != null)
+            else if (o.Protocol == ProtocolType.JRU)
             {
-                var tupleKey = new Tuple<SS27MsgType, IPAddress>(o.SS27Packet.MsgType, new IPAddress(o.Source));
+                var tupleKey = new Tuple<string, IPAddress>(o.Name, new IPAddress(o.Source));
                 if (_lastKnownsJRU.ContainsKey(tupleKey))
                 {
                     o.Previous = _lastKnownsJRU[tupleKey];

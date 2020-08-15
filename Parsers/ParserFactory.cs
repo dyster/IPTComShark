@@ -14,6 +14,7 @@ namespace IPTComShark.Parsers
         {
             _parsers.Add(new NTPParser());
             _parsers.Add(new SPLParser());
+            _parsers.Add(new JRUParser());
         }
 
         public Parse DoPacket(ProtocolType protocol, byte[] data)
@@ -40,5 +41,6 @@ namespace IPTComShark.Parsers
         public bool NoParserInstalled;
         public List<ParsedDataSet> ParsedData;
         public List<DisplayField> DisplayFields;
+        public string Name;
     }
 }
