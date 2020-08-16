@@ -715,74 +715,9 @@ namespace IPTComShark
             {
                 RunBenchmark();
             }
-            if (e.Shift && e.Control && e.KeyCode == Keys.V)
-            {
-                Validate();
-            }
         }
 
-        private void Validate()
-        {
-            //var file = @"c:\temp\validate1.pcapng";
-            var file = @"c:\temp\validate2.pcap";
-
-
-            // validate1 = 2B-E3-91-AA-5B-67-07-1B-AA-E8-C8-A3-F2-9A-CA-A1
-            // validate2 = F2-41-74-13-F4-F6-8D-C5-50-02-A4-7F-50-64-26-6A
-            // validate3 = 49-9D-75-02-81-AA-86-E6-9B-EB-BD-61-1C-3C-AD-A6
-            // validate4 = 4A-C8-9B-5C-69-1F-7F-49-BC-B2-7E-F3-F4-A4-81-78
-            // validate5 = 5A-82-DE-F5-04-F9-97-65-EB-04-95-7A-67-D4-E6-B2
-            var count = 0;
-            var list = new List<CapturePacket>();
-
-            _backStore.NewCapturePacket += (sender, packet) => list.Add(packet);
-
-            using (var fileManager = new FileManager.FileManager())
-            {
-                foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
-                {
-                    _backStore.Add(raw);
-                    count++;
-                }
-            }
-
-            while (list.Count != count)
-            {
-                Application.DoEvents();
-                Thread.Sleep(500);
-            }
-
-            using (var fileStream = File.Create(file + ".validate.json"))
-            {
-                using (var streamWriter = new StreamWriter(fileStream))
-                {
-                    var jsonSerializer = new JsonSerializer();
-                    jsonSerializer.Formatting = Formatting.Indented;
-                    //jsonSerializer.Converters.Add(new IPAddressConverter());
-                    //jsonSerializer.Converters.Add(new IPEndPointConverter());
-
-                
-                
-
-                    foreach (var capturePacket in list)
-                    {
-                        if(capturePacket.Protocol == ProtocolType.JRU)
-                            jsonSerializer.Serialize(streamWriter, capturePacket);
-                    
-                    }
-                }
-            }
-
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(file + ".validate.json"))
-                {
-                    var computeHash = md5.ComputeHash(stream);
-                    File.WriteAllText(file + ".validate.md5", BitConverter.ToString(computeHash));
-                }
-            }
-             
-        }
+        
         
         private static void RunBenchmark()
         {
