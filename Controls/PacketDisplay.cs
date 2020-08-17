@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 using IPTComShark.Windows;
 
 namespace IPTComShark.Controls
@@ -30,6 +31,8 @@ namespace IPTComShark.Controls
 
         public IPTConfigReader IptConfigReader { get; set; }
 
+        public BackStore BackStore { get; set; }
+
         public void SetObject(CapturePacket originalpacket)
         {
             uint ticker = 0;
@@ -40,13 +43,16 @@ namespace IPTComShark.Controls
             textBoxType.Text = string.Empty;
 
             var dataLines = new List<DataLine>();
+            
+            var topPacket = BackStore.GetPacket(originalpacket.No);
 
             if (originalpacket.Protocol == ProtocolType.Virtual)
             {
-                foreach (var parsedField in originalpacket.ParsedData.SelectMany(dataset => dataset.ParsedFields))
-                {
-                    dataLines.Add(new DataLine(parsedField, ticker++));
-                }
+                // TODO Virtual is now broken! FIX!
+                //foreach (var parsedField in originalpacket.ParsedData.SelectMany(dataset => dataset.ParsedFields))
+                //{
+                //    dataLines.Add(new DataLine(parsedField, ticker++));
+                //}
 
                 dataListViewRight.DataSource = dataLines;
                 return;
@@ -54,12 +60,12 @@ namespace IPTComShark.Controls
 
             try
             {
-                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, true);
+                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, topPacket, true);
 
 
                 if (originalpacket.IPTWPPacket != null)
                 {
-                    var udp = (UdpPacket) originalpacket.Packet.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
                     var iptPayload = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
@@ -118,9 +124,15 @@ namespace IPTComShark.Controls
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
                             {
-                                var parsedField = originalpacket.Previous.ParsedData[0].GetField(field.Name);
-                                if (parsedField != null)
-                                    changed = !parsedField.Value.Equals(field.Value);
+                                var extractparse = BackStore.GetParse(originalpacket.Previous.No);
+                                if (extractparse.HasValue)
+                                {
+                                    var parsedField = extractparse.Value.ParsedData[0].GetField(field.Name);
+                                    if (parsedField != null)
+                                        changed = !parsedField.Value.Equals(field.Value);
+                                }
+
+                                
                             }
 
                             dataLines.Add(new DataLine(field, ticker++)
@@ -160,13 +172,13 @@ namespace IPTComShark.Controls
 
             try
             {
-                var text = new StringBuilder(originalpacket.Packet.ToString(StringOutputType.Verbose));
+                var text = new StringBuilder(topPacket.ToString(StringOutputType.Verbose));
 
 
                 if (originalpacket.IPTWPPacket != null)
                 {
                     // since we have IPT, straight cast to UDP, BAM
-                    var udp = (UdpPacket) originalpacket.Packet.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
                     var bytes = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 

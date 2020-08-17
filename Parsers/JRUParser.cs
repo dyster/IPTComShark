@@ -38,6 +38,8 @@ namespace IPTComShark.Parsers
             if (ss27.SubMessage != null) parse.ParsedData.Add(ss27.SubMessage);
             if (ss27.ExtraMessages != null && ss27.ExtraMessages.Count > 0) parse.ParsedData.AddRange(ss27.ExtraMessages);
 
+            parse.BackLinkIdentifier = ss27.MsgType.ToString();
+
             return parse;
         }
 

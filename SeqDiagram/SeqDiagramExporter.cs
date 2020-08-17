@@ -9,12 +9,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 
 namespace IPTComShark.SeqDiagram
 {
     public class SeqDiagramExporter
     {
-        public static void MakeSVG(List<CapturePacket> packets, string fileName)
+        public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore backStore)
         {
             const int baselinestep = 250; // distance between vertical lines
             const int horizontalBase = 130; // upper range for the vertical lines
@@ -31,7 +32,7 @@ namespace IPTComShark.SeqDiagram
             int arrowgen = horizontalBase + firstarrowdistance; // iterator for making sequence arrows
 
             // iterate through the data and gather what we need into a little struct for convenience
-            List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen);
+            List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen, backStore);
 
             // after all vertical lines have been placed, make one for the description boxes
             int descriptionBaseline = baselinegen + 50;
@@ -427,7 +428,7 @@ namespace IPTComShark.SeqDiagram
         }*/
 
         private static List<Sequence> GetSequences(List<CapturePacket> packets, int baselinestep,
-            out Dictionary<IPAddress, int> devices, ref int baselinegen)
+            out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore backStore)
         {
             var list = new List<Sequence>();
             devices = new Dictionary<IPAddress, int>();
@@ -441,32 +442,43 @@ namespace IPTComShark.SeqDiagram
                 if (!devices.ContainsKey(new IPAddress(packet.Destination)))
                     devices.Add(new IPAddress(packet.Destination), baselinegen += baselinestep);
 
-                if (packet.ParsedData == null)
+                var parse = backStore.GetParse(packet.No);
+
+                if (!parse.HasValue)
                     continue;
+
                 //TODO fix so it uses all datasets
-                var now = packet.ParsedData[0].GetStringDictionary()
+                var now = parse.Value.ParsedData[0].GetStringDictionary()
                     .Where(pair => pair.Key != "MMI_M_PACKET" && pair.Key != "MMI_L_PACKET")
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
-                if (packet.Previous?.ParsedData != null)
-                {
-                    // TODO fix so it uses all datasets
-                    var before = packet.Previous.ParsedData[0].GetStringDictionary();
 
-                    foreach (KeyValuePair<string, string> pair in now)
+                if (packet.Previous != null)
+                {
+                    var parseOld = backStore.GetParse(packet.Previous.No);
+
+                    if (parseOld.HasValue)
                     {
-                        if (before.ContainsKey(pair.Key))
+                        // TODO fix so it uses all datasets
+                        var before = parseOld.Value.ParsedData[0].GetStringDictionary();
+
+                        foreach (KeyValuePair<string, string> pair in now)
                         {
-                            if (pair.Value != before[pair.Key])
-                                dic.Add(pair.Key, pair.Value);
+                            if (before.ContainsKey(pair.Key))
+                            {
+                                if (pair.Value != before[pair.Key])
+                                    dic.Add(pair.Key, pair.Value);
+                            }
                         }
                     }
+                    else
+                    {
+                        dic = now;
+                    }
                 }
-                else
-                {
-                    dic = now;
-                }
+
+                
 
                 var sequence = new Sequence
                 {

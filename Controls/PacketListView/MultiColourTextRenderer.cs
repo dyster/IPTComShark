@@ -38,19 +38,7 @@ namespace IPTComShark.Controls
                             tuples.Add(new Tuple<string, string>(displayField.Name, displayField.Val.ToString()));
                     }
                 }
-                else
-                {
-                    if (cpac.ParsedData == null)
-                        return;
-
-
-                    var delta = cpac.GetDelta(ignores);
-
-                    foreach (var field in delta)
-                    {
-                        tuples.Add(new Tuple<string, string>(field.Name, field.Value.ToString()));
-                    }
-                }
+                
             }
             else
             {

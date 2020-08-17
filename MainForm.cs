@@ -58,8 +58,11 @@ namespace IPTComShark
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-
+            
             InitializeComponent();
+
+            packetListView1.BackStore = _backStore;
+            packetDisplay1.BackStore = _backStore;
 
             Text = Text += " " + Application.ProductVersion + " DEBUG VERSION";//  codename \"Gupta\"";
 
@@ -361,7 +364,7 @@ namespace IPTComShark
 
         private void buttonSaveAll_Click(object sender, EventArgs e)
         {
-            List<Raw> allRawCaptures = packetListView1.GetAllRawCaptures();
+            List<Raw> allRawCaptures = _backStore.GetAllRaws();
             if (allRawCaptures.Count == 0)
                 return;
 
@@ -486,7 +489,7 @@ namespace IPTComShark
             DialogResult dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName);
+                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
             }
         }
 
@@ -500,7 +503,7 @@ namespace IPTComShark
             var dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                Export.Export.MakeXLSX(packetListView1.GetFilteredPackets(), saveFileDialog.FileName);
+                Export.Export.MakeXLSX(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
             }
         }
 
@@ -663,7 +666,8 @@ namespace IPTComShark
                             var parsedDataSet = ETCSDiag.DIA_130.Parse(action);
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
-                            capturePacket.ParsedData.Add(parsedDataSet);
+                            // TODO no idea if this works now
+                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
                             packetListView1.Add(capturePacket);
                         }
                         else if (ServiceID == 205 && deviceID == 3)
@@ -680,7 +684,9 @@ namespace IPTComShark
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
-                            capturePacket.ParsedData.Add(parsedDataSet);
+                            // TODO no idea if this works either now
+                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
+                            
                             packetListView1.Add(capturePacket);
                         }
                     }
@@ -713,16 +719,30 @@ namespace IPTComShark
         {
             if(e.Shift && e.Control && e.KeyCode == Keys.B)
             {
-                RunBenchmark();
+                GC.Collect();
+                
+                RunBenchmark(@"c:\temp\benchmark1.pcap");
+                
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark2.pcapng");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark3.pcap");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark4.pcap");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark5.pcap");
             }
         }
 
         
         
-        private static void RunBenchmark()
+        private static void RunBenchmark(string file)
         {
-            //var file = @"c:\temp\benchmark1.pcap";
-            var file = @"c:\temp\benchmark2.pcapng";
+            
+
             var totalMemory = GC.GetTotalMemory(false);
 
             Process myProcess = Process.GetCurrentProcess();
@@ -739,21 +759,19 @@ namespace IPTComShark
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            var list = new List<CapturePacket>();
             var count = 0;
             using (var fileManager = new FileManager.FileManager())
             {
                 foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
                 {
-                    _backStore.Add(raw);
+                    list.Add(new CapturePacket(raw));
+                    
                     count++;
                 }
             }
 
-            while (_backStore.Count != count)
-            {
-                Application.DoEvents();
-                Thread.Sleep(500);
-            }
+           
 
             stopwatch.Stop();
             
@@ -789,7 +807,7 @@ namespace IPTComShark
 
             text += "Time taken " + stopwatch.Elapsed + Environment.NewLine;
 
-            MessageBox.Show(text);
+            //MessageBox.Show(text);
 
             File.AppendAllText(file + ".txt", text);
         }

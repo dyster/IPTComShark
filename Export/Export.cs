@@ -10,6 +10,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
+using IPTComShark.Classes;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
 
@@ -17,7 +18,7 @@ namespace IPTComShark.Export
 {
     internal static class Export
     {
-        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile)
+        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile, BackStore backStore)
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -44,10 +45,16 @@ namespace IPTComShark.Export
 
                 int topcol = 4;
                 // TODO fix so it uses the whole list
-                foreach (ParsedField field in packets.First.Value.ParsedData[0].ParsedFields)
+                var extractParse = backStore.GetParse(packets.First.Value.No);
+
+                if (extractParse.HasValue)
                 {
-                    worksheet.Cells[3, topcol++].Value = field.Name;
+                    foreach (ParsedField field in extractParse.Value.ParsedData[0].ParsedFields)
+                    {
+                        worksheet.Cells[3, topcol++].Value = field.Name;
+                    }
                 }
+                
 
                 //Ok now format the values;
                 using (ExcelRange range = worksheet.Cells[3, 1, 3, 4])
@@ -67,23 +74,26 @@ namespace IPTComShark.Export
                         worksheet.Cells[rowindex, 3].Value =
                             packet.Date.Subtract(packet.Previous.Date).TotalMilliseconds;
                         //worksheet.Cells[rowindex, 3].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
+
+
                     }
 
-                    List<ParsedField> deltaFields = packet.GetDelta();
-
-                    int col = 4;
-                    foreach (ParsedField field in packet.ParsedData[0].ParsedFields)
-                    {
-                        worksheet.Cells[rowindex, col].Value = field.Value;
-
-                        if (deltaFields.Exists(f => f.Name == field.Name))
-                        {
-                            worksheet.Cells[rowindex, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            worksheet.Cells[rowindex, col].Style.Fill.BackgroundColor.SetColor(Color.LightSeaGreen);
-                        }
-
-                        col++;
-                    }
+                    // TODO temp disabled for now!!!
+                    //List<ParsedField> deltaFields = packet.GetDelta();
+                    //
+                    //int col = 4;
+                    //foreach (ParsedField field in packet.ParsedData[0].ParsedFields)
+                    //{
+                    //    worksheet.Cells[rowindex, col].Value = field.Value;
+                    //
+                    //    if (deltaFields.Exists(f => f.Name == field.Name))
+                    //    {
+                    //        worksheet.Cells[rowindex, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    //        worksheet.Cells[rowindex, col].Style.Fill.BackgroundColor.SetColor(Color.LightSeaGreen);
+                    //    }
+                    //
+                    //    col++;
+                    //}
 
                     rowindex++;
                 }
@@ -129,7 +139,7 @@ namespace IPTComShark.Export
             }
         }
 
-        public static void MakeXLSX(List<CapturePacket> packets, string outputfile)
+        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore)
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -167,13 +177,15 @@ namespace IPTComShark.Export
 
                     if (packet.Previous != null)
                     {
-                        worksheet.Cells[rowindex, 4].Value =
-                            string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
+                        // TODO temp disabled for now !!!!!
+                        //worksheet.Cells[rowindex, 4].Value =
+                        //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
                     }
 
-                    if (packet.ParsedData != null)
+                    var parse = backStore.GetParse(packet.No);
+                    if (parse.HasValue)
                         worksheet.Cells[rowindex, 5].Value =
-                            string.Join(" ", packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f=>new DisplayField(f))));
+                            string.Join(" ", parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f=>new DisplayField(f))));
 
                     //worksheet.Cells[rowindex, 5].IsRichText = true;
                     //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;
@@ -191,10 +203,12 @@ namespace IPTComShark.Export
                     if (packet.IPTWPPacket != null)
                     {
                         // since we have IPT, straight cast to UDP, BAM
-                        var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
-
-                        var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
-                        worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
+                        
+                        // TODO temp disabled !!!!!
+                        //var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
+                        //
+                        //var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
+                        //worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
                     }
 
                     
@@ -294,7 +308,7 @@ namespace IPTComShark.Export
             return list;
         }
 
-        public static string MakeRTF(List<CapturePacket> packets)
+        public static string MakeRTF(List<CapturePacket> packets, BackStore backStore)
         {
             var sb = new StringBuilder(
                 @"{\rtf1\ansi\ansicpg1252\deff0\deflang2057{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
@@ -309,19 +323,27 @@ namespace IPTComShark.Export
                 sb.Append(packet.Name);
                 sb.Append(@" ");
 
-                var displayFields = packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
-                foreach (var pair in displayFields)
+                var parse = backStore.GetParse(packet.No);
+                if (parse.HasValue)
                 {
-                    sb.Append(" ");
-                    sb.Append(pair.Name);
-                    sb.Append(@" \b ");
-                    sb.Append(pair.Val);
-                    sb.Append(@"\b0 ");
+                    var displayFields = parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                    foreach (var pair in displayFields)
+                    {
+                        sb.Append(" ");
+                        sb.Append(pair.Name);
+                        sb.Append(@" \b ");
+                        sb.Append(pair.Val);
+                        sb.Append(@"\b0 ");
+                    }
                 }
+                
 
                 // since we have IPT, straight cast to UDP, BAM
-                var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
-
+                // TODO temp disabled !!!
+                var topPacket = backStore.GetPacket(packet.No);
+                
+                var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
+                
                 var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
                 sb.Append(@"\line\ul " + BitConverter.ToString(bytes) + @"\ulnone");
 
@@ -333,7 +355,7 @@ namespace IPTComShark.Export
         }
 
 
-        public static string MakeCSV(List<CapturePacket> packets)
+        public static string MakeCSV(List<CapturePacket> packets, BackStore backStore)
         {
             var csvExport = new CsvExport();
 
@@ -346,12 +368,16 @@ namespace IPTComShark.Export
 
 
                 csvExport["Name"] = packet.Name;
+                var parse = backStore.GetParse(packet.No);
+                if (parse.HasValue)
+                {
+                    var displayFields = parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                    csvExport["Data"] = string.Join(" ", displayFields);
+                }
+                    
 
-                var displayFields = packet.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
-                csvExport["Data"] = string.Join(" ", displayFields);
 
-
-                csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());
+                //csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());
             }
 
             string export = csvExport.Export();

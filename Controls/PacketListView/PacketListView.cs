@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Controls
@@ -16,13 +17,8 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _list = new List<CapturePacket>(500000);
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
-        private CapturePacket _selectedPacket = null;
-
-        private readonly Dictionary<Tuple<uint, IPAddress>, CapturePacket> _lastKnowns =
-            new Dictionary<Tuple<uint, IPAddress>, CapturePacket>();
-        private readonly Dictionary<Tuple<string, IPAddress>, CapturePacket> _lastKnownsJRU =
-            new Dictionary<Tuple<string, IPAddress>, CapturePacket>();
-
+        private CapturePacket _selectedPacket;
+        
         private string _searchString;
 
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
@@ -216,6 +212,8 @@ namespace IPTComShark.Controls
             UpdateFilter();
         }
 
+        public BackStore BackStore { get; set; }
+
         private static List<ICluster> StringsToClusters(IEnumerable<string> strings)
         {
             var dic = new Dictionary<string, int>();
@@ -286,7 +284,7 @@ namespace IPTComShark.Controls
 
                 if (Settings.IgnoreUnknownData)
                 {
-                    if (capturePacket.ParsedData != null)
+                    if (capturePacket.HasData)
                     {
                         // we have data
                     }
@@ -309,21 +307,8 @@ namespace IPTComShark.Controls
                 {
                     if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
                     {
-                        if (capturePacket.Previous?.ParsedData.Count > 0 && capturePacket.ParsedData.Count > 0)
-                        {
-                            var ignores = Properties.Settings.Default.IgnoreVariables.Split(new[] {Environment.NewLine},
-                                StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                            // will wildly assume that PD will only ever have one dataset and see how that goes
-                            if (!capturePacket.Previous.ParsedData[0].Equals(capturePacket.ParsedData[0], ignores))
-                            {
-                                // PD is different
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
+                        if (capturePacket.IsDupe)
+                            return false;
                     }
                 }
 
@@ -334,16 +319,8 @@ namespace IPTComShark.Controls
                         return true;
                     if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
                         return true;
-                    if (capturePacket.ParsedData.Count != 0 )
-                    {
-                        foreach (var parsedDataSet in capturePacket.ParsedData)
-                        {
-                            if (parsedDataSet.ParsedFields.Exists(p => regex.IsMatch(p.Name)))
-                                return true;
-                        }
-
-                        return true;
-                    }
+                    
+                    // TODO we still need to be able to filter on the whole dataset somehow, either generate some massive database or maybe use the dataset definitions instead of the parsed result
 
                     return false;
                 }
@@ -391,37 +368,6 @@ namespace IPTComShark.Controls
 
         public void Add(CapturePacket o)
         {
-            // Connect up the chain
-            if (o.IPTWPPacket != null)
-            {
-                var tupleKey = new Tuple<uint, IPAddress>(o.IPTWPPacket.Comid, new IPAddress(o.Source));
-                if (_lastKnowns.ContainsKey(tupleKey))
-                {
-                    o.Previous = _lastKnowns[tupleKey];
-                    _lastKnowns[tupleKey].Next = o;
-                    _lastKnowns[tupleKey] = o;
-                }
-                else
-                {
-                    _lastKnowns.Add(tupleKey, o);
-                }
-            }
-            else if (o.Protocol == ProtocolType.JRU)
-            {
-                var tupleKey = new Tuple<string, IPAddress>(o.Name, new IPAddress(o.Source));
-                if (_lastKnownsJRU.ContainsKey(tupleKey))
-                {
-                    o.Previous = _lastKnownsJRU[tupleKey];
-                    _lastKnownsJRU[tupleKey].Next = o;
-                    _lastKnownsJRU[tupleKey] = o;
-                }
-                else
-                {
-                    _lastKnownsJRU.Add(tupleKey, o);
-                }
-            }
-
-
             lock (_listAddLock)
             {
                 _listAddBuffer.Add(o);
@@ -436,8 +382,7 @@ namespace IPTComShark.Controls
             }
 
             _list.Clear();
-            _lastKnowns.Clear();
-            _lastKnownsJRU.Clear();
+            
             _selectedPacket = null;
             fastObjectListView1.ClearObjects();
             fastObjectListView1.SetObjects(_list);
@@ -446,14 +391,6 @@ namespace IPTComShark.Controls
         public int Count()
         {
             return _list.Count;
-        }
-
-        public List<Raw> GetAllRawCaptures()
-        {
-            lock (_listAddLock)
-            {
-                return _list.Select(l => l.ReconstructRaw()).ToList();
-            }
         }
 
         public List<CapturePacket> GetAllPackets()
@@ -480,7 +417,8 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var s = BitConverter.ToString(o.GetRawData());
+                
+                var s = BitConverter.ToString(BackStore.GetRaw(o.No).RawData);
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
 
@@ -492,14 +430,19 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var list = new List<DisplayField>();
-                foreach (var parsedDataSet in o.ParsedData)
+                var parse = BackStore.GetParse(o.No);
+                if (parse.HasValue)
                 {
-                    list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
-                }
+                    var list = new List<DisplayField>();
+                    foreach (var parsedDataSet in parse.Value.ParsedData)
+                    {
+                        list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                    }
 
-                var s = string.Join(" ", list);
-                Clipboard.SetText(s, TextDataFormat.Text);
+                    var s = string.Join(" ", list);
+                    Clipboard.SetText(s, TextDataFormat.Text);
+                }
+                
             }
 
             Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
@@ -528,7 +471,7 @@ namespace IPTComShark.Controls
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
-                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName);
+                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName, BackStore);
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace IPTComShark.Import
             string text = File.ReadAllText(path);
 
             CapturePacket prev = null;
-            uint sortIndex = 1;
+            int sortIndex = 1;
 
             var ss27Parser = new SS27Parser();
 

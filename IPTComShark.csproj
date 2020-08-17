@@ -72,7 +72,6 @@
     <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
-    <Compile Include="Controls\PacketListView\PacketSource.cs" />
     <Compile Include="Controls\TypeDelayTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
