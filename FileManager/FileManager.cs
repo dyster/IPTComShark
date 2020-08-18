@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace IPTComShark.FileManager
@@ -224,6 +225,36 @@ namespace IPTComShark.FileManager
             return null;
         }
 
+        /// <summary>
+        /// Starts opening data async, returns them by RawParsed event, and triggers reset event when finished
+        /// </summary>
+        /// <param name="inputs"></param>
+        public void OpenFilesAsync(string[] inputs)
+        {
+            var fo = new FileOpener(inputs);
+            var dialogresult = fo.ShowDialog();
+            if (dialogresult == DialogResult.OK)
+            {
+                FilterFrom = fo.DateTimeFrom;
+                FilterTo = fo.DateTimeTo;
+
+                MethodInvoker invoker = () => EnumerateFiles(fo.DataSources);
+
+                invoker.BeginInvoke(CallBackMethod, invoker);
+            }
+
+            
+        }
+
+        public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
+
+        private void CallBackMethod(IAsyncResult ar)
+        {
+            var arAsyncState = (MethodInvoker)ar.AsyncState;
+            arAsyncState.EndInvoke(ar);
+            OpenFilesAsyncFinished.Set();
+
+        }
 
 
         public DateTime FilterTo { get; set; }

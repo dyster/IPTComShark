@@ -374,6 +374,14 @@ namespace IPTComShark.Controls
             }
         }
 
+        public void AddRange(CapturePacket[] packets)
+        {
+            lock (_listAddLock)
+            {
+                _listAddBuffer.AddRange(packets);
+            }
+        }
+
         public void Clear()
         {
             lock (_listAddLock)
@@ -499,6 +507,8 @@ namespace IPTComShark.Controls
                 addToIgnoredComIDsToolStripMenuItem.Enabled = o.IPTWPPacket != null;
             }
         }
+
+        
     }
 
     public class MyOLVColumn : OLVColumn

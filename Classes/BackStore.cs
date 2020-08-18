@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -26,8 +27,8 @@ namespace IPTComShark.Classes
 
         private BackgroundWorker _worker;
 
-        private readonly Queue<Raw> _addBuffer = new Queue<Raw>();
-        private readonly object _addBufferLock = new object();
+        private ConcurrentQueue<Raw> _addBuffer = new ConcurrentQueue<Raw>();
+       
 
         // is this a bit complicated maybe? maybe a little class? lol
         //private Dictionary<ProtocolType, Dictionary<string, Dictionary<IPAddress, CapturePacket>>> _lastKnowns = new Dictionary<ProtocolType, Dictionary<string, Dictionary<IPAddress, CapturePacket>>>();
@@ -46,6 +47,7 @@ namespace IPTComShark.Classes
 
             _worker = new BackgroundWorker();
             _worker.DoWork += DoWork;
+            _worker.RunWorkerAsync();
 
         }
 
@@ -72,36 +74,60 @@ namespace IPTComShark.Classes
             return extractParsedData;
         }
 
+        public bool Working { get; set; }
+
+        public string Status
+        {
+            get
+            {
+                if(Working)
+                    return $"Processing {_addBuffer.Count} Packets";
+                else
+                {
+                    return $"Captured {_packetStore.Count} Packets";
+                }
+            }
+        }
+
         private void DoWork(object sender, DoWorkEventArgs e)
         {
             bool updatePending = false;
             DateTime lastUpdate = DateTime.Now;
             TimeSpan minUpdateTime = TimeSpan.FromSeconds(1);
 
+            var list = new List<CapturePacket>();
 
             while (!e.Cancel)
             {
-                if (_addBuffer.Count > 0)
+                if (!_addBuffer.IsEmpty)
                 {
-                    var list = new List<Raw>();
-                    lock (_addBufferLock)
-                    {
-                        while (_addBuffer.Count > 0)
-                        {
-                            list.Add(_addBuffer.Dequeue());
-                        }
-                    }
+                    Working = true;
+                    
 
-                    foreach (var raw in list)
-                    {
-                        Add(raw);
-                    }
+                    
+                        while (!_addBuffer.IsEmpty)
+                        {
+                            //Raw tryraw;
+                            var tryDequeue = _addBuffer.TryDequeue(out Raw tryRaw);
+                            if (tryDequeue)
+                            {
+                                var capturePacket = Parse(tryRaw);
+                                
+                                // this list is only to hold updates, the Parse function adds them to the main store
+                                list.Add(capturePacket);
+                            }
+                        }
+                            
+                    
+
                     updatePending = true;
+                    Working = false;
                 }
 
                 if (updatePending && DateTime.Now - lastUpdate > minUpdateTime )
                 {
-                    
+                    OnNewCapturePacket(list.ToArray());
+                    list.Clear();
 
                     updatePending = false;
                     lastUpdate = DateTime.Now;
@@ -112,6 +138,13 @@ namespace IPTComShark.Classes
         }
 
         public void Add(Raw raw)
+        {
+            
+            
+            _addBuffer.Enqueue(raw);
+            
+        }
+        private CapturePacket Parse(Raw raw)
         {
             
             var topPacket = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
@@ -236,14 +269,15 @@ namespace IPTComShark.Classes
             _rawStore.Add(capturePacket.No, raw);
             _packetStore.Add(capturePacket.No, capturePacket);
             //_binaryFormatter.Serialize(fileStream, raw);
-            OnNewCapturePacket(capturePacket);
+            //OnNewCapturePacket(capturePacket);
+            return capturePacket;
         }
 
-        public event EventHandler<CapturePacket> NewCapturePacket;
+        public event EventHandler<CapturePacket[]> NewCapturePacket;
 
         
 
-        protected virtual void OnNewCapturePacket(CapturePacket e)
+        protected virtual void OnNewCapturePacket(CapturePacket[] e)
         {
             NewCapturePacket?.Invoke(this, e);
         }
@@ -256,10 +290,9 @@ namespace IPTComShark.Classes
 
         public void Clear()
         {
-            lock (_addBufferLock)
-            {
-                _addBuffer.Clear();
-            }
+            
+            _addBuffer = new ConcurrentQueue<Raw>();
+            
 
             _seed = 0;
             _rawStore.Clear();

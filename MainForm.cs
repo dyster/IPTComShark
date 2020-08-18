@@ -120,7 +120,7 @@ namespace IPTComShark
 
             InitData();
 
-            _backStore.NewCapturePacket += (sender, packet) => packetListView1.Add(packet);
+            _backStore.NewCapturePacket += (sender, packet) => packetListView1.AddRange(packet);
 
             stopwatch.Stop();
             Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
@@ -321,7 +321,10 @@ namespace IPTComShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
+            var storeStatus = _backStore.Status;
+
             var tuples = new List<Tuple<Color, string>>();
+            tuples.Add(new Tuple<Color, string>(Color.Black, storeStatus + " | "));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, packetListView1.Count().ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));
@@ -439,16 +442,14 @@ namespace IPTComShark
                 Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
-                using (var fileManager = new FileManager.FileManager())
+
                 {
-                    List<Raw> raws = fileManager.OpenFiles(paths);
-                    if (raws != null)
-                    {
-                        foreach (Raw raw in raws)
-                        {
-                            _backStore.Add(raw);
-                        }
-                    }
+                    var fileManager = new FileManager.FileManager();
+                    fileManager.RawParsed += (sender, raw) => _backStore.Add(raw);
+                    
+                    fileManager.OpenFilesAsync(paths);
+
+                    //fileManager.OpenFilesAsyncFinished.WaitOne();
                 }
 
                 GC.Collect();
@@ -513,15 +514,9 @@ namespace IPTComShark
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                using (var fileManager = new FileManager.FileManager())
-                {
-                    foreach (var raw in fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath}))
-                    {
-                        _backStore.Add(raw);
-                    }
-                }
+                OpenPath(new []{folderBrowserDialog.SelectedPath});
 
-                
+
             }
         }
 

@@ -61,7 +61,7 @@ namespace IPTComShark.Parsers
 
                 // get the length of the frame and the data inside the frame
                 var frameLen = (ushort) spl.GetField("SPLFrameLen").Value;
-                var splframeArray = Functions.SubArrayGetter(payload, position, frameLen * 8);
+                var splframeArray = Functions.SubArrayGetterX(payload, position, frameLen * 8);
                 // forward the position for the next iteration
                 position += frameLen * 8;
 
@@ -204,7 +204,7 @@ namespace IPTComShark.Parsers
 
                         var lmessage = Convert.ToByte(ffisheader.GetField("L_MESSAGE").Value);
                         var ss58payloadLength = lmessage * 8 - ffisheader.BitsRead;
-                        var ss58payload = Functions.SubArrayGetter(framePayload, framePosition, ss58payloadLength);
+                        var ss58payload = Functions.SubArrayGetterX(framePayload, framePosition, ss58payloadLength);
 
 
                         var ss58 = new Subset58();
