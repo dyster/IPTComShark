@@ -11,7 +11,7 @@ namespace IPTComShark.Controls
     public class MultiColourTextRenderer : BaseRenderer
     {
         private Color backColor = Color.Transparent;
-
+        
         public override void DrawText(Graphics g, Rectangle r, string txt)
         {
             if (IsDrawBackground && IsItemSelected && !ListView.FullRowSelect)
@@ -47,9 +47,14 @@ namespace IPTComShark.Controls
 
             Font font1 = Font;
             var font2 = new Font(Font, FontStyle.Bold);
+            
+            var maxX = r.X + Column.Width;
 
             // make the original rectangle zero width to set the first string up
             r = new Rectangle(r.X, r.Y, 0, r.Height);
+
+            var foregroundColor = GetForegroundColor();
+            //var brush = new SolidBrush(foregroundColor);
 
             foreach (Tuple<string, string> o in tuples)
             {
@@ -57,22 +62,24 @@ namespace IPTComShark.Controls
 
                 int width = TextRenderer.MeasureText(text, font1).Width;
 
-
+                if (r.Left > maxX || r.Left > this.ListView.Bounds.Right)
+                {
+                    // no point drawing outside of bounds
+                    break;
+                }
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
-                TextRenderer.DrawText(g, text, font1, r, GetForegroundColor(), backColor, flags);
-
-
+                
+                TextRenderer.DrawText(g, text, font1, r, foregroundColor, backColor, flags);
+                
                 text = o.Item2;
 
                 width = TextRenderer.MeasureText(text, font2).Width;
 
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
-                TextRenderer.DrawText(g, text, font2, r, GetForegroundColor(), backColor, flags);
+                TextRenderer.DrawText(g, text, font2, r, foregroundColor, backColor, flags);
             }
 
-            //TextRenderer.DrawText(g, dic.DictionaryData.Count.ToString(), this.Font, r, this.GetForegroundColor(), backColor, flags);
-            //base.DrawText(g, r, txt);         
-            //TextRenderer.DrawText(g, txt, this.Font, r, this.GetForegroundColor(), backColor);
+            
         }
     }
 }
