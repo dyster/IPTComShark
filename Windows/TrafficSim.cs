@@ -52,13 +52,15 @@ namespace IPTComShark.Windows
             foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source.ToString() == _ip.ToString())
             )
             {
-                Packet packet = capturePacket.Packet;
+                // TODO temporarily disabled !!!!
 
-                IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
-
-
-                var sendPacket = new SendPacket(capturePacket.Date, ipv4);
-                que.Enqueue(sendPacket);
+                //Packet packet = capturePacket.Packet;
+                //
+                //IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
+                //
+                //
+                //var sendPacket = new SendPacket(capturePacket.Date, ipv4);
+                //que.Enqueue(sendPacket);
             }
 
             DateTime startTime = que.Peek().Date;
@@ -154,7 +156,11 @@ namespace IPTComShark.Windows
             if (dialogResult == DialogResult.OK)
             {
                 var fileManager = new FileManager.FileManager();
-                _packets = fileManager.OpenFiles(openFileDialog.FileNames);
+                var raws = fileManager.OpenFiles(openFileDialog.FileNames);
+                foreach (var raw in raws)
+                {
+                    _packets.Add(new CapturePacket(raw));
+                }
             }
             else
             {

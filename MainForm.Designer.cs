@@ -39,14 +39,10 @@ namespace IPTComShark
             this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.packetListView1 = new IPTComShark.Controls.PacketListView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
@@ -67,6 +63,7 @@ namespace IPTComShark
             this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +73,10 @@ namespace IPTComShark
             this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.packetListView1 = new IPTComShark.Controls.PacketListView();
+            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
+            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
+            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -103,29 +103,32 @@ namespace IPTComShark
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLeft,
             this.statusRight});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 575);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 709);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.statusStrip1.ShowItemToolTips = true;
-            this.statusStrip1.Size = new System.Drawing.Size(1433, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1911, 26);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.DoubleClick += new System.EventHandler(this.statusStrip1_DoubleClick);
             // 
             // statusLeft
             // 
             this.statusLeft.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.statusLeft.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.statusLeft.Name = "statusLeft";
-            this.statusLeft.Size = new System.Drawing.Size(0, 17);
+            this.statusLeft.Size = new System.Drawing.Size(0, 20);
             this.statusLeft.Text = "toolStripStatusLabel1";
             // 
             // statusRight
             // 
             this.statusRight.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.statusRight.Name = "statusRight";
-            this.statusRight.Size = new System.Drawing.Size(118, 17);
+            this.statusRight.Size = new System.Drawing.Size(151, 20);
             this.statusRight.Text = "toolStripStatusLabel1";
             // 
             // splitContainer1
@@ -133,7 +136,8 @@ namespace IPTComShark
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 27);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 33);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -143,28 +147,10 @@ namespace IPTComShark
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1433, 545);
-            this.splitContainer1.SplitterDistance = 1030;
+            this.splitContainer1.Size = new System.Drawing.Size(1911, 671);
+            this.splitContainer1.SplitterDistance = 1373;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 7;
-            // 
-            // packetListView1
-            // 
-            this.packetListView1.AllowDrop = true;
-            this.packetListView1.AutoScroll = true;
-            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Name = "packetListView1";
-            this.packetListView1.SearchString = null;
-            packetListSettings1.AutoScroll = true;
-            packetListSettings1.IgnoreComid = null;
-            packetListSettings1.IgnoreDuplicatedPD = true;
-            packetListSettings1.IgnoreLoopback = true;
-            packetListSettings1.IgnoreUnknownData = true;
-            this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1030, 545);
-            this.packetListView1.TabIndex = 0;
-            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
-            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
             // 
             // tabControl1
             // 
@@ -172,86 +158,59 @@ namespace IPTComShark
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(399, 545);
+            this.tabControl1.Size = new System.Drawing.Size(533, 671);
             this.tabControl1.TabIndex = 14;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.packetDisplay1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(391, 519);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(525, 642);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // packetDisplay1
-            // 
-            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetDisplay1.IptConfigReader = null;
-            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
-            this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(385, 513);
-            this.packetDisplay1.TabIndex = 0;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.textBoxSearch);
             this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.flowLayoutPanel1);
             this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
             this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(391, 519);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Size = new System.Drawing.Size(525, 642);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 341);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(391, 20);
-            this.textBoxSearch.TabIndex = 19;
-            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 325);
+            this.label3.Location = new System.Drawing.Point(8, 400);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(53, 17);
             this.label3.TabIndex = 18;
             this.label3.Text = "Search";
-            // 
-            // textBoxIgnoreVars
-            // 
-            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 175);
-            this.textBoxIgnoreVars.Multiline = true;
-            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
-            this.textBoxIgnoreVars.Size = new System.Drawing.Size(391, 147);
-            this.textBoxIgnoreVars.TabIndex = 17;
-            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
-            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 159);
+            this.label2.Location = new System.Drawing.Point(4, 196);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(186, 13);
+            this.label2.Size = new System.Drawing.Size(251, 17);
             this.label2.TabIndex = 15;
             this.label2.Text = "Ignore Variables (separate by newline)";
             // 
@@ -263,9 +222,10 @@ namespace IPTComShark
             this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(385, 101);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(517, 124);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // checkBoxParserOnly
@@ -273,9 +233,10 @@ namespace IPTComShark
             this.checkBoxParserOnly.AutoSize = true;
             this.checkBoxParserOnly.Checked = true;
             this.checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxParserOnly.Location = new System.Drawing.Point(3, 3);
+            this.checkBoxParserOnly.Location = new System.Drawing.Point(4, 4);
+            this.checkBoxParserOnly.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxParserOnly.Name = "checkBoxParserOnly";
-            this.checkBoxParserOnly.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxParserOnly.Size = new System.Drawing.Size(170, 21);
             this.checkBoxParserOnly.TabIndex = 8;
             this.checkBoxParserOnly.Text = "Show only known data";
             this.checkBoxParserOnly.UseVisualStyleBackColor = true;
@@ -283,9 +244,10 @@ namespace IPTComShark
             // checkBoxAutoScroll
             // 
             this.checkBoxAutoScroll.AutoSize = true;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(3, 26);
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(4, 33);
+            this.checkBoxAutoScroll.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
-            this.checkBoxAutoScroll.Size = new System.Drawing.Size(74, 17);
+            this.checkBoxAutoScroll.Size = new System.Drawing.Size(94, 21);
             this.checkBoxAutoScroll.TabIndex = 10;
             this.checkBoxAutoScroll.Text = "AutoScroll";
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
@@ -293,9 +255,10 @@ namespace IPTComShark
             // checkBoxIgnoreLoopback
             // 
             this.checkBoxIgnoreLoopback.AutoSize = true;
-            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(3, 49);
+            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(4, 62);
+            this.checkBoxIgnoreLoopback.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
-            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(136, 21);
             this.checkBoxIgnoreLoopback.TabIndex = 11;
             this.checkBoxIgnoreLoopback.Text = "Ignore Loopback";
             this.checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
@@ -305,9 +268,10 @@ namespace IPTComShark
             this.checkBoxHideDupes.AutoSize = true;
             this.checkBoxHideDupes.Checked = true;
             this.checkBoxHideDupes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHideDupes.Location = new System.Drawing.Point(3, 72);
+            this.checkBoxHideDupes.Location = new System.Drawing.Point(4, 91);
+            this.checkBoxHideDupes.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxHideDupes.Name = "checkBoxHideDupes";
-            this.checkBoxHideDupes.Size = new System.Drawing.Size(174, 17);
+            this.checkBoxHideDupes.Size = new System.Drawing.Size(226, 21);
             this.checkBoxHideDupes.TabIndex = 9;
             this.checkBoxHideDupes.Text = "Ignore Duplicated ProcessData";
             this.checkBoxHideDupes.UseVisualStyleBackColor = true;
@@ -316,22 +280,25 @@ namespace IPTComShark
             // 
             this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 136);
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 167);
+            this.textBoxIgnoreComid.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(391, 20);
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(521, 22);
             this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 120);
+            this.label1.Location = new System.Drawing.Point(4, 148);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 13);
+            this.label1.Size = new System.Drawing.Size(229, 17);
             this.label1.TabIndex = 13;
             this.label1.Text = "Ignore Comid (separate by comma)";
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
@@ -343,7 +310,8 @@ namespace IPTComShark
             this.reportAnIssueToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1433, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1911, 28);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -355,34 +323,34 @@ namespace IPTComShark
             this.saveAllToolStripMenuItem,
             this.saveCurrentFilterToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openFilesToolStripMenuItem
             // 
             this.openFilesToolStripMenuItem.Name = "openFilesToolStripMenuItem";
-            this.openFilesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.openFilesToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.openFilesToolStripMenuItem.Text = "Open Files";
             this.openFilesToolStripMenuItem.Click += new System.EventHandler(this.openFilesToolStripMenuItem_Click);
             // 
             // openFolderToolStripMenuItem
             // 
             this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.openFolderToolStripMenuItem.Text = "Open Folder";
             this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.saveAllToolStripMenuItem.Text = "Save All";
             this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.buttonSaveAll_Click);
             // 
             // saveCurrentFilterToolStripMenuItem
             // 
             this.saveCurrentFilterToolStripMenuItem.Name = "saveCurrentFilterToolStripMenuItem";
-            this.saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.saveCurrentFilterToolStripMenuItem.Text = "Save Current Filter";
             this.saveCurrentFilterToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentFilterToolStripMenuItem_Click);
             // 
@@ -396,68 +364,75 @@ namespace IPTComShark
             this.remoteCaptureToolStripMenuItem,
             this.testToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
             // 
             this.simulateTrafficToolStripMenuItem.Name = "simulateTrafficToolStripMenuItem";
-            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
             this.simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
             this.simulateTrafficToolStripMenuItem.Click += new System.EventHandler(this.simulateTrafficToolStripMenuItem_Click);
             // 
             // exportSVGSequenceDiagramToolStripMenuItem
             // 
             this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
             this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
             this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
             // 
             // exportXLSXToolStripMenuItem
             // 
             this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
-            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
             this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
             this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
             // 
             // exportCSVToolStripMenuItem
             // 
             this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
-            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
             this.exportCSVToolStripMenuItem.Text = "Export CSV";
             // 
             // remoteCaptureToolStripMenuItem
             // 
             this.remoteCaptureToolStripMenuItem.Name = "remoteCaptureToolStripMenuItem";
-            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
             this.remoteCaptureToolStripMenuItem.Text = "Remote Capture";
             this.remoteCaptureToolStripMenuItem.Click += new System.EventHandler(this.RemoteCaptureToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(292, 26);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(69, 24);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.buttonRestart_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
@@ -467,20 +442,20 @@ namespace IPTComShark
             this.eVA2XMLExportToolStripMenuItem,
             this.bDSToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(68, 24);
             this.toolStripMenuItem1.Text = "Import";
             // 
             // eVA2XMLExportToolStripMenuItem
             // 
             this.eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
             this.eVA2XMLExportToolStripMenuItem.Click += new System.EventHandler(this.eVA2XMLExportToolStripMenuItem_Click);
             // 
             // bDSToolStripMenuItem
             // 
             this.bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.bDSToolStripMenuItem.Text = "BDS";
             this.bDSToolStripMenuItem.Click += new System.EventHandler(this.bDSToolStripMenuItem_Click);
             // 
@@ -488,7 +463,7 @@ namespace IPTComShark
             // 
             this.reportAnIssueToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.reportAnIssueToolStripMenuItem.Name = "reportAnIssueToolStripMenuItem";
-            this.reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            this.reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(126, 24);
             this.reportAnIssueToolStripMenuItem.Text = "Report An Issue";
             this.reportAnIssueToolStripMenuItem.Click += new System.EventHandler(this.reportAnIssueToolStripMenuItem_Click);
             // 
@@ -497,28 +472,79 @@ namespace IPTComShark
             this.openCapturesDialog.FileName = "openFileDialog1";
             this.openCapturesDialog.Multiselect = true;
             // 
-            // testToolStripMenuItem
+            // packetListView1
             // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            this.packetListView1.AllowDrop = true;
+            this.packetListView1.AutoScroll = true;
+            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetListView1.Location = new System.Drawing.Point(0, 0);
+            this.packetListView1.Margin = new System.Windows.Forms.Padding(5);
+            this.packetListView1.Name = "packetListView1";
+            this.packetListView1.SearchString = null;
+            packetListSettings1.AutoScroll = true;
+            packetListSettings1.IgnoreComid = null;
+            packetListSettings1.IgnoreDuplicatedPD = true;
+            packetListSettings1.IgnoreLoopback = true;
+            packetListSettings1.IgnoreUnknownData = true;
+            this.packetListView1.Settings = packetListSettings1;
+            this.packetListView1.Size = new System.Drawing.Size(1373, 671);
+            this.packetListView1.TabIndex = 0;
+            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
+            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
+            // 
+            // packetDisplay1
+            // 
+            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetDisplay1.IptConfigReader = null;
+            this.packetDisplay1.Location = new System.Drawing.Point(4, 4);
+            this.packetDisplay1.Margin = new System.Windows.Forms.Padding(5);
+            this.packetDisplay1.Name = "packetDisplay1";
+            this.packetDisplay1.Size = new System.Drawing.Size(517, 634);
+            this.packetDisplay1.TabIndex = 0;
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 420);
+            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(521, 22);
+            this.textBoxSearch.TabIndex = 19;
+            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
+            // 
+            // textBoxIgnoreVars
+            // 
+            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 215);
+            this.textBoxIgnoreVars.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxIgnoreVars.Multiline = true;
+            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
+            this.textBoxIgnoreVars.Size = new System.Drawing.Size(521, 180);
+            this.textBoxIgnoreVars.TabIndex = 17;
+            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
+            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1433, 597);
+            this.ClientSize = new System.Drawing.Size(1911, 735);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "IPTComShark";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

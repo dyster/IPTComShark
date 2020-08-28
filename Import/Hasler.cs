@@ -36,7 +36,7 @@ namespace IPTComShark.Import
             string text = File.ReadAllText(path);
 
             CapturePacket prev = null;
-            uint sortIndex = 1;
+            int sortIndex = 1;
 
             var ss27Parser = new SS27Parser();
 
@@ -51,10 +51,9 @@ namespace IPTComShark.Import
 
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
-                capturePacket.ParsedData.Add(new ParsedDataSet() {ParsedFields = new List<ParsedField>(ss27.Header)});
+                
                 capturePacket.No = sortIndex++;
-                capturePacket.SS27Packet = ss27;
-
+                
                 // add to the chain
                 //if (prev != null)
                 //    deviceLog.Previous = prev;

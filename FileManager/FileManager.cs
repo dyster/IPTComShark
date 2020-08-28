@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace IPTComShark.FileManager
@@ -201,10 +202,35 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<CapturePacket> OpenFiles(string[] inputs)
+        public List<Raw> OpenFiles(string[] inputs, bool openAll = false)
         {
             List<string> fileNames = new List<string>();
 
+            var fo = new FileOpener(inputs, openAll);
+            var dialogresult = fo.ShowDialog();
+            if (dialogresult == DialogResult.OK)
+            {
+                FilterFrom = fo.DateTimeFrom;
+                FilterTo = fo.DateTimeTo;
+
+                var raws = new List<Raw>();
+
+                RawParsed += (sender, raw) => { raws.Add(raw); };
+
+                EnumerateFiles(fo.DataSources);
+                
+                return raws;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Starts opening data async, returns them by RawParsed event, and triggers reset event when finished
+        /// </summary>
+        /// <param name="inputs"></param>
+        public void OpenFilesAsync(string[] inputs)
+        {
             var fo = new FileOpener(inputs);
             var dialogresult = fo.ShowDialog();
             if (dialogresult == DialogResult.OK)
@@ -212,23 +238,24 @@ namespace IPTComShark.FileManager
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
 
-                var packets = new List<CapturePacket>();
+                MethodInvoker invoker = () => EnumerateFiles(fo.DataSources);
 
-                RawParsed += (sender, raw) => { packets.Add(new CapturePacket(raw)); };
-
-                EnumerateFiles(fo.DataSources);
-
-
-                uint seed = 1;
-
-
-                packets.ForEach(p => p.No = seed++);
-
-                return packets;
+                invoker.BeginInvoke(CallBackMethod, invoker);
             }
 
-            return null;
+            
         }
+
+        public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
+
+        private void CallBackMethod(IAsyncResult ar)
+        {
+            var arAsyncState = (MethodInvoker)ar.AsyncState;
+            arAsyncState.EndInvoke(ar);
+            OpenFilesAsyncFinished.Set();
+
+        }
+
 
         public DateTime FilterTo { get; set; }
 

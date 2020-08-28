@@ -12,12 +12,23 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
+using IPTComShark.Classes;
 using IPTComShark.DataSets;
 using IPTComShark.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PacketDotNet;
 using SharpPcap.Npcap;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace IPTComShark
 {
@@ -29,33 +40,64 @@ namespace IPTComShark
 
         private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
 
+        private static readonly BackStore _backStore = new BackStore();
+
+        private static Dictionary<uint, DataSetDefinition> _comidIndex = new Dictionary<uint, DataSetDefinition>();
+
         private long _capturedData;
 
         private NpcapDevice _device;
         private long _discardedData;
         private long _discardedPackets;
 
-        private uint _seed = 1;
+        
 
         //private PCAPWriter _pcapWriter;
 
         public MainForm()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
             InitializeComponent();
 
-            Text = Text += " " + Application.ProductVersion + " codename \"Cliff\"";
+            packetListView1.BackStore = _backStore;
+            packetDisplay1.BackStore = _backStore;
+
+            Text = Text += " " + Application.ProductVersion + " DEBUG VERSION";//  codename \"Gupta\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
             packetDisplay1.IptConfigReader = IptConfigReader;
 
+            DataCollections.Add(new IPT());
             DataCollections.Add(new TPWS());
             DataCollections.Add(new STM());
             DataCollections.Add(new ETCSDiag());
             DataCollections.Add(new VSISDMI());
+            DataCollections.Add(new ABDO());
             DataCollections.Add(new VSIS210());
             DataCollections.Add(IptConfigReader.GetDataSetCollection());
 
+            // indexer not used at moment, only used to detect collisions
+            
+            foreach (var dataSetCollection in DataCollections)
+            {
+                foreach (var dataSetDefinition in dataSetCollection.DataSets)
+                {
+                    foreach (var identifier in dataSetDefinition.Identifiers)
+                    {
+                        var i = uint.Parse(identifier);
+                        if(_comidIndex.ContainsKey(i))
+                            Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
+                        else
+                            _comidIndex.Add(i, dataSetDefinition);
+                    }
+                }
+            }
+
+            
+            
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
@@ -78,17 +120,22 @@ namespace IPTComShark
 
             InitData();
 
-            Logger.Log("IPTComShark started", Severity.Info);
+            _backStore.NewCapturePacket += (sender, packet) => packetListView1.AddRange(packet);
+
+            stopwatch.Stop();
+            Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
         }
 
         private void InitData()
         {
             packetListView1.Clear();
+            _backStore.Clear();
 
 
             _capturedData = 0;
             _discardedData = 0;
             _discardedPackets = 0;
+
         }
 
         private void UpdateStatus(string text)
@@ -111,9 +158,8 @@ namespace IPTComShark
         {
             _capturedData += e.Packet.Data.Length;
             var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
-            var capturePacket = new CapturePacket(raw);
-            capturePacket.No = _seed++;
-            packetListView1.Add(capturePacket);
+
+            _backStore.Add(raw);
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
         }
@@ -126,15 +172,20 @@ namespace IPTComShark
 
             DataSetDefinition dataSetDefinition = null;
 
-            foreach (var collection in DataCollections)
+            if (_comidIndex.ContainsKey(iptwpPacket.Comid))
             {
-                var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
-                if (find != null)
-                {
-                    dataSetDefinition = find;
-                    break;
-                }
+                dataSetDefinition = _comidIndex[iptwpPacket.Comid];
             }
+
+            //foreach (var collection in DataCollections)
+            //{
+            //    var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
+            //    if (find != null)
+            //    {
+            //        dataSetDefinition = find;
+            //        break;
+            //    }
+            //}
 
             if (dataSetDefinition != null)
             {
@@ -270,7 +321,10 @@ namespace IPTComShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
+            var storeStatus = _backStore.Status;
+
             var tuples = new List<Tuple<Color, string>>();
+            tuples.Add(new Tuple<Color, string>(Color.Black, storeStatus + " | "));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, packetListView1.Count().ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));
@@ -307,11 +361,13 @@ namespace IPTComShark
             Properties.Settings.Default.IgnoreLoopback = packetListView1.Settings.IgnoreLoopback;
             Properties.Settings.Default.IgnoreUnknownData = packetListView1.Settings.IgnoreUnknownData;
             Properties.Settings.Default.Save();
+
+            _backStore.Close();
         }
 
         private void buttonSaveAll_Click(object sender, EventArgs e)
         {
-            List<Raw> allRawCaptures = packetListView1.GetAllRawCaptures();
+            List<Raw> allRawCaptures = _backStore.GetAllRaws();
             if (allRawCaptures.Count == 0)
                 return;
 
@@ -386,16 +442,14 @@ namespace IPTComShark
                 Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
-                using (var fileManager = new FileManager.FileManager())
+
                 {
-                    List<CapturePacket> capturePackets = fileManager.OpenFiles(paths);
-                    if (capturePackets != null)
-                    {
-                        foreach (CapturePacket capturePacket in capturePackets)
-                        {
-                            packetListView1.Add(capturePacket);
-                        }
-                    }
+                    var fileManager = new FileManager.FileManager();
+                    fileManager.RawParsed += (sender, raw) => _backStore.Add(raw);
+                    
+                    fileManager.OpenFilesAsync(paths);
+
+                    //fileManager.OpenFilesAsyncFinished.WaitOne();
                 }
 
                 GC.Collect();
@@ -416,6 +470,9 @@ namespace IPTComShark
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InitData();
+
+            // and then go all in on the garbagecollection
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -433,7 +490,7 @@ namespace IPTComShark
             DialogResult dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName);
+                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
             }
         }
 
@@ -447,7 +504,7 @@ namespace IPTComShark
             var dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                Export.Export.MakeXLSX(packetListView1.GetFilteredPackets(), saveFileDialog.FileName);
+                Export.Export.MakeXLSX(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
             }
         }
 
@@ -457,17 +514,9 @@ namespace IPTComShark
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                List<CapturePacket> capturePackets;
+                OpenPath(new []{folderBrowserDialog.SelectedPath});
 
-                using (var fileManager = new FileManager.FileManager())
-                {
-                    capturePackets = fileManager.OpenFiles(new[] {folderBrowserDialog.SelectedPath});
-                }
 
-                foreach (CapturePacket capturePacket in capturePackets)
-                {
-                    packetListView1.Add(capturePacket);
-                }
             }
         }
 
@@ -612,7 +661,8 @@ namespace IPTComShark
                             var parsedDataSet = ETCSDiag.DIA_130.Parse(action);
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
-                            capturePacket.ParsedData.Add(parsedDataSet);
+                            // TODO no idea if this works now
+                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
                             packetListView1.Add(capturePacket);
                         }
                         else if (ServiceID == 205 && deviceID == 3)
@@ -629,7 +679,9 @@ namespace IPTComShark
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
-                            capturePacket.ParsedData.Add(parsedDataSet);
+                            // TODO no idea if this works either now
+                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
+                            
                             packetListView1.Add(capturePacket);
                         }
                     }
@@ -650,6 +702,115 @@ namespace IPTComShark
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Shift && e.Control && e.KeyCode == Keys.B)
+            {
+                GC.Collect();
+                
+                RunBenchmark(@"c:\temp\benchmark1.pcap");
+                
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark2.pcapng");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark3.pcap");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark4.pcap");
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(@"c:\temp\benchmark5.pcap");
+            }
+        }
+
+        
+        
+        private static void RunBenchmark(string file)
+        {
+            
+
+            var totalMemory = GC.GetTotalMemory(false);
+
+            Process myProcess = Process.GetCurrentProcess();
+
+            var privateMemorySize64 = myProcess.PrivateMemorySize64;
+            var workingSet64 = myProcess.WorkingSet64;
+            var pagedSystemMemorySize64 = myProcess.PagedSystemMemorySize64;
+            var pagedMemorySize64 = myProcess.PagedMemorySize64;
+
+            var userProcessorTime = myProcess.UserProcessorTime;
+            var privilegedProcessorTime = myProcess.PrivilegedProcessorTime;
+            var totalProcessorTime = myProcess.TotalProcessorTime;
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var list = new List<CapturePacket>();
+            var count = 0;
+            using (var fileManager = new FileManager.FileManager())
+            {
+                foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
+                {
+                    list.Add(new CapturePacket(raw));
+                    
+                    count++;
+                }
+            }
+
+           
+
+            stopwatch.Stop();
+            
+            myProcess = Process.GetCurrentProcess();
+
+            var totalMemory2 = GC.GetTotalMemory(false);
+
+            var privateMemorySize64_2 = myProcess.PrivateMemorySize64;
+            var workingSet64_2 = myProcess.WorkingSet64;
+            var pagedSystemMemorySize64_2 = myProcess.PagedSystemMemorySize64;
+            var pagedMemorySize64_2 = myProcess.PagedMemorySize64;
+
+            var userProcessorTime_2 = myProcess.UserProcessorTime;
+            var privilegedProcessorTime_2 = myProcess.PrivilegedProcessorTime;
+            var totalProcessorTime_2 = myProcess.TotalProcessorTime;
+
+
+            var peakPagedMem = myProcess.PeakPagedMemorySize64;
+            var peakVirtualMem = myProcess.PeakVirtualMemorySize64;
+            var peakWorkingSet = myProcess.PeakWorkingSet64;
+
+            var text = "-------------------------------------"+Environment.NewLine;
+            text += DateTime.Now.ToString() + "  " + Application.ProductVersion + Environment.NewLine;
+            text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) + Environment.NewLine;
+            text += "PrivateMemorySize64 increase = " + Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
+            text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) + Environment.NewLine;
+            text += "PagedSystemMemorySize64 increase = " + Functions.PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) + Environment.NewLine;
+            text += "PagedMemorySize64 increase = " + Functions.PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
+
+            text += "UserProcessorTime increase = " + (userProcessorTime_2 - userProcessorTime) + Environment.NewLine;
+            text += "PrivilegedProcessorTime increase = " + (privilegedProcessorTime_2 - privilegedProcessorTime) + Environment.NewLine;
+            text += "TotalProcessorTime increase = " + (totalProcessorTime_2 - totalProcessorTime) + Environment.NewLine;
+
+            text += "Time taken " + stopwatch.Elapsed + Environment.NewLine;
+
+            //MessageBox.Show(text);
+
+            File.AppendAllText(file + ".txt", text);
+        }
+
+        private void statusStrip1_DoubleClick(object sender, EventArgs e)
+        {
+            var textWindow = new TextWindow(string.Join(Environment.NewLine, Logger.Instance.GetLog().Select(log => log.ToString())));
+            textWindow.Show(this);
         }
 
 

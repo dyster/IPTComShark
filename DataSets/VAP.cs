@@ -59,53 +59,62 @@ namespace IPTComShark.DataSets
             }
         };
 
-        public static DataSetDefinition STM_Packet => new DataSetDefinition()
+        public static DataSetDefinition ATPCULifeSign => new DataSetDefinition()
         {
-            Name = "STM Packet",
+            Name = "ATPCU LifeSign",
             BitFields = new List<BitField>()
             {
-                new BitField()
+                new BitField
                 {
-                    Name = "NID_STM",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "Bytelength",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "NID_PACKET",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "L_PACKET",
+                    Name = "NID_ATP_PACKET",
                     BitFieldType = BitFieldType.UInt16,
-                    Length = 13
+                    Length = 16
+                },
+                new BitField()
+                {
+                    Name = "L_ATP_PACKET",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField()
+                {
+                    Name = "Lifesign_unit",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Error" },
+                        {"1", "ETCS Core" },
+                        {"2", "OPC" },
+                    }
+                },
+                new BitField()
+                {
+                    Name = "Lifesign_status",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Error" },
+                        {"1", "Idle" },
+                        {"2", "Running" },
+                        {"3", "Stopping Failure" },
+                        {"4", "Uncondit. Stopping Failure" },
+                        {"5", "Halt, Fatal Failure" },
+                    }
+                },
+                new BitField()
+                {
+                    Name = "TimeStamp",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32
                 },
 
                 new BitField()
                 {
-                    Name = "First Niblet",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 4
-                },
-                new BitField()
-                {
-                    Name = "NID_PACKET",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8
-                },
-                new BitField()
-                {
-                    Name = "L_PACKET",
-                    BitFieldType = BitFieldType.UInt16,
-                    Length = 13
+                    Name = "RefTimeOffset",
+                    BitFieldType = BitFieldType.Int32,
+                    Length = 32
                 },
             }
         };

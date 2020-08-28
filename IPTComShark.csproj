@@ -68,16 +68,18 @@
   <ItemGroup>
     <Compile Include="CapturePacket\CapturePacket.cs" />
     <Compile Include="CapturePacket\DisplayField.cs" />
+    <Compile Include="Classes\BackStore.cs" />
     <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
-    <Compile Include="Controls\PacketListView\PacketSource.cs" />
     <Compile Include="Controls\TypeDelayTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TypeDelayTextBox.Designer.cs">
       <DependentUpon>TypeDelayTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataSets\ABDO.cs" />
+    <Compile Include="DataSets\IPT.cs" />
     <Compile Include="Export\Export.cs" />
     <Compile Include="FileManager\DataSource.cs" />
     <Compile Include="FileManager\DatePicker.cs">
@@ -106,6 +108,7 @@
     <Compile Include="DataSets\STM.cs" />
     <Compile Include="DataSets\VAP.cs" />
     <Compile Include="DataSets\VSISDMI.cs" />
+    <Compile Include="Parsers\JRUParser.cs" />
     <Compile Include="Parsers\NTPParser.cs" />
     <Compile Include="Parsers\ParserFactory.cs" />
     <Compile Include="Parsers\SPLParser.cs" />
@@ -249,6 +252,9 @@
   <ItemGroup>
     <PackageReference Include="EPPlus">
       <Version>5.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="ObjectListView.Official">
       <Version>2.9.2-alpha2</Version>

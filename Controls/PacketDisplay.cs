@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 using IPTComShark.Windows;
 
 namespace IPTComShark.Controls
@@ -30,6 +31,8 @@ namespace IPTComShark.Controls
 
         public IPTConfigReader IptConfigReader { get; set; }
 
+        public BackStore BackStore { get; set; }
+
         public void SetObject(CapturePacket originalpacket)
         {
             uint ticker = 0;
@@ -40,13 +43,16 @@ namespace IPTComShark.Controls
             textBoxType.Text = string.Empty;
 
             var dataLines = new List<DataLine>();
+            
+            var topPacket = BackStore.GetPacket(originalpacket.No);
 
             if (originalpacket.Protocol == ProtocolType.Virtual)
             {
-                foreach (var parsedField in originalpacket.ParsedData.SelectMany(dataset => dataset.ParsedFields))
-                {
-                    dataLines.Add(new DataLine(parsedField, ticker++));
-                }
+                // TODO Virtual is now broken! FIX!
+                //foreach (var parsedField in originalpacket.ParsedData.SelectMany(dataset => dataset.ParsedFields))
+                //{
+                //    dataLines.Add(new DataLine(parsedField, ticker++));
+                //}
 
                 dataListViewRight.DataSource = dataLines;
                 return;
@@ -54,12 +60,12 @@ namespace IPTComShark.Controls
 
             try
             {
-                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, out var displayfields, true);
+                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, topPacket, true);
 
 
                 if (originalpacket.IPTWPPacket != null)
                 {
-                    var udp = (UdpPacket) originalpacket.Packet.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
                     var iptPayload = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
@@ -108,18 +114,25 @@ namespace IPTComShark.Controls
                     }
 
 
-                    if (extensiveData != null && extensiveData.ParsedFields.Count > 0
-                    ) // a parser has chugged out something
+                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1)
                     {
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "IPTCom Data"});
-                        foreach (var field in extensiveData.ParsedFields)
+                        // if only one set we can do change detection
+
+                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
+                        foreach (var field in extensiveData.Value.ParsedData[0].ParsedFields)
                         {
                             bool changed = false;
                             if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
                             {
-                                var parsedField = originalpacket.Previous.ParsedData[0].GetField(field.Name);
-                                if (parsedField != null)
-                                    changed = !parsedField.Value.Equals(field.Value);
+                                var extractparse = BackStore.GetParse(originalpacket.Previous.No);
+                                if (extractparse.HasValue)
+                                {
+                                    var parsedField = extractparse.Value.ParsedData[0].GetField(field.Name);
+                                    if (parsedField != null)
+                                        changed = !parsedField.Value.Equals(field.Value);
+                                }
+
+                                
                             }
 
                             dataLines.Add(new DataLine(field, ticker++)
@@ -128,60 +141,27 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                }
-
-
-                if (originalpacket.SS27Packet != null)
-                {
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "JRU Data"});
-
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "Header"});
-                    dataLines.Add(new DataLine(ticker++)
+                    else if(extensiveData.HasValue)
                     {
-                        Name = "Timestamp",
-                        Value = originalpacket.SS27Packet.DateTime.ToString() + ":" +
-                                originalpacket.SS27Packet.DateTime.Millisecond
-                    });
-                    dataLines.Add(new DataLine(ticker++) {Name = "Level", Value = originalpacket.SS27Packet.Level});
-                    dataLines.Add(new DataLine(ticker++) {Name = "Mode", Value = originalpacket.SS27Packet.Mode});
-                    dataLines.Add(new DataLine(ticker++)
-                        {Name = "Speed", Value = originalpacket.SS27Packet.V_TRAIN.ToString()});
-
-                    dataLines.AddRange(
-                        originalpacket.SS27Packet.Header.Select(parsedField => new DataLine(parsedField, ticker++)));
-
-
-                    if (originalpacket.SS27Packet.SubMessage != null)
-                    {
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = "SubMessage"});
-                        foreach (var parsedField in originalpacket.SS27Packet.SubMessage.ParsedFields)
+                        foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                         {
-                            dataLines.Add(new DataLine(parsedField, ticker++));
-                        }
-                    }
-
-                    foreach (var ss27PacketExtraMessage in originalpacket.SS27Packet.ExtraMessages)
-                    {
-                        dataLines.Add(new DataLine(ticker++)
-                        {
-                            IsCategory = true,
-                            Name = ss27PacketExtraMessage.Name,
-                            Comment = ss27PacketExtraMessage.Comment
-                        });
-                        foreach (var parsedField in ss27PacketExtraMessage.ParsedFields)
-                        {
-                            dataLines.Add(new DataLine(parsedField, ticker++));
+                            dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                            foreach (var field in parsedDataSet.ParsedFields)
+                            {
+                                dataLines.Add(new DataLine(field, ticker++));
+                            }
                         }
                     }
                 }
-
-                if (originalpacket.IPTWPPacket == null && originalpacket.SS27Packet == null && extensiveData != null)
+                else if(extensiveData.HasValue)
                 {
-                    dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Name});
-
-                    foreach (var field in extensiveData.ParsedFields)
+                    foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                     {
-                        dataLines.Add(new DataLine(field, ticker++));
+                        dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                        foreach (var field in parsedDataSet.ParsedFields)
+                        {
+                            dataLines.Add(new DataLine(field, ticker++));
+                        }
                     }
                 }
             }
@@ -192,13 +172,13 @@ namespace IPTComShark.Controls
 
             try
             {
-                var text = new StringBuilder(originalpacket.Packet.ToString(StringOutputType.Verbose));
+                var text = new StringBuilder(topPacket.ToString(StringOutputType.Verbose));
 
 
                 if (originalpacket.IPTWPPacket != null)
                 {
                     // since we have IPT, straight cast to UDP, BAM
-                    var udp = (UdpPacket) originalpacket.Packet.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
                     var bytes = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
