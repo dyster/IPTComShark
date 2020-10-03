@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using IPTComShark.DataSets;
-using IPTComShark.Parsers;
+﻿using IPTComShark.Parsers;
 using Newtonsoft.Json;
 using PacketDotNet;
-using sonesson_tools;
 using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataParsers;
 using sonesson_tools.DataSets;
-using sonesson_toolsNETSTANDARD.DataParsers.Subset57;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace IPTComShark
 {
@@ -22,7 +17,6 @@ namespace IPTComShark
 
         private static readonly ParserFactory _parseFactory = new ParserFactory();
 
-        private LinkLayerType _linkLayerType;
         private string _customName = null;
 
 
@@ -134,10 +128,8 @@ namespace IPTComShark
 
         public CapturePacket(Raw raw, Packet topPacket)
         {
-            //RawCapture = raw;
             Date = raw.TimeStamp;
-            _linkLayerType = raw.LinkLayer;
-            
+
             if (topPacket == null)
                 return;
 
@@ -162,6 +154,7 @@ namespace IPTComShark
 
                 if ((ipv4.FragmentFlags & 0x01) == 0x01)
                 {
+                    // fragments are rebuilt in the backstore
                     this.ProtocolInfo = "IP Fragment";
                     return;
                 }
@@ -250,6 +243,19 @@ namespace IPTComShark
                         if (udp.SourcePort == 123 && udp.DestinationPort == 123)
                         {
                             Protocol = ProtocolType.NTP;
+                        }
+                        else if(udp.DestinationPort == 20548 || udp.DestinationPort == 20550)
+                        {
+                            Protocol = ProtocolType.IPTWP;
+
+                            try
+                            {
+                                IPTWPPacket = IPTWPPacket.Extract(udp.PayloadData);
+                            }
+                            catch (Exception e)
+                            {
+                                Error = e.Message;
+                            }
                         }
                         else if (Equals(ipv4.SourceAddress, OpcAddress))
                         {
@@ -361,41 +367,6 @@ namespace IPTComShark
                                 ProtocolInfo = "ETC->VAP (ATO)";
                         }
                         
-
-                        if (Protocol == ProtocolType.UDP)
-                        {
-                            // EXPERIMENT
-
-                            /*
-                            Protocol = ProtocolType.UNKNOWN;
-                            _protocolinfo = "EXPERIMENT";
-
-                            var payload = udp.PayloadData;
-                            var spl = VAP.UDP_SPL.Parse(payload);
-                            this.DisplayFields =
-                                spl.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList();
-
-                            if (spl.ParsedFields.Last().Value.Equals("C9"))
-                            {
-                                var nextBytes = Functions.SubArrayGetter(payload, 81);
-                                var stm = VAP.STM_Packet.Parse(nextBytes);
-                                DisplayFields.AddRange(stm.ParsedFields.Select(f => new Tuple<string, object>(f.Name, f.Value)).ToList());
-                            }
-                            */
-                        }
-
-
-                        try
-                        {
-                            IPTWPPacket = IPTWPPacket.Extract(udp);
-                        }
-                        catch (Exception e)
-                        {
-                            Error = e.Message;
-                        }
-
-                        if (IPTWPPacket != null)
-                            Protocol = ProtocolType.IPTWP;
                         break;
 
                     case PacketDotNet.ProtocolType.Icmp:
@@ -468,11 +439,13 @@ namespace IPTComShark
         /// <summary>
         /// Indicates that some data has been parsed successfully for this packet
         /// </summary>
+        [JsonIgnore]
         public bool HasData { get; set; }
 
         /// <summary>
         /// Indicates that the data in this packet is identical to the previous one (assuming Previous is set and HasData)
         /// </summary>
+        [JsonIgnore]
         public bool IsDupe { get; set; }
         
         public byte[] Source
@@ -487,27 +460,10 @@ namespace IPTComShark
             set;
         }
 
-        //public IPv4Packet IPv4Packet { get; }
-        //
-        //public UdpPacket UDPPacket
-        //{
-        //    get
-        //    {
-        //        if (IPv4Packet != null && IPv4Packet.Protocol == IPProtocolType.UDP)
-        //        {
-        //            return (UdpPacket) IPv4Packet.PayloadPacket;
-        //        }
-        //        return null;
-        //    }
-        //}
-        //
-        //public ARPPacket ARPPacket { get; }
-
         public IPTWPPacket IPTWPPacket { get; }
         
         public ProtocolType Protocol { get; }
 
-        //public ProcInfo ProtocolInfo { get; }
         [field: JsonIgnore]
         public string ProtocolInfo { get; private set; }
 

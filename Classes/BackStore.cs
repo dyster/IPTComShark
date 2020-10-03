@@ -111,7 +111,7 @@ namespace IPTComShark.Classes
                             var tryDequeue = _addBuffer.TryDequeue(out Raw tryRaw);
                             if (tryDequeue)
                             {
-                                var capturePacket = Parse(tryRaw);
+                                var capturePacket = Add(tryRaw, out var notused);
                                 
                                 // this list is only to hold updates, the Parse function adds them to the main store
                                 list.Add(capturePacket);
@@ -137,16 +137,24 @@ namespace IPTComShark.Classes
             }
         }
 
-        public void Add(Raw raw)
+        public void AddAsync(Raw raw)
         {
             
             
             _addBuffer.Enqueue(raw);
             
         }
-        private CapturePacket Parse(Raw raw)
+
+        /// <summary>
+        /// Parse raw packet data and insert into main store.
+        /// This is a blocking function, for async use AddAsync
+        /// </summary>
+        /// <param name="raw">Raw ethernet data</param>
+        /// <returns>The parsed packet</returns>
+        public CapturePacket Add(Raw raw, out List<ParsedDataSet> parsedData)
         {
-            
+            parsedData = new List<ParsedDataSet>();
+
             var topPacket = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
 
             // re-assemble fragments
@@ -193,18 +201,8 @@ namespace IPTComShark.Classes
             if (extractParsedData.HasValue)
             {
                 var parse = extractParsedData.Value;
-                foreach (var parsedDataSet in parse.ParsedData)
-                {
-                    if (parsedDataSet == null)
-                    {
-                        //no!
-                    }
-                    else
-                    {
-                        //this.ParsedData.Add(parsedDataSet);
-                    }
-                }
-
+                parsedData = parse.ParsedData;
+                
                 // add all available displayfields for now
                 if (parse.DisplayFields != null) capturePacket.DisplayFields.AddRange(parse.DisplayFields);
                 if (!string.IsNullOrEmpty(parse.Name))
