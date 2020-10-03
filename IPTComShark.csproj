@@ -69,6 +69,7 @@
     <Compile Include="CapturePacket\CapturePacket.cs" />
     <Compile Include="CapturePacket\DisplayField.cs" />
     <Compile Include="Classes\BackStore.cs" />
+    <Compile Include="Classes\DataStore.cs" />
     <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />
     <Compile Include="Controls\PacketListView\PacketListSettings.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="DataSets\STM.cs" />
     <Compile Include="DataSets\VAP.cs" />
     <Compile Include="DataSets\VSISDMI.cs" />
+    <Compile Include="Parsers\IPTWPParser.cs" />
     <Compile Include="Parsers\JRUParser.cs" />
     <Compile Include="Parsers\NTPParser.cs" />
     <Compile Include="Parsers\ParserFactory.cs" />

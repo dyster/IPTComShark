@@ -202,11 +202,11 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<Raw> OpenFiles(string[] inputs, bool openAll = false)
+        public List<Raw> OpenFiles(string[] inputs)
         {
             List<string> fileNames = new List<string>();
 
-            var fo = new FileOpener(inputs, openAll);
+            var fo = new FileOpener(inputs);
             var dialogresult = fo.ShowDialog();
             if (dialogresult == DialogResult.OK)
             {

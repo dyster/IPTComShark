@@ -28,6 +28,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PacketDotNet;
 using SharpPcap.Npcap;
+using sonesson_tools.FileReaders;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace IPTComShark
@@ -159,7 +160,7 @@ namespace IPTComShark
             _capturedData += e.Packet.Data.Length;
             var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
 
-            _backStore.Add(raw);
+            _backStore.AddAsync(raw);
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
         }
@@ -445,7 +446,7 @@ namespace IPTComShark
 
                 {
                     var fileManager = new FileManager.FileManager();
-                    fileManager.RawParsed += (sender, raw) => _backStore.Add(raw);
+                    fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
                     
                     fileManager.OpenFilesAsync(paths);
 
@@ -756,17 +757,39 @@ namespace IPTComShark
 
             var list = new List<CapturePacket>();
             var count = 0;
-            using (var fileManager = new FileManager.FileManager())
+
+            var pcapReader = new PCAPReader();
+
+            List<FileReadObject> fileReadObjects;
+            if (pcapReader.CanRead(file))
             {
-                foreach (var raw in fileManager.OpenFiles(new[] { file }, true))
-                {
-                    list.Add(new CapturePacket(raw));
-                    
-                    count++;
-                }
+                fileReadObjects = pcapReader.Read(file);
+            }
+            else
+            {
+                var pcapngReader = new PCAPNGReader();
+                fileReadObjects = pcapngReader.Read(file);
             }
 
-           
+            foreach (var fileReadObject in fileReadObjects)
+            {
+                Raw raw;
+                if (fileReadObject.ReadObject is PCAPBlock)
+                {
+                    var pcapBlock = (PCAPBlock)fileReadObject.ReadObject;
+                    raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
+                        (LinkLayerType)pcapBlock.Header.network);
+                }
+                else
+                {
+                    var pcapngBlock = (PCAPNGBlock)fileReadObject.ReadObject;
+                    raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
+                        (LinkLayerType)pcapngBlock.Interface.LinkLayerType);
+                }
+
+                list.Add(new CapturePacket(raw));
+                count++;
+            }
 
             stopwatch.Stop();
             

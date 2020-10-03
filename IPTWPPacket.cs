@@ -73,55 +73,43 @@ namespace IPTComShark
             return data;
         }
 
-        public static IPTWPPacket Extract(UdpPacket udp)
+        public static IPTWPPacket Extract(byte[] payload)
         {
-            if (udp == null)
-                return null;
-
             var iptPacket = new IPTWPPacket();
-
-            byte[] payload = udp.PayloadData;
-
-            if (udp.DestinationPort == 20548 || udp.DestinationPort == 20550)
-            {
-                if (payload.Length <= 28) // the minimum length of an empty iptwp packet
-                    return null;
-
-                var header = ExtractHeader(payload);
-
-                ushort datasetlength = (ushort) header["DatasetLength"];
-
-
-                // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
-                int totalsize = ((ushort) header["HeaderLength"]) + 4 + datasetlength;
-
-                // calculate the number of datasets and add the number of framechecks we should have
-                int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
-                totalsize += datasets * 4;
-
-                // calculate if there should be padding
-                if (datasetlength % 4 != 0)
-                {
-                    int remainder = datasetlength % 4;
-                    totalsize += 4 - remainder;
-                }
-
-                if (totalsize != payload.Length)
-                    return null;
-                if (!MessageTypes.ContainsKey((ushort) header["Type"]))
-                    return null;
-
-                // we have valid IPTCom!
-
-                iptPacket.Comid = (uint) header["ComID"];
-                iptPacket.IPTWPSize = datasetlength;
-                iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
-            }
-            else
-            {
+            
+            if (payload.Length <= 28) // the minimum length of an empty iptwp packet
                 return null;
+
+            var header = ExtractHeader(payload);
+
+            ushort datasetlength = (ushort) header["DatasetLength"];
+
+
+            // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
+            int totalsize = ((ushort) header["HeaderLength"]) + 4 + datasetlength;
+
+            // calculate the number of datasets and add the number of framechecks we should have
+            int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
+            totalsize += datasets * 4;
+
+            // calculate if there should be padding
+            if (datasetlength % 4 != 0)
+            {
+                int remainder = datasetlength % 4;
+                totalsize += 4 - remainder;
             }
 
+            if (totalsize != payload.Length)
+                return null;
+            if (!MessageTypes.ContainsKey((ushort) header["Type"]))
+                return null;
+
+            // we have valid IPTCom!
+
+            iptPacket.Comid = (uint) header["ComID"];
+            iptPacket.IPTWPSize = datasetlength;
+            iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
+           
             return iptPacket;
         }
 

@@ -23,15 +23,11 @@ namespace IPTComShark.FileManager
         public List<DataSource> DataSources { get; private set; }
         public DateTime DateTimeFrom { get; private set; }
         public DateTime DateTimeTo { get; private set; }
-
-        private bool _openAll;
-
-        public FileOpener(string[] inputs, bool openAll = false)
+        
+        public FileOpener(string[] inputs)
         {
             InitializeComponent();
-
-            _openAll = openAll;
-
+            
             _inputstrings = inputs;
 
             dataListView1.DataSource = _dataSources;
@@ -312,13 +308,6 @@ namespace IPTComShark.FileManager
             UpdateList("BackgroundWorker finished");
             buttonGO.Enabled = true;
             buttonMerge.Enabled = true;
-
-            if (_openAll)
-            {
-                this.DialogResult = DialogResult.OK;
-                SetData();
-                this.Close();
-            }
         }
 
         private void SetData()
