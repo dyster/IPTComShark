@@ -18,6 +18,8 @@ namespace IPTComShark.DataSets
             DataSets.Add(com101);
             DataSets.Add(com102);
             DataSets.Add(com103);
+            DataSets.Add(com222);
+            DataSets.Add(com223);
         }
 
         public static DataSetDefinition com100 => new DataSetDefinition
@@ -887,6 +889,42 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Spare,
                     Length = 16,
                     Comment = "For future extensions (set to 0)"
+                }
+            }
+        };
+
+        public static DataSetDefinition com222 => new DataSetDefinition
+        {
+            Name = "Vehicle Name Output",
+            Identifiers = new List<string>
+            {
+                "222"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "VehicleName",
+                    BitFieldType = BitFieldType.StringBigEndUtf16,
+                    Length = 16*16
+                }
+            }
+        };
+
+        public static DataSetDefinition com223 => new DataSetDefinition
+        {
+            Name = "Vehicle Name Input",
+            Identifiers = new List<string>
+            {
+                "223"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "VehicleName",
+                    BitFieldType = BitFieldType.StringBigEndUtf16,
+                    Length = 16*16
                 }
             }
         };
