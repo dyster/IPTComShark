@@ -2106,7 +2106,6 @@ namespace IPTComShark.DataSets
                     Name = "Start",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Start button"
                 },
                 new BitField
@@ -2114,7 +2113,6 @@ namespace IPTComShark.DataSets
                     Name = "Driver ID",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Driver ID button"
                 },
                 new BitField
@@ -2122,7 +2120,6 @@ namespace IPTComShark.DataSets
                     Name = "Train data",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Train Data button"
                 },
                 new BitField
@@ -2130,7 +2127,6 @@ namespace IPTComShark.DataSets
                     Name = "Level",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Level button"
                 },
                 new BitField
@@ -2138,7 +2134,6 @@ namespace IPTComShark.DataSets
                     Name = "Train running number",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable TRN button"
                 },
                 new BitField
@@ -2146,7 +2141,6 @@ namespace IPTComShark.DataSets
                     Name = "Shunting",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Shunting button"
                 },
                 new BitField
@@ -2154,7 +2148,6 @@ namespace IPTComShark.DataSets
                     Name = "Exit Shunting",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Exit Shunting button"
                 },
                 new BitField
@@ -2162,7 +2155,6 @@ namespace IPTComShark.DataSets
                     Name = "Non-Leading",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Non-Leading button"
                 },
                 new BitField
@@ -2170,7 +2162,6 @@ namespace IPTComShark.DataSets
                     Name = "Maintain Shunting",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Maintain Shunting button"
                 },
                 new BitField
@@ -2178,7 +2169,6 @@ namespace IPTComShark.DataSets
                     Name = "EOA",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable EOA button"
                 },
                 new BitField
@@ -2186,7 +2176,6 @@ namespace IPTComShark.DataSets
                     Name = "Adhesion",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Adhesion button"
                 },
                 new BitField
@@ -2194,7 +2183,6 @@ namespace IPTComShark.DataSets
                     Name = "SR speed / distance",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable SR speed/distance button"
                 },
                 new BitField
@@ -2202,7 +2190,6 @@ namespace IPTComShark.DataSets
                     Name = "Train integrity",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Train Integrity button"
                 },
                 new BitField
@@ -2210,7 +2197,6 @@ namespace IPTComShark.DataSets
                     Name = "Language",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Language button"
                 },
                 new BitField
@@ -2218,7 +2204,6 @@ namespace IPTComShark.DataSets
                     Name = "Volume",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Volume button"
                 },
                 new BitField
@@ -2226,7 +2211,6 @@ namespace IPTComShark.DataSets
                     Name = "Brightness",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Brightness button"
                 },
                 new BitField
@@ -2234,7 +2218,6 @@ namespace IPTComShark.DataSets
                     Name = "System version",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable System Version button"
                 },
                 new BitField
@@ -2242,7 +2225,6 @@ namespace IPTComShark.DataSets
                     Name = "Set VBC",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Set VBC button"
                 },
                 new BitField
@@ -2250,7 +2232,6 @@ namespace IPTComShark.DataSets
                     Name = "Remove VBC",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Remove VBC button"
                 },
                 new BitField
@@ -2258,7 +2239,6 @@ namespace IPTComShark.DataSets
                     Name = "Contact last RBC",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Contact Last RBC button"
                 },
                 new BitField
@@ -2266,7 +2246,6 @@ namespace IPTComShark.DataSets
                     Name = "Use short number",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Use Short Number button"
                 },
                 new BitField
@@ -2274,7 +2253,6 @@ namespace IPTComShark.DataSets
                     Name = "Enter RBC data",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Enter RBC Data button"
                 },
                 new BitField
@@ -2282,7 +2260,6 @@ namespace IPTComShark.DataSets
                     Name = "Radio Network ID",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Radio Network ID button"
                 },
                 new BitField
@@ -2290,7 +2267,6 @@ namespace IPTComShark.DataSets
                     Name = "Geographical position",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Geographical Position button"
                 },
                 new BitField
@@ -2298,7 +2274,6 @@ namespace IPTComShark.DataSets
                     Name = "End of data entry (NTC)",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable End of Data Entry (NTC) button"
                 },
                 new BitField
@@ -2306,7 +2281,6 @@ namespace IPTComShark.DataSets
                     Name = "Set local time, date and offset",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Set Clock button"
                 },
                 new BitField
@@ -2314,7 +2288,6 @@ namespace IPTComShark.DataSets
                     Name = "Set local offset",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Set Local Offset button"
                 },
                 new BitField
@@ -2322,7 +2295,6 @@ namespace IPTComShark.DataSets
                     Name = "Reserved",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "reserved"
                 },
                 new BitField
@@ -2330,7 +2302,6 @@ namespace IPTComShark.DataSets
                     Name = "Start Brake Test",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Start Brake Test button"
                 },
                 new BitField
@@ -2338,7 +2309,6 @@ namespace IPTComShark.DataSets
                     Name = "Enable wheel diameter",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Wheel Diameter button"
                 },
                 new BitField
@@ -2346,7 +2316,6 @@ namespace IPTComShark.DataSets
                     Name = "Enable Doppler",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Doppler Radar button"
                 },
                 new BitField
@@ -2354,7 +2323,6 @@ namespace IPTComShark.DataSets
                     Name = "Enable brake percentage",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable Brake Percentage button"
                 },
                 new BitField
@@ -2362,7 +2330,6 @@ namespace IPTComShark.DataSets
                     Name = "System Info",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    SkipIfValue = false,
                     Comment = "Enable System Information button"
                 },
                 new BitField
@@ -4599,56 +4566,48 @@ namespace IPTComShark.DataSets
                         Name = "Train Set ID",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Train Category",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Train Length",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Brake Percentage",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Max. Train Speed",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Axle Load Category",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Airtightness",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Loading Gauge",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
