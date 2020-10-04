@@ -469,22 +469,67 @@ namespace IPTComShark.DataSets
         public static DataSetDefinition OBU_27 => new DataSetDefinition
         {
             Name = "Obu27",
-            Comment = "",
+            Comment = "Contains the brake effort value.",
             Identifiers = new List<string>
             {
                 "230503996",
                 "230503997"
+            },
+            BitFields = new List<BitField>()
+            {
+                new BitField()
+                {
+                    Name = "BrakeEffort",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Brake effort in % (1 = 0.01 %)"
+                },
+                new BitField
+                {
+                    Name = "Enable_Push_Button",
+                    Comment = "Enable push button indication",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "OFF"},
+                        {"1", "Steady"},
+                        {"2", "Flashing"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "Disable_Push_Button",
+                    Comment = "Disable push button indication",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "OFF"},
+                        {"1", "Steady"},
+                        {"2", "Flashing"}
+                    }
+                },
             }
         };
 
         public static DataSetDefinition OBU_28 => new DataSetDefinition
         {
             Name = "Obu28",
-            Comment = "",
+            Comment = "Station list request",
             Identifiers = new List<string>
             {
                 "230503998",
                 "230503999"
+            },
+            BitFields = new List<BitField>()
+            {
+                new BitField()
+                {
+                    Name = "NID_OPERATION",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32
+                }
             }
         };
 
