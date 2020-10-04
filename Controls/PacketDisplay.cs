@@ -72,47 +72,7 @@ namespace IPTComShark.Controls
 
                     textBoxSize.Text = iptPacket.IPTWPSize.ToString();
                     textBoxType.Text = iptPacket.IPTWPType.ToString();
-
-                    if (iptPacket.IPTWPType == IPTTypes.MA)
-                    {
-                        dataLines.Add(new DataLine(ticker++)
-                            {IsCategory = true, Name = "IPTCom Message Acknowledgement"});
-
-                        var ackCode = BitConverter.ToUInt16(new[] {iptPayload[1], iptPayload[0]}, 0);
-                        var ackSeq = BitConverter.ToUInt16(new[] {iptPayload[3], iptPayload[2]}, 0);
-
-
-                        switch (ackCode)
-                        {
-                            case 0:
-                                dataLines.Add(new DataLine(ticker++) {Name = "Ack Code", Value = "OK"});
-                                break;
-                            case 1:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, wrong frame check sequence in data part"});
-                                break;
-                            case 2:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, destination unknown / not listening"});
-                                break;
-                            case 3:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, wrong data / configuration mismatch"});
-                                break;
-                            case 4:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, buffer not available"});
-                                break;
-                            default:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "Invalid code: " + ackCode});
-                                break;
-                        }
-
-                        dataLines.Add(new DataLine(ticker++) {Name = "Ack Sequence", Value = ackSeq.ToString()});
-                    }
-
-
+                    
                     if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 && originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection

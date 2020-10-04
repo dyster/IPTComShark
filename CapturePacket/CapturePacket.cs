@@ -62,25 +62,13 @@ namespace IPTComShark
                     {
                         return null;
                     }
-
                     
-
-
-                   
-                    if (packet.Protocol == ProtocolType.IPTWP && packet.IPTWPType == IPTTypes.MA)
+                    var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
+                    if (!parse.NoParserInstalled)
                     {
-                        // do something?
+                        packet.HasData = true;
+                        return parse;
                     }
-                    else
-                    {
-                        var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
-                        if (!parse.NoParserInstalled)
-                        {
-                            packet.HasData = true;
-                            return parse;
-                        }
-                    }
-
                     
                     
                 }
