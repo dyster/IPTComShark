@@ -504,28 +504,27 @@ namespace IPTComShark
                 {
                     var thisdataset = newD[i];
                     var thatdataset = oldD[i];
-
-                    if (thatdataset.ParsedFields.Count == thisdataset.ParsedFields.Count)
+                    
+                    for (int x = 0; x < thisdataset.ParsedFields.Count; x++)
                     {
-                        for (int x = 0; x < thisdataset.ParsedFields.Count; x++)
+                        ParsedField field = thisdataset[x];
+                        if (thatdataset.ParsedFields.Count > x)
                         {
-                            ParsedField field = thisdataset[x];
                             ParsedField lookup = thatdataset[x];
 
-                            if (!lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
+                            if (lookup.Name == field.Name && !lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
                             {
                                 delta.Add(field);
                             }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var field in thatdataset.ParsedFields)
-                        {
-                            if (!ignores.Contains(field.Name))
+                            else if(lookup.Name != field.Name && !ignores.Contains(field.Name))
                                 delta.Add(field);
                         }
+                        else if (!ignores.Contains(field.Name))
+                        {
+                            delta.Add(field);
+                        }
                     }
+                    
                 }
                 
             }

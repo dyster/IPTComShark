@@ -113,26 +113,25 @@ namespace IPTComShark.Controls
                     }
 
 
-                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1)
+                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 && originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection
+                        var oldparse = BackStore.GetParse(originalpacket.Previous.No);
 
                         dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
-                        foreach (var field in extensiveData.Value.ParsedData[0].ParsedFields)
+                        for (var index = 0; index < extensiveData.Value.ParsedData[0].ParsedFields.Count; index++)
                         {
+                            var field = extensiveData.Value.ParsedData[0].ParsedFields[index];
                             bool changed = false;
-                            if (originalpacket.Previous != null && iptPacket.IPTWPType == IPTTypes.PD)
-                            {
-                                var extractparse = BackStore.GetParse(originalpacket.Previous.No);
-                                if (extractparse.HasValue)
-                                {
-                                    var parsedField = extractparse.Value.ParsedData[0].GetField(field.Name);
-                                    if (parsedField != null)
-                                        changed = !parsedField.Value.Equals(field.Value);
-                                }
 
+
+                            if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
+                            {
                                 
+                                var parsedField = oldparse.Value.ParsedData[0][index];
+                                changed = !parsedField.Value.Equals(field.Value);
                             }
+
 
                             dataLines.Add(new DataLine(field, ticker++)
                             {
