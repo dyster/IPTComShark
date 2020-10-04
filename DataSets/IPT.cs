@@ -17,6 +17,7 @@ namespace IPTComShark.DataSets
             DataSets.Add(com100);
             DataSets.Add(com101);
             DataSets.Add(com102);
+            DataSets.Add(com103);
         }
 
         public static DataSetDefinition com100 => new DataSetDefinition
@@ -32,7 +33,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "ProtocolVersion",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "The protocol version of IPTDir. The bytes repre-sent version, release, update and evolution.\r\nThe most significant byte (version) is used for protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
                 },
@@ -434,7 +435,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "ProtocolVersion",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "The protocol version of IPTDir. The bytes represent version, release, update and evolution.\r\nThe most significant byte (version) is used\r\nfor protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
                 },
@@ -555,6 +556,181 @@ namespace IPTComShark.DataSets
             }
         };
 
+        public static DataSetDefinition UIC_CarDataSet => new DataSetDefinition
+        {
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "For future extensions"
+                },
+                new BitField
+                {
+                    Name = "UIC_ConsistNo",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Consist number in train ( = sequence number of the active IP-TS in the train. Always = 1 if the consist does not have an IP-TS but an DR) Corresponds to WTB sequence number in UIC556"
+                },
+                new BitField
+                {
+                    Name = "NumControlledCars",
+                    BitFieldType = BitFieldType.Int8,
+                    Length = 8,
+                    Comment = "Number of cars in the Consist (UIC Leaflet 556 allows negative values. For definition see UIC Leaflet 556 Annex A)"
+                },
+                new BitField
+                {
+                    Name = "UIC_CarSeqNum",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Car sequence number in train in UIC reference direction. In UIC: uic_address (see chapter 2.3 on page 7 for ex-planation of car numbering)"
+                },
+                new BitField
+                {
+                    Name = "Operator",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Optional: Operator of the Consist (as defined in UIC556)"
+                },
+                new BitField
+                {
+                    Name = "Owner",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Optional: Owner of the Consist (as defined in UIC556)"
+                },
+                new BitField
+                {
+                    Name = "NationalAppl",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Optional: National application type not used (= 0) (as defined in UIC556)"
+                },
+                new BitField
+                {
+                    Name = "NationalVer",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Optional: National application version not used (= 0) (as defined in UIC556)"
+                },
+                new BitField
+                {
+                    Name = "UIC_CstProperties",
+                    BitFieldType = BitFieldType.HexString,
+                    Length = 8*22,
+                    Comment = "Optional: Consist properties as bit map (as defined in UIC556), see Annex A on page 30."
+                },
+                new BitField
+                {
+                    Name = "reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "For future extensions"
+                },
+                new BitField
+                {
+                    Name = "UIC_Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UIC vehicle identification number"
+                },
+                new BitField
+                {
+                    Name = "UIC_Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UIC vehicle identification number"
+                },
+                new BitField
+                {
+                    Name = "UIC_Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UIC vehicle identification number"
+                },
+                new BitField
+                {
+                    Name = "UIC_Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UIC vehicle identification number"
+                },
+                new BitField
+                {
+                    Name = "UIC_Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "UIC vehicle identification number"
+                },
+                new BitField
+                {
+                    Name = "UIC_CarProperties",
+                    BitFieldType = BitFieldType.HexString,
+                    Length = 8*6,
+                    Comment = "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
+                },
+                new BitField
+                {
+                    Name = "reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
+                },
+                new BitField
+                {
+                    Name = "T",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 1,
+                    Comment = "Orientation of car relative to UIC reference direction of Train (dynamic data which is changed if leading car changes, see chapter 2.3 for explanation of directions) 0: opposite 1: same"
+                },
+                new BitField
+                {
+                    Name = "C",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 1,
+                    Comment = "Orientation of car relative to orientation of Consist (static) 0: opposite 1: same"
+                },
+                new BitField
+                {
+                    Name = "L",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 1,
+                    Comment = "Leading (dynamic data set by application request) 0: Car is not leading 1: Car is leading"
+                },
+                new BitField
+                {
+                    Name = "R",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 1,
+                    Comment = "Leading Request (dynamic data set by application request) 0: No leading request 1: Car requests leading"
+                },
+                new BitField
+                {
+                    Name = "reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 4,
+                    Comment = "reserved = 0"
+                },
+                new BitField
+                {
+                    Name = "SeatResNo",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Optional: Car number for seat reservation (SeatRes-No=0 it is not yet defined)"
+                },
+                new BitField
+                {
+                    Name = "NumTrnSwInCar",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Number of Train Switches in car"
+                },
+            }
+        };
+
         public static DataSetDefinition com102 => new DataSetDefinition
         {
             Name = "UIC Info",
@@ -568,7 +744,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "ProtocolVersion",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment =
                         "The protocol version of IPTDir. The bytes represent version, release, update and evolution.\r\nThe most significant byte (version) is used\r\nfor protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
@@ -669,20 +845,49 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     VariableLengthSettings = new VariableLengthSettings(){Name = "NumCarsInTrain"},
-                    NestedDataSet = new DataSetDefinition()
+                    NestedDataSet = UIC_CarDataSet
+                },
+            }
+        };
+
+        public static DataSetDefinition com103 => new DataSetDefinition
+        {
+            Name = "IPTDir Request",
+            Comment = "If a device misses the transmission of one of the message data it may explicitly request it by sending the following message data to the IPTDir server. The response will be the re-quested message data as described in the previous chapters.",
+            Identifiers = new List<string>
+            {
+                "103"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "ProtocolVersion",
+                    BitFieldType = BitFieldType.HexString,
+                    Length = 32,
+                    Comment =
+                        "The protocol version of IPTDir. The bytes represent version, release, update and evolution. The most significant byte (version) is used for protocol incompatibility. Version = 0x02020000 (V. 2.2.0.0, default)"
+                },
+                new BitField
+                {
+                    Name = "RequestType",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Type of request: 1 = Send IPT Info; response: see chapter 4.1 , 2 = Send UIC Info; response: see chapter 4.2",
+                    LookupTable = new Dictionary<string, string>
                     {
-                        BitFields = new List<BitField>()
-                        {
-                            new BitField
-                            {
-                                Name = "UIC_CarDataSet",
-                                BitFieldType = BitFieldType.HexString,
-                                Length = 8*48,
-                                Comment = "Placeholder for the uic car dataset"
-                            },
-                        }
+                        {"0","INVALID"},
+                        {"1","Send IPT Info"},
+                        {"2","Send UIC Info"}
                     }
                 },
+                new BitField
+                {
+                    Name = "reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "For future extensions (set to 0)"
+                }
             }
         };
     }
