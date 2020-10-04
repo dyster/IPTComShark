@@ -38,6 +38,11 @@ namespace IPTComShark.Classes
         private readonly Dictionary<int, CapturePacket> _packetStore = new Dictionary<int, CapturePacket>(500000);
         private readonly Dictionary<ushort, Fragment> _fragmentStore = new Dictionary<ushort, Fragment>();
 
+        /// <summary>
+        /// Cache for re-assembled packets
+        /// </summary>
+        private readonly Dictionary<int, Packet> _topPacketStore = new Dictionary<int, Packet>();
+
         //private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
         //private FileStream fileStream;
 
@@ -58,8 +63,14 @@ namespace IPTComShark.Classes
 
         public Packet GetPacket(int number)
         {
-            var raw = GetRaw(number);
-            return Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+            if (_topPacketStore.ContainsKey(number))
+                return _topPacketStore[number];
+            else
+            {
+                var raw = GetRaw(number);
+                return Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
+            }
+            
         }
 
         public Raw GetRaw(int number)
@@ -153,6 +164,7 @@ namespace IPTComShark.Classes
         /// <returns>The parsed packet</returns>
         public CapturePacket Add(Raw raw, out List<ParsedDataSet> parsedData)
         {
+            var seed = ++_seed;
             parsedData = new List<ParsedDataSet>();
 
             var topPacket = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
@@ -181,18 +193,19 @@ namespace IPTComShark.Classes
                     {
                         var extract = _fragmentStore[ipv4.Id].Extract();
 
-                        var array = ipv4.HeaderData.Concat(extract).ToArray();
+                        //var array = ipv4.HeaderData.Concat(extract).ToArray();
 
                         var byteArraySegment = new ByteArraySegment(extract);
                         var udpPacket = new UdpPacket(byteArraySegment);
                         ipv4.PayloadPacket = udpPacket;
+                        _topPacketStore.Add(seed, topPacket);
                     }
                 }
             }
 
             // create the capturepacket
             var capturePacket = new CapturePacket(raw, topPacket);
-            capturePacket.No = ++_seed;
+            capturePacket.No = seed;
 
 
             // try to parse data if there is any

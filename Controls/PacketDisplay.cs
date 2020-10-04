@@ -28,9 +28,7 @@ namespace IPTComShark.Controls
                     item.Font = new Font(item.Font, FontStyle.Bold);
             };
         }
-
-        public IPTConfigReader IptConfigReader { get; set; }
-
+        
         public BackStore BackStore { get; set; }
 
         public void SetObject(CapturePacket originalpacket)
@@ -63,18 +61,19 @@ namespace IPTComShark.Controls
                 var extensiveData = CapturePacket.ExtractParsedData(originalpacket, topPacket, true);
 
 
-                if (originalpacket.IPTWPPacket != null)
+                if (originalpacket.Protocol == ProtocolType.IPTWP && topPacket.PayloadPacket.PayloadPacket != null)
                 {
                     var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
-                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
+                    var iptPacket = IPTWPPacket.Extract(udp.PayloadData);
+                    var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
-                    textBoxComid.Text = originalpacket.IPTWPPacket.Comid.ToString();
+                    textBoxComid.Text = originalpacket.Comid.ToString();
 
-                    textBoxSize.Text = originalpacket.IPTWPPacket.IPTWPSize.ToString();
-                    textBoxType.Text = originalpacket.IPTWPPacket.IPTWPType.ToString();
+                    textBoxSize.Text = iptPacket.IPTWPSize.ToString();
+                    textBoxType.Text = iptPacket.IPTWPType.ToString();
 
-                    if (originalpacket.IPTWPPacket.IPTWPType == IPTTypes.MA)
+                    if (iptPacket.IPTWPType == IPTTypes.MA)
                     {
                         dataLines.Add(new DataLine(ticker++)
                             {IsCategory = true, Name = "IPTCom Message Acknowledgement"});
@@ -122,7 +121,7 @@ namespace IPTComShark.Controls
                         foreach (var field in extensiveData.Value.ParsedData[0].ParsedFields)
                         {
                             bool changed = false;
-                            if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
+                            if (originalpacket.Previous != null && iptPacket.IPTWPType == IPTTypes.PD)
                             {
                                 var extractparse = BackStore.GetParse(originalpacket.Previous.No);
                                 if (extractparse.HasValue)
@@ -175,11 +174,11 @@ namespace IPTComShark.Controls
                 var text = new StringBuilder(topPacket.ToString(StringOutputType.Verbose));
 
 
-                if (originalpacket.IPTWPPacket != null)
+                if (originalpacket.Protocol == ProtocolType.IPTWP)
                 {
                     // since we have IPT, straight cast to UDP, BAM
                     var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
-                    var bytes = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
+                    var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
                     var maxLenString = iptHeader.Max(pair => pair.Key.Length);

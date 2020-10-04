@@ -68,14 +68,20 @@ namespace IPTComShark.Controls
 
             olvColumnComId.AspectGetter += rowObject =>
             {
+                if (rowObject == null) 
+                    return null;
+
                 var packet = (CapturePacket) rowObject;
-                return packet?.IPTWPPacket?.Comid;
+                if(packet.Protocol == ProtocolType.IPTWP)
+                    return packet.Comid;
+                
+                return null;
             };
 
             olvColumnIPTWPType.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket) rowObject;
-                return packet?.IPTWPPacket?.IPTWPType;
+                return packet?.IPTWPType;
             };
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
@@ -110,8 +116,8 @@ namespace IPTComShark.Controls
 
             olvColumnIPTWPType.ClusterGetter += packets =>
             {
-                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.IPTWPType.ToString()));
+                var clusters = StringsToClusters(packets.Where(p => p.Protocol == ProtocolType.IPTWP)
+                    .Select(p => p.IPTWPType.ToString()));
                 foreach (var cluster in clusters)
                 {
                     cluster.ClusterKey = Enum.Parse(typeof(IPTTypes), cluster.DisplayLabel);
@@ -122,8 +128,8 @@ namespace IPTComShark.Controls
 
             olvColumnComId.ClusterGetter += packets =>
             {
-                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.Comid.ToString()));
+                var clusters = StringsToClusters(packets.Where(p => p.Protocol == ProtocolType.IPTWP)
+                    .Select(p => p.Comid.ToString()));
                 foreach (var cluster in clusters)
                 {
                     cluster.ClusterKey = uint.Parse(cluster.DisplayLabel);
@@ -298,15 +304,16 @@ namespace IPTComShark.Controls
                     foreach (string s in strings)
                     {
                         uint u = uint.Parse(s.Trim());
-                        if (capturePacket.IPTWPPacket != null && capturePacket.IPTWPPacket.Comid == u)
+                        if (capturePacket.Comid == u)
                             return false;
                     }
                 }
                 
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
+                    if (capturePacket.IPTWPType != null && capturePacket.IPTWPType == IPTTypes.PD)
                     {
+                        // TODO can we check this directly without doing the check above?
                         if (capturePacket.IsDupe)
                             return false;
                     }
@@ -487,9 +494,9 @@ namespace IPTComShark.Controls
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
-            if (o?.IPTWPPacket != null)
+            if (o?.Protocol == ProtocolType.IPTWP)
             {
-                var s = o.IPTWPPacket.Comid.ToString();
+                var s = o.Comid.ToString();
                 if (string.IsNullOrEmpty(Settings.IgnoreComid))
                     Settings.IgnoreComid = s;
                 else
@@ -504,7 +511,7 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                addToIgnoredComIDsToolStripMenuItem.Enabled = o.IPTWPPacket != null;
+                addToIgnoredComIDsToolStripMenuItem.Enabled = o.Protocol == ProtocolType.IPTWP;
             }
         }
 

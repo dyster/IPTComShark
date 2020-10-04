@@ -53,20 +53,20 @@ namespace IPTComShark
         public uint IPTWPSize { get; set; }
         //public byte[] IPTWPPayload { get; set; }
 
-        public static byte[] GetIPTPayload(UdpPacket udp, IPTWPPacket packet)
+        public static byte[] GetIPTPayload(byte[] udpPayload)
         {
-            byte[] payload = udp.PayloadData;
-            ushort headerlength = BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+            var size = GetDatasetLength(udpPayload);
+            ushort headerlength = GetHeaderLength(udpPayload);
 
-            var data = new byte[packet.IPTWPSize];
+            var data = new byte[size];
             ushort readpos =
                 headerlength; // the first framecheck will be skipped by the i % 256 modulus when it parses 0
 
-            for (var i = 0; i < packet.IPTWPSize; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (i % 256 == 0)
                     readpos += 4;
-                data[i] = payload[readpos];
+                data[i] = udpPayload[readpos];
                 readpos++;
             }
 
@@ -113,6 +113,43 @@ namespace IPTComShark
             return iptPacket;
         }
 
+        public static uint GetComid(byte[] payload)
+        {
+            return BitConverter.ToUInt32(
+                new[] { payload[15], payload[14], payload[13], payload[12] }, 0);
+        }
+
+        /// <summary>
+        /// Gets the IPTWP Type as a unsigned integer
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static UInt16 GetType(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
+        }
+
+        /// <summary>
+        /// Gets the IPTWP Type as an enum
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static IPTTypes GetIptType(byte[] payload)
+        {
+            var type = BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
+            return MessageTypes[type];
+        }
+
+        public static ushort GetDatasetLength(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0);
+        }
+
+        public static ushort GetHeaderLength(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] { payload[23], payload[22] }, 0);
+        }
+
         public static Dictionary<string, object> ExtractHeader(byte[] payload)
         {
             var dic = new Dictionary<string, object>();
@@ -122,11 +159,10 @@ namespace IPTComShark
                 0));
             dic.Add("TopoCount", BitConverter.ToUInt32(new[] {payload[11], payload[10], payload[9], payload[8]},
                 0));
-            dic.Add("ComID", BitConverter.ToUInt32(
-                new[] {payload[15], payload[14], payload[13], payload[12]}, 0));
-            var type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+            dic.Add("ComID", GetComid(payload));
+            var type = GetType(payload);
             dic.Add("Type", type);
-            dic.Add("DatasetLength", BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0));
+            dic.Add("DatasetLength", GetDatasetLength(payload));
 
             if (type != 0x5044)
             {
@@ -134,7 +170,8 @@ namespace IPTComShark
                     0));
             }
 
-            var headLen = BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+
+            var headLen = GetHeaderLength(payload);
             dic.Add("HeaderLength", headLen);
 
             if (type != 0x5044)

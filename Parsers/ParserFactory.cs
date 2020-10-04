@@ -15,6 +15,7 @@ namespace IPTComShark.Parsers
             _parsers.Add(new NTPParser());
             _parsers.Add(new SPLParser());
             _parsers.Add(new JRUParser());
+            _parsers.Add(new IPTWPParser());
         }
 
         public Parse DoPacket(ProtocolType protocol, byte[] data)

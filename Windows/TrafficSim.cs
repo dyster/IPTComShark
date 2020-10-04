@@ -169,7 +169,7 @@ namespace IPTComShark.Windows
             }
 
             // remove all non IPTCom packets
-            _packets.RemoveAll(packet => packet.IPTWPPacket == null);
+            _packets.RemoveAll(packet => packet.Protocol != ProtocolType.IPTWP);
 
             foreach (var packet1 in _packets)
             {

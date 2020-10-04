@@ -1,10 +1,8 @@
 ﻿using IPTComShark.Import;
 using IPTComShark.Windows;
-using IPTComShark.XmlFiles;
 using SharpPcap;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataSets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,38 +10,25 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Json;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
-using System.Xml;
 using IPTComShark.Classes;
 using IPTComShark.DataSets;
-using IPTComShark.Properties;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PacketDotNet;
 using SharpPcap.Npcap;
 using sonesson_tools.FileReaders;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        private static readonly List<DataSetCollection> DataCollections = new List<DataSetCollection>();
+        
 
-        private const string Iptfile = @"ECN1_ipt_config.xml";
+        
 
-        private static readonly IPTConfigReader IptConfigReader = new IPTConfigReader(Iptfile);
+        
 
-        private static readonly BackStore _backStore = new BackStore();
-
-        private static Dictionary<uint, DataSetDefinition> _comidIndex = new Dictionary<uint, DataSetDefinition>();
+        private BackStore _backStore;
+        
 
         private long _capturedData;
 
@@ -62,6 +47,12 @@ namespace IPTComShark
             
             InitializeComponent();
 
+            
+
+            
+
+            _backStore = new BackStore();
+
             packetListView1.BackStore = _backStore;
             packetDisplay1.BackStore = _backStore;
 
@@ -69,35 +60,6 @@ namespace IPTComShark
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
-            packetDisplay1.IptConfigReader = IptConfigReader;
-
-            DataCollections.Add(new IPT());
-            DataCollections.Add(new TPWS());
-            DataCollections.Add(new STM());
-            DataCollections.Add(new ETCSDiag());
-            DataCollections.Add(new VSISDMI());
-            DataCollections.Add(new ABDO());
-            DataCollections.Add(new VSIS210());
-            DataCollections.Add(IptConfigReader.GetDataSetCollection());
-
-            // indexer not used at moment, only used to detect collisions
-            
-            foreach (var dataSetCollection in DataCollections)
-            {
-                foreach (var dataSetDefinition in dataSetCollection.DataSets)
-                {
-                    foreach (var identifier in dataSetDefinition.Identifiers)
-                    {
-                        var i = uint.Parse(identifier);
-                        if(_comidIndex.ContainsKey(i))
-                            Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
-                        else
-                            _comidIndex.Add(i, dataSetDefinition);
-                    }
-                }
-            }
-
-            
             
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
@@ -164,47 +126,6 @@ namespace IPTComShark
 
             //_pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
         }
-
-
-        public static ParsedDataSet ParseIPTWPData(IPTWPPacket iptwpPacket, UdpPacket udp, bool extensive)
-        {
-            if (iptwpPacket == null || iptwpPacket.IPTWPType == IPTTypes.MA)
-                return null;
-
-            DataSetDefinition dataSetDefinition = null;
-
-            if (_comidIndex.ContainsKey(iptwpPacket.Comid))
-            {
-                dataSetDefinition = _comidIndex[iptwpPacket.Comid];
-            }
-
-            //foreach (var collection in DataCollections)
-            //{
-            //    var find = collection.FindByIdentifier(iptwpPacket.Comid.ToString());
-            //    if (find != null)
-            //    {
-            //        dataSetDefinition = find;
-            //        break;
-            //    }
-            //}
-
-            if (dataSetDefinition != null)
-            {
-                try
-                {
-                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, iptwpPacket);
-
-                    return dataSetDefinition.Parse(iptPayload, extensive);
-                }
-                catch (Exception e)
-                {
-                    return ParsedDataSet.CreateError(e.Message);
-                }
-            }
-
-            return null;
-        }
-
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
