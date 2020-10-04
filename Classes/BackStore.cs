@@ -51,6 +51,7 @@ namespace IPTComShark.Classes
             //fileStream = File.Create(@"c:\temp\iptsharkstream");
 
             _worker = new BackgroundWorker();
+            _worker.WorkerSupportsCancellation = true;
             _worker.DoWork += DoWork;
             _worker.RunWorkerAsync();
 
@@ -108,7 +109,7 @@ namespace IPTComShark.Classes
 
             var list = new List<CapturePacket>();
 
-            while (!e.Cancel)
+            while (!_worker.CancellationPending)
             {
                 if (!_addBuffer.IsEmpty)
                 {
@@ -192,6 +193,7 @@ namespace IPTComShark.Classes
                     if (ipv4.FragmentFlags == 0)
                     {
                         var extract = _fragmentStore[ipv4.Id].Extract();
+                        _fragmentStore.Remove(ipv4.Id);
 
                         //var array = ipv4.HeaderData.Concat(extract).ToArray();
 
@@ -295,6 +297,8 @@ namespace IPTComShark.Classes
 
         public void Close()
         {
+            Clear();
+            _worker.CancelAsync();
             //fileStream.Flush();
             //fileStream.Close();
         }
