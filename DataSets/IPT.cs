@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.DataSets
@@ -25,7 +21,8 @@ namespace IPTComShark.DataSets
         public static DataSetDefinition com100 => new DataSetDefinition
         {
             Name = "IPTDir Process Data",
-            Comment = "The IPTDir process data shall inform all end devices about the current inauguration status and changes in the train’s topology.",
+            Comment =
+                "The IPTDir process data shall inform all end devices about the current inauguration status and changes in the train’s topology.",
             Identifiers = new List<string>
             {
                 "100"
@@ -37,35 +34,40 @@ namespace IPTComShark.DataSets
                     Name = "ProtocolVersion",
                     BitFieldType = BitFieldType.HexString,
                     Length = 32,
-                    Comment = "The protocol version of IPTDir. The bytes repre-sent version, release, update and evolution.\r\nThe most significant byte (version) is used for protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
+                    Comment =
+                        "The protocol version of IPTDir. The bytes repre-sent version, release, update and evolution.\r\nThe most significant byte (version) is used for protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
                 },
                 new BitField
                 {
                     Name = "IPT_InaugStatus",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Status of IPT train configuration:\r\n– 0: Fault on consist level  no IP communi-cation possible\r\n– 1: Invalid/Busy  Stop communication on train level\r\n– 2: OK\r\nIPT_InaugStatus = 0 is the CMS’s initialisation state that will be transmitted until the first IPT inauguration has been done.\r\nIf a transition from 2 to 1 occurs then all infor-mation contained in previous IPT Info concern-ing not the own consist have to be discarded."
+                    Comment =
+                        "Status of IPT train configuration:\r\n– 0: Fault on consist level  no IP communi-cation possible\r\n– 1: Invalid/Busy  Stop communication on train level\r\n– 2: OK\r\nIPT_InaugStatus = 0 is the CMS’s initialisation state that will be transmitted until the first IPT inauguration has been done.\r\nIf a transition from 2 to 1 occurs then all infor-mation contained in previous IPT Info concern-ing not the own consist have to be discarded."
                 },
                 new BitField
                 {
                     Name = "IPT_TopoCount",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Changes if train topology changes by adding or removing consists (which changes the IP ad-dresses on train level).\r\nThe IPT_TopoCount’s range is 1…63."
+                    Comment =
+                        "Changes if train topology changes by adding or removing consists (which changes the IP ad-dresses on train level).\r\nThe IPT_TopoCount’s range is 1…63."
                 },
                 new BitField
                 {
                     Name = "UIC_InaugStatus",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Status of UIC train configuration:\r\n– 0: actual\r\n– 1: confirmed\r\n– 2: invalid\r\nIf a transition to 2 occurs then all information contained in previous UIC Info have to be dis-carded."
+                    Comment =
+                        "Status of UIC train configuration:\r\n– 0: actual\r\n– 1: confirmed\r\n– 2: invalid\r\nIf a transition to 2 occurs then all information contained in previous UIC Info have to be dis-carded."
                 },
                 new BitField
                 {
                     Name = "UIC_TopoCount",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Increases if UIC car numbering changes, com-parable to topo_count in TCN. If IPT_TopoCount changes, UIC_TopoCount will be increased, too.\r\nThe UIC_TopoCount’s range is 1…63.\r\nAfter 63, it wraps over to 1 again."
+                    Comment =
+                        "Increases if UIC car numbering changes, com-parable to topo_count in TCN. If IPT_TopoCount changes, UIC_TopoCount will be increased, too.\r\nThe UIC_TopoCount’s range is 1…63.\r\nAfter 63, it wraps over to 1 again."
                 },
                 new BitField
                 {
@@ -79,7 +81,8 @@ namespace IPTComShark.DataSets
                     Name = "DynCount",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Dynamic count:\r\nIncreases if dynamic data change which are ir-relevant for IPT topology (currently just the posi-tion of the leading car and the car number for seat reservation). If topology changes DynCount will be increased, too.\r\nThe range is 0…255 with wraparound."
+                    Comment =
+                        "Dynamic count:\r\nIncreases if dynamic data change which are ir-relevant for IPT topology (currently just the posi-tion of the leading car and the car number for seat reservation). If topology changes DynCount will be increased, too.\r\nThe range is 0…255 with wraparound."
                 },
                 new BitField
                 {
@@ -114,14 +117,16 @@ namespace IPTComShark.DataSets
                     Name = "ServerIPaddress",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "IP address of IPTDir Server. This address is re-solved by IPTDir clients to the predefined URI IPTDirServer.anyCar and used by them in re-quests (see chapter 5) and updates."
+                    Comment =
+                        "IP address of IPTDir Server. This address is re-solved by IPTDir clients to the predefined URI IPTDirServer.anyCar and used by them in re-quests (see chapter 5) and updates."
                 },
                 new BitField
                 {
                     Name = "GatewayIPaddress",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "IP address of the local gateway to the train backbone.\r\nThis is either the address of the active train switch (in case TBType = 0) or the address of the active TCN gateway (in case TBType = 1).\r\nNote: Usually ServerIPaddress and Gate-wayIPaddress will be the same because the IPTDir server is foreseen to be located either on the Train Switch (if TBType = 0) or on the TCN Gateway (if TBType = 1)."
+                    Comment =
+                        "IP address of the local gateway to the train backbone.\r\nThis is either the address of the active train switch (in case TBType = 0) or the address of the active TCN gateway (in case TBType = 1).\r\nNote: Usually ServerIPaddress and Gate-wayIPaddress will be the same because the IPTDir server is foreseen to be located either on the Train Switch (if TBType = 0) or on the TCN Gateway (if TBType = 1)."
                 },
                 new BitField
                 {
@@ -155,7 +160,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "ipt_label",
                     BitFieldType = BitFieldType.StringAscii,
-                    Length = 8*16
+                    Length = 8 * 16
                 }
             }
         };
@@ -169,14 +174,16 @@ namespace IPTComShark.DataSets
                     Name = "McGroupLblIdx",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Index pointing into McGroupLabel string array thus defining the group label (real multicast label, starting with one of the reserved group prefixes “grp” or “frg”) for this group."
+                    Comment =
+                        "Index pointing into McGroupLabel string array thus defining the group label (real multicast label, starting with one of the reserved group prefixes “grp” or “frg”) for this group."
                 },
                 new BitField
                 {
                     Name = "McGroupNo",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Number of the multicast group. Range is\r\n1..4094. This corresponds to the max. 12\r\ngroup bits in the multicast IP address of the\r\ngroup.\r\nNote:\r\nThis dataset is used on train, consist and\r\ncar level. A definition on the particular level\r\nmakes the group resolvable on that level for\r\nthe members it is defined for. Example:\r\nthere needs to be a group number assigned\r\nfor the group label “grpHMI” in car01 of\r\ncst01 to make the URI\r\n“grpHMI.car01.cst01” resolvable"
+                    Comment =
+                        "Number of the multicast group. Range is\r\n1..4094. This corresponds to the max. 12\r\ngroup bits in the multicast IP address of the\r\ngroup.\r\nNote:\r\nThis dataset is used on train, consist and\r\ncar level. A definition on the particular level\r\nmakes the group resolvable on that level for\r\nthe members it is defined for. Example:\r\nthere needs to be a group number assigned\r\nfor the group label “grpHMI” in car01 of\r\ncst01 to make the URI\r\n“grpHMI.car01.cst01” resolvable"
                 }
             }
         };
@@ -190,21 +197,24 @@ namespace IPTComShark.DataSets
                     Name = "DeviceLblIdx",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Index pointing into Device_Label string array thus defining the device label (unicast label) for this de-vice."
+                    Comment =
+                        "Index pointing into Device_Label string array thus defining the device label (unicast label) for this de-vice."
                 },
                 new BitField
                 {
                     Name = "DeviceNo",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Number of the device. Range is 1..4095. This cor-responds to the max. 12 host bits in the unicast IP address of the device.\r\nNote:\r\nIf the 12 available bits are split between car and host then the range for this value must be reduced accordingly."
+                    Comment =
+                        "Number of the device. Range is 1..4095. This cor-responds to the max. 12 host bits in the unicast IP address of the device.\r\nNote:\r\nIf the 12 available bits are split between car and host then the range for this value must be reduced accordingly."
                 },
                 new BitField
                 {
                     Name = "NumResQWInDev",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
+                    Comment =
+                        "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
                 }
             }
         };
@@ -217,15 +227,17 @@ namespace IPTComShark.DataSets
                 {
                     Name = "CarLbl",
                     BitFieldType = BitFieldType.StringAscii,
-                    Length = 8*16,
-                    Comment = "Unique string defining the primary car label for this car. If the car has a UIC car number (written on the car body) then this number is prefixed with ‘UIC’ and the resulting string is used as car label. If not then another unique label must be defined. In this case it should be avoided to let it begin with ‘UIC’. The range in which the label must be unique must cover at least all rolling stock that can be addressed. At best the car label is globally unique as it is the case with the UIC numbers."
+                    Length = 8 * 16,
+                    Comment =
+                        "Unique string defining the primary car label for this car. If the car has a UIC car number (written on the car body) then this number is prefixed with ‘UIC’ and the resulting string is used as car label. If not then another unique label must be defined. In this case it should be avoided to let it begin with ‘UIC’. The range in which the label must be unique must cover at least all rolling stock that can be addressed. At best the car label is globally unique as it is the case with the UIC numbers."
                 },
                 new BitField
                 {
                     Name = "CstCarNo",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Sequence number of this car in its Consist ac-cording to the Consists reference direction. By prefixing this number with ‘car’ you will get an alias for the car label in Consist context (e.g. ‘car03’ if CstCarNo is 3)."
+                    Comment =
+                        "Sequence number of this car in its Consist ac-cording to the Consists reference direction. By prefixing this number with ‘car’ you will get an alias for the car label in Consist context (e.g. ‘car03’ if CstCarNo is 3)."
                 },
                 new BitField
                 {
@@ -266,7 +278,8 @@ namespace IPTComShark.DataSets
                                 Name = "UIC_Identifier",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "UIC vehicle identification number. This number – which also appears in the UIC Info – plays the same role for UIC as the car label does for IPT: It uniquely identifies the car in the UIC data base on the UIC inauguration and the IPT data base on an independent IPT inauguration. If there are “dead” cars, the car numbering in UIC and IPT may differ from each other. The double appearance of UIC_Identifier in UIC and IPT Info ensures that you can link the corre-sponding car records."
+                                Comment =
+                                    "UIC vehicle identification number. This number – which also appears in the UIC Info – plays the same role for UIC as the car label does for IPT: It uniquely identifies the car in the UIC data base on the UIC inauguration and the IPT data base on an independent IPT inauguration. If there are “dead” cars, the car numbering in UIC and IPT may differ from each other. The double appearance of UIC_Identifier in UIC and IPT Info ensures that you can link the corre-sponding car records."
                             },
                         }
                     }
@@ -275,7 +288,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "Reserved",
                     BitFieldType = BitFieldType.Spare,
-                    Length = 8*3
+                    Length = 8 * 3
                 },
                 new BitField
                 {
@@ -287,7 +300,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "McCarGroupData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumMcCarGroups"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumMcCarGroups"},
                     Comment = "One entry for each group in the Car, see chapter 4.1.3",
                     NestedDataSet = IPT_McGroupDataSet
                 },
@@ -296,12 +309,13 @@ namespace IPTComShark.DataSets
                     Name = "NumResQWInCar",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
+                    Comment =
+                        "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
                 },
                 new BitField
                 {
                     Name = "ResQWInCarData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumResQWInCar"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumResQWInCar"},
                     NestedDataSet = new DataSetDefinition
                     {
                         BitFields = new List<BitField>
@@ -325,7 +339,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "DeviceDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumDevices"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumDevices"},
                     NestedDataSet = IPT_DeviceDataSet
                 },
             }
@@ -339,15 +353,17 @@ namespace IPTComShark.DataSets
                 {
                     Name = "ConsistLbl",
                     BitFieldType = BitFieldType.StringAscii,
-                    Length = 8*16,
-                    Comment = "Unique string defining the primary label for the Consist in the IPT URI. If a Consist has a unique UIC number this number will be prefixed with ‘UIC’ and the resulting string be used as the Consist label.\r\nIf such a unique identifier is not existing, the car label of the first Consist car will be used. I.e. a Consist label may be identical to one of the car labels."
+                    Length = 8 * 16,
+                    Comment =
+                        "Unique string defining the primary label for the Consist in the IPT URI. If a Consist has a unique UIC number this number will be prefixed with ‘UIC’ and the resulting string be used as the Consist label.\r\nIf such a unique identifier is not existing, the car label of the first Consist car will be used. I.e. a Consist label may be identical to one of the car labels."
                 },
                 new BitField
                 {
                     Name = "TrnCstNo",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Sequence number of Consist in IPT train direction. By prefixing this number with ‘cst’ you will get an alias for the Consist label in the train (e.g. ‘cst02’ if TrnCstNo is 2)"
+                    Comment =
+                        "Sequence number of Consist in IPT train direction. By prefixing this number with ‘cst’ you will get an alias for the Consist label in the train (e.g. ‘cst02’ if TrnCstNo is 2)"
                 },
                 new BitField
                 {
@@ -361,7 +377,8 @@ namespace IPTComShark.DataSets
                     Name = "Orientation",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Orientation of Consist in train.\r\n– 0 = Consist reference direction 1 is op-posite to IP train reference direction.\r\n– 1 = Consist reference direction 1 matches IP train reference direction."
+                    Comment =
+                        "Orientation of Consist in train.\r\n– 0 = Consist reference direction 1 is op-posite to IP train reference direction.\r\n– 1 = Consist reference direction 1 matches IP train reference direction."
                 },
                 new BitField
                 {
@@ -380,7 +397,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "McCstGroupData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumMcCstGroups"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumMcCstGroups"},
                     Comment = "One entry for each group in the Consist, see chapter 4.1.3",
                     NestedDataSet = IPT_McGroupDataSet
                 },
@@ -389,12 +406,13 @@ namespace IPTComShark.DataSets
                     Name = "NumResQWInTrain",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
+                    Comment =
+                        "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
                 },
                 new BitField
                 {
                     Name = "ResQWInTrainData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumResQWInTrain"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumResQWInTrain"},
                     NestedDataSet = new DataSetDefinition
                     {
                         BitFields = new List<BitField>
@@ -418,7 +436,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "CarDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumControlledCars"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumControlledCars"},
                     NestedDataSet = IPT_CarDataSet
                 },
             }
@@ -427,7 +445,8 @@ namespace IPTComShark.DataSets
         public static DataSetDefinition com101 => new DataSetDefinition
         {
             Name = "IPTDir Message Data",
-            Comment = "The IPTDir Server distributes one or both of the message data types presented in this chapter whenever the topology or the dynamic data changes. This is indicated by a change of one of the TopoCounters or the DynCounter contained in the IPTDir Process Data.",
+            Comment =
+                "The IPTDir Server distributes one or both of the message data types presented in this chapter whenever the topology or the dynamic data changes. This is indicated by a change of one of the TopoCounters or the DynCounter contained in the IPTDir Process Data.",
             Identifiers = new List<string>
             {
                 "101"
@@ -439,21 +458,24 @@ namespace IPTComShark.DataSets
                     Name = "ProtocolVersion",
                     BitFieldType = BitFieldType.HexString,
                     Length = 32,
-                    Comment = "The protocol version of IPTDir. The bytes represent version, release, update and evolution.\r\nThe most significant byte (version) is used\r\nfor protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
+                    Comment =
+                        "The protocol version of IPTDir. The bytes represent version, release, update and evolution.\r\nThe most significant byte (version) is used\r\nfor protocol incompatibility.\r\nVersion = 0x02020000 (V. 2.2.0.0, default)"
                 },
                 new BitField
                 {
                     Name = "IPT_InaugStatus",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Status of IPT train configuration:\r\n– 0: Fault on consist level  no IP communi-cation possible\r\n– 1: Invalid/Busy  Stop communication on train level\r\n– 2: OK\r\nIPT_InaugStatus = 0 is the CMS’s initialisation state that will be transmitted until the first IPT inauguration has been done.\r\nIf a transition from 2 to 1 occurs then all infor-mation contained in previous IPT Info concern-ing not the own consist have to be discarded."
+                    Comment =
+                        "Status of IPT train configuration:\r\n– 0: Fault on consist level  no IP communi-cation possible\r\n– 1: Invalid/Busy  Stop communication on train level\r\n– 2: OK\r\nIPT_InaugStatus = 0 is the CMS’s initialisation state that will be transmitted until the first IPT inauguration has been done.\r\nIf a transition from 2 to 1 occurs then all infor-mation contained in previous IPT Info concern-ing not the own consist have to be discarded."
                 },
                 new BitField
                 {
                     Name = "IPT_TopoCount",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Changes if train topology changes by adding or removing consists (which changes the IP ad-dresses on train level). The IPT_TopoCount’s range is 1…63."
+                    Comment =
+                        "Changes if train topology changes by adding or removing consists (which changes the IP ad-dresses on train level). The IPT_TopoCount’s range is 1…63."
                 },
                 new BitField
                 {
@@ -472,8 +494,9 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "CarTypeDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumCarTypesInTrain"},
-                    Comment = "Car types allow to group cars which belong to the same family of vehicles. They have the same main characteristics (mechanical, power, electrical, architecture, functions and equipment). Nevertheless they can still differ from each other on minor features (e.g. seat layout, interior etc.).\r\nCar types are – as labels – denoted by a string of up to 15 characters. However, they are not used in addressing (not part of the URI). This is the reason why they are – in contrary to the labels – case sensitive.\r\nCarTypeDataSet is a list of the car types present in the train. The strings in the list are unique but may be assigned to more than one car.",
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumCarTypesInTrain"},
+                    Comment =
+                        "Car types allow to group cars which belong to the same family of vehicles. They have the same main characteristics (mechanical, power, electrical, architecture, functions and equipment). Nevertheless they can still differ from each other on minor features (e.g. seat layout, interior etc.).\r\nCar types are – as labels – denoted by a string of up to 15 characters. However, they are not used in addressing (not part of the URI). This is the reason why they are – in contrary to the labels – case sensitive.\r\nCarTypeDataSet is a list of the car types present in the train. The strings in the list are unique but may be assigned to more than one car.",
                     NestedDataSet = ipt_label
                 },
                 new BitField
@@ -486,8 +509,9 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "DeviceLabelDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumDeviceLabelsInTrain"},
-                    Comment = "List of device labels (for the unicast case of the device label) present in train. These are concatenations of the device type (e.g. ‘door_ctrl’) and perhaps a location postfix (e.g. ‘front_left’) in the form type_location (e.g. ‘door_ctrl_front_left’). The labels in the list are unique but may be assigned to more than one device (once per car). Device labels must not start with the reserved group prefixes (see chapter 4.1.3).",
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumDeviceLabelsInTrain"},
+                    Comment =
+                        "List of device labels (for the unicast case of the device label) present in train. These are concatenations of the device type (e.g. ‘door_ctrl’) and perhaps a location postfix (e.g. ‘front_left’) in the form type_location (e.g. ‘door_ctrl_front_left’). The labels in the list are unique but may be assigned to more than one device (once per car). Device labels must not start with the reserved group prefixes (see chapter 4.1.3).",
                     NestedDataSet = ipt_label
                 },
                 new BitField
@@ -500,8 +524,9 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "GroupLabelDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumGroupLabelsInTrain"},
-                    Comment = "List of group labels (for the multicast case of the device label, see [04]) present in train.\r\nThe labels in the list are unique but may be assigned multiple times (once per train, once per each consist and once per each car).",
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumGroupLabelsInTrain"},
+                    Comment =
+                        "List of group labels (for the multicast case of the device label, see [04]) present in train.\r\nThe labels in the list are unique but may be assigned multiple times (once per train, once per each consist and once per each car).",
                     NestedDataSet = ipt_label
                 },
                 new BitField
@@ -514,7 +539,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "McTrnGroupData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumMcTrnGroups"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumMcTrnGroups"},
                     Comment = "One entry for each group on train level, see chapter 4.1.3",
                     NestedDataSet = IPT_McGroupDataSet
                 },
@@ -523,12 +548,13 @@ namespace IPTComShark.DataSets
                     Name = "NumResQWInTrain",
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
-                    Comment = "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
+                    Comment =
+                        "Number of reserved Quad Words (4 bytes each) following. Is 0 since version 2.0.0.0 of the protocol but may be > 0 in future versions. Skip four times this number of bytes."
                 },
                 new BitField
                 {
                     Name = "ResQWInTrainData",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumResQWInTrain"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumResQWInTrain"},
                     NestedDataSet = new DataSetDefinition
                     {
                         BitFields = new List<BitField>
@@ -552,7 +578,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "ConsistDataSet",
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumConsistsInTrain"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumConsistsInTrain"},
                     NestedDataSet = IPT_ConsistDataSet
                 },
             }
@@ -574,21 +600,24 @@ namespace IPTComShark.DataSets
                     Name = "UIC_ConsistNo",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Consist number in train ( = sequence number of the active IP-TS in the train. Always = 1 if the consist does not have an IP-TS but an DR) Corresponds to WTB sequence number in UIC556"
+                    Comment =
+                        "Consist number in train ( = sequence number of the active IP-TS in the train. Always = 1 if the consist does not have an IP-TS but an DR) Corresponds to WTB sequence number in UIC556"
                 },
                 new BitField
                 {
                     Name = "NumControlledCars",
                     BitFieldType = BitFieldType.Int8,
                     Length = 8,
-                    Comment = "Number of cars in the Consist (UIC Leaflet 556 allows negative values. For definition see UIC Leaflet 556 Annex A)"
+                    Comment =
+                        "Number of cars in the Consist (UIC Leaflet 556 allows negative values. For definition see UIC Leaflet 556 Annex A)"
                 },
                 new BitField
                 {
                     Name = "UIC_CarSeqNum",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Car sequence number in train in UIC reference direction. In UIC: uic_address (see chapter 2.3 on page 7 for ex-planation of car numbering)"
+                    Comment =
+                        "Car sequence number in train in UIC reference direction. In UIC: uic_address (see chapter 2.3 on page 7 for ex-planation of car numbering)"
                 },
                 new BitField
                 {
@@ -622,7 +651,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "UIC_CstProperties",
                     BitFieldType = BitFieldType.HexString,
-                    Length = 8*22,
+                    Length = 8 * 22,
                     Comment = "Optional: Consist properties as bit map (as defined in UIC556), see Annex A on page 30."
                 },
                 new BitField
@@ -671,22 +700,25 @@ namespace IPTComShark.DataSets
                 {
                     Name = "UIC_CarProperties",
                     BitFieldType = BitFieldType.HexString,
-                    Length = 8*6,
-                    Comment = "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
+                    Length = 8 * 6,
+                    Comment =
+                        "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
                 },
                 new BitField
                 {
                     Name = "reserved",
                     BitFieldType = BitFieldType.Spare,
                     Length = 8,
-                    Comment = "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
+                    Comment =
+                        "Optional: List of car properties as bitmap (as defined in UIC556), see Annex B on page 33."
                 },
                 new BitField
                 {
                     Name = "T",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "Orientation of car relative to UIC reference direction of Train (dynamic data which is changed if leading car changes, see chapter 2.3 for explanation of directions) 0: opposite 1: same"
+                    Comment =
+                        "Orientation of car relative to UIC reference direction of Train (dynamic data which is changed if leading car changes, see chapter 2.3 for explanation of directions) 0: opposite 1: same"
                 },
                 new BitField
                 {
@@ -700,14 +732,16 @@ namespace IPTComShark.DataSets
                     Name = "L",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "Leading (dynamic data set by application request) 0: Car is not leading 1: Car is leading"
+                    Comment =
+                        "Leading (dynamic data set by application request) 0: Car is not leading 1: Car is leading"
                 },
                 new BitField
                 {
                     Name = "R",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "Leading Request (dynamic data set by application request) 0: No leading request 1: Car requests leading"
+                    Comment =
+                        "Leading Request (dynamic data set by application request) 0: No leading request 1: Car requests leading"
                 },
                 new BitField
                 {
@@ -785,34 +819,38 @@ namespace IPTComShark.DataSets
                     Name = "UIC_TopoCount",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    Comment = "Increases if train topology changes, comparable to topo_count in TCN. The TopoCount’s range is 1..31. After 31 it wraps over to 1 again."
+                    Comment =
+                        "Increases if train topology changes, comparable to topo_count in TCN. The TopoCount’s range is 1..31. After 31 it wraps over to 1 again."
                 },
                 new BitField
                 {
                     Name = "Reserved",
                     BitFieldType = BitFieldType.Spare,
-                    Length = 8*3
+                    Length = 8 * 3
                 },
                 new BitField
                 {
                     Name = "O",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "Orientation: UIC reference direction relative to IP-Train reference direction (see chapter 2.3 for expla-nation of directions)– 0: opposite– 1: same"
+                    Comment =
+                        "Orientation: UIC reference direction relative to IP-Train reference direction (see chapter 2.3 for expla-nation of directions)– 0: opposite– 1: same"
                 },
                 new BitField
                 {
                     Name = "A",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "NotAllConfirmed: At least 1 train bus node available without confirmed UIC address\r\n– 0: feature not available\r\n– 1: feature available"
+                    Comment =
+                        "NotAllConfirmed: At least 1 train bus node available without confirmed UIC address\r\n– 0: feature not available\r\n– 1: feature available"
                 },
                 new BitField
                 {
                     Name = "C",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    Comment = "ConfirmedCancelled: At least 1 train bus node with confirmed UIC address cancelled\r\n– 0: feature not available\r\n– 1: feature available"
+                    Comment =
+                        "ConfirmedCancelled: At least 1 train bus node with confirmed UIC address cancelled\r\n– 0: feature not available\r\n– 1: feature available"
                 },
                 new BitField
                 {
@@ -832,7 +870,8 @@ namespace IPTComShark.DataSets
                                 Name = "ConfirmedPos",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Optional: Confirmed position of unreachable cars; an array of 64 bits. Example: Bit 0 placed in octet(=1) a non addressable vehicle with UIC address 1"
+                                Comment =
+                                    "Optional: Confirmed position of unreachable cars; an array of 64 bits. Example: Bit 0 placed in octet(=1) a non addressable vehicle with UIC address 1"
                             },
                         }
                     }
@@ -846,7 +885,7 @@ namespace IPTComShark.DataSets
                 },
                 new BitField
                 {
-                    VariableLengthSettings = new VariableLengthSettings(){Name = "NumCarsInTrain"},
+                    VariableLengthSettings = new VariableLengthSettings() {Name = "NumCarsInTrain"},
                     NestedDataSet = UIC_CarDataSet
                 },
             }
@@ -855,7 +894,8 @@ namespace IPTComShark.DataSets
         public static DataSetDefinition com103 => new DataSetDefinition
         {
             Name = "IPTDir Request",
-            Comment = "If a device misses the transmission of one of the message data it may explicitly request it by sending the following message data to the IPTDir server. The response will be the re-quested message data as described in the previous chapters.",
+            Comment =
+                "If a device misses the transmission of one of the message data it may explicitly request it by sending the following message data to the IPTDir server. The response will be the re-quested message data as described in the previous chapters.",
             Identifiers = new List<string>
             {
                 "103"
@@ -875,12 +915,13 @@ namespace IPTComShark.DataSets
                     Name = "RequestType",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Type of request: 1 = Send IPT Info; response: see chapter 4.1 , 2 = Send UIC Info; response: see chapter 4.2",
+                    Comment =
+                        "Type of request: 1 = Send IPT Info; response: see chapter 4.1 , 2 = Send UIC Info; response: see chapter 4.2",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0","INVALID"},
-                        {"1","Send IPT Info"},
-                        {"2","Send UIC Info"}
+                        {"0", "INVALID"},
+                        {"1", "Send IPT Info"},
+                        {"2", "Send UIC Info"}
                     }
                 },
                 new BitField
@@ -906,7 +947,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "VehicleName",
                     BitFieldType = BitFieldType.StringBigEndUtf16,
-                    Length = 16*16
+                    Length = 16 * 16
                 }
             }
         };
@@ -924,7 +965,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "VehicleName",
                     BitFieldType = BitFieldType.StringBigEndUtf16,
-                    Length = 16*16
+                    Length = 16 * 16
                 }
             }
         };

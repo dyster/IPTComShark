@@ -478,7 +478,6 @@ namespace IPTComShark.SeqDiagram
                     }
                 }
 
-                
 
                 var sequence = new Sequence
                 {

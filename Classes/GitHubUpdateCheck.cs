@@ -67,9 +67,9 @@ namespace IPTComShark
                     Logger.Log($"Version check success, new version is available ({currentVersion} vs {latestVersion})",
                         Severity.Info);
                     if (MessageBox.Show(
-                            $"New version of {repo} is available, {latestVersion}{Environment.NewLine}Go there now?",
-                            "New Version Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk
-                        ) == DialogResult.Yes)
+                        $"New version of {repo} is available, {latestVersion}{Environment.NewLine}Go there now?",
+                        "New Version Available", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk
+                    ) == DialogResult.Yes)
                     {
                         Process.Start($"https://github.com/{owner}/{repo}/releases/latest");
                     }

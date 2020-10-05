@@ -1,12 +1,9 @@
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.Generic;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -54,7 +51,7 @@ namespace IPTComShark.Export
                         worksheet.Cells[3, topcol++].Value = field.Name;
                     }
                 }
-                
+
 
                 //Ok now format the values;
                 using (ExcelRange range = worksheet.Cells[3, 1, 3, 4])
@@ -74,8 +71,6 @@ namespace IPTComShark.Export
                         worksheet.Cells[rowindex, 3].Value =
                             packet.Date.Subtract(packet.Previous.Date).TotalMilliseconds;
                         //worksheet.Cells[rowindex, 3].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
-
-
                     }
 
                     // TODO temp disabled for now!!!
@@ -162,7 +157,6 @@ namespace IPTComShark.Export
                 worksheet.Cells[1, 4].Value = "Delta";
                 worksheet.Cells[1, 5].Value = "Data";
                 worksheet.Cells[1, 6].Value = "Raw";
-                
 
 
                 for (var index = 0; index < packets.Count; index++)
@@ -185,7 +179,9 @@ namespace IPTComShark.Export
                     var parse = backStore.GetParse(packet.No);
                     if (parse.HasValue)
                         worksheet.Cells[rowindex, 5].Value =
-                            string.Join(" ", parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f=>new DisplayField(f))));
+                            string.Join(" ",
+                                parse.Value.ParsedData.SelectMany(dataset =>
+                                    dataset.ParsedFields.Select(f => new DisplayField(f))));
 
                     //worksheet.Cells[rowindex, 5].IsRichText = true;
                     //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;
@@ -203,15 +199,13 @@ namespace IPTComShark.Export
                     if (packet.Protocol == ProtocolType.IPTWP)
                     {
                         // since we have IPT, straight cast to UDP, BAM
-                        
+
                         // TODO temp disabled !!!!!
                         //var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
                         //
                         //var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
                         //worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
                     }
-
-                    
                 }
 
                 //Ok now format the values;
@@ -273,7 +267,7 @@ namespace IPTComShark.Export
         {
             var sb = new StringBuilder(Functions.MakeCommentString(
                 packet.Header.GetStringDictionary()));
-            
+
             if (packet.SubMessage != null)
             {
                 sb.Append(Environment.NewLine);
@@ -293,16 +287,19 @@ namespace IPTComShark.Export
         private static List<List<Tuple<string, string>>> SS27tolist(SS27Packet packet)
         {
             var list = new List<List<Tuple<string, string>>>();
-            
-            list.Add(packet.Header.ParsedFields.Select(h => new Tuple<string,string>(h.Name, h.Value.ToString())).ToList());
+
+            list.Add(packet.Header.ParsedFields.Select(h => new Tuple<string, string>(h.Name, h.Value.ToString()))
+                .ToList());
             if (packet.SubMessage != null)
             {
-                list.Add(packet.SubMessage.ParsedFields.Select(f => new Tuple<string, string>(f.Name,f.Value.ToString())).ToList());
+                list.Add(packet.SubMessage.ParsedFields
+                    .Select(f => new Tuple<string, string>(f.Name, f.Value.ToString())).ToList());
             }
 
             foreach (var ss27PacketExtraMessage in packet.ExtraMessages)
             {
-                list.Add(ss27PacketExtraMessage.ParsedFields.Select(f => new Tuple<string, string>(f.Name, f.Value.ToString())).ToList());
+                list.Add(ss27PacketExtraMessage.ParsedFields
+                    .Select(f => new Tuple<string, string>(f.Name, f.Value.ToString())).ToList());
             }
 
             return list;
@@ -326,7 +323,8 @@ namespace IPTComShark.Export
                 var parse = backStore.GetParse(packet.No);
                 if (parse.HasValue)
                 {
-                    var displayFields = parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                    var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
+                        dataset.ParsedFields.Select(f => new DisplayField(f)));
                     foreach (var pair in displayFields)
                     {
                         sb.Append(" ");
@@ -336,14 +334,14 @@ namespace IPTComShark.Export
                         sb.Append(@"\b0 ");
                     }
                 }
-                
+
 
                 // since we have IPT, straight cast to UDP, BAM
                 // TODO temp disabled !!!
                 var topPacket = backStore.GetPacket(packet.No);
-                
-                var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
-                
+
+                var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
+
                 var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                 sb.Append(@"\line\ul " + BitConverter.ToString(bytes) + @"\ulnone");
 
@@ -371,10 +369,10 @@ namespace IPTComShark.Export
                 var parse = backStore.GetParse(packet.No);
                 if (parse.HasValue)
                 {
-                    var displayFields = parse.Value.ParsedData.SelectMany(dataset => dataset.ParsedFields.Select(f => new DisplayField(f)));
+                    var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
+                        dataset.ParsedFields.Select(f => new DisplayField(f)));
                     csvExport["Data"] = string.Join(" ", displayFields);
                 }
-                    
 
 
                 //csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());

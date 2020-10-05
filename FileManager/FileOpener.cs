@@ -23,11 +23,11 @@ namespace IPTComShark.FileManager
         public List<DataSource> DataSources { get; private set; }
         public DateTime DateTimeFrom { get; private set; }
         public DateTime DateTimeTo { get; private set; }
-        
+
         public FileOpener(string[] inputs)
         {
             InitializeComponent();
-            
+
             _inputstrings = inputs;
 
             dataListView1.DataSource = _dataSources;
@@ -286,7 +286,7 @@ namespace IPTComShark.FileManager
         private bool IsPCAP(byte[] bytes)
         {
             return bytes[0] == 0xd4 && bytes[1] == 0xc3 && bytes[2] == 0xb2 && bytes[3] == 0xa1 || bytes[0] == 0xa1 &&
-                   bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
+                bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
         }
 
         private bool IsPCAPNG(byte[] bytes)

@@ -8,7 +8,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Classes;
-using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Controls
 {
@@ -18,7 +17,7 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
         private CapturePacket _selectedPacket;
-        
+
         private string _searchString;
 
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
@@ -32,12 +31,12 @@ namespace IPTComShark.Controls
             get => _searchString;
             set
             {
-                if(value == null)
+                if (value == null)
                     return;
                 var input = value.Trim();
-                if(input.Equals(_searchString))
+                if (input.Equals(_searchString))
                     return;
-                _searchString = input; 
+                _searchString = input;
                 UpdateFilter();
             }
         }
@@ -68,13 +67,13 @@ namespace IPTComShark.Controls
 
             olvColumnComId.AspectGetter += rowObject =>
             {
-                if (rowObject == null) 
+                if (rowObject == null)
                     return null;
 
                 var packet = (CapturePacket) rowObject;
-                if(packet.Protocol == ProtocolType.IPTWP)
+                if (packet.Protocol == ProtocolType.IPTWP)
                     return packet.Comid;
-                
+
                 return null;
             };
 
@@ -308,7 +307,7 @@ namespace IPTComShark.Controls
                             return false;
                     }
                 }
-                
+
                 if (Settings.IgnoreDuplicatedPD)
                 {
                     if (capturePacket.IPTWPType != null && capturePacket.IPTWPType == IPTTypes.PD)
@@ -326,7 +325,7 @@ namespace IPTComShark.Controls
                         return true;
                     if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
                         return true;
-                    
+
                     // TODO we still need to be able to filter on the whole dataset somehow, either generate some massive database or maybe use the dataset definitions instead of the parsed result
 
                     return false;
@@ -397,7 +396,7 @@ namespace IPTComShark.Controls
             }
 
             _list.Clear();
-            
+
             _selectedPacket = null;
             fastObjectListView1.ClearObjects();
             fastObjectListView1.SetObjects(_list);
@@ -432,7 +431,6 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                
                 var s = BitConverter.ToString(BackStore.GetRaw(o.No).RawData);
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
@@ -457,7 +455,6 @@ namespace IPTComShark.Controls
                     var s = string.Join(" ", list);
                     Clipboard.SetText(s, TextDataFormat.Text);
                 }
-                
             }
 
             Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
@@ -514,8 +511,6 @@ namespace IPTComShark.Controls
                 addToIgnoredComIDsToolStripMenuItem.Enabled = o.Protocol == ProtocolType.IPTWP;
             }
         }
-
-        
     }
 
     public class MyOLVColumn : OLVColumn

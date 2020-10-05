@@ -1,5 +1,4 @@
-﻿using PacketDotNet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -76,7 +75,7 @@ namespace IPTComShark
         public static IPTWPPacket Extract(byte[] payload)
         {
             var iptPacket = new IPTWPPacket();
-            
+
             if (payload.Length <= 28) // the minimum length of an empty iptwp packet
                 return null;
 
@@ -109,14 +108,14 @@ namespace IPTComShark
             iptPacket.Comid = (uint) header["ComID"];
             iptPacket.IPTWPSize = datasetlength;
             iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
-           
+
             return iptPacket;
         }
 
         public static uint GetComid(byte[] payload)
         {
             return BitConverter.ToUInt32(
-                new[] { payload[15], payload[14], payload[13], payload[12] }, 0);
+                new[] {payload[15], payload[14], payload[13], payload[12]}, 0);
         }
 
         /// <summary>
@@ -126,7 +125,7 @@ namespace IPTComShark
         /// <returns></returns>
         public static UInt16 GetType(byte[] payload)
         {
-            return BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
+            return BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
         }
 
         /// <summary>
@@ -136,7 +135,7 @@ namespace IPTComShark
         /// <returns></returns>
         public static IPTTypes GetIptType(byte[] payload)
         {
-            var type = BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
+            var type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
             return MessageTypes[type];
         }
 
@@ -147,7 +146,7 @@ namespace IPTComShark
 
         public static ushort GetHeaderLength(byte[] payload)
         {
-            return BitConverter.ToUInt16(new[] { payload[23], payload[22] }, 0);
+            return BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
         }
 
         public static Dictionary<string, object> ExtractHeader(byte[] payload)

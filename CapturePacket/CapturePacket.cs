@@ -36,7 +36,7 @@ namespace IPTComShark
         //    rawCapture.LinkLayerType))
         //{
         //}
-        
+
         public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket)
         {
             return ExtractParsedData(packet, topPacket, false);
@@ -46,7 +46,7 @@ namespace IPTComShark
         {
             if (topPacket.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
 
                 if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
                 {
@@ -62,19 +62,17 @@ namespace IPTComShark
                     {
                         return null;
                     }
-                    
+
                     var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
                     if (!parse.NoParserInstalled)
                     {
                         packet.HasData = true;
                         return parse;
                     }
-                    
-                    
                 }
-                else if(ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+                else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
                 {
-                    var tcp = (TcpPacket)ipv4.PayloadPacket;
+                    var tcp = (TcpPacket) ipv4.PayloadPacket;
                     if (tcp == null)
                         return null;
                     // protect against corrupted data with a try read
@@ -99,7 +97,7 @@ namespace IPTComShark
             return null;
         }
 
-        public CapturePacket(Raw raw) : this (raw, Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData))
+        public CapturePacket(Raw raw) : this(raw, Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData))
         {
             // TODO obsolete this constructor
         }
@@ -125,7 +123,7 @@ namespace IPTComShark
 
             if (topPacket.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
 
                 if (ipv4.SourceAddress != null) Source = ipv4.SourceAddress.GetAddressBytes();
                 if (ipv4.DestinationAddress != null) Destination = ipv4.DestinationAddress.GetAddressBytes();
@@ -142,12 +140,13 @@ namespace IPTComShark
                     case PacketDotNet.ProtocolType.Tcp:
                         var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
-                        
+
 
                         // catch a semi-rare error in PacketDotNet that cannot be checked against
                         try
                         {
-                            ProtocolInfo = $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Acknowledgment} AckNo={tcpPacket.AcknowledgmentNumber}";
+                            ProtocolInfo =
+                                $"{tcpPacket.SourcePort}->{tcpPacket.DestinationPort} Seq={tcpPacket.SequenceNumber} Ack={tcpPacket.Acknowledgment} AckNo={tcpPacket.AcknowledgmentNumber}";
 
                             if (tcpPacket.PayloadData.Length == 0)
                                 break;
@@ -158,13 +157,13 @@ namespace IPTComShark
                             break;
                         }
 
-                        
 
                         if ((tcpPacket.DestinationPort == 50039 || tcpPacket.DestinationPort == 50040) &&
                             tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRU;
-                        } else if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
+                        }
+                        else if (tcpPacket.SourcePort == 50041 && tcpPacket.PayloadData.Length > 0)
                         {
                             Protocol = ProtocolType.JRUStatus;
                             var jruload = tcpPacket.PayloadData;
@@ -174,13 +173,13 @@ namespace IPTComShark
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 var parsedDataSet = VSIS210.JRU_STATUS.Parse(buffer);
-                                
+
                                 // TODO move this to separate parser
                                 //if(parsedDataSet != null)
                                 //    ParsedData.Add(parsedDataSet);
                                 //else
                                 //{
-                                    // why?
+                                // why?
                                 //}
                             }
                             catch (Exception e)
@@ -222,7 +221,7 @@ namespace IPTComShark
                         {
                             Protocol = ProtocolType.NTP;
                         }
-                        else if(udp.DestinationPort == 20548 || udp.DestinationPort == 20550)
+                        else if (udp.DestinationPort == 20548 || udp.DestinationPort == 20550)
                         {
                             Protocol = ProtocolType.IPTWP;
 
@@ -276,7 +275,6 @@ namespace IPTComShark
                                 Protocol = ProtocolType.UDP_SPL;
                                 ProtocolInfo = "CoHP->OPC (Profibus)";
                             }
-
                         }
                         else if (Equals(ipv4.SourceAddress, VapAddress))
                         {
@@ -345,7 +343,7 @@ namespace IPTComShark
                             else if (udp.DestinationPort == 50072)
                                 ProtocolInfo = "ETC->VAP (ATO)";
                         }
-                        
+
                         break;
 
                     case PacketDotNet.ProtocolType.Icmp:
@@ -399,10 +397,8 @@ namespace IPTComShark
                 //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
 #endif
             }
-
-            
         }
-        
+
         /// <summary>
         /// If part of a chain
         /// </summary>
@@ -426,31 +422,22 @@ namespace IPTComShark
         /// </summary>
         [JsonIgnore]
         public bool IsDupe { get; set; }
-        
-        public byte[] Source
-        {
-            get;
-            set;
-        }
 
-        public byte[] Destination
-        {
-            get;
-            set;
-        }
+        public byte[] Source { get; set; }
+
+        public byte[] Destination { get; set; }
 
         public uint Comid { get; set; }
         public IPTTypes? IPTWPType { get; set; }
 
         public ProtocolType Protocol { get; }
 
-        [field: JsonIgnore]
-        public string ProtocolInfo { get; private set; }
+        [field: JsonIgnore] public string ProtocolInfo { get; private set; }
 
         public int No { get; set; }
 
         public DateTime Date { get; }
-        
+
         public List<DisplayField> DisplayFields { get; set; } = new List<DisplayField>();
 
         public string Error { get; set; } = null;
@@ -473,17 +460,17 @@ namespace IPTComShark
             }
             set { _customName = value; }
         }
-        
+
         /// <summary>
         /// If this packet is part of a chain, get only the ParsedData that has changed
         /// </summary>
-        public static List<ParsedField> GetDelta(List<ParsedDataSet> oldD, List<ParsedDataSet> newD, List<string> ignores)
+        public static List<ParsedField> GetDelta(List<ParsedDataSet> oldD, List<ParsedDataSet> newD,
+            List<string> ignores)
         {
             List<ParsedField> delta = new List<ParsedField>();
 
             if (newD == null || newD.Count == 0)
                 return delta;
-
 
 
             if (oldD != null && newD.Count == oldD.Count)
@@ -492,7 +479,7 @@ namespace IPTComShark
                 {
                     var thisdataset = newD[i];
                     var thatdataset = oldD[i];
-                    
+
                     for (int x = 0; x < thisdataset.ParsedFields.Count; x++)
                     {
                         ParsedField field = thisdataset[x];
@@ -500,11 +487,12 @@ namespace IPTComShark
                         {
                             ParsedField lookup = thatdataset[x];
 
-                            if (lookup.Name == field.Name && !lookup.Value.Equals(field.Value) && !ignores.Contains(field.Name))
+                            if (lookup.Name == field.Name && !lookup.Value.Equals(field.Value) &&
+                                !ignores.Contains(field.Name))
                             {
                                 delta.Add(field);
                             }
-                            else if(lookup.Name != field.Name && !ignores.Contains(field.Name))
+                            else if (lookup.Name != field.Name && !ignores.Contains(field.Name))
                                 delta.Add(field);
                         }
                         else if (!ignores.Contains(field.Name))
@@ -512,9 +500,7 @@ namespace IPTComShark
                             delta.Add(field);
                         }
                     }
-                    
                 }
-                
             }
             else
             {
@@ -526,8 +512,6 @@ namespace IPTComShark
                             delta.Add(field);
                     }
                 }
-
-                
             }
 
             return delta;

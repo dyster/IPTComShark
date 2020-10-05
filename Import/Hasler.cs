@@ -1,5 +1,4 @@
 ﻿using sonesson_tools;
-using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataParsers;
 using System;
 using System.Collections.Generic;
@@ -51,9 +50,9 @@ namespace IPTComShark.Import
 
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
-                
+
                 capturePacket.No = sortIndex++;
-                
+
                 // add to the chain
                 //if (prev != null)
                 //    deviceLog.Previous = prev;

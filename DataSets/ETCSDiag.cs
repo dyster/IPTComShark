@@ -2385,7 +2385,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-       // Checked RVV 30-05-2020 NTC (TPWS) Diagnostic Manual v1.0
+        // Checked RVV 30-05-2020 NTC (TPWS) Diagnostic Manual v1.0
         public static DataSetDefinition DIA_151 => new DataSetDefinition
         {
             Name = "DIA_151 TPWS_ENVIRONMENT",
@@ -2402,7 +2402,8 @@ namespace IPTComShark.DataSets
                     Name = "TPWS_IntErrorCode",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Internal Error Code to differentiate error situations within the same DIAG_DATA event ID. Default 0."
+                    Comment =
+                        "Internal Error Code to differentiate error situations within the same DIAG_DATA event ID. Default 0."
                 },
                 new BitField
                 {
@@ -2410,8 +2411,8 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Bit using (0=MSB):\r\n" +
-                                "bit 0-3    NTXTNTC_STMSTATE, Current STM State as active in STM\r\n" +
-                                "bit 4-7    STMSubState, Internal substate to NTXTNTC_STM_STATE"
+                              "bit 0-3    NTXTNTC_STMSTATE, Current STM State as active in STM\r\n" +
+                              "bit 4-7    STMSubState, Internal substate to NTXTNTC_STM_STATE"
                 },
                 new BitField
                 {

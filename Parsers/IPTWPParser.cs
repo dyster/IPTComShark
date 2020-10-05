@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IPTComShark.Classes;
 using IPTComShark.XmlFiles;
 using sonesson_tools.BitStreamParser;
@@ -33,14 +30,16 @@ namespace IPTComShark.Parsers
             if (type == IPTTypes.MA)
             {
                 var parsedDataSet = MA.Parse(iptPayload);
-                
+
                 var parse = new Parse();
                 parse.Name = "MA for " + comid;
                 parse.ParsedData = new List<ParsedDataSet>
                 {
-                   parsedDataSet
+                    parsedDataSet
                 };
-                parse.DisplayFields = new List<DisplayField>(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf.Name,pf.Value)));
+                parse.DisplayFields =
+                    new List<DisplayField>(
+                        parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf.Name, pf.Value)));
                 return parse;
             }
             else

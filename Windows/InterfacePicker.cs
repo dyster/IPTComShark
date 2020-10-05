@@ -22,8 +22,8 @@ namespace IPTComShark
 
             olvColumn4.AspectGetter += rowObject =>
             {
-                var device = (NpcapDevice)rowObject;
-                return device.Addresses.Count; 
+                var device = (NpcapDevice) rowObject;
+                return device.Addresses.Count;
             };
         }
 

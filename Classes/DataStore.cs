@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using IPTComShark.DataSets;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
@@ -10,7 +6,6 @@ using sonesson_tools.DataSets;
 
 namespace IPTComShark.Classes
 {
-    
     public class DataStore
     {
         private List<DataSetCollection> DataCollections = new List<DataSetCollection>();
@@ -25,9 +20,6 @@ namespace IPTComShark.Classes
             DataCollections.Add(new VSISDMI());
             DataCollections.Add(new ABDO());
             DataCollections.Add(new VSIS210());
-            
-
-            
         }
 
         public void Add(DataSetCollection dataSetCollection)

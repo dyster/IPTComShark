@@ -1,5 +1,4 @@
-﻿using IPTComShark.XmlFiles;
-using PacketDotNet;
+﻿using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ namespace IPTComShark.Controls
                     item.Font = new Font(item.Font, FontStyle.Bold);
             };
         }
-        
+
         public BackStore BackStore { get; set; }
 
         public void SetObject(CapturePacket originalpacket)
@@ -41,7 +40,7 @@ namespace IPTComShark.Controls
             textBoxType.Text = string.Empty;
 
             var dataLines = new List<DataLine>();
-            
+
             var topPacket = BackStore.GetPacket(originalpacket.No);
 
             if (originalpacket.Protocol == ProtocolType.Virtual)
@@ -63,7 +62,7 @@ namespace IPTComShark.Controls
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP && topPacket.PayloadPacket.PayloadPacket != null)
                 {
-                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
                     var iptPacket = IPTWPPacket.Extract(udp.PayloadData);
                     var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
@@ -72,13 +71,15 @@ namespace IPTComShark.Controls
 
                     textBoxSize.Text = iptPacket.IPTWPSize.ToString();
                     textBoxType.Text = iptPacket.IPTWPType.ToString();
-                    
-                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 && originalpacket.Previous != null)
+
+                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 &&
+                        originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection
                         var oldparse = BackStore.GetParse(originalpacket.Previous.No);
 
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
+                        dataLines.Add(new DataLine(ticker++)
+                            {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
                         for (var index = 0; index < extensiveData.Value.ParsedData[0].ParsedFields.Count; index++)
                         {
                             var field = extensiveData.Value.ParsedData[0].ParsedFields[index];
@@ -87,7 +88,6 @@ namespace IPTComShark.Controls
 
                             if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
                             {
-                                
                                 var parsedField = oldparse.Value.ParsedData[0][index];
                                 changed = !parsedField.Value.Equals(field.Value);
                             }
@@ -99,11 +99,11 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                    else if(extensiveData.HasValue)
+                    else if (extensiveData.HasValue)
                     {
                         foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                         {
-                            dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                            dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                             foreach (var field in parsedDataSet.ParsedFields)
                             {
                                 dataLines.Add(new DataLine(field, ticker++));
@@ -111,11 +111,11 @@ namespace IPTComShark.Controls
                         }
                     }
                 }
-                else if(extensiveData.HasValue)
+                else if (extensiveData.HasValue)
                 {
                     foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                     {
-                        dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                         foreach (var field in parsedDataSet.ParsedFields)
                         {
                             dataLines.Add(new DataLine(field, ticker++));
@@ -136,7 +136,7 @@ namespace IPTComShark.Controls
                 if (originalpacket.Protocol == ProtocolType.IPTWP)
                 {
                     // since we have IPT, straight cast to UDP, BAM
-                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
                     var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 

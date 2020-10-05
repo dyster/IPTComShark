@@ -21,14 +21,8 @@ namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        
-
-        
-
-        
-
         private BackStore _backStore;
-        
+
 
         private long _capturedData;
 
@@ -36,7 +30,6 @@ namespace IPTComShark
         private long _discardedData;
         private long _discardedPackets;
 
-        
 
         //private PCAPWriter _pcapWriter;
 
@@ -44,23 +37,19 @@ namespace IPTComShark
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            
+
             InitializeComponent();
 
-            
-
-            
 
             _backStore = new BackStore();
 
             packetListView1.BackStore = _backStore;
             packetDisplay1.BackStore = _backStore;
 
-            Text = Text += " " + Application.ProductVersion + " DEBUG VERSION";//  codename \"Gupta\"";
+            Text = Text += " " + Application.ProductVersion + " codename \"Roger\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
-            
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
@@ -98,7 +87,6 @@ namespace IPTComShark
             _capturedData = 0;
             _discardedData = 0;
             _discardedPackets = 0;
-
         }
 
         private void UpdateStatus(string text)
@@ -185,7 +173,7 @@ namespace IPTComShark
                     devices.Where(d => d is NpcapDevice).Cast<NpcapDevice>().ToList();
 
                 captureDevices.RemoveAll(d => d.Loopback || d.Addresses.Count == 0);
-                
+
 
                 var interfacePicker = new InterfacePicker(captureDevices);
                 interfacePicker.ShowDialog();
@@ -364,11 +352,10 @@ namespace IPTComShark
                 Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
-
                 {
                     var fileManager = new FileManager.FileManager();
                     fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
-                    
+
                     fileManager.OpenFilesAsync(paths);
 
                     //fileManager.OpenFilesAsyncFinished.WaitOne();
@@ -412,7 +399,8 @@ namespace IPTComShark
             DialogResult dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
+                SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName,
+                    _backStore);
             }
         }
 
@@ -436,9 +424,7 @@ namespace IPTComShark
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                OpenPath(new []{folderBrowserDialog.SelectedPath});
-
-
+                OpenPath(new[] {folderBrowserDialog.SelectedPath});
             }
         }
 
@@ -584,7 +570,8 @@ namespace IPTComShark
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
                             // TODO no idea if this works now
-                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
+                            capturePacket.DisplayFields.AddRange(
+                                parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
                             packetListView1.Add(capturePacket);
                         }
                         else if (ServiceID == 205 && deviceID == 3)
@@ -602,8 +589,9 @@ namespace IPTComShark
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
                             // TODO no idea if this works either now
-                            capturePacket.DisplayFields.AddRange(parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
-                            
+                            capturePacket.DisplayFields.AddRange(
+                                parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
+
                             packetListView1.Add(capturePacket);
                         }
                     }
@@ -623,23 +611,21 @@ namespace IPTComShark
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Shift && e.Control && e.KeyCode == Keys.B)
+            if (e.Shift && e.Control && e.KeyCode == Keys.B)
             {
                 GC.Collect();
-                
+
                 RunBenchmark(@"c:\temp\benchmark1.pcap");
-                
+
                 clearToolStripMenuItem_Click(this, null);
                 RunBenchmark(@"c:\temp\benchmark2.pcapng");
 
@@ -654,12 +640,9 @@ namespace IPTComShark
             }
         }
 
-        
-        
+
         private static void RunBenchmark(string file)
         {
-            
-
             var totalMemory = GC.GetTotalMemory(false);
 
             Process myProcess = Process.GetCurrentProcess();
@@ -697,15 +680,15 @@ namespace IPTComShark
                 Raw raw;
                 if (fileReadObject.ReadObject is PCAPBlock)
                 {
-                    var pcapBlock = (PCAPBlock)fileReadObject.ReadObject;
+                    var pcapBlock = (PCAPBlock) fileReadObject.ReadObject;
                     raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                        (LinkLayerType)pcapBlock.Header.network);
+                        (LinkLayerType) pcapBlock.Header.network);
                 }
                 else
                 {
-                    var pcapngBlock = (PCAPNGBlock)fileReadObject.ReadObject;
+                    var pcapngBlock = (PCAPNGBlock) fileReadObject.ReadObject;
                     raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                        (LinkLayerType)pcapngBlock.Interface.LinkLayerType);
+                        (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
                 }
 
                 list.Add(new CapturePacket(raw));
@@ -713,7 +696,7 @@ namespace IPTComShark
             }
 
             stopwatch.Stop();
-            
+
             myProcess = Process.GetCurrentProcess();
 
             var totalMemory2 = GC.GetTotalMemory(false);
@@ -732,17 +715,25 @@ namespace IPTComShark
             var peakVirtualMem = myProcess.PeakVirtualMemorySize64;
             var peakWorkingSet = myProcess.PeakWorkingSet64;
 
-            var text = "-------------------------------------"+Environment.NewLine;
+            var text = "-------------------------------------" + Environment.NewLine;
             text += DateTime.Now.ToString() + "  " + Application.ProductVersion + Environment.NewLine;
-            text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) + Environment.NewLine;
-            text += "PrivateMemorySize64 increase = " + Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
-            text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) + Environment.NewLine;
-            text += "PagedSystemMemorySize64 increase = " + Functions.PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) + Environment.NewLine;
-            text += "PagedMemorySize64 increase = " + Functions.PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
+            text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) +
+                    Environment.NewLine;
+            text += "PrivateMemorySize64 increase = " +
+                    Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
+            text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) +
+                    Environment.NewLine;
+            text += "PagedSystemMemorySize64 increase = " +
+                    Functions.PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) +
+                    Environment.NewLine;
+            text += "PagedMemorySize64 increase = " +
+                    Functions.PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
 
             text += "UserProcessorTime increase = " + (userProcessorTime_2 - userProcessorTime) + Environment.NewLine;
-            text += "PrivilegedProcessorTime increase = " + (privilegedProcessorTime_2 - privilegedProcessorTime) + Environment.NewLine;
-            text += "TotalProcessorTime increase = " + (totalProcessorTime_2 - totalProcessorTime) + Environment.NewLine;
+            text += "PrivilegedProcessorTime increase = " + (privilegedProcessorTime_2 - privilegedProcessorTime) +
+                    Environment.NewLine;
+            text += "TotalProcessorTime increase = " + (totalProcessorTime_2 - totalProcessorTime) +
+                    Environment.NewLine;
 
             text += "Time taken " + stopwatch.Elapsed + Environment.NewLine;
 
@@ -753,7 +744,8 @@ namespace IPTComShark
 
         private void statusStrip1_DoubleClick(object sender, EventArgs e)
         {
-            var textWindow = new TextWindow(string.Join(Environment.NewLine, Logger.Instance.GetLog().Select(log => log.ToString())));
+            var textWindow = new TextWindow(string.Join(Environment.NewLine,
+                Logger.Instance.GetLog().Select(log => log.ToString())));
             textWindow.Show(this);
         }
 

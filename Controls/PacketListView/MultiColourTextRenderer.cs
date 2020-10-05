@@ -11,7 +11,7 @@ namespace IPTComShark.Controls
     public class MultiColourTextRenderer : BaseRenderer
     {
         private Color backColor = Color.Transparent;
-        
+
         public override void DrawText(Graphics g, Rectangle r, string txt)
         {
             if (IsDrawBackground && IsItemSelected && !ListView.FullRowSelect)
@@ -38,7 +38,6 @@ namespace IPTComShark.Controls
                             tuples.Add(new Tuple<string, string>(displayField.Name, displayField.Val.ToString()));
                     }
                 }
-                
             }
             else
             {
@@ -47,7 +46,7 @@ namespace IPTComShark.Controls
 
             Font font1 = Font;
             var font2 = new Font(Font, FontStyle.Bold);
-            
+
             var maxX = r.X + Column.Width;
 
             // make the original rectangle zero width to set the first string up
@@ -67,10 +66,11 @@ namespace IPTComShark.Controls
                     // no point drawing outside of bounds
                     break;
                 }
+
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
-                
+
                 TextRenderer.DrawText(g, text, font1, r, foregroundColor, backColor, flags);
-                
+
                 text = o.Item2;
 
                 width = TextRenderer.MeasureText(text, font2).Width;
@@ -78,8 +78,6 @@ namespace IPTComShark.Controls
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
                 TextRenderer.DrawText(g, text, font2, r, foregroundColor, backColor, flags);
             }
-
-            
         }
     }
 }

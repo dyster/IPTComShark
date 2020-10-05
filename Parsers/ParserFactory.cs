@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Parsers
@@ -10,6 +7,7 @@ namespace IPTComShark.Parsers
     public class ParserFactory
     {
         private List<IParser> _parsers = new List<IParser>();
+
         public ParserFactory()
         {
             _parsers.Add(new NTPParser());
@@ -26,7 +24,7 @@ namespace IPTComShark.Parsers
                 return parser.Extract(data);
             }
 
-            return new Parse{NoParserInstalled = true};
+            return new Parse {NoParserInstalled = true};
         }
     }
 
