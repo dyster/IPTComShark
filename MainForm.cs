@@ -231,10 +231,9 @@ namespace IPTComShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
-            var storeStatus = _backStore.Status;
+            
 
             var tuples = new List<Tuple<Color, string>>();
-            tuples.Add(new Tuple<Color, string>(Color.Black, storeStatus + " | "));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, packetListView1.Count().ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));

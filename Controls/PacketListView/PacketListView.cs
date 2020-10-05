@@ -26,6 +26,11 @@ namespace IPTComShark.Controls
         private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
         private static readonly Color ErrorColor = Color.Crimson;
 
+        private const string EmptyText = "No files loaded, use File->Open or Drag&Drop";
+        private const string EmptyFilterText = "The filter has excluded everything";
+        private string _lastBackStoreStatus = "";
+        private Font _statusFont = new Font("Tahoma", 20, FontStyle.Bold);
+
         public string SearchString
         {
             get => _searchString;
@@ -215,6 +220,10 @@ namespace IPTComShark.Controls
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
+
+            timerFlicker.Enabled = true;
+
+            fastObjectListView1.OverlayText = new TextOverlay(){Text = "PENIS"};
         }
 
         public BackStore BackStore { get; set; }
@@ -509,6 +518,36 @@ namespace IPTComShark.Controls
             if (o != null)
             {
                 addToIgnoredComIDsToolStripMenuItem.Enabled = o.Protocol == ProtocolType.IPTWP;
+            }
+        }
+
+        private void timerFlicker_Tick(object sender, EventArgs e)
+        {
+            var backStoreStatus = BackStore.Status;
+            if (backStoreStatus != _lastBackStoreStatus)
+            {
+                _lastBackStoreStatus = backStoreStatus;
+                var textOverlay = new TextOverlay() {Text = backStoreStatus};
+                textOverlay.Alignment = ContentAlignment.MiddleCenter;
+                textOverlay.Font = _statusFont;
+                textOverlay.InsetY = 100;
+                textOverlay.BackColor = Color.White;
+                textOverlay.TextColor = Color.Black;
+                textOverlay.Transparency = 200;
+                //var measureText = TextRenderer.MeasureText(backStoreStatus, textOverlay.Font);
+                //var inset = this.Width / 2 + measureText.Width / 2;
+                //textOverlay.InsetX = inset;
+                fastObjectListView1.OverlayText = textOverlay;
+            }
+            
+            
+            
+
+            if (_list.Count > 0)
+                fastObjectListView1.EmptyListMsg = EmptyFilterText;
+            else
+            {
+                fastObjectListView1.EmptyListMsg = EmptyText;
             }
         }
     }

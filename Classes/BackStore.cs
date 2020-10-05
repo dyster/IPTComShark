@@ -83,10 +83,7 @@ namespace IPTComShark.Classes
             {
                 if (Working)
                     return $"Processing {_addBuffer.Count} Packets";
-                else
-                {
-                    return $"Captured {_packetStore.Count} Packets";
-                }
+                return null;
             }
         }
 

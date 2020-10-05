@@ -30,13 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
-            this.olvColumnError = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.olvColumnNo = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
             this.olvColumnDate = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
             this.olvColumnMS = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
@@ -48,6 +41,14 @@
             this.olvColumnDictionary = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
             this.olvColumnIPTWPType = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
             this.olvColumnComId = ((IPTComShark.Controls.MyOLVColumn)(new IPTComShark.Controls.MyOLVColumn()));
+            this.olvColumnError = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
+            this.timerFlicker = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
@@ -100,56 +101,6 @@
             this.fastObjectListView1.View = System.Windows.Forms.View.Details;
             this.fastObjectListView1.VirtualMode = true;
             this.fastObjectListView1.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
-            // 
-            // olvColumnError
-            // 
-            this.olvColumnError.AspectName = "Error";
-            this.olvColumnError.Text = "Error";
-            // 
-            // contextMenuMouse
-            // 
-            this.contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyRawByteshexStringToolStripMenuItem,
-            this.copyParsedDatatextStringToolStripMenuItem,
-            this.analyzeChainToolStripMenuItem,
-            this.addToIgnoredComIDsToolStripMenuItem});
-            this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(230, 92);
-            this.contextMenuMouse.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuMouse_Opening);
-            // 
-            // copyRawByteshexStringToolStripMenuItem
-            // 
-            this.copyRawByteshexStringToolStripMenuItem.Name = "copyRawByteshexStringToolStripMenuItem";
-            this.copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.copyRawByteshexStringToolStripMenuItem.Text = "Copy raw bytes (hex string)";
-            this.copyRawByteshexStringToolStripMenuItem.Click += new System.EventHandler(this.copyRawByteshexStringToolStripMenuItem_Click);
-            // 
-            // copyParsedDatatextStringToolStripMenuItem
-            // 
-            this.copyParsedDatatextStringToolStripMenuItem.Name = "copyParsedDatatextStringToolStripMenuItem";
-            this.copyParsedDatatextStringToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.copyParsedDatatextStringToolStripMenuItem.Text = "Copy parsed data (text string)";
-            this.copyParsedDatatextStringToolStripMenuItem.Click += new System.EventHandler(this.copyParsedDatatextStringToolStripMenuItem_Click);
-            // 
-            // analyzeChainToolStripMenuItem
-            // 
-            this.analyzeChainToolStripMenuItem.Name = "analyzeChainToolStripMenuItem";
-            this.analyzeChainToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.analyzeChainToolStripMenuItem.Text = "Analyze chain";
-            this.analyzeChainToolStripMenuItem.Click += new System.EventHandler(this.analyzeChainToolStripMenuItem_Click);
-            // 
-            // addToIgnoredComIDsToolStripMenuItem
-            // 
-            this.addToIgnoredComIDsToolStripMenuItem.Name = "addToIgnoredComIDsToolStripMenuItem";
-            this.addToIgnoredComIDsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
-            this.addToIgnoredComIDsToolStripMenuItem.Text = "Add to ignored ComID\'s";
-            this.addToIgnoredComIDsToolStripMenuItem.Click += new System.EventHandler(this.addToIgnoredComIDsToolStripMenuItem_Click);
-            // 
-            // timerAddBuffer
-            // 
-            this.timerAddBuffer.Enabled = true;
-            this.timerAddBuffer.Interval = 1000;
-            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
             // 
             // olvColumnNo
             // 
@@ -227,6 +178,61 @@
             this.olvColumnComId.ClusterGetter = null;
             this.olvColumnComId.Text = "ComID";
             // 
+            // olvColumnError
+            // 
+            this.olvColumnError.AspectName = "Error";
+            this.olvColumnError.Text = "Error";
+            // 
+            // contextMenuMouse
+            // 
+            this.contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyRawByteshexStringToolStripMenuItem,
+            this.copyParsedDatatextStringToolStripMenuItem,
+            this.analyzeChainToolStripMenuItem,
+            this.addToIgnoredComIDsToolStripMenuItem});
+            this.contextMenuMouse.Name = "contextMenuMouse";
+            this.contextMenuMouse.Size = new System.Drawing.Size(231, 92);
+            this.contextMenuMouse.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuMouse_Opening);
+            // 
+            // copyRawByteshexStringToolStripMenuItem
+            // 
+            this.copyRawByteshexStringToolStripMenuItem.Name = "copyRawByteshexStringToolStripMenuItem";
+            this.copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.copyRawByteshexStringToolStripMenuItem.Text = "Copy raw bytes (hex string)";
+            this.copyRawByteshexStringToolStripMenuItem.Click += new System.EventHandler(this.copyRawByteshexStringToolStripMenuItem_Click);
+            // 
+            // copyParsedDatatextStringToolStripMenuItem
+            // 
+            this.copyParsedDatatextStringToolStripMenuItem.Name = "copyParsedDatatextStringToolStripMenuItem";
+            this.copyParsedDatatextStringToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.copyParsedDatatextStringToolStripMenuItem.Text = "Copy parsed data (text string)";
+            this.copyParsedDatatextStringToolStripMenuItem.Click += new System.EventHandler(this.copyParsedDatatextStringToolStripMenuItem_Click);
+            // 
+            // analyzeChainToolStripMenuItem
+            // 
+            this.analyzeChainToolStripMenuItem.Name = "analyzeChainToolStripMenuItem";
+            this.analyzeChainToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.analyzeChainToolStripMenuItem.Text = "Analyze chain";
+            this.analyzeChainToolStripMenuItem.Click += new System.EventHandler(this.analyzeChainToolStripMenuItem_Click);
+            // 
+            // addToIgnoredComIDsToolStripMenuItem
+            // 
+            this.addToIgnoredComIDsToolStripMenuItem.Name = "addToIgnoredComIDsToolStripMenuItem";
+            this.addToIgnoredComIDsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.addToIgnoredComIDsToolStripMenuItem.Text = "Add to ignored ComID\'s";
+            this.addToIgnoredComIDsToolStripMenuItem.Click += new System.EventHandler(this.addToIgnoredComIDsToolStripMenuItem_Click);
+            // 
+            // timerAddBuffer
+            // 
+            this.timerAddBuffer.Enabled = true;
+            this.timerAddBuffer.Interval = 1000;
+            this.timerAddBuffer.Tick += new System.EventHandler(this.timerAddBuffer_Tick);
+            // 
+            // timerFlicker
+            // 
+            this.timerFlicker.Interval = 500;
+            this.timerFlicker.Tick += new System.EventHandler(this.timerFlicker_Tick);
+            // 
             // PacketListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,5 +269,6 @@
         private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
         private MyOLVColumn olvColumnMS;
         private BrightIdeasSoftware.OLVColumn olvColumnError;
+        private System.Windows.Forms.Timer timerFlicker;
     }
 }
