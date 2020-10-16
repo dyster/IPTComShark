@@ -880,7 +880,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "EVC7_Validity1",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 16,
                     Comment =
                         "Validity1 bits\r\n0 = not used (set to invalid)\r\n1 = MMI_OBU_TR_EBTestInProgress\r\n2 = MMI_OBU_TR_EB_Status\r\n3 = MMI_OBU_TR_RadioStatus" +
@@ -890,7 +890,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "EVC7_Validity2",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 16,
                     Comment =
                         "Validity2 bits\r\n0 = MMI_OBU_TR_M_Mode\r\n1 = MMI_OBU_TR_M_ADHESION\r\n2 = MMI_OBU_TR_NID_STM_HS\r\n3 = MMI_OBU_TR_NID_STM_DA" +
@@ -1805,7 +1805,12 @@ namespace IPTComShark.DataSets
                     Name = "MMI_STM_Q_DRIVERINT",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    Comment = "Need for driver intervention or not during Specific STM Data Entry."
+                    Comment = "Need for driver intervention or not during Specific STM Data Entry.",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"False", "No driver intervention requested"},
+                        {"True", "Driver intervention requested"}
+                    }
                 },
                 MMI_STM_Q_FOLLOWING,
                 new BitField
@@ -3160,7 +3165,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "EVC102_Validity1",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 16,
                     Comment =
                         "Validity1 bits" +
@@ -3178,7 +3183,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "EVC102_Validity2",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 16,
                     Comment =
                         "Validity2 bits" +
@@ -5418,7 +5423,12 @@ namespace IPTComShark.DataSets
             Name = "MMI_STM_NID_DATA",
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
-            Comment = "Identifier of a Specific STM Data to be entered."
+            Comment = "Identifier of a Specific STM Data to be entered.",
+            LookupTable = new Dictionary<string, string>
+            {
+                {"1", "TPWS Start Test?"},
+                {"4", "TPWS Test in Progress"}
+            }
         };
 
         public static BitField MMI_STM_Q_FOLLOWING => new BitField
@@ -5427,6 +5437,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.Bool,
             Length = 1,
             Comment = "Indicate following data to be viewed at the same time",
+            LookupTable = new Dictionary<string, string> {{"True", "There is a following request to be managed together with the current one"}},
             SkipIfValue = false
         };
 
