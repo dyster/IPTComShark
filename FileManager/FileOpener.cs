@@ -24,13 +24,9 @@ namespace IPTComShark.FileManager
         public DateTime DateTimeFrom { get; private set; }
         public DateTime DateTimeTo { get; private set; }
 
-        private bool _openAll;
-
-        public FileOpener(string[] inputs, bool openAll = false)
+        public FileOpener(string[] inputs)
         {
             InitializeComponent();
-
-            _openAll = openAll;
 
             _inputstrings = inputs;
 
@@ -290,7 +286,7 @@ namespace IPTComShark.FileManager
         private bool IsPCAP(byte[] bytes)
         {
             return bytes[0] == 0xd4 && bytes[1] == 0xc3 && bytes[2] == 0xb2 && bytes[3] == 0xa1 || bytes[0] == 0xa1 &&
-                   bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
+                bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
         }
 
         private bool IsPCAPNG(byte[] bytes)
@@ -312,13 +308,6 @@ namespace IPTComShark.FileManager
             UpdateList("BackgroundWorker finished");
             buttonGO.Enabled = true;
             buttonMerge.Enabled = true;
-
-            if (_openAll)
-            {
-                this.DialogResult = DialogResult.OK;
-                SetData();
-                this.Close();
-            }
         }
 
         private void SetData()

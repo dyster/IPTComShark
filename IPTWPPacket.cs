@@ -1,5 +1,4 @@
-﻿using PacketDotNet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -53,76 +52,101 @@ namespace IPTComShark
         public uint IPTWPSize { get; set; }
         //public byte[] IPTWPPayload { get; set; }
 
-        public static byte[] GetIPTPayload(UdpPacket udp, IPTWPPacket packet)
+        public static byte[] GetIPTPayload(byte[] udpPayload)
         {
-            byte[] payload = udp.PayloadData;
-            ushort headerlength = BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+            var size = GetDatasetLength(udpPayload);
+            ushort headerlength = GetHeaderLength(udpPayload);
 
-            var data = new byte[packet.IPTWPSize];
+            var data = new byte[size];
             ushort readpos =
                 headerlength; // the first framecheck will be skipped by the i % 256 modulus when it parses 0
 
-            for (var i = 0; i < packet.IPTWPSize; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (i % 256 == 0)
                     readpos += 4;
-                data[i] = payload[readpos];
+                data[i] = udpPayload[readpos];
                 readpos++;
             }
 
             return data;
         }
 
-        public static IPTWPPacket Extract(UdpPacket udp)
+        public static IPTWPPacket Extract(byte[] payload)
         {
-            if (udp == null)
-                return null;
-
             var iptPacket = new IPTWPPacket();
 
-            byte[] payload = udp.PayloadData;
-
-            if (udp.DestinationPort == 20548 || udp.DestinationPort == 20550)
-            {
-                if (payload.Length <= 28) // the minimum length of an empty iptwp packet
-                    return null;
-
-                var header = ExtractHeader(payload);
-
-                ushort datasetlength = (ushort) header["DatasetLength"];
-
-
-                // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
-                int totalsize = ((ushort) header["HeaderLength"]) + 4 + datasetlength;
-
-                // calculate the number of datasets and add the number of framechecks we should have
-                int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
-                totalsize += datasets * 4;
-
-                // calculate if there should be padding
-                if (datasetlength % 4 != 0)
-                {
-                    int remainder = datasetlength % 4;
-                    totalsize += 4 - remainder;
-                }
-
-                if (totalsize != payload.Length)
-                    return null;
-                if (!MessageTypes.ContainsKey((ushort) header["Type"]))
-                    return null;
-
-                // we have valid IPTCom!
-
-                iptPacket.Comid = (uint) header["ComID"];
-                iptPacket.IPTWPSize = datasetlength;
-                iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
-            }
-            else
-            {
+            if (payload.Length <= 28) // the minimum length of an empty iptwp packet
                 return null;
+
+            var header = ExtractHeader(payload);
+
+            ushort datasetlength = (ushort) header["DatasetLength"];
+
+
+            // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
+            int totalsize = ((ushort) header["HeaderLength"]) + 4 + datasetlength;
+
+            // calculate the number of datasets and add the number of framechecks we should have
+            int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
+            totalsize += datasets * 4;
+
+            // calculate if there should be padding
+            if (datasetlength % 4 != 0)
+            {
+                int remainder = datasetlength % 4;
+                totalsize += 4 - remainder;
             }
+
+            if (totalsize != payload.Length)
+                return null;
+            if (!MessageTypes.ContainsKey((ushort) header["Type"]))
+                return null;
+
+            // we have valid IPTCom!
+
+            iptPacket.Comid = (uint) header["ComID"];
+            iptPacket.IPTWPSize = datasetlength;
+            iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
 
             return iptPacket;
+        }
+
+        public static uint GetComid(byte[] payload)
+        {
+            return BitConverter.ToUInt32(
+                new[] {payload[15], payload[14], payload[13], payload[12]}, 0);
+        }
+
+        /// <summary>
+        /// Gets the IPTWP Type as a unsigned integer
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static UInt16 GetType(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+        }
+
+        /// <summary>
+        /// Gets the IPTWP Type as an enum
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static IPTTypes GetIptType(byte[] payload)
+        {
+            var type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+            return MessageTypes[type];
+        }
+
+        public static ushort GetDatasetLength(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0);
+        }
+
+        public static ushort GetHeaderLength(byte[] payload)
+        {
+            return BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
         }
 
         public static Dictionary<string, object> ExtractHeader(byte[] payload)
@@ -134,11 +158,10 @@ namespace IPTComShark
                 0));
             dic.Add("TopoCount", BitConverter.ToUInt32(new[] {payload[11], payload[10], payload[9], payload[8]},
                 0));
-            dic.Add("ComID", BitConverter.ToUInt32(
-                new[] {payload[15], payload[14], payload[13], payload[12]}, 0));
-            var type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+            dic.Add("ComID", GetComid(payload));
+            var type = GetType(payload);
             dic.Add("Type", type);
-            dic.Add("DatasetLength", BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0));
+            dic.Add("DatasetLength", GetDatasetLength(payload));
 
             if (type != 0x5044)
             {
@@ -146,7 +169,8 @@ namespace IPTComShark
                     0));
             }
 
-            var headLen = BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+
+            var headLen = GetHeaderLength(payload);
             dic.Add("HeaderLength", headLen);
 
             if (type != 0x5044)

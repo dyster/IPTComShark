@@ -20,7 +20,7 @@ namespace IPTComShark.Parsers
             var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
 
             parse.Name = ss27.MsgType.ToString();
-            
+
             if (ss27.Events.Count == 0)
             {
                 // if there is no event, chuck some other data in there, maybe
@@ -36,7 +36,8 @@ namespace IPTComShark.Parsers
 
             if (ss27.Header != null) parse.ParsedData.Add(ss27.Header);
             if (ss27.SubMessage != null) parse.ParsedData.Add(ss27.SubMessage);
-            if (ss27.ExtraMessages != null && ss27.ExtraMessages.Count > 0) parse.ParsedData.AddRange(ss27.ExtraMessages);
+            if (ss27.ExtraMessages != null && ss27.ExtraMessages.Count > 0)
+                parse.ParsedData.AddRange(ss27.ExtraMessages);
 
             parse.BackLinkIdentifier = ss27.MsgType.ToString();
 

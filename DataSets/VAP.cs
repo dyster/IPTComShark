@@ -83,9 +83,9 @@ namespace IPTComShark.DataSets
                     Length = 8,
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "Error" },
-                        {"1", "ETCS Core" },
-                        {"2", "OPC" },
+                        {"0", "Error"},
+                        {"1", "ETCS Core"},
+                        {"2", "OPC"},
                     }
                 },
                 new BitField()
@@ -95,12 +95,12 @@ namespace IPTComShark.DataSets
                     Length = 8,
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "Error" },
-                        {"1", "Idle" },
-                        {"2", "Running" },
-                        {"3", "Stopping Failure" },
-                        {"4", "Uncondit. Stopping Failure" },
-                        {"5", "Halt, Fatal Failure" },
+                        {"0", "Error"},
+                        {"1", "Idle"},
+                        {"2", "Running"},
+                        {"3", "Stopping Failure"},
+                        {"4", "Uncondit. Stopping Failure"},
+                        {"5", "Halt, Fatal Failure"},
                     }
                 },
                 new BitField()

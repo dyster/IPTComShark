@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IPTComShark.DataSets;
 using sonesson_tools;
 using sonesson_tools.BitStreamParser;
-using sonesson_toolsNETSTANDARD.DataParsers.Subset57;
 using sonesson_toolsNETSTANDARD.DataSets;
 
 namespace IPTComShark.Parsers
 {
     class SPLParser : IParser
     {
-        private static int[] SS58SAPs = {
+        private static int[] SS58SAPs =
+        {
             0b000000,
             0b000001,
             0b000010,
@@ -30,6 +28,7 @@ namespace IPTComShark.Parsers
             0b100110,
             0b100111,
         };
+
         public Parse Extract(byte[] payload)
         {
             var parse = new Parse();
@@ -68,7 +67,7 @@ namespace IPTComShark.Parsers
                 // get the SLL header
                 var header = sonesson_toolsNETSTANDARD.DataSets.Subset57.SLLHeader.Parse(splframeArray);
                 parse.ParsedData.Add(header);
-                
+
                 // get the SIL level
                 var sl = header.GetField("SL").Value.ToString();
 
@@ -88,7 +87,7 @@ namespace IPTComShark.Parsers
                 if (sl == "2")
                 {
                     checksumlength = 4;
-                    
+
                     var checksumBytes = new byte[checksumlength];
                     Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
                     checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL2Checksum.Parse(checksumBytes);
@@ -96,12 +95,12 @@ namespace IPTComShark.Parsers
                 else if (sl == "4")
                 {
                     checksumlength = 6;
-                    
+
                     var checksumBytes = new byte[checksumlength];
                     Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
                     checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL4Checksum.Parse(checksumBytes);
                 }
-               
+
 
                 // 2 for header
                 byte[] framePayload = new byte[splframeArray.Length - headerLength - checksumlength - timestamplength];
@@ -110,7 +109,8 @@ namespace IPTComShark.Parsers
                 if (timestamplength > 0)
                 {
                     byte[] timestampBytes = new byte[timestamplength];
-                    Array.Copy(splframeArray, splframeArray.Length - checksumlength - timestamplength, timestampBytes, 0, timestamplength);
+                    Array.Copy(splframeArray, splframeArray.Length - checksumlength - timestamplength, timestampBytes,
+                        0, timestamplength);
 
                     //var timestamp = BitConverter.ToUInt32(timestampBytes, 0);
                     var timeStampSet = Subset57.SLLTimestamp.Parse(timestampBytes.Reverse().ToArray());
@@ -118,7 +118,7 @@ namespace IPTComShark.Parsers
                 }
 
                 var framePosition = 1;
-                
+
 
                 //var sll = SS57Parser.Parse(splframeArray, out var outfields, Convert.ToInt32(sapField.TrueValue));
 
@@ -144,12 +144,10 @@ namespace IPTComShark.Parsers
                 if (cmd == 6)
                 {
                     // IDLE
-
                 }
                 else if (cmd == 9)
                 {
                     // upper layer
-
 
 
                     if (SAP >= 8 && SAP <= 31)
@@ -167,20 +165,15 @@ namespace IPTComShark.Parsers
                                 parse.DisplayFields.Add(new DisplayField("ATP", "Lifesign"));
 
                                 framePosition += parsedDataSet.BitsRead;
-                                
-                                
                             }
                             else
                             {
                                 parse.DisplayFields.Add(new DisplayField("ATP NID", nid_atp));
                             }
-                            
                         }
                         else
                         {
-
                         }
-
                     }
                     else if (SAP == 32)
                     {
@@ -230,17 +223,12 @@ namespace IPTComShark.Parsers
                             ss58pos += parsedDataSet.BitsRead;
                             framePosition += parsedDataSet.BitsRead;
                             ss58remainer -= parsedDataSet.BitsRead;
-
-
-
                         } while (ss58remainer > 24);
                     }
                     else
                     {
                         // twilight zone?
                     }
-
-
                 }
 
                 var padding = framePayload.Length * 8 - framePosition;
@@ -254,7 +242,7 @@ namespace IPTComShark.Parsers
             } while (remainer > 0);
 
 
-            if(remainer > -1)
+            if (remainer > -1)
                 parse.DisplayFields.Add(new DisplayField("Remaining bits", remainer));
 
             //if (remainer > 0)

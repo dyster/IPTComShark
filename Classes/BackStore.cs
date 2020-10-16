@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware;
 using IPTComShark.Parsers;
 using PacketDotNet;
 using PacketDotNet.Utils;
@@ -28,7 +19,7 @@ namespace IPTComShark.Classes
         private BackgroundWorker _worker;
 
         private ConcurrentQueue<Raw> _addBuffer = new ConcurrentQueue<Raw>();
-       
+
 
         // is this a bit complicated maybe? maybe a little class? lol
         //private Dictionary<ProtocolType, Dictionary<string, Dictionary<IPAddress, CapturePacket>>> _lastKnowns = new Dictionary<ProtocolType, Dictionary<string, Dictionary<IPAddress, CapturePacket>>>();
@@ -38,6 +29,11 @@ namespace IPTComShark.Classes
         private readonly Dictionary<int, CapturePacket> _packetStore = new Dictionary<int, CapturePacket>(500000);
         private readonly Dictionary<ushort, Fragment> _fragmentStore = new Dictionary<ushort, Fragment>();
 
+        /// <summary>
+        /// Cache for re-assembled packets
+        /// </summary>
+        private readonly Dictionary<int, Packet> _topPacketStore = new Dictionary<int, Packet>();
+
         //private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
         //private FileStream fileStream;
 
@@ -46,9 +42,9 @@ namespace IPTComShark.Classes
             //fileStream = File.Create(@"c:\temp\iptsharkstream");
 
             _worker = new BackgroundWorker();
+            _worker.WorkerSupportsCancellation = true;
             _worker.DoWork += DoWork;
             _worker.RunWorkerAsync();
-
         }
 
         public List<Raw> GetAllRaws()
@@ -58,8 +54,13 @@ namespace IPTComShark.Classes
 
         public Packet GetPacket(int number)
         {
-            var raw = GetRaw(number);
-            return Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+            if (_topPacketStore.ContainsKey(number))
+                return _topPacketStore[number];
+            else
+            {
+                var raw = GetRaw(number);
+                return Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+            }
         }
 
         public Raw GetRaw(int number)
@@ -80,12 +81,9 @@ namespace IPTComShark.Classes
         {
             get
             {
-                if(Working)
+                if (Working)
                     return $"Processing {_addBuffer.Count} Packets";
-                else
-                {
-                    return $"Captured {_packetStore.Count} Packets";
-                }
+                return null;
             }
         }
 
@@ -97,34 +95,32 @@ namespace IPTComShark.Classes
 
             var list = new List<CapturePacket>();
 
-            while (!e.Cancel)
+            while (!_worker.CancellationPending)
             {
                 if (!_addBuffer.IsEmpty)
                 {
                     Working = true;
-                    
 
-                    
-                        while (!_addBuffer.IsEmpty)
+
+                    while (!_addBuffer.IsEmpty)
+                    {
+                        //Raw tryraw;
+                        var tryDequeue = _addBuffer.TryDequeue(out Raw tryRaw);
+                        if (tryDequeue)
                         {
-                            //Raw tryraw;
-                            var tryDequeue = _addBuffer.TryDequeue(out Raw tryRaw);
-                            if (tryDequeue)
-                            {
-                                var capturePacket = Parse(tryRaw);
-                                
-                                // this list is only to hold updates, the Parse function adds them to the main store
-                                list.Add(capturePacket);
-                            }
+                            var capturePacket = Add(tryRaw, out var notused);
+
+                            // this list is only to hold updates, the Parse function adds them to the main store
+                            list.Add(capturePacket);
                         }
-                            
-                    
+                    }
+
 
                     updatePending = true;
                     Working = false;
                 }
 
-                if (updatePending && DateTime.Now - lastUpdate > minUpdateTime )
+                if (updatePending && DateTime.Now - lastUpdate > minUpdateTime)
                 {
                     OnNewCapturePacket(list.ToArray());
                     list.Clear();
@@ -137,22 +133,28 @@ namespace IPTComShark.Classes
             }
         }
 
-        public void Add(Raw raw)
+        public void AddAsync(Raw raw)
         {
-            
-            
             _addBuffer.Enqueue(raw);
-            
         }
-        private CapturePacket Parse(Raw raw)
+
+        /// <summary>
+        /// Parse raw packet data and insert into main store.
+        /// This is a blocking function, for async use AddAsync
+        /// </summary>
+        /// <param name="raw">Raw ethernet data</param>
+        /// <returns>The parsed packet</returns>
+        public CapturePacket Add(Raw raw, out List<ParsedDataSet> parsedData)
         {
-            
-            var topPacket = Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
+            var seed = ++_seed;
+            parsedData = new List<ParsedDataSet>();
+
+            var topPacket = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
 
             // re-assemble fragments
             if (topPacket.PayloadPacket is IPv4Packet)
             {
-                var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
 
                 if ((ipv4.FragmentFlags & 0x01) == 0x01 || ipv4.FragmentOffset != 0)
                 {
@@ -161,8 +163,8 @@ namespace IPTComShark.Classes
                     {
                         _fragmentStore.Add(ipv4.Id, new Fragment());
                     }
-                    
-                    if(ipv4.PayloadData != null)
+
+                    if (ipv4.PayloadData != null)
                         _fragmentStore[ipv4.Id].Fragments.Add(offset, ipv4.PayloadData);
                     else
                     {
@@ -172,19 +174,21 @@ namespace IPTComShark.Classes
                     if (ipv4.FragmentFlags == 0)
                     {
                         var extract = _fragmentStore[ipv4.Id].Extract();
+                        _fragmentStore.Remove(ipv4.Id);
 
-                        var array = ipv4.HeaderData.Concat(extract).ToArray();
+                        //var array = ipv4.HeaderData.Concat(extract).ToArray();
 
                         var byteArraySegment = new ByteArraySegment(extract);
                         var udpPacket = new UdpPacket(byteArraySegment);
                         ipv4.PayloadPacket = udpPacket;
+                        _topPacketStore.Add(seed, topPacket);
                     }
                 }
             }
 
             // create the capturepacket
             var capturePacket = new CapturePacket(raw, topPacket);
-            capturePacket.No = ++_seed;
+            capturePacket.No = seed;
 
 
             // try to parse data if there is any
@@ -193,17 +197,7 @@ namespace IPTComShark.Classes
             if (extractParsedData.HasValue)
             {
                 var parse = extractParsedData.Value;
-                foreach (var parsedDataSet in parse.ParsedData)
-                {
-                    if (parsedDataSet == null)
-                    {
-                        //no!
-                    }
-                    else
-                    {
-                        //this.ParsedData.Add(parsedDataSet);
-                    }
-                }
+                parsedData = parse.ParsedData;
 
                 // add all available displayfields for now
                 if (parse.DisplayFields != null) capturePacket.DisplayFields.AddRange(parse.DisplayFields);
@@ -213,14 +207,15 @@ namespace IPTComShark.Classes
                 if (!string.IsNullOrEmpty(parse.BackLinkIdentifier))
                 {
                     // now we try to connect up the chain
-                    
+
 
                     var ipAddress = new IPAddress(capturePacket.Source);
 
                     var tuple = _lastKnowns.Find(capturePacket.Protocol, parse.BackLinkIdentifier, ipAddress);
                     if (tuple == null)
                     {
-                        _lastKnowns.Add(capturePacket.Protocol, parse.BackLinkIdentifier, ipAddress, capturePacket, parse.ParsedData);
+                        _lastKnowns.Add(capturePacket.Protocol, parse.BackLinkIdentifier, ipAddress, capturePacket,
+                            parse.ParsedData);
 
                         // since no previous message is known there is no delta, we will fill displayfields with everything
                         if (parse.AutoGenerateDeltaFields)
@@ -236,7 +231,8 @@ namespace IPTComShark.Classes
                         var previousPacket = tuple.Item1;
                         capturePacket.Previous = previousPacket;
                         previousPacket.Next = capturePacket;
-                        _lastKnowns.Set(capturePacket.Protocol, parse.BackLinkIdentifier, ipAddress, capturePacket, parse.ParsedData);
+                        _lastKnowns.Set(capturePacket.Protocol, parse.BackLinkIdentifier, ipAddress, capturePacket,
+                            parse.ParsedData);
 
 
                         // generate fields by the difference from previous message
@@ -254,17 +250,14 @@ namespace IPTComShark.Classes
 
                             capturePacket.DisplayFields = parsedFields.Select(p => new DisplayField(p)).ToList();
                         }
-
                     }
-
-                    
                 }
             }
             else
             {
                 // what?
             }
-            
+
 
             _rawStore.Add(capturePacket.No, raw);
             _packetStore.Add(capturePacket.No, capturePacket);
@@ -275,7 +268,6 @@ namespace IPTComShark.Classes
 
         public event EventHandler<CapturePacket[]> NewCapturePacket;
 
-        
 
         protected virtual void OnNewCapturePacket(CapturePacket[] e)
         {
@@ -284,30 +276,29 @@ namespace IPTComShark.Classes
 
         public void Close()
         {
+            Clear();
+            _worker.CancelAsync();
             //fileStream.Flush();
             //fileStream.Close();
         }
 
         public void Clear()
         {
-            
             _addBuffer = new ConcurrentQueue<Raw>();
-            
+
 
             _seed = 0;
             _rawStore.Clear();
             _fragmentStore.Clear();
             _packetStore.Clear();
             _lastKnowns = new LastKnownStore();
-
-
         }
     }
 
     public class Fragment
     {
         public Dictionary<int, byte[]> Fragments { get; set; } = new Dictionary<int, byte[]>();
-        
+
         public byte[] Extract()
         {
             int sum = 0;
@@ -324,15 +315,14 @@ namespace IPTComShark.Classes
 
             return bytes;
         }
-
     }
 
     public class LastKnownStore
     {
         private List<Bygones> _bygoneses = new List<Bygones>();
+
         public Tuple<CapturePacket, List<ParsedDataSet>> Find(ProtocolType pt, string identifier, IPAddress ip)
         {
-            
             foreach (var bygonese in _bygoneses)
             {
                 if (bygonese.PT == pt)
@@ -344,11 +334,8 @@ namespace IPTComShark.Classes
                             // YES
                             return new Tuple<CapturePacket, List<ParsedDataSet>>(bygonese.Packet, bygonese.Data);
                         }
-                        
                     }
-                    
                 }
-                
             }
 
             return null;

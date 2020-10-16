@@ -202,11 +202,11 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<Raw> OpenFiles(string[] inputs, bool openAll = false)
+        public List<Raw> OpenFiles(string[] inputs)
         {
             List<string> fileNames = new List<string>();
 
-            var fo = new FileOpener(inputs, openAll);
+            var fo = new FileOpener(inputs);
             var dialogresult = fo.ShowDialog();
             if (dialogresult == DialogResult.OK)
             {
@@ -218,7 +218,7 @@ namespace IPTComShark.FileManager
                 RawParsed += (sender, raw) => { raws.Add(raw); };
 
                 EnumerateFiles(fo.DataSources);
-                
+
                 return raws;
             }
 
@@ -242,18 +242,15 @@ namespace IPTComShark.FileManager
 
                 invoker.BeginInvoke(CallBackMethod, invoker);
             }
-
-            
         }
 
         public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
 
         private void CallBackMethod(IAsyncResult ar)
         {
-            var arAsyncState = (MethodInvoker)ar.AsyncState;
+            var arAsyncState = (MethodInvoker) ar.AsyncState;
             arAsyncState.EndInvoke(ar);
             OpenFilesAsyncFinished.Set();
-
         }
 
 

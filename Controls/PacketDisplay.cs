@@ -1,5 +1,4 @@
-﻿using IPTComShark.XmlFiles;
-using PacketDotNet;
+﻿using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using System;
 using System.Collections.Generic;
@@ -29,8 +28,6 @@ namespace IPTComShark.Controls
             };
         }
 
-        public IPTConfigReader IptConfigReader { get; set; }
-
         public BackStore BackStore { get; set; }
 
         public void SetObject(CapturePacket originalpacket)
@@ -43,7 +40,7 @@ namespace IPTComShark.Controls
             textBoxType.Text = string.Empty;
 
             var dataLines = new List<DataLine>();
-            
+
             var topPacket = BackStore.GetPacket(originalpacket.No);
 
             if (originalpacket.Protocol == ProtocolType.Virtual)
@@ -63,77 +60,38 @@ namespace IPTComShark.Controls
                 var extensiveData = CapturePacket.ExtractParsedData(originalpacket, topPacket, true);
 
 
-                if (originalpacket.IPTWPPacket != null)
+                if (originalpacket.Protocol == ProtocolType.IPTWP && topPacket.PayloadPacket.PayloadPacket != null)
                 {
-                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
-                    var iptPayload = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
+                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
+                    var iptPacket = IPTWPPacket.Extract(udp.PayloadData);
+                    var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
-                    textBoxComid.Text = originalpacket.IPTWPPacket.Comid.ToString();
+                    textBoxComid.Text = originalpacket.Comid.ToString();
 
-                    textBoxSize.Text = originalpacket.IPTWPPacket.IPTWPSize.ToString();
-                    textBoxType.Text = originalpacket.IPTWPPacket.IPTWPType.ToString();
+                    textBoxSize.Text = iptPacket.IPTWPSize.ToString();
+                    textBoxType.Text = iptPacket.IPTWPType.ToString();
 
-                    if (originalpacket.IPTWPPacket.IPTWPType == IPTTypes.MA)
-                    {
-                        dataLines.Add(new DataLine(ticker++)
-                            {IsCategory = true, Name = "IPTCom Message Acknowledgement"});
-
-                        var ackCode = BitConverter.ToUInt16(new[] {iptPayload[1], iptPayload[0]}, 0);
-                        var ackSeq = BitConverter.ToUInt16(new[] {iptPayload[3], iptPayload[2]}, 0);
-
-
-                        switch (ackCode)
-                        {
-                            case 0:
-                                dataLines.Add(new DataLine(ticker++) {Name = "Ack Code", Value = "OK"});
-                                break;
-                            case 1:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, wrong frame check sequence in data part"});
-                                break;
-                            case 2:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, destination unknown / not listening"});
-                                break;
-                            case 3:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, wrong data / configuration mismatch"});
-                                break;
-                            case 4:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "NACK, buffer not available"});
-                                break;
-                            default:
-                                dataLines.Add(new DataLine(ticker++)
-                                    {Name = "Ack Code", Value = "Invalid code: " + ackCode});
-                                break;
-                        }
-
-                        dataLines.Add(new DataLine(ticker++) {Name = "Ack Sequence", Value = ackSeq.ToString()});
-                    }
-
-
-                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1)
+                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 &&
+                        originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection
+                        var oldparse = BackStore.GetParse(originalpacket.Previous.No);
 
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
-                        foreach (var field in extensiveData.Value.ParsedData[0].ParsedFields)
+                        dataLines.Add(new DataLine(ticker++)
+                            {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
+                        for (var index = 0; index < extensiveData.Value.ParsedData[0].ParsedFields.Count; index++)
                         {
+                            var field = extensiveData.Value.ParsedData[0].ParsedFields[index];
                             bool changed = false;
-                            if (originalpacket.Previous != null && originalpacket.IPTWPPacket.IPTWPType == IPTTypes.PD)
-                            {
-                                var extractparse = BackStore.GetParse(originalpacket.Previous.No);
-                                if (extractparse.HasValue)
-                                {
-                                    var parsedField = extractparse.Value.ParsedData[0].GetField(field.Name);
-                                    if (parsedField != null)
-                                        changed = !parsedField.Value.Equals(field.Value);
-                                }
 
-                                
+
+                            if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
+                            {
+                                var parsedField = oldparse.Value.ParsedData[0][index];
+                                changed = !parsedField.Value.Equals(field.Value);
                             }
+
 
                             dataLines.Add(new DataLine(field, ticker++)
                             {
@@ -141,11 +99,11 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                    else if(extensiveData.HasValue)
+                    else if (extensiveData.HasValue)
                     {
                         foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                         {
-                            dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                            dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                             foreach (var field in parsedDataSet.ParsedFields)
                             {
                                 dataLines.Add(new DataLine(field, ticker++));
@@ -153,11 +111,11 @@ namespace IPTComShark.Controls
                         }
                     }
                 }
-                else if(extensiveData.HasValue)
+                else if (extensiveData.HasValue)
                 {
                     foreach (var parsedDataSet in extensiveData.Value.ParsedData)
                     {
-                        dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                         foreach (var field in parsedDataSet.ParsedFields)
                         {
                             dataLines.Add(new DataLine(field, ticker++));
@@ -175,11 +133,11 @@ namespace IPTComShark.Controls
                 var text = new StringBuilder(topPacket.ToString(StringOutputType.Verbose));
 
 
-                if (originalpacket.IPTWPPacket != null)
+                if (originalpacket.Protocol == ProtocolType.IPTWP)
                 {
                     // since we have IPT, straight cast to UDP, BAM
-                    var udp = (UdpPacket)topPacket.PayloadPacket.PayloadPacket;
-                    var bytes = IPTWPPacket.GetIPTPayload(udp, originalpacket.IPTWPPacket);
+                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
+                    var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
                     var maxLenString = iptHeader.Max(pair => pair.Key.Length);

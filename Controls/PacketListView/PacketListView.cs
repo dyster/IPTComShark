@@ -8,7 +8,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Classes;
-using sonesson_tools.DataParsers;
 
 namespace IPTComShark.Controls
 {
@@ -18,7 +17,7 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
         private CapturePacket _selectedPacket;
-        
+
         private string _searchString;
 
         private static readonly Color TcpColor = Color.FromArgb(231, 230, 255);
@@ -27,17 +26,22 @@ namespace IPTComShark.Controls
         private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
         private static readonly Color ErrorColor = Color.Crimson;
 
+        private const string EmptyText = "No files loaded, use File->Open or Drag&Drop";
+        private const string EmptyFilterText = "The filter has excluded everything";
+        private string _lastBackStoreStatus = "";
+        private Font _statusFont = new Font("Tahoma", 20, FontStyle.Bold);
+
         public string SearchString
         {
             get => _searchString;
             set
             {
-                if(value == null)
+                if (value == null)
                     return;
                 var input = value.Trim();
-                if(input.Equals(_searchString))
+                if (input.Equals(_searchString))
                     return;
-                _searchString = input; 
+                _searchString = input;
                 UpdateFilter();
             }
         }
@@ -68,14 +72,20 @@ namespace IPTComShark.Controls
 
             olvColumnComId.AspectGetter += rowObject =>
             {
+                if (rowObject == null)
+                    return null;
+
                 var packet = (CapturePacket) rowObject;
-                return packet?.IPTWPPacket?.Comid;
+                if (packet.Protocol == ProtocolType.IPTWP)
+                    return packet.Comid;
+
+                return null;
             };
 
             olvColumnIPTWPType.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket) rowObject;
-                return packet?.IPTWPPacket?.IPTWPType;
+                return packet?.IPTWPType;
             };
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
@@ -110,8 +120,8 @@ namespace IPTComShark.Controls
 
             olvColumnIPTWPType.ClusterGetter += packets =>
             {
-                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.IPTWPType.ToString()));
+                var clusters = StringsToClusters(packets.Where(p => p.Protocol == ProtocolType.IPTWP)
+                    .Select(p => p.IPTWPType.ToString()));
                 foreach (var cluster in clusters)
                 {
                     cluster.ClusterKey = Enum.Parse(typeof(IPTTypes), cluster.DisplayLabel);
@@ -122,8 +132,8 @@ namespace IPTComShark.Controls
 
             olvColumnComId.ClusterGetter += packets =>
             {
-                var clusters = StringsToClusters(packets.Where(p => p.IPTWPPacket != null)
-                    .Select(p => p.IPTWPPacket.Comid.ToString()));
+                var clusters = StringsToClusters(packets.Where(p => p.Protocol == ProtocolType.IPTWP)
+                    .Select(p => p.Comid.ToString()));
                 foreach (var cluster in clusters)
                 {
                     cluster.ClusterKey = uint.Parse(cluster.DisplayLabel);
@@ -210,6 +220,10 @@ namespace IPTComShark.Controls
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
+
+            timerFlicker.Enabled = true;
+
+            fastObjectListView1.OverlayText = new TextOverlay(){Text = "PENIS"};
         }
 
         public BackStore BackStore { get; set; }
@@ -298,15 +312,16 @@ namespace IPTComShark.Controls
                     foreach (string s in strings)
                     {
                         uint u = uint.Parse(s.Trim());
-                        if (capturePacket.IPTWPPacket != null && capturePacket.IPTWPPacket.Comid == u)
+                        if (capturePacket.Comid == u)
                             return false;
                     }
                 }
-                
+
                 if (Settings.IgnoreDuplicatedPD)
                 {
-                    if (capturePacket.IPTWPPacket?.IPTWPType == IPTTypes.PD)
+                    if (capturePacket.IPTWPType != null && capturePacket.IPTWPType == IPTTypes.PD)
                     {
+                        // TODO can we check this directly without doing the check above?
                         if (capturePacket.IsDupe)
                             return false;
                     }
@@ -319,7 +334,7 @@ namespace IPTComShark.Controls
                         return true;
                     if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
                         return true;
-                    
+
                     // TODO we still need to be able to filter on the whole dataset somehow, either generate some massive database or maybe use the dataset definitions instead of the parsed result
 
                     return false;
@@ -390,7 +405,7 @@ namespace IPTComShark.Controls
             }
 
             _list.Clear();
-            
+
             _selectedPacket = null;
             fastObjectListView1.ClearObjects();
             fastObjectListView1.SetObjects(_list);
@@ -425,7 +440,6 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                
                 var s = BitConverter.ToString(BackStore.GetRaw(o.No).RawData);
                 Clipboard.SetText(s, TextDataFormat.Text);
             }
@@ -450,7 +464,6 @@ namespace IPTComShark.Controls
                     var s = string.Join(" ", list);
                     Clipboard.SetText(s, TextDataFormat.Text);
                 }
-                
             }
 
             Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
@@ -487,9 +500,9 @@ namespace IPTComShark.Controls
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
-            if (o?.IPTWPPacket != null)
+            if (o?.Protocol == ProtocolType.IPTWP)
             {
-                var s = o.IPTWPPacket.Comid.ToString();
+                var s = o.Comid.ToString();
                 if (string.IsNullOrEmpty(Settings.IgnoreComid))
                     Settings.IgnoreComid = s;
                 else
@@ -504,11 +517,39 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                addToIgnoredComIDsToolStripMenuItem.Enabled = o.IPTWPPacket != null;
+                addToIgnoredComIDsToolStripMenuItem.Enabled = o.Protocol == ProtocolType.IPTWP;
             }
         }
 
-        
+        private void timerFlicker_Tick(object sender, EventArgs e)
+        {
+            var backStoreStatus = BackStore.Status;
+            if (backStoreStatus != _lastBackStoreStatus)
+            {
+                _lastBackStoreStatus = backStoreStatus;
+                var textOverlay = new TextOverlay() {Text = backStoreStatus};
+                textOverlay.Alignment = ContentAlignment.MiddleCenter;
+                textOverlay.Font = _statusFont;
+                textOverlay.InsetY = 100;
+                textOverlay.BackColor = Color.White;
+                textOverlay.TextColor = Color.Black;
+                textOverlay.Transparency = 200;
+                //var measureText = TextRenderer.MeasureText(backStoreStatus, textOverlay.Font);
+                //var inset = this.Width / 2 + measureText.Width / 2;
+                //textOverlay.InsetX = inset;
+                fastObjectListView1.OverlayText = textOverlay;
+            }
+            
+            
+            
+
+            if (_list.Count > 0)
+                fastObjectListView1.EmptyListMsg = EmptyFilterText;
+            else
+            {
+                fastObjectListView1.EmptyListMsg = EmptyText;
+            }
+        }
     }
 
     public class MyOLVColumn : OLVColumn
