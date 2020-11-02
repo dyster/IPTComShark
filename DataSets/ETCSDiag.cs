@@ -2408,7 +2408,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "TPWS_NTXTNTC_STMSTATE_SUB",
-                    BitFieldType = BitFieldType.UInt8,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 8,
                     Comment = "Bit using (0=MSB):\r\n" +
                               "bit 0-3    NTXTNTC_STMSTATE, Current STM State as active in STM\r\n" +
@@ -2417,7 +2417,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "TPWS_MODE_SC",
-                    BitFieldType = BitFieldType.UInt8,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 8,
                     Comment = "Bit using (0=MSB):\r\n" +
                               "bit 0-3  M-MODE, Current STM State as active in STM\r\n" +
@@ -2426,7 +2426,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "TPWS_TICAB_TIDIR",
-                    BitFieldType = BitFieldType.UInt8,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 8,
                     Comment = "Bit using (0=MSB):\r\n" +
                               "bit 0-3  M_TICAB_STATUS, Cabin Status from STM-139\r\n" +
@@ -2464,21 +2464,21 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "TPWS_HW_version",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "1st byte = Major, 2nd byte = Minor, 3rd byte = Patch, 4th byte = Build"
                 },
                 new BitField
                 {
                     Name = "TPWS_SW_version",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "1st byte = Major, 2nd byte = Minor, 3rd byte = Patch, 4th byte = Build"
                 },
                 new BitField
                 {
                     Name = "TPWS_Interface_version",
-                    BitFieldType = BitFieldType.UInt32,
+                    BitFieldType = BitFieldType.HexString,
                     Length = 32,
                     Comment = "1st byte = Major, 2nd byte = Minor, 3rd byte = Patch, 4th byte = Build"
                 },
