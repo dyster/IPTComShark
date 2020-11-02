@@ -4,9 +4,11 @@ using sonesson_tools.BitStreamParser;
 using sonesson_tools.Generic;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using IPTComShark.Classes;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
@@ -166,8 +168,22 @@ namespace IPTComShark.Export
 
                     worksheet.Cells[rowindex, 1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     worksheet.Cells[rowindex, 2].Value = packet.Name;
-                    worksheet.Cells[rowindex, 3].Value =
-                        Functions.MakeCommentString(packet.DisplayFields.ToDictionary(f => f.Name, f => f.Val));
+                    var dfCell = worksheet.Cells[rowindex, 3];
+                    dfCell.IsRichText = true;
+                    foreach (var df in packet.DisplayFields)
+                    {
+                        var richText = dfCell.RichText.Add(df.Name);
+                        richText.Bold = true;
+                        if (df.Name == "ERROR")
+                            richText.Color = Color.Red;
+                        else
+                            richText.Color = Color.Black;
+
+                        var richText2 = dfCell.RichText.Add(": " + df.Val + " ");
+                        richText2.Bold = false;
+                        richText2.Color = Color.Black;
+                    }
+                    //worksheet.Cells[rowindex, 3].Value = string.Join(" ", packet.DisplayFields.Select(df => df.Name + ": " + df.Val));
 
                     if (packet.Previous != null)
                     {
@@ -176,12 +192,28 @@ namespace IPTComShark.Export
                         //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
                     }
 
+                    var parseCell = worksheet.Cells[rowindex, 5];
                     var parse = backStore.GetParse(packet.No);
+
                     if (parse.HasValue)
-                        worksheet.Cells[rowindex, 5].Value =
-                            string.Join(" ",
-                                parse.Value.ParsedData.SelectMany(dataset =>
-                                    dataset.ParsedFields.Select(f => new DisplayField(f))));
+                    {
+                        parseCell.IsRichText = true;
+                        parseCell.Style.WrapText = true;
+                        foreach (var parsedDataSet in parse.Value.ParsedData)
+                        {
+                            parseCell.RichText.Add(parsedDataSet.Name).Bold = true;
+                            parseCell.RichText.Add("\n").Bold = false;
+
+                            var s = string.Join("\n", parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                            parseCell.RichText.Add(s + "\n");
+                        }
+                    }
+
+                    //if (parse.HasValue)
+                    //    worksheet.Cells[rowindex, 5].Value =
+                    //        string.Join(" ",
+                    //            parse.Value.ParsedData.SelectMany(dataset =>
+                    //                dataset.ParsedFields.Select(f => new DisplayField(f))));
 
                     //worksheet.Cells[rowindex, 5].IsRichText = true;
                     //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;

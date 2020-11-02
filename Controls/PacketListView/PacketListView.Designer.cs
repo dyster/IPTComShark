@@ -49,6 +49,7 @@
             this.addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerAddBuffer = new System.Windows.Forms.Timer(this.components);
             this.timerFlicker = new System.Windows.Forms.Timer(this.components);
+            this.sPREADSHEETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.contextMenuMouse.SuspendLayout();
             this.SuspendLayout();
@@ -189,9 +190,10 @@
             this.copyRawByteshexStringToolStripMenuItem,
             this.copyParsedDatatextStringToolStripMenuItem,
             this.analyzeChainToolStripMenuItem,
-            this.addToIgnoredComIDsToolStripMenuItem});
+            this.addToIgnoredComIDsToolStripMenuItem,
+            this.sPREADSHEETToolStripMenuItem});
             this.contextMenuMouse.Name = "contextMenuMouse";
-            this.contextMenuMouse.Size = new System.Drawing.Size(231, 92);
+            this.contextMenuMouse.Size = new System.Drawing.Size(231, 136);
             this.contextMenuMouse.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuMouse_Opening);
             // 
             // copyRawByteshexStringToolStripMenuItem
@@ -233,6 +235,13 @@
             this.timerFlicker.Interval = 500;
             this.timerFlicker.Tick += new System.EventHandler(this.timerFlicker_Tick);
             // 
+            // sPREADSHEETToolStripMenuItem
+            // 
+            this.sPREADSHEETToolStripMenuItem.Name = "sPREADSHEETToolStripMenuItem";
+            this.sPREADSHEETToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.sPREADSHEETToolStripMenuItem.Text = "SPREADSHEET";
+            this.sPREADSHEETToolStripMenuItem.Click += new System.EventHandler(this.sPREADSHEETToolStripMenuItem_Click);
+            // 
             // PacketListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,5 +279,6 @@
         private MyOLVColumn olvColumnMS;
         private BrightIdeasSoftware.OLVColumn olvColumnError;
         private System.Windows.Forms.Timer timerFlicker;
+        private System.Windows.Forms.ToolStripMenuItem sPREADSHEETToolStripMenuItem;
     }
 }

@@ -550,6 +550,24 @@ namespace IPTComShark.Controls
                 fastObjectListView1.EmptyListMsg = EmptyText;
             }
         }
+
+        private void sPREADSHEETToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var list = new List<CapturePacket>();
+            foreach (var selectedObject in fastObjectListView1.SelectedObjects)
+            {
+                CapturePacket o = (CapturePacket)selectedObject;
+                list.Add(o);
+            }
+
+            var saveFileDialog = new SaveFileDialog { DefaultExt = "xlsx" };
+            DialogResult dialogResult = saveFileDialog.ShowDialog(this);
+            if (dialogResult == DialogResult.OK)
+            {
+                Export.Export.MakeXLSX(list, saveFileDialog.FileName, BackStore);
+            }
+
+        }
     }
 
     public class MyOLVColumn : OLVColumn
