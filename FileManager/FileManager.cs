@@ -7,6 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using BustPCap;
+using PCAPBlock = sonesson_tools.FileReaders.PCAPBlock;
 
 namespace IPTComShark.FileManager
 {
@@ -64,6 +66,17 @@ namespace IPTComShark.FileManager
             _popup.Controls.Add(_progressbar);
         }
 
+        private void ChunkRead(BustPCap.PCAPBlock pcapBlock)
+        {
+            PacketCounter++;
+            UpdateProgress((PacketCounter * 100) / PacketTotal);
+            
+            var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
+                (LinkLayerType)pcapBlock.Header.network);
+            if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
+                OnRawParsed(raw);
+        }
+
         private delegate void ProgressDelegate(int i);
 
         private void UpdateProgress(int i)
@@ -119,7 +132,15 @@ namespace IPTComShark.FileManager
 
                 if (source.SourceType == SourceType.PCAP)
                 {
-                    pcapReader.Read(source.FileInfo.FullName);
+                    
+                    var fileStream = File.OpenRead(source.FileInfo.FullName);
+                    foreach (var pcapBlock in PCAPReaderStream.ReadStream(fileStream))
+                    {
+                        ChunkRead(pcapBlock);
+                    }
+
+
+                    
                 }
                 else if (source.SourceType == SourceType.PCAPNG)
                 {

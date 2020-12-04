@@ -246,6 +246,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BustPCap\BustPCap.csproj">
+      <Project>{5570f149-a58b-4828-a1e8-d17e13de871b}</Project>
+      <Name>BustPCap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sonesson-tools\sonesson-toolsNETSTANDARD.csproj">
       <Project>{e437e426-04a4-45ea-b604-b7d201634332}</Project>
       <Name>sonesson-toolsNETSTANDARD</Name>
@@ -262,7 +266,7 @@
       <Version>2.9.2-alpha2</Version>
     </PackageReference>
     <PackageReference Include="PacketDotNet">
-      <Version>1.0.4</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
       <Version>0.24.0</Version>
