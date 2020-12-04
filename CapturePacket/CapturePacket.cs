@@ -44,6 +44,9 @@ namespace IPTComShark
 
         public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive)
         {
+            if (!string.IsNullOrEmpty(packet.Error))
+                return null;
+
             if (topPacket.PayloadPacket is IPv4Packet)
             {
                 var ipv4 = (IPv4Packet) topPacket.PayloadPacket;

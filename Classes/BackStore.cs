@@ -151,40 +151,50 @@ namespace IPTComShark.Classes
 
             var topPacket = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
 
-            // re-assemble fragments
-            if (topPacket.PayloadPacket is IPv4Packet)
+            try
             {
-                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
-
-                if ((ipv4.FragmentFlags & 0x01) == 0x01 || ipv4.FragmentOffset != 0)
+                // re-assemble fragments
+                if (topPacket.PayloadPacket is IPv4Packet)
                 {
-                    var offset = ipv4.FragmentOffset * 8;
-                    if (!_fragmentStore.ContainsKey(ipv4.Id))
+                    var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+
+                    if ((ipv4.FragmentFlags & 0x01) == 0x01 || ipv4.FragmentOffset != 0)
                     {
-                        _fragmentStore.Add(ipv4.Id, new Fragment());
-                    }
+                        var offset = ipv4.FragmentOffset * 8;
+                        if (!_fragmentStore.ContainsKey(ipv4.Id))
+                        {
+                            _fragmentStore.Add(ipv4.Id, new Fragment());
+                        }
 
-                    if (ipv4.PayloadData != null)
-                        _fragmentStore[ipv4.Id].Fragments.Add(offset, ipv4.PayloadData);
-                    else
-                    {
-                        _fragmentStore[ipv4.Id].Fragments.Add(offset, ipv4.PayloadPacket.Bytes);
-                    }
+                        if (ipv4.PayloadData != null)
+                            _fragmentStore[ipv4.Id].Fragments.Add(offset, ipv4.PayloadData);
+                        else
+                        {
+                            _fragmentStore[ipv4.Id].Fragments.Add(offset, ipv4.PayloadPacket.Bytes);
+                        }
 
-                    if (ipv4.FragmentFlags == 0)
-                    {
-                        var extract = _fragmentStore[ipv4.Id].Extract();
-                        _fragmentStore.Remove(ipv4.Id);
+                        if (ipv4.FragmentFlags == 0)
+                        {
+                            var extract = _fragmentStore[ipv4.Id].Extract();
+                            _fragmentStore.Remove(ipv4.Id);
 
-                        //var array = ipv4.HeaderData.Concat(extract).ToArray();
+                            //var array = ipv4.HeaderData.Concat(extract).ToArray();
 
-                        var byteArraySegment = new ByteArraySegment(extract);
-                        var udpPacket = new UdpPacket(byteArraySegment);
-                        ipv4.PayloadPacket = udpPacket;
-                        _topPacketStore.Add(seed, topPacket);
+                            var byteArraySegment = new ByteArraySegment(extract);
+                            var udpPacket = new UdpPacket(byteArraySegment);
+                            ipv4.PayloadPacket = udpPacket;
+                            _topPacketStore.Add(seed, topPacket);
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                //not sure what to do with this here, the exception will be re-captured when creating the CapturePacket further down.
+                //this should be optimized somehow but not sure how, at least it is an infrequent event
+            }
+
+            
 
             // create the capturepacket
             var capturePacket = new CapturePacket(raw, topPacket);
