@@ -140,10 +140,71 @@ namespace IPTComShark.Parsers
                     parse.DisplayFields.Add(new DisplayField("SLLPayloadRemain", BitConverter.ToString(sllPayload)));
                 }*/
 
+                byte[] Parse(DataSetDefinition def, byte[] bytes, ref int positionX)
+                {
+                    var parsedDataSet = def.Parse(bytes);
+                    parse.ParsedData.Add(parsedDataSet);
+                    positionX += parsedDataSet.BitsRead;
+                    try
+                    {
+                        return Functions.SubArrayGetter(bytes, parsedDataSet.BitsRead);
+                    }
+                    catch (Exception e)
+                    {
+                        parse.DisplayFields.Add(new DisplayField("ERROR", e.Message));
+                        return null;
+                    }
+                    
+
+                }
+
                 var SAP = Convert.ToInt32(sapField.TrueValue);
-                if (cmd == 6)
+
+                if (cmd == 0)
+                {
+                    // Connect Request
+                    framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
+
+                }
+                else if (cmd == 1)
+                {
+                    // Reserved
+                }
+                else if (cmd == 2)
+                {
+                    // Connect Confirm
+                    // not a paste error, they have the same telegram structure
+                    framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
+                }
+                else if (cmd == 3)
+                {
+                    // Authentication
+                }
+                else if (cmd == 4)
+                {
+                    // Auth Ack
+                }
+                else if (cmd == 5)
+                {
+                    // Disconnect
+                    framePayload = Parse(Subset57.Cmd5Disconnect, framePayload, ref framePosition);
+                    var last = parse.ParsedData.Last();
+                    var firstOrDefault = last.ParsedFields.FirstOrDefault(f => f.Name == "Disconnect Reason");
+                    if(firstOrDefault != null)
+                        parse.DisplayFields.Add(new DisplayField("Reason", firstOrDefault.Value.ToString()));
+                }
+                else if (cmd == 6)
                 {
                     // IDLE
+                    // Has no data
+                }
+                else if (cmd == 7)
+                {
+                    // Send Disable
+                }
+                else if (cmd == 8)
+                {
+                    // Send Enable
                 }
                 else if (cmd == 9)
                 {
@@ -190,7 +251,6 @@ namespace IPTComShark.Parsers
                     else if (SS58SAPs.Contains(SAP))
                     {
                         // STM channel!
-
                         var ffisheader = Subset58.FFFISHeader.Parse(framePayload);
                         parse.ParsedData.Add(ffisheader);
                         framePosition += ffisheader.BitsRead;
@@ -198,8 +258,7 @@ namespace IPTComShark.Parsers
                         var lmessage = Convert.ToByte(ffisheader.GetField("L_MESSAGE").Value);
                         var ss58payloadLength = lmessage * 8 - ffisheader.BitsRead;
                         var ss58payload = Functions.SubArrayGetterX(framePayload, framePosition, ss58payloadLength);
-
-
+                        
                         var ss58 = new Subset58();
 
                         int ss58remainer = ss58payloadLength;
@@ -230,6 +289,10 @@ namespace IPTComShark.Parsers
                         // twilight zone?
                     }
                 }
+
+                // corrupt data = broken parsing
+                if (framePayload == null)
+                    return parse;
 
                 var padding = framePayload.Length * 8 - framePosition;
                 if (padding > 0)
