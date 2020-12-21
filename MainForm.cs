@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Classes;
 using IPTComShark.DataSets;
+using IPTComShark.Export;
 using SharpPcap.Npcap;
 using sonesson_tools.FileReaders;
 
@@ -413,7 +414,10 @@ namespace IPTComShark
             var dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                Export.Export.MakeXLSX(packetListView1.GetFilteredPackets(), saveFileDialog.FileName, _backStore);
+                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets());
+                var showDialog = exporterer.ShowDialog(this);
+                if(showDialog == DialogResult.OK)
+                    Export.Export.MakeXLSX(exporterer.Selection, saveFileDialog.FileName, _backStore, exporterer.Profibus);
             }
         }
 

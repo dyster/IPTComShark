@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Classes;
+using IPTComShark.Export;
 
 namespace IPTComShark.Controls
 {
@@ -426,6 +427,11 @@ namespace IPTComShark.Controls
             return fastObjectListView1.FilteredObjects.Cast<CapturePacket>().ToList();
         }
 
+        public List<CapturePacket> GetSelectedPackets()
+        {
+            return fastObjectListView1.SelectedObjects.Cast<CapturePacket>().ToList();
+        }
+
         private void PacketListView_Load(object sender, EventArgs e)
         {
             Settings.PropertyChanged += (o, args) =>
@@ -553,18 +559,14 @@ namespace IPTComShark.Controls
 
         private void sPREADSHEETToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var list = new List<CapturePacket>();
-            foreach (var selectedObject in fastObjectListView1.SelectedObjects)
-            {
-                CapturePacket o = (CapturePacket)selectedObject;
-                list.Add(o);
-            }
-
             var saveFileDialog = new SaveFileDialog { DefaultExt = "xlsx" };
             DialogResult dialogResult = saveFileDialog.ShowDialog(this);
             if (dialogResult == DialogResult.OK)
             {
-                Export.Export.MakeXLSX(list, saveFileDialog.FileName, BackStore);
+                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets());
+                var showDialog = exporterer.ShowDialog(this);
+                if(showDialog == DialogResult.OK)
+                    Export.Export.MakeXLSX(exporterer.Selection, saveFileDialog.FileName, BackStore, exporterer.Profibus);
             }
 
         }

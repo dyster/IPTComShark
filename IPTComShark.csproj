@@ -82,6 +82,12 @@
     <Compile Include="DataSets\ABDO.cs" />
     <Compile Include="DataSets\IPT.cs" />
     <Compile Include="Export\Export.cs" />
+    <Compile Include="Export\Exporterer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Export\Exporterer.Designer.cs">
+      <DependentUpon>Exporterer.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileManager\DataSource.cs" />
     <Compile Include="FileManager\DatePicker.cs">
       <SubType>UserControl</SubType>
@@ -173,6 +179,9 @@
     <Compile Include="XmlFiles\IPTConfigReader.cs" />
     <EmbeddedResource Include="Controls\TypeDelayTextBox.resx">
       <DependentUpon>TypeDelayTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Export\Exporterer.resx">
+      <DependentUpon>Exporterer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FileManager\DatePicker.resx">
       <DependentUpon>DatePicker.cs</DependentUpon>

@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using IPTComShark.Classes;
 using PacketDotNet;
 using sonesson_tools.DataParsers;
+using sonesson_toolsNETSTANDARD.DataSets;
+using sonesson_toolsNETSTANDARD.Generic;
 
 namespace IPTComShark.Export
 {
@@ -136,9 +138,9 @@ namespace IPTComShark.Export
             }
         }
 
-        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore)
+        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore, bool profibus)
         {
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             var newFile = new FileInfo(outputfile);
             if (newFile.Exists)
@@ -150,134 +152,11 @@ namespace IPTComShark.Export
             using (var package = new ExcelPackage(newFile))
             {
                 // Add a new worksheet to the empty workbook
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Worksheet1");
+                
+                MakeMainSheet(packets, backStore, package.Workbook.Worksheets.Add("Packets"));
 
-                //Add the headers
-                worksheet.Cells[1, 1].Value = "Time";
-                worksheet.Cells[1, 2].Value = "Name";
-                worksheet.Cells[1, 3].Value = "Displayfields";
-                worksheet.Cells[1, 4].Value = "Delta";
-                worksheet.Cells[1, 5].Value = "Data";
-                worksheet.Cells[1, 6].Value = "Raw";
-
-
-                for (var index = 0; index < packets.Count; index++)
-                {
-                    var packet = packets[index];
-                    int rowindex = index + 2;
-
-                    worksheet.Cells[rowindex, 1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                    worksheet.Cells[rowindex, 2].Value = packet.Name;
-                    var dfCell = worksheet.Cells[rowindex, 3];
-                    dfCell.IsRichText = true;
-                    foreach (var df in packet.DisplayFields)
-                    {
-                        var richText = dfCell.RichText.Add(df.Name);
-                        richText.Bold = true;
-                        if (df.Name == "ERROR")
-                            richText.Color = Color.Red;
-                        else
-                            richText.Color = Color.Black;
-
-                        var richText2 = dfCell.RichText.Add(": " + df.Val + " ");
-                        richText2.Bold = false;
-                        richText2.Color = Color.Black;
-                    }
-                    //worksheet.Cells[rowindex, 3].Value = string.Join(" ", packet.DisplayFields.Select(df => df.Name + ": " + df.Val));
-
-                    if (packet.Previous != null)
-                    {
-                        // TODO temp disabled for now !!!!!
-                        //worksheet.Cells[rowindex, 4].Value =
-                        //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
-                    }
-
-                    var parseCell = worksheet.Cells[rowindex, 5];
-                    var parse = backStore.GetParse(packet.No);
-
-                    if (parse.HasValue)
-                    {
-                        parseCell.IsRichText = true;
-                        parseCell.Style.WrapText = true;
-                        foreach (var parsedDataSet in parse.Value.ParsedData)
-                        {
-                            parseCell.RichText.Add(parsedDataSet.Name).Bold = true;
-                            parseCell.RichText.Add("\n").Bold = false;
-
-                            var s = string.Join("\n", parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
-                            parseCell.RichText.Add(s + "\n");
-                        }
-                    }
-
-                    //if (parse.HasValue)
-                    //    worksheet.Cells[rowindex, 5].Value =
-                    //        string.Join(" ",
-                    //            parse.Value.ParsedData.SelectMany(dataset =>
-                    //                dataset.ParsedFields.Select(f => new DisplayField(f))));
-
-                    //worksheet.Cells[rowindex, 5].IsRichText = true;
-                    //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;
-                    //
-                    //foreach (KeyValuePair<string, object> pair in dictionaryDataObject.DictionaryData)
-                    //{
-                    //    ExcelRichText excelRichText = rtfCollection.Add(pair.Key + ": ");
-                    //    excelRichText.Bold = false;
-                    //    excelRichText.UnderLine = false;
-                    //    excelRichText = rtfCollection.Add(pair.Value.ToString() + ' ');
-                    //    excelRichText.Bold = true;
-                    //    excelRichText.UnderLine = true;
-                    //}
-
-                    if (packet.Protocol == ProtocolType.IPTWP)
-                    {
-                        // since we have IPT, straight cast to UDP, BAM
-
-                        // TODO temp disabled !!!!!
-                        //var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
-                        //
-                        //var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
-                        //worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
-                    }
-                }
-
-                //Ok now format the values;
-                using (ExcelRange range = worksheet.Cells[1, 1, 1, 4])
-                {
-                    range.Style.Font.Bold = true;
-                    //range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    //range.Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
-                    //range.Style.Font.Color.SetColor(Color.White);
-                }
-
-                worksheet.Cells[2, 1, packets.Count + 2, 1].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
-
-
-                //Create an autofilter for the range
-                worksheet.Cells[1, 1, 1, 4].AutoFilter = true;
-
-                //There is actually no need to calculate, Excel will do it for you, but in some cases it might be useful. 
-                //For example if you link to this workbook from another workbook or you will open the workbook in a program that hasn't a calculation engine or 
-                //you want to use the result of a formula in your program.
-                worksheet.Calculate();
-
-                worksheet.Cells.AutoFitColumns(0); //Autofit columns for all cells
-
-                // lets set the header text 
-                worksheet.HeaderFooter.OddHeader.CenteredText = "&24&U&\"Arial,Regular Bold\" Parsed Traffic";
-                // add the page number to the footer plus the total number of pages
-                worksheet.HeaderFooter.OddFooter.RightAlignedText =
-                    $"Page {ExcelHeaderFooter.PageNumber} of {ExcelHeaderFooter.NumberOfPages}";
-                // add the sheet name to the footer
-                worksheet.HeaderFooter.OddFooter.CenteredText = ExcelHeaderFooter.SheetName;
-                // add the file path to the footer
-                worksheet.HeaderFooter.OddFooter.LeftAlignedText =
-                    ExcelHeaderFooter.FilePath + ExcelHeaderFooter.FileName;
-
-                worksheet.PrinterSettings.RepeatRows = worksheet.Cells["1:2"];
-                worksheet.PrinterSettings.RepeatColumns = worksheet.Cells["A:G"];
-
-                // Change the sheet view to show it in page layout mode
-                //worksheet.View.PageLayoutView = true;
+                if (profibus)
+                    MakeProfiSheet(packets, backStore, package.Workbook.Worksheets.Add("Profibus"));
 
                 // set some document properties
                 package.Workbook.Properties.Title = "Parsed traffic";
@@ -293,6 +172,272 @@ namespace IPTComShark.Export
                 // save our new workbook and we are done!
                 package.Save();
             }
+        }
+
+        private static void MakeProfiSheet(List<CapturePacket> packets, BackStore backStore, ExcelWorksheet worksheet)
+        {
+            int colindex = 1;
+            worksheet.Cells[1, colindex++].Value = "Packet No";
+            worksheet.Cells[1, colindex++].Value = "Packet Time";
+            worksheet.Cells[1, colindex++].Value = "SPLFrameLen";
+            worksheet.Cells[1, colindex++].Value = "RecAddr";
+            worksheet.Cells[1, colindex++].Value = "SndAddr";
+            worksheet.Cells[1, colindex++].Value = "DSAP";
+            worksheet.Cells[1, colindex++].Value = "SSAP";
+            worksheet.Cells[1, colindex++].Value = "FDL mode";
+            worksheet.Cells[1, colindex++].Value = "SLL Seq";
+            worksheet.Cells[1, colindex++].Value = "SL";
+            worksheet.Cells[1, colindex++].Value = "Cmd";
+            worksheet.Cells[1, colindex++].Value = "Timestamp";
+            worksheet.Cells[1, colindex++].Value = "Connect: Random";
+            worksheet.Cells[1, colindex++].Value = "Connect: Idle Timeout";
+            worksheet.Cells[1, colindex++].Value = "Disconnect: New setup desired";
+            worksheet.Cells[1, colindex++].Value = "Disconnect: Reason";
+            worksheet.Cells[1, colindex++].Value = "ERROR";
+            worksheet.Cells[1, colindex++].Value = "Delta time";
+
+            int rowindex = 1;
+
+            var idletimes = new MultiArray<ushort, ushort, DateTime>();
+            
+            for (var index = 0; index < packets.Count; index++)
+            {
+                var packet = packets[index];
+                
+
+                if (packet.Protocol == ProtocolType.UDP_SPL)
+                {
+                    var parse = backStore.GetParse(packet.No);
+                    if (parse.HasValue)
+                    {
+                        foreach (var parsedDataSet in parse.Value.ParsedData)
+                        {
+                            if (parsedDataSet.Definition == null)
+                            {
+                                if(parsedDataSet.ParsedFields.Count == 1 && parsedDataSet.ParsedFields[0].Name == "ERROR")
+                                    worksheet.Cells[rowindex, 17].Value = parsedDataSet.ParsedFields[0].Value;
+                                continue;
+                            }
+
+                            if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
+                            {
+                                // SPL header means new profibus packet
+                                rowindex++;
+                                
+                                worksheet.Cells[rowindex, 1].Value = packet.No;
+                                worksheet.Cells[rowindex, 2].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                worksheet.Cells[rowindex, 3].Value = parsedDataSet.ParsedFields[0].Value;
+                                worksheet.Cells[rowindex, 4].Value = parsedDataSet.ParsedFields[1].Value;
+                                worksheet.Cells[rowindex, 5].Value = parsedDataSet.ParsedFields[2].Value;
+                                worksheet.Cells[rowindex, 6].Value = parsedDataSet.ParsedFields[3].Value;
+                                worksheet.Cells[rowindex, 7].Value = parsedDataSet.ParsedFields[4].Value;
+                                worksheet.Cells[rowindex, 8].Value = parsedDataSet.ParsedFields[5].Value;
+
+                                var k1 = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value);
+                                var k2 = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value);
+
+                                if (idletimes.ContainsKey(k1, k2))
+                                {
+                                    var beforetime = idletimes[k1, k2];
+                                    var span = packet.Date - beforetime;
+
+                                    worksheet.Cells[rowindex, 18].Value = span.TotalMilliseconds;
+                                }
+
+                                idletimes[k1, k2] = packet.Date;
+                            }
+                            else if (parsedDataSet.Definition.Name == Subset57.SLLHeader.Name)
+                            {
+                                worksheet.Cells[rowindex, 9].Value = parsedDataSet.ParsedFields[0].Value;
+                                worksheet.Cells[rowindex, 10].Value = parsedDataSet.ParsedFields[1].Value;
+                                worksheet.Cells[rowindex, 11].Value = parsedDataSet.ParsedFields[2].Value;
+                            }
+                            else if (parsedDataSet.Definition.Name == Subset57.SLLTimestamp.Name)
+                            {
+                                worksheet.Cells[rowindex, 12].Value = parsedDataSet.ParsedFields[0].Value;
+                            }
+                            else if (parsedDataSet.Definition.Name == Subset57.Cmd0ConnectRequest.Name)
+                            {
+                                if (parsedDataSet.ParsedFields.Count == 1)
+                                {
+                                    worksheet.Cells[rowindex, 13].Value = "PARSE ERROR";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[rowindex, 13].Value = parsedDataSet.ParsedFields[0].Value;
+                                    worksheet.Cells[rowindex, 14].Value = parsedDataSet.ParsedFields[1].Value;
+                                }
+                                
+                            }
+                            else if (parsedDataSet.Definition.Name == Subset57.Cmd5Disconnect.Name)
+                            {
+                                if (parsedDataSet.ParsedFields.Count == 1)
+                                {
+                                    worksheet.Cells[rowindex, 15].Value = "PARSE ERROR";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[rowindex, 15].Value = parsedDataSet.ParsedFields[0].Value;
+                                    worksheet.Cells[rowindex, 16].Value = parsedDataSet.ParsedFields[1].Value;
+                                }
+                                
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            using (ExcelRange range = worksheet.Cells[1, 1, 1, colindex])
+            {
+                range.Style.Font.Bold = true;
+                range.AutoFilter = true;
+            }
+
+            if(rowindex > 1)
+                worksheet.Cells[2, 2, rowindex, 2].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
+
+            worksheet.Calculate();
+
+            worksheet.Cells.AutoFitColumns(0);
+        }
+
+        private static void MakeMainSheet(List<CapturePacket> packets, BackStore backStore, ExcelWorksheet worksheet)
+        {
+            
+
+            int colindex = 1;
+            //Add the headers
+            worksheet.Cells[1, colindex++].Value = "Time";
+            worksheet.Cells[1, colindex++].Value = "Name";
+            worksheet.Cells[1, colindex++].Value = "Displayfields";
+            worksheet.Cells[1, colindex++].Value = "Delta";
+            worksheet.Cells[1, colindex++].Value = "Data";
+            worksheet.Cells[1, colindex++].Value = "Raw";
+            
+            for (var index = 0; index < packets.Count; index++)
+            {
+                var packet = packets[index];
+                int rowindex = index + 2;
+
+                worksheet.Cells[rowindex, 1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                worksheet.Cells[rowindex, 2].Value = packet.Name;
+                var dfCell = worksheet.Cells[rowindex, 3];
+                dfCell.IsRichText = true;
+                foreach (var df in packet.DisplayFields)
+                {
+                    var richText = dfCell.RichText.Add(df.Name);
+                    richText.Bold = true;
+                    if (df.Name == "ERROR")
+                        richText.Color = Color.Red;
+                    else
+                        richText.Color = Color.Black;
+
+                    var richText2 = dfCell.RichText.Add(": " + df.Val + " ");
+                    richText2.Bold = false;
+                    richText2.Color = Color.Black;
+                }
+                //worksheet.Cells[rowindex, 3].Value = string.Join(" ", packet.DisplayFields.Select(df => df.Name + ": " + df.Val));
+
+                if (packet.Previous != null)
+                {
+                    // TODO temp disabled for now !!!!!
+                    //worksheet.Cells[rowindex, 4].Value =
+                    //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
+                }
+
+                var parseCell = worksheet.Cells[rowindex, 5];
+                var parse = backStore.GetParse(packet.No);
+
+                if (parse.HasValue)
+                {
+                    parseCell.IsRichText = true;
+                    parseCell.Style.WrapText = true;
+                    foreach (var parsedDataSet in parse.Value.ParsedData)
+                    {
+                        parseCell.RichText.Add(parsedDataSet.Name).Bold = true;
+                        parseCell.RichText.Add(" - ").Bold = false;
+
+                        var s = string.Join(" | ", parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                        parseCell.RichText.Add(s + "\n");
+                    }
+                }
+
+                //if (parse.HasValue)
+                //    worksheet.Cells[rowindex, 5].Value =
+                //        string.Join(" ",
+                //            parse.Value.ParsedData.SelectMany(dataset =>
+                //                dataset.ParsedFields.Select(f => new DisplayField(f))));
+
+                //worksheet.Cells[rowindex, 5].IsRichText = true;
+                //ExcelRichTextCollection rtfCollection = worksheet.Cells[rowindex, 5].RichText;
+                //
+                //foreach (KeyValuePair<string, object> pair in dictionaryDataObject.DictionaryData)
+                //{
+                //    ExcelRichText excelRichText = rtfCollection.Add(pair.Key + ": ");
+                //    excelRichText.Bold = false;
+                //    excelRichText.UnderLine = false;
+                //    excelRichText = rtfCollection.Add(pair.Value.ToString() + ' ');
+                //    excelRichText.Bold = true;
+                //    excelRichText.UnderLine = true;
+                //}
+
+                // RAW
+                if (packet.Protocol == ProtocolType.IPTWP)
+                {
+                    // since we have IPT, straight cast to UDP, BAM
+
+                    // TODO temp disabled !!!!!
+                    //var udp = (UdpPacket) packet.Packet.PayloadPacket.PayloadPacket;
+                    //
+                    //var bytes = IPTWPPacket.GetIPTPayload(udp, packet.IPTWPPacket);
+                    //worksheet.Cells[rowindex, 6].Value = BitConverter.ToString(bytes);
+                }
+
+                int colIndex = 7;
+                
+            }
+
+            //Ok now format the values;
+            using (ExcelRange range = worksheet.Cells[1, 1, 1, colindex])
+            {
+                range.Style.Font.Bold = true;
+                range.AutoFilter = true;
+                //range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //range.Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
+                //range.Style.Font.Color.SetColor(Color.White);
+            }
+
+            worksheet.Cells[2, 1, packets.Count + 2, 1].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
+
+
+            //There is actually no need to calculate, Excel will do it for you, but in some cases it might be useful. 
+            //For example if you link to this workbook from another workbook or you will open the workbook in a program that hasn't a calculation engine or 
+            //you want to use the result of a formula in your program.
+            worksheet.Calculate();
+
+            worksheet.Cells.AutoFitColumns(0); //Autofit columns for all cells
+
+            // lets set the header text 
+            worksheet.HeaderFooter.OddHeader.CenteredText = "&24&U&\"Arial,Regular Bold\" Parsed Traffic";
+            // add the page number to the footer plus the total number of pages
+            worksheet.HeaderFooter.OddFooter.RightAlignedText =
+                $"Page {ExcelHeaderFooter.PageNumber} of {ExcelHeaderFooter.NumberOfPages}";
+            // add the sheet name to the footer
+            worksheet.HeaderFooter.OddFooter.CenteredText = ExcelHeaderFooter.SheetName;
+            // add the file path to the footer
+            worksheet.HeaderFooter.OddFooter.LeftAlignedText =
+                ExcelHeaderFooter.FilePath + ExcelHeaderFooter.FileName;
+
+            worksheet.PrinterSettings.RepeatRows = worksheet.Cells["1:2"];
+            worksheet.PrinterSettings.RepeatColumns = worksheet.Cells["A:G"];
+
+            // Change the sheet view to show it in page layout mode
+            //worksheet.View.PageLayoutView = true;
         }
 
         private static string SS27tostring(SS27Packet packet)
