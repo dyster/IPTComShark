@@ -406,19 +406,11 @@ namespace IPTComShark
 
         private void exportXLSXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog
-            {
-                AddExtension = true,
-                DefaultExt = "xlsx"
-            };
-            var dialogResult = saveFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets());
+            
+            
+                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore);
                 var showDialog = exporterer.ShowDialog(this);
-                if(showDialog == DialogResult.OK)
-                    Export.Export.MakeXLSX(exporterer.Selection, saveFileDialog.FileName, _backStore, exporterer.Profibus);
-            }
+            
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)

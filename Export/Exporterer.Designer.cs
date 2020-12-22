@@ -29,36 +29,39 @@
         private void InitializeComponent()
         {
             this.groupBoxPacketSelect = new System.Windows.Forms.GroupBox();
-            this.radioButtonSelectAll = new System.Windows.Forms.RadioButton();
-            this.radioButtonSelectFilter = new System.Windows.Forms.RadioButton();
             this.radioButtonSelectSelected = new System.Windows.Forms.RadioButton();
+            this.radioButtonSelectFilter = new System.Windows.Forms.RadioButton();
+            this.radioButtonSelectAll = new System.Windows.Forms.RadioButton();
             this.buttonOK = new System.Windows.Forms.Button();
             this.checkBoxProfibus = new System.Windows.Forms.CheckBox();
+            this.radioButtonSelectFile = new System.Windows.Forms.RadioButton();
+            this.checkBoxEverything = new System.Windows.Forms.CheckBox();
             this.groupBoxPacketSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxPacketSelect
             // 
+            this.groupBoxPacketSelect.Controls.Add(this.radioButtonSelectFile);
             this.groupBoxPacketSelect.Controls.Add(this.radioButtonSelectSelected);
             this.groupBoxPacketSelect.Controls.Add(this.radioButtonSelectFilter);
             this.groupBoxPacketSelect.Controls.Add(this.radioButtonSelectAll);
             this.groupBoxPacketSelect.Location = new System.Drawing.Point(12, 12);
             this.groupBoxPacketSelect.Name = "groupBoxPacketSelect";
-            this.groupBoxPacketSelect.Size = new System.Drawing.Size(357, 94);
+            this.groupBoxPacketSelect.Size = new System.Drawing.Size(357, 117);
             this.groupBoxPacketSelect.TabIndex = 0;
             this.groupBoxPacketSelect.TabStop = false;
             this.groupBoxPacketSelect.Text = "Select packets";
             // 
-            // radioButtonSelectAll
+            // radioButtonSelectSelected
             // 
-            this.radioButtonSelectAll.AutoSize = true;
-            this.radioButtonSelectAll.Location = new System.Drawing.Point(6, 19);
-            this.radioButtonSelectAll.Name = "radioButtonSelectAll";
-            this.radioButtonSelectAll.Size = new System.Drawing.Size(36, 17);
-            this.radioButtonSelectAll.TabIndex = 1;
-            this.radioButtonSelectAll.TabStop = true;
-            this.radioButtonSelectAll.Text = "All";
-            this.radioButtonSelectAll.UseVisualStyleBackColor = true;
+            this.radioButtonSelectSelected.AutoSize = true;
+            this.radioButtonSelectSelected.Location = new System.Drawing.Point(6, 65);
+            this.radioButtonSelectSelected.Name = "radioButtonSelectSelected";
+            this.radioButtonSelectSelected.Size = new System.Drawing.Size(67, 17);
+            this.radioButtonSelectSelected.TabIndex = 2;
+            this.radioButtonSelectSelected.TabStop = true;
+            this.radioButtonSelectSelected.Text = "Selected";
+            this.radioButtonSelectSelected.UseVisualStyleBackColor = true;
             // 
             // radioButtonSelectFilter
             // 
@@ -71,16 +74,16 @@
             this.radioButtonSelectFilter.Text = "Filter";
             this.radioButtonSelectFilter.UseVisualStyleBackColor = true;
             // 
-            // radioButtonSelectSelected
+            // radioButtonSelectAll
             // 
-            this.radioButtonSelectSelected.AutoSize = true;
-            this.radioButtonSelectSelected.Location = new System.Drawing.Point(6, 65);
-            this.radioButtonSelectSelected.Name = "radioButtonSelectSelected";
-            this.radioButtonSelectSelected.Size = new System.Drawing.Size(67, 17);
-            this.radioButtonSelectSelected.TabIndex = 2;
-            this.radioButtonSelectSelected.TabStop = true;
-            this.radioButtonSelectSelected.Text = "Selected";
-            this.radioButtonSelectSelected.UseVisualStyleBackColor = true;
+            this.radioButtonSelectAll.AutoSize = true;
+            this.radioButtonSelectAll.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonSelectAll.Name = "radioButtonSelectAll";
+            this.radioButtonSelectAll.Size = new System.Drawing.Size(36, 17);
+            this.radioButtonSelectAll.TabIndex = 1;
+            this.radioButtonSelectAll.TabStop = true;
+            this.radioButtonSelectAll.Text = "All";
+            this.radioButtonSelectAll.UseVisualStyleBackColor = true;
             // 
             // buttonOK
             // 
@@ -97,18 +100,42 @@
             this.checkBoxProfibus.AutoSize = true;
             this.checkBoxProfibus.Checked = true;
             this.checkBoxProfibus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxProfibus.Location = new System.Drawing.Point(12, 112);
+            this.checkBoxProfibus.Location = new System.Drawing.Point(12, 158);
             this.checkBoxProfibus.Name = "checkBoxProfibus";
             this.checkBoxProfibus.Size = new System.Drawing.Size(64, 17);
             this.checkBoxProfibus.TabIndex = 2;
             this.checkBoxProfibus.Text = "Profibus";
             this.checkBoxProfibus.UseVisualStyleBackColor = true;
             // 
+            // radioButtonSelectFile
+            // 
+            this.radioButtonSelectFile.AutoSize = true;
+            this.radioButtonSelectFile.Location = new System.Drawing.Point(6, 88);
+            this.radioButtonSelectFile.Name = "radioButtonSelectFile";
+            this.radioButtonSelectFile.Size = new System.Drawing.Size(74, 17);
+            this.radioButtonSelectFile.TabIndex = 3;
+            this.radioButtonSelectFile.TabStop = true;
+            this.radioButtonSelectFile.Text = "Select File";
+            this.radioButtonSelectFile.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxEverything
+            // 
+            this.checkBoxEverything.AutoSize = true;
+            this.checkBoxEverything.Checked = true;
+            this.checkBoxEverything.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxEverything.Location = new System.Drawing.Point(12, 135);
+            this.checkBoxEverything.Name = "checkBoxEverything";
+            this.checkBoxEverything.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxEverything.TabIndex = 3;
+            this.checkBoxEverything.Text = "Everything";
+            this.checkBoxEverything.UseVisualStyleBackColor = true;
+            // 
             // Exporterer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 195);
+            this.ClientSize = new System.Drawing.Size(646, 192);
+            this.Controls.Add(this.checkBoxEverything);
             this.Controls.Add(this.checkBoxProfibus);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.groupBoxPacketSelect);
@@ -129,5 +156,7 @@
         private System.Windows.Forms.RadioButton radioButtonSelectAll;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.CheckBox checkBoxProfibus;
+        private System.Windows.Forms.RadioButton radioButtonSelectFile;
+        private System.Windows.Forms.CheckBox checkBoxEverything;
     }
 }

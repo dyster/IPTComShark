@@ -563,10 +563,8 @@ namespace IPTComShark.Controls
             DialogResult dialogResult = saveFileDialog.ShowDialog(this);
             if (dialogResult == DialogResult.OK)
             {
-                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets());
-                var showDialog = exporterer.ShowDialog(this);
-                if(showDialog == DialogResult.OK)
-                    Export.Export.MakeXLSX(exporterer.Selection, saveFileDialog.FileName, BackStore, exporterer.Profibus);
+                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore);
+                exporterer.ShowDialog(this);
             }
 
         }

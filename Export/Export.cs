@@ -138,7 +138,8 @@ namespace IPTComShark.Export
             }
         }
 
-        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore, bool profibus)
+        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore,
+            bool exportEverything, bool exportProfibus)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -152,10 +153,10 @@ namespace IPTComShark.Export
             using (var package = new ExcelPackage(newFile))
             {
                 // Add a new worksheet to the empty workbook
-                
-                MakeMainSheet(packets, backStore, package.Workbook.Worksheets.Add("Packets"));
+                if(exportEverything)
+                    MakeMainSheet(packets, backStore, package.Workbook.Worksheets.Add("Packets"));
 
-                if (profibus)
+                if (exportProfibus)
                     MakeProfiSheet(packets, backStore, package.Workbook.Worksheets.Add("Profibus"));
 
                 // set some document properties
@@ -194,14 +195,25 @@ namespace IPTComShark.Export
             worksheet.Cells[1, colindex++].Value = "Disconnect: New setup desired";
             worksheet.Cells[1, colindex++].Value = "Disconnect: Reason";
             worksheet.Cells[1, colindex++].Value = "ERROR";
-            worksheet.Cells[1, colindex++].Value = "Delta time";
+            worksheet.Cells[1, colindex++].Value = "SAP Delta time";
+            worksheet.Cells[1, colindex++].Value = "reftime offset";
+            worksheet.Cells[1, colindex++].Value = "SAP Delta reftime";
 
             int rowindex = 1;
 
             var idletimes = new MultiArray<ushort, ushort, DateTime>();
+            var idlereftimes = new MultiArray<ushort, ushort, uint>();
+            DateTime firstDate = default;
+            uint firstRefTime = 0;
             
+
             for (var index = 0; index < packets.Count; index++)
             {
+                if (rowindex > 1000000)
+                {
+                    MessageBox.Show("Row index has reached 1,000,000, aborting");
+                    break;
+                }
                 var packet = packets[index];
                 
 
@@ -210,6 +222,9 @@ namespace IPTComShark.Export
                     var parse = backStore.GetParse(packet.No);
                     if (parse.HasValue)
                     {
+                        ushort k1 = 0;
+                        ushort k2 = 0;
+
                         foreach (var parsedDataSet in parse.Value.ParsedData)
                         {
                             if (parsedDataSet.Definition == null)
@@ -219,6 +234,7 @@ namespace IPTComShark.Export
                                 continue;
                             }
 
+                            
                             if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
                             {
                                 // SPL header means new profibus packet
@@ -233,8 +249,8 @@ namespace IPTComShark.Export
                                 worksheet.Cells[rowindex, 7].Value = parsedDataSet.ParsedFields[4].Value;
                                 worksheet.Cells[rowindex, 8].Value = parsedDataSet.ParsedFields[5].Value;
 
-                                var k1 = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value);
-                                var k2 = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value);
+                                k1 = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value);
+                                k2 = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value);
 
                                 if (idletimes.ContainsKey(k1, k2))
                                 {
@@ -245,6 +261,8 @@ namespace IPTComShark.Export
                                 }
 
                                 idletimes[k1, k2] = packet.Date;
+
+                                
                             }
                             else if (parsedDataSet.Definition.Name == Subset57.SLLHeader.Name)
                             {
@@ -254,7 +272,35 @@ namespace IPTComShark.Export
                             }
                             else if (parsedDataSet.Definition.Name == Subset57.SLLTimestamp.Name)
                             {
-                                worksheet.Cells[rowindex, 12].Value = parsedDataSet.ParsedFields[0].Value;
+                                var refTime = Convert.ToUInt32(parsedDataSet.ParsedFields[0].Value);
+                                worksheet.Cells[rowindex, 12].Value = refTime;
+
+                                if (firstDate == default)
+                                {
+                                    firstDate = packet.Date;
+                                    firstRefTime = refTime;
+                                }
+                                else
+                                {
+                                    var dateDelta = (packet.Date - firstDate).TotalMilliseconds;
+                                    var refOffset = (refTime - firstRefTime);
+                                    worksheet.Cells[rowindex, 19].Value = dateDelta - refOffset;
+                                }
+
+                                if(k1 == 0 || k2 == 0)
+                                    throw new ArgumentOutOfRangeException();
+
+                                if (idlereftimes.ContainsKey(k1, k2))
+                                {
+                                    var beforetime = idlereftimes[k1, k2];
+                                    var span = refTime - beforetime;
+
+                                    worksheet.Cells[rowindex, 20].Value = span;
+                                }
+
+                                idlereftimes[k1, k2] = refTime;
+
+
                             }
                             else if (parsedDataSet.Definition.Name == Subset57.Cmd0ConnectRequest.Name)
                             {
@@ -321,6 +367,12 @@ namespace IPTComShark.Export
             
             for (var index = 0; index < packets.Count; index++)
             {
+                if (index > 1000000)
+                {
+                    MessageBox.Show("Row index has reached 1,000,000, aborting");
+                    break;
+                }
+
                 var packet = packets[index];
                 int rowindex = index + 2;
 
