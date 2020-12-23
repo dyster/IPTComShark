@@ -77,6 +77,11 @@ namespace IPTComShark.BackStore
 
         public bool Working { get; set; }
 
+        /// <summary>
+        /// If a filter is set, anything filtered will not be processed, i.e not saved or passed on to other functions
+        /// </summary>
+        public ProcessingFilter ProcessingFilters { get; set; }
+
         public string Status
         {
             get
@@ -194,7 +199,43 @@ namespace IPTComShark.BackStore
                 //this should be optimized somehow but not sure how, at least it is an infrequent event
             }
 
-            
+            if (ProcessingFilters != null)
+            {
+                if (topPacket.PayloadPacket is IPv4Packet)
+                {
+                    var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+
+                    if (ProcessingFilters.IncludeIPs != null && ProcessingFilters.IncludeIPs.Count > 0)
+                    {
+                        if (ProcessingFilters.IncludeIPs.Exists(ip => ip.Equals(ipv4.SourceAddress)) ||
+                            ProcessingFilters.IncludeIPs.Exists(ip => ip.Equals(ipv4.DestinationAddress)))
+                        {
+                            // keep
+                        }
+                        else
+                        {
+                            // throw
+                            this.DiscardedPackets++;
+                            return null;
+                        }
+                    }
+                    else if (ProcessingFilters.ExcludeIPs != null && ProcessingFilters.ExcludeIPs.Count > 0)
+                    {
+                        if (ProcessingFilters.IncludeIPs.Exists(ip => ip.Equals(ipv4.SourceAddress)) ||
+                            ProcessingFilters.IncludeIPs.Exists(ip => ip.Equals(ipv4.DestinationAddress)))
+                        {
+                            // throw
+                            this.DiscardedPackets++;
+                            return null;
+                        }
+                        else
+                        {
+                            // keep
+                        }
+                    }
+
+                }
+            }
 
             // create the capturepacket
             var capturePacket = new CapturePacket(raw, topPacket);
@@ -276,6 +317,10 @@ namespace IPTComShark.BackStore
             return capturePacket;
         }
 
+        public int DiscardedPackets { get; set; }
+
+        public int CapturedPackets => _packetStore.Count;
+
         public event EventHandler<CapturePacket[]> NewCapturePacket;
 
 
@@ -302,6 +347,21 @@ namespace IPTComShark.BackStore
             _fragmentStore.Clear();
             _packetStore.Clear();
             _lastKnowns = new LastKnownStore();
+            DiscardedPackets = 0;
         }
+    }
+
+    public class ProcessingFilter
+    {
+        /// <summary>
+        /// If this list has items, any IP not matching one of these will be excluded
+        /// </summary>
+        public List<IPAddress> IncludeIPs { get; set; }
+
+        /// <summary>
+        /// If this list has items, any IP that matches on in this list will be excluded
+        /// </summary>
+        public List<IPAddress> ExcludeIPs { get; set; }
+
     }
 }

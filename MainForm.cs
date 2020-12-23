@@ -235,11 +235,11 @@ namespace IPTComShark
             
 
             var tuples = new List<Tuple<Color, string>>();
-            tuples.Add(new Tuple<Color, string>(Color.DarkRed, packetListView1.Count().ToString()));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.CapturedPackets.ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, sizestring));
             tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
-            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _discardedPackets.ToString()));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.DiscardedPackets.ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, "discarded packets | GC mem:"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(totalMemory)));
             tuples.Add(new Tuple<Color, string>(Color.Black, "| Proc mem:"));
