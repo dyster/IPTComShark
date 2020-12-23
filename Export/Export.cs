@@ -19,7 +19,7 @@ namespace IPTComShark.Export
 {
     internal static class Export
     {
-        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile, BackStore backStore)
+        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile, BackStore.BackStore backStore)
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -138,7 +138,7 @@ namespace IPTComShark.Export
             }
         }
 
-        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore backStore,
+        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore.BackStore backStore,
             bool exportEverything, bool exportProfibus)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -175,7 +175,7 @@ namespace IPTComShark.Export
             }
         }
 
-        private static void MakeProfiSheet(List<CapturePacket> packets, BackStore backStore, ExcelWorksheet worksheet)
+        private static void MakeProfiSheet(List<CapturePacket> packets, BackStore.BackStore backStore, ExcelWorksheet worksheet)
         {
             int colindex = 1;
             worksheet.Cells[1, colindex++].Value = "Packet No";
@@ -352,7 +352,7 @@ namespace IPTComShark.Export
             worksheet.Cells.AutoFitColumns(0);
         }
 
-        private static void MakeMainSheet(List<CapturePacket> packets, BackStore backStore, ExcelWorksheet worksheet)
+        private static void MakeMainSheet(List<CapturePacket> packets, BackStore.BackStore backStore, ExcelWorksheet worksheet)
         {
             
 
@@ -534,7 +534,7 @@ namespace IPTComShark.Export
             return list;
         }
 
-        public static string MakeRTF(List<CapturePacket> packets, BackStore backStore)
+        public static string MakeRTF(List<CapturePacket> packets, BackStore.BackStore backStore)
         {
             var sb = new StringBuilder(
                 @"{\rtf1\ansi\ansicpg1252\deff0\deflang2057{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
@@ -582,7 +582,7 @@ namespace IPTComShark.Export
         }
 
 
-        public static string MakeCSV(List<CapturePacket> packets, BackStore backStore)
+        public static string MakeCSV(List<CapturePacket> packets, BackStore.BackStore backStore)
         {
             var csvExport = new CsvExport();
 

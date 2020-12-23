@@ -17,9 +17,9 @@ namespace IPTComShark.Export
         private readonly List<CapturePacket> _getAllPackets;
         private readonly List<CapturePacket> _getFilteredPackets;
         private readonly List<CapturePacket> _getSelectedPackets;
-        private readonly BackStore _backStore;
+        private readonly BackStore.BackStore _backStore;
 
-        public Exporterer(List<CapturePacket> getAllPackets, List<CapturePacket> getFilteredPackets, List<CapturePacket> getSelectedPackets, BackStore backStore)
+        public Exporterer(List<CapturePacket> getAllPackets, List<CapturePacket> getFilteredPackets, List<CapturePacket> getSelectedPackets, BackStore.BackStore backStore)
         {
             _getAllPackets = getAllPackets;
             _getFilteredPackets = getFilteredPackets;
@@ -38,7 +38,7 @@ namespace IPTComShark.Export
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            BackStore activeStore = _backStore;
+            BackStore.BackStore activeStore = _backStore;
 
             if (radioButtonSelectAll.Checked)
                 Selection = _getAllPackets;
@@ -53,7 +53,7 @@ namespace IPTComShark.Export
                 if (showDialog == DialogResult.OK)
                 {
                     var openFiles = new FileManager.FileManager().OpenFiles(openFileDialog.FileNames);
-                    var backStore = new BackStore();
+                    var backStore = new BackStore.BackStore();
                     Selection = new List<CapturePacket>();
                     foreach (var openFile in openFiles)
                         Selection.Add(backStore.Add(openFile, out var parsedlist));

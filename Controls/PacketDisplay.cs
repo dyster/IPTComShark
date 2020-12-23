@@ -28,7 +28,7 @@ namespace IPTComShark.Controls
             };
         }
 
-        public BackStore BackStore { get; set; }
+        public BackStore.BackStore BackStore { get; set; }
 
         public void SetObject(CapturePacket originalpacket)
         {

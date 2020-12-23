@@ -22,7 +22,7 @@ namespace IPTComShark
 {
     public partial class MainForm : Form
     {
-        private BackStore _backStore;
+        private BackStore.BackStore _backStore;
 
 
         private long _capturedData;
@@ -42,7 +42,7 @@ namespace IPTComShark
             InitializeComponent();
 
 
-            _backStore = new BackStore();
+            _backStore = new BackStore.BackStore();
 
             packetListView1.BackStore = _backStore;
             packetDisplay1.BackStore = _backStore;

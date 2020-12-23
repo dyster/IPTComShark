@@ -227,7 +227,7 @@ namespace IPTComShark.Controls
             fastObjectListView1.OverlayText = new TextOverlay(){Text = "PENIS"};
         }
 
-        public BackStore BackStore { get; set; }
+        public BackStore.BackStore BackStore { get; set; }
 
         private static List<ICluster> StringsToClusters(IEnumerable<string> strings)
         {

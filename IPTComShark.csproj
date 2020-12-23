@@ -66,9 +66,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackStore\BackStore.cs" />
+    <Compile Include="BackStore\Fragment.cs" />
+    <Compile Include="BackStore\LastKnownStore.cs" />
     <Compile Include="CapturePacket\CapturePacket.cs" />
     <Compile Include="CapturePacket\DisplayField.cs" />
-    <Compile Include="Classes\BackStore.cs" />
     <Compile Include="Classes\DataStore.cs" />
     <Compile Include="Classes\GitHubUpdateCheck.cs" />
     <Compile Include="Controls\PacketListView\MyFilterMenuBuilder.cs" />

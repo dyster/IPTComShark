@@ -15,7 +15,7 @@ namespace IPTComShark.SeqDiagram
 {
     public class SeqDiagramExporter
     {
-        public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore backStore)
+        public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore.BackStore backStore)
         {
             const int baselinestep = 250; // distance between vertical lines
             const int horizontalBase = 130; // upper range for the vertical lines
@@ -428,7 +428,7 @@ namespace IPTComShark.SeqDiagram
         }*/
 
         private static List<Sequence> GetSequences(List<CapturePacket> packets, int baselinestep,
-            out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore backStore)
+            out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore.BackStore backStore)
         {
             var list = new List<Sequence>();
             devices = new Dictionary<IPAddress, int>();
