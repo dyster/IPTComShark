@@ -8,14 +8,12 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using BustPCap;
-using PCAPBlock = sonesson_tools.FileReaders.PCAPBlock;
 
 namespace IPTComShark.FileManager
 {
     public class FileManager : IDisposable
     {
         private ZipReader zipReader = new ZipReader();
-        private PCAPReader pcapReader = new PCAPReader();
         private PCAPNGReader pcapngReader = new PCAPNGReader();
 
         private Form _popup;
@@ -25,20 +23,6 @@ namespace IPTComShark.FileManager
 
         public FileManager()
         {
-            pcapReader.ChunkReader += chunk =>
-            {
-                PacketCounter++;
-                UpdateProgress((PacketCounter * 100) / PacketTotal);
-                var pcapBlock = (PCAPBlock) chunk;
-                var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                    (LinkLayerType) pcapBlock.Header.network);
-                if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
-                    OnRawParsed(raw);
-
-
-                return new List<FileReadObject>();
-            };
-
             pcapngReader.ChunkReader += chunk =>
             {
                 PacketCounter++;
@@ -132,15 +116,13 @@ namespace IPTComShark.FileManager
 
                 if (source.SourceType == SourceType.PCAP)
                 {
-                    
-                    var fileStream = File.OpenRead(source.FileInfo.FullName);
-                    foreach (var pcapBlock in PCAPReaderStream.ReadStream(fileStream))
+                    using (var pcapFileReader = new PCAPFileReader(source.FileInfo.FullName))
                     {
-                        ChunkRead(pcapBlock);
+                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        {
+                            ChunkRead(pcapBlock);
+                        }
                     }
-
-
-                    
                 }
                 else if (source.SourceType == SourceType.PCAPNG)
                 {
@@ -203,7 +185,11 @@ namespace IPTComShark.FileManager
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAP)
                         {
-                            pcapReader.ReadStream(memstream);
+                            var pcapStreamReader = new PCAPStreamReader(memstream);
+                            foreach (var pcapBlock in pcapStreamReader.Enumerate())
+                            {
+                                ChunkRead(pcapBlock);
+                            }
                         }
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAPNG)

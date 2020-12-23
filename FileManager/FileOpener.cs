@@ -1,7 +1,6 @@
 ﻿using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using sonesson_tools.FileReaders;
-using sonesson_tools.FileWriters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,13 +9,17 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
+using BustPCap;
+
+using PCAPBlock = sonesson_tools.FileReaders.PCAPBlock;
+using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
+
 namespace IPTComShark.FileManager
 {
     public partial class FileOpener : Form
     {
         private string[] _inputstrings;
-
-        private PCAPReader pcapReader = new PCAPReader();
+        
         private PCAPNGReader pcapngReader = new PCAPNGReader();
         private BindingList<DataSource> _dataSources = new BindingList<DataSource>();
 
@@ -70,22 +73,28 @@ namespace IPTComShark.FileManager
             {
                 var finfo = new FileInfo(fileName);
 
-                if (pcapReader.CanRead(fileName))
+                
+                if (BustPCap.PCAPReader.CanRead(fileName))
                 {
-                    var reader = new PCAPReader();
-                    var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPBlock) fileReadObjects.First().ReadObject;
-                    var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
-
-                    var dsource = new DataSource
+                    using (var pcapFileReader = new PCAPFileReader(fileName))
                     {
-                        FileInfo = finfo,
-                        StartTime = first.DateTime,
-                        EndTime = last.DateTime,
-                        SourceType = SourceType.PCAP,
-                        Packets = fileReadObjects.Count
-                    };
-                    UpdateList(dsource);
+                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        {
+                            // enumerate to gather info
+                        }
+
+                        var dsource = new DataSource
+                        {
+                            FileInfo = finfo,
+                            StartTime = pcapFileReader.StartTime,
+                            EndTime = pcapFileReader.EndTime,
+                            SourceType = SourceType.PCAP,
+                            Packets = pcapFileReader.Count
+                        };
+                        UpdateList(dsource);
+                    }
+                    
+                    
                     continue;
                 }
                 else if (pcapngReader.CanRead(fileName))
@@ -189,14 +198,17 @@ namespace IPTComShark.FileManager
                             if (IsPCAP(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
-
-                                var pcapreader = new PCAPReader();
-                                var fileReadObjects = pcapreader.ReadStream(memstream);
-                                var first = (PCAPBlock) fileReadObjects.First().ReadObject;
-                                var last = (PCAPBlock) fileReadObjects.Last().ReadObject;
-                                dsource.StartTime = first.DateTime;
-                                dsource.EndTime = last.DateTime;
-                                dsource.Packets = fileReadObjects.Count();
+                                
+                                var pcapStreamReader = new PCAPStreamReader(memstream);
+                                
+                                foreach (var pcapBlock in pcapStreamReader.Enumerate())
+                                {
+                                    // enumerate to gather info
+                                }
+                                
+                                dsource.StartTime = pcapStreamReader.StartTime;
+                                dsource.EndTime = pcapStreamReader.EndTime;
+                                dsource.Packets = pcapStreamReader.Count;
                                 dsource.ArchiveSourceType = SourceType.PCAP;
                                 UpdateList(dsource);
                             }
