@@ -13,6 +13,8 @@ using BustPCap;
 
 using PCAPBlock = sonesson_tools.FileReaders.PCAPBlock;
 using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
+using IPTComShark.BackStore;
+using System.Net;
 
 namespace IPTComShark.FileManager
 {
@@ -26,6 +28,7 @@ namespace IPTComShark.FileManager
         public List<DataSource> DataSources { get; private set; }
         public DateTime DateTimeFrom { get; private set; }
         public DateTime DateTimeTo { get; private set; }
+        public ProcessingFilter ProcessingFilters { get; private set; }
 
         public FileOpener(string[] inputs)
         {
@@ -332,6 +335,33 @@ namespace IPTComShark.FileManager
         private void ButtonGO_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+
+            this.ProcessingFilters = new ProcessingFilter();
+            if(!string.IsNullOrWhiteSpace(textBoxExcludeIP.Text))
+            {
+                string[] vs = textBoxExcludeIP.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                ProcessingFilters.ExcludeIPs = new List<IPAddress>();
+                foreach(var stringip in vs)
+                {
+                    if (IPAddress.TryParse(stringip, out var ip))
+                        ProcessingFilters.ExcludeIPs.Add(ip);
+                    else
+                        MessageBox.Show("Discarded " + stringip);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(textBoxIncludeIP.Text))
+            {
+                string[] vs = textBoxIncludeIP.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                ProcessingFilters.IncludeIPs = new List<IPAddress>();
+                foreach (var stringip in vs)
+                {
+                    if (IPAddress.TryParse(stringip, out var ip))
+                        ProcessingFilters.IncludeIPs.Add(ip);
+                    else
+                        MessageBox.Show("Discarded " + stringip);
+                }
+            }
+
 
             SetData();
 
