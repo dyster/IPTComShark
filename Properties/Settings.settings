@@ -40,8 +40,7 @@
     </Setting>
     <Setting Name="IgnoreVariables" Type="System.String" Scope="User">
       <Value Profile="(Default)">MMI_M_PACKET
-MMI_L_PACKET
-        </Value>
+MMI_L_PACKET</Value>
     </Setting>
   </Settings>
 </SettingsFile>
