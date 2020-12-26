@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using IPTComShark.Classes;
 using IPTComShark.DataSets;
 using IPTComShark.Export;
 using SharpPcap.Npcap;

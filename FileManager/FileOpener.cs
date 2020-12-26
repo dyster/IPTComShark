@@ -10,8 +10,6 @@ using System.Threading;
 using System.Windows.Forms;
 
 using BustPCap;
-
-using PCAPBlock = sonesson_tools.FileReaders.PCAPBlock;
 using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
 using IPTComShark.BackStore;
 using System.Net;
