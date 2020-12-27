@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using BustPCap;
+using System.Threading.Tasks;
 
 namespace IPTComShark.FileManager
 {
@@ -236,7 +237,7 @@ namespace IPTComShark.FileManager
         /// Starts opening data async, returns them by RawParsed event, and triggers reset event when finished
         /// </summary>
         /// <param name="inputs"></param>
-        public void OpenFilesAsync(string[] inputs)
+        public async void OpenFilesAsync(string[] inputs)
         {
             var fo = new FileOpener(inputs);
             var dialogresult = fo.ShowDialog();
@@ -244,22 +245,17 @@ namespace IPTComShark.FileManager
             {
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
+                                
+                Thread thread = new Thread((object o)=> {
+                    EnumerateFiles(fo.DataSources);
+                    OpenFilesAsyncFinished.Set();
+                });
 
-                MethodInvoker invoker = () => EnumerateFiles(fo.DataSources);
-
-                invoker.BeginInvoke(CallBackMethod, invoker);
+                thread.Start();
             }
         }
 
         public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
-
-        private void CallBackMethod(IAsyncResult ar)
-        {
-            var arAsyncState = (MethodInvoker) ar.AsyncState;
-            arAsyncState.EndInvoke(ar);
-            OpenFilesAsyncFinished.Set();
-        }
-
 
         public DateTime FilterTo { get; set; }
 

@@ -32,6 +32,19 @@ namespace IPTComShark
         {
             this.components = new System.ComponentModel.Container();
             IPTComShark.Controls.PacketListSettings packetListSettings1 = new IPTComShark.Controls.PacketListSettings();
+            IPTComShark.Properties.Settings settings1 = new IPTComShark.Properties.Settings();
+            IPTComShark.Controls.ColumnInfo columnInfo1 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo2 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo3 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo4 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo5 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo6 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo7 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo8 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo9 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo10 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo11 = new IPTComShark.Controls.ColumnInfo();
+            IPTComShark.Controls.ColumnInfo columnInfo12 = new IPTComShark.Controls.ColumnInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timerFlicker = new System.Windows.Forms.Timer(this.components);
@@ -107,10 +120,11 @@ namespace IPTComShark
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLeft,
             this.statusRight});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 575);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 667);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             this.statusStrip1.ShowItemToolTips = true;
-            this.statusStrip1.Size = new System.Drawing.Size(1433, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1672, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.DoubleClick += new System.EventHandler(this.statusStrip1_DoubleClick);
@@ -135,7 +149,8 @@ namespace IPTComShark
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 27);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -145,8 +160,9 @@ namespace IPTComShark
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1433, 545);
-            this.splitContainer1.SplitterDistance = 1029;
+            this.splitContainer1.Size = new System.Drawing.Size(1672, 629);
+            this.splitContainer1.SplitterDistance = 1200;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 7;
             // 
             // packetListView1
@@ -156,7 +172,7 @@ namespace IPTComShark
             this.packetListView1.BackStore = null;
             this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.packetListView1.Margin = new System.Windows.Forms.Padding(5);
             this.packetListView1.Name = "packetListView1";
             this.packetListView1.SearchString = null;
             packetListSettings1.AutoScroll = true;
@@ -165,7 +181,7 @@ namespace IPTComShark
             packetListSettings1.IgnoreLoopback = true;
             packetListSettings1.IgnoreUnknownData = true;
             this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1029, 545);
+            this.packetListView1.Size = new System.Drawing.Size(1200, 629);
             this.packetListView1.TabIndex = 0;
             this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
             this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
@@ -176,18 +192,20 @@ namespace IPTComShark
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(400, 545);
+            this.tabControl1.Size = new System.Drawing.Size(467, 629);
             this.tabControl1.TabIndex = 14;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.packetDisplay1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage1.Size = new System.Drawing.Size(392, 519);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabPage1.Size = new System.Drawing.Size(459, 601);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -196,10 +214,10 @@ namespace IPTComShark
             // 
             this.packetDisplay1.BackStore = null;
             this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetDisplay1.Location = new System.Drawing.Point(3, 3);
-            this.packetDisplay1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.packetDisplay1.Location = new System.Drawing.Point(4, 3);
+            this.packetDisplay1.Margin = new System.Windows.Forms.Padding(5);
             this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.Size = new System.Drawing.Size(386, 513);
+            this.packetDisplay1.Size = new System.Drawing.Size(451, 595);
             this.packetDisplay1.TabIndex = 0;
             // 
             // tabPage2
@@ -211,10 +229,11 @@ namespace IPTComShark
             this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(392, 519);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabPage2.Size = new System.Drawing.Size(459, 601);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -223,27 +242,30 @@ namespace IPTComShark
             // 
             this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 341);
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 393);
+            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(392, 20);
+            this.textBoxSearch.Size = new System.Drawing.Size(457, 23);
             this.textBoxSearch.TabIndex = 19;
             this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 325);
+            this.label3.Location = new System.Drawing.Point(7, 375);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(42, 15);
             this.label3.TabIndex = 18;
             this.label3.Text = "Search";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 159);
+            this.label2.Location = new System.Drawing.Point(4, 183);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(186, 13);
+            this.label2.Size = new System.Drawing.Size(205, 15);
             this.label2.TabIndex = 15;
             this.label2.Text = "Ignore Variables (separate by newline)";
             // 
@@ -255,9 +277,10 @@ namespace IPTComShark
             this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 3);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(386, 101);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(451, 117);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // checkBoxParserOnly
@@ -265,9 +288,10 @@ namespace IPTComShark
             this.checkBoxParserOnly.AutoSize = true;
             this.checkBoxParserOnly.Checked = true;
             this.checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxParserOnly.Location = new System.Drawing.Point(3, 3);
+            this.checkBoxParserOnly.Location = new System.Drawing.Point(4, 3);
+            this.checkBoxParserOnly.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxParserOnly.Name = "checkBoxParserOnly";
-            this.checkBoxParserOnly.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxParserOnly.Size = new System.Drawing.Size(146, 19);
             this.checkBoxParserOnly.TabIndex = 8;
             this.checkBoxParserOnly.Text = "Show only known data";
             this.checkBoxParserOnly.UseVisualStyleBackColor = true;
@@ -275,9 +299,10 @@ namespace IPTComShark
             // checkBoxAutoScroll
             // 
             this.checkBoxAutoScroll.AutoSize = true;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(3, 26);
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(4, 28);
+            this.checkBoxAutoScroll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
-            this.checkBoxAutoScroll.Size = new System.Drawing.Size(74, 17);
+            this.checkBoxAutoScroll.Size = new System.Drawing.Size(81, 19);
             this.checkBoxAutoScroll.TabIndex = 10;
             this.checkBoxAutoScroll.Text = "AutoScroll";
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
@@ -285,9 +310,10 @@ namespace IPTComShark
             // checkBoxIgnoreLoopback
             // 
             this.checkBoxIgnoreLoopback.AutoSize = true;
-            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(3, 49);
+            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(4, 53);
+            this.checkBoxIgnoreLoopback.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
-            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(115, 19);
             this.checkBoxIgnoreLoopback.TabIndex = 11;
             this.checkBoxIgnoreLoopback.Text = "Ignore Loopback";
             this.checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
@@ -297,9 +323,10 @@ namespace IPTComShark
             this.checkBoxHideDupes.AutoSize = true;
             this.checkBoxHideDupes.Checked = true;
             this.checkBoxHideDupes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHideDupes.Location = new System.Drawing.Point(3, 72);
+            this.checkBoxHideDupes.Location = new System.Drawing.Point(4, 78);
+            this.checkBoxHideDupes.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBoxHideDupes.Name = "checkBoxHideDupes";
-            this.checkBoxHideDupes.Size = new System.Drawing.Size(174, 17);
+            this.checkBoxHideDupes.Size = new System.Drawing.Size(187, 19);
             this.checkBoxHideDupes.TabIndex = 9;
             this.checkBoxHideDupes.Text = "Ignore Duplicated ProcessData";
             this.checkBoxHideDupes.UseVisualStyleBackColor = true;
@@ -308,17 +335,19 @@ namespace IPTComShark
             // 
             this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 136);
+            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 157);
+            this.textBoxIgnoreComid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(392, 20);
+            this.textBoxIgnoreComid.Size = new System.Drawing.Size(457, 23);
             this.textBoxIgnoreComid.TabIndex = 12;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 120);
+            this.label1.Location = new System.Drawing.Point(4, 138);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 13);
+            this.label1.Size = new System.Drawing.Size(195, 15);
             this.label1.TabIndex = 13;
             this.label1.Text = "Ignore Comid (separate by comma)";
             // 
@@ -326,13 +355,87 @@ namespace IPTComShark
             // 
             this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 175);
+            settings1.AutoScroll = false;
+            columnInfo1.DisplayIndex = 0;
+            columnInfo1.IsVisible = true;
+            columnInfo1.Name = "No";
+            columnInfo1.Width = 60;
+            columnInfo2.DisplayIndex = 1;
+            columnInfo2.IsVisible = true;
+            columnInfo2.Name = "Date";
+            columnInfo2.Width = 130;
+            columnInfo3.DisplayIndex = 2;
+            columnInfo3.IsVisible = true;
+            columnInfo3.Name = "ms";
+            columnInfo3.Width = 40;
+            columnInfo4.DisplayIndex = 3;
+            columnInfo4.IsVisible = true;
+            columnInfo4.Name = "From";
+            columnInfo4.Width = 60;
+            columnInfo5.DisplayIndex = 4;
+            columnInfo5.IsVisible = true;
+            columnInfo5.Name = "To";
+            columnInfo5.Width = 60;
+            columnInfo6.DisplayIndex = 5;
+            columnInfo6.IsVisible = true;
+            columnInfo6.Name = "Protocol";
+            columnInfo6.Width = 100;
+            columnInfo7.DisplayIndex = 6;
+            columnInfo7.IsVisible = true;
+            columnInfo7.Name = "Protocol Info";
+            columnInfo7.Width = 100;
+            columnInfo8.DisplayIndex = 7;
+            columnInfo8.IsVisible = true;
+            columnInfo8.Name = "Name";
+            columnInfo8.Width = 150;
+            columnInfo9.DisplayIndex = 8;
+            columnInfo9.IsVisible = true;
+            columnInfo9.Name = "Parsed";
+            columnInfo9.Width = 398;
+            columnInfo10.DisplayIndex = 9;
+            columnInfo10.IsVisible = true;
+            columnInfo10.Name = "IPTWP Type";
+            columnInfo10.Width = 60;
+            columnInfo11.DisplayIndex = 10;
+            columnInfo11.IsVisible = true;
+            columnInfo11.Name = "ComID";
+            columnInfo11.Width = 60;
+            columnInfo12.DisplayIndex = 11;
+            columnInfo12.IsVisible = true;
+            columnInfo12.Name = "Error";
+            columnInfo12.Width = 60;
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo1);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo2);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo3);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo4);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo5);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo6);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo7);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo8);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo9);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo10);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo11);
+            new IPTComShark.Controls.ColumnSettings().Add(columnInfo12);
+            settings1.IgnoredComIds = "";
+            settings1.IgnoreDuplicatedPD = false;
+            settings1.IgnoreLoopback = false;
+            settings1.IgnoreUnknownData = false;
+            settings1.IgnoreVariables = "MMI_M_PACKET\r\nMMI_L_PACKET";
+            settings1.RemoteCapFolder = "";
+            settings1.RemoteCapIP = "";
+            settings1.RemoteCapPassword = "";
+            settings1.RemoteCapPort = "";
+            settings1.RemoteCapPrefix = "";
+            settings1.RemoteCapUsername = "";
+            settings1.SettingsKey = "";
+            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", settings1, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 202);
+            this.textBoxIgnoreVars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxIgnoreVars.Multiline = true;
             this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
-            this.textBoxIgnoreVars.Size = new System.Drawing.Size(392, 147);
+            this.textBoxIgnoreVars.Size = new System.Drawing.Size(457, 169);
             this.textBoxIgnoreVars.TabIndex = 17;
-            this.textBoxIgnoreVars.Text = global::IPTComShark.Properties.Settings.Default.IgnoreVariables;
+            this.textBoxIgnoreVars.Text = "MMI_M_PACKET\r\nMMI_L_PACKET";
             this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
             // 
             // menuStrip1
@@ -349,7 +452,8 @@ namespace IPTComShark
             this.reportAnIssueToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1433, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1672, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -512,9 +616,9 @@ namespace IPTComShark
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1433, 597);
+            this.ClientSize = new System.Drawing.Size(1672, 689);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -522,6 +626,7 @@ namespace IPTComShark
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "MainForm";
             this.Text = "IPTComShark";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

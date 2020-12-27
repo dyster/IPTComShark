@@ -37,9 +37,9 @@ namespace IPTComShark.FileManager
             dataListView1.DataSource = _dataSources;
             dataListView1.PrimarySortColumn = olvColumnStart;
 
-            backgroundWorker1.RunWorkerAsync();
-        }
-
+            Load += (object sender, EventArgs e) => { backgroundWorker1.RunWorkerAsync(); };
+            
+        }        
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {

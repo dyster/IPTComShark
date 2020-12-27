@@ -68,7 +68,7 @@
             // 
             // olvColumn1
             // 
-            this.olvColumn1.AspectName = "Interface.FriendlyName";
+            this.olvColumn1.AspectName = "FriendlyName";
             this.olvColumn1.Text = "FriendlyName";
             this.olvColumn1.Width = 150;
             // 
