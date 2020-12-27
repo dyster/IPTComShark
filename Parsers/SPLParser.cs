@@ -67,6 +67,7 @@ namespace IPTComShark.Parsers
                 // get the SLL header
                 var header = sonesson_toolsNETSTANDARD.DataSets.Subset57.SLLHeader.Parse(splframeArray);
                 parse.ParsedData.Add(header);
+                var trueCommand = splframeArray[1];
 
                 // get the SIL level
                 var sl = header.GetField("SL").Value.ToString();
@@ -81,25 +82,46 @@ namespace IPTComShark.Parsers
                 int checksumlength = 0;
                 int timestamplength = 0;
                 int headerLength = header.BitsRead / 8;
-                if (cmd == 9)
+
+                // data telegrams have timestamp
+                if (trueCommand == 0x89 || trueCommand == 0x09 || trueCommand == 0xC9)
                     timestamplength = 4;
 
-                if (sl == "2")
+                var trueSIL = -1;
+
+                if(trueCommand >= 0x80 && trueCommand <= 0xBF)
                 {
+                    //SL4
+                    trueSIL = 4;
+
+                    checksumlength = 6;
+
+                    var checksumBytes = new byte[checksumlength];
+                    Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
+                    checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL4Checksum.Parse(checksumBytes);
+
+                }
+                else if(trueCommand >= 0x00 && trueCommand <= 0x3F)
+                {
+                    //SL2
+                    trueSIL = 2;
+
                     checksumlength = 4;
 
                     var checksumBytes = new byte[checksumlength];
                     Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
                     checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL2Checksum.Parse(checksumBytes);
                 }
-                else if (sl == "4")
+                else if(trueCommand >= 0xC0 && trueCommand <= 0xFF)
                 {
-                    checksumlength = 6;
-
-                    var checksumBytes = new byte[checksumlength];
-                    Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
-                    checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL4Checksum.Parse(checksumBytes);
+                    //SL0
+                    trueSIL = 0;
                 }
+
+                if(Convert.ToInt32(sl) != trueSIL)
+                {
+                    // Nooooooo
+                }             
 
 
                 // 2 for header
@@ -160,7 +182,8 @@ namespace IPTComShark.Parsers
 
                 var SAP = Convert.ToInt32(sapField.TrueValue);
 
-                if (cmd == 0)
+                // TODO add all the Safe link layer stuff
+                if (trueCommand == 0x80 || trueCommand == 0x00 || trueCommand == 0xC0)
                 {
                     // Connect Request
                     framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
@@ -170,7 +193,7 @@ namespace IPTComShark.Parsers
                 {
                     // Reserved
                 }
-                else if (cmd == 2)
+                else if (trueCommand == 0x82 || trueCommand == 0x02 || trueCommand == 0xC2)
                 {
                     // Connect Confirm
                     // not a paste error, they have the same telegram structure
@@ -184,7 +207,7 @@ namespace IPTComShark.Parsers
                 {
                     // Auth Ack
                 }
-                else if (cmd == 5)
+                else if (trueCommand == 0x85 || trueCommand == 0x05 || trueCommand == 0xC5)
                 {
                     // Disconnect
                     framePayload = Parse(Subset57.Cmd5Disconnect, framePayload, ref framePosition);
@@ -192,8 +215,10 @@ namespace IPTComShark.Parsers
                     var firstOrDefault = last.ParsedFields.FirstOrDefault(f => f.Name == "Disconnect Reason");
                     if(firstOrDefault != null)
                         parse.DisplayFields.Add(new DisplayField("Reason", firstOrDefault.Value.ToString()));
+
+                    // TODO read the string
                 }
-                else if (cmd == 6)
+                else if (trueCommand == 0x86 || trueCommand == 0x06 || trueCommand == 0xC6)
                 {
                     // IDLE
                     // Has no data
@@ -206,7 +231,7 @@ namespace IPTComShark.Parsers
                 {
                     // Send Enable
                 }
-                else if (cmd == 9)
+                else if (trueCommand == 0x89 || trueCommand == 0x09 || trueCommand == 0xC9)
                 {
                     // upper layer
 
@@ -288,6 +313,26 @@ namespace IPTComShark.Parsers
                     {
                         // twilight zone?
                     }
+                }
+                else if(trueCommand == 0xA1)
+                {
+                    // SL4 sync and reference time
+                }
+                else if (trueCommand == 0xA4)
+                {
+                    // SL4 safe time layer startup
+                }
+                else if(trueCommand == 0xA2 || trueCommand == 0x22 || trueCommand == 0xE2)
+                {
+                    // ready to run
+                }
+                else if (trueCommand == 0xA3 || trueCommand == 0x23 || trueCommand == 0xE3)
+                {
+                    // ready to run
+                }
+                else
+                {
+                    // what else is there?
                 }
 
                 // corrupt data = broken parsing
