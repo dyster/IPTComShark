@@ -34,10 +34,19 @@ namespace IPTComShark.BackStore
         /// </summary>
         private readonly Dictionary<int, Packet> _topPacketStore = new Dictionary<int, Packet>();
 
+        /// <summary>
+        /// True to disable saving of packets
+        /// </summary>
+        private readonly bool processingOnly;
+
         //private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
         //private FileStream fileStream;
 
-        public BackStore()
+        /// <summary>
+        /// Creates an instance of the BackStore to process and save packets
+        /// </summary>
+        /// <param name="processingOnly">If set to true, the backstore will only process packets and return them, not save them</param>
+        public BackStore(bool processingOnly = false)
         {
             //fileStream = File.Create(@"c:\temp\iptsharkstream");
 
@@ -45,6 +54,7 @@ namespace IPTComShark.BackStore
             _worker.WorkerSupportsCancellation = true;
             _worker.DoWork += DoWork;
             _worker.RunWorkerAsync();
+            this.processingOnly = processingOnly;
         }
 
         public List<Raw> GetAllRaws()
@@ -149,11 +159,11 @@ namespace IPTComShark.BackStore
         /// </summary>
         /// <param name="raw">Raw ethernet data</param>
         /// <returns>The parsed packet</returns>
-        public CapturePacket Add(Raw raw, out List<ParsedDataSet> parsedData)
+        public CapturePacket Add(Raw raw, out Parse parse)
         {
             var seed = ++_seed;
-            parsedData = new List<ParsedDataSet>();
-
+            parse = new Parse();
+            
             var topPacket = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
 
             try
@@ -247,9 +257,8 @@ namespace IPTComShark.BackStore
 
             if (extractParsedData.HasValue)
             {
-                var parse = extractParsedData.Value;
-                parsedData = parse.ParsedData;
-
+                parse = extractParsedData.Value;
+                
                 // add all available displayfields for now
                 if (parse.DisplayFields != null) capturePacket.DisplayFields.AddRange(parse.DisplayFields);
                 if (!string.IsNullOrEmpty(parse.Name))
@@ -309,9 +318,12 @@ namespace IPTComShark.BackStore
                 // what?
             }
 
-
-            _rawStore.Add(capturePacket.No, raw);
-            _packetStore.Add(capturePacket.No, capturePacket);
+            if(!processingOnly)
+            {
+                _rawStore.Add(capturePacket.No, raw);
+                _packetStore.Add(capturePacket.No, capturePacket);
+            }
+            
             //_binaryFormatter.Serialize(fileStream, raw);
             //OnNewCapturePacket(capturePacket);
             return capturePacket;

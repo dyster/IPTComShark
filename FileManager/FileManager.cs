@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using BustPCap;
 using System.Threading.Tasks;
+using IPTComShark.BackStore;
 
 namespace IPTComShark.FileManager
 {
@@ -24,19 +25,7 @@ namespace IPTComShark.FileManager
 
         public FileManager()
         {
-            pcapngReader.ChunkReader += chunk =>
-            {
-                PacketCounter++;
-                UpdateProgress((PacketCounter * 100) / PacketTotal);
-                var pcapngBlock = (PCAPNGBlock) chunk;
-                var raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                    (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
-                if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
-                    OnRawParsed(raw);
-
-
-                return new List<FileReadObject>();
-            };
+            
 
             //pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
 
@@ -51,7 +40,7 @@ namespace IPTComShark.FileManager
             _popup.Controls.Add(_progressbar);
         }
 
-        private void ChunkRead(BustPCap.PCAPBlock pcapBlock)
+        private Raw ChunkRead(BustPCap.PCAPBlock pcapBlock)
         {
             PacketCounter++;
             UpdateProgress((PacketCounter * 100) / PacketTotal);
@@ -59,7 +48,26 @@ namespace IPTComShark.FileManager
             var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                 (LinkLayerType)pcapBlock.Header.network);
             if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
+            {
                 OnRawParsed(raw);
+                return raw;
+            }
+            return null;
+        }
+
+        private Raw ChunkRead(PCAPNGBlock pcapBlock)
+        {
+            PacketCounter++;
+            UpdateProgress((PacketCounter * 100) / PacketTotal);
+
+            var raw = new Raw(pcapBlock.Timestamp, pcapBlock.PayLoad,
+                (LinkLayerType)pcapBlock.Interface.LinkLayerType);
+            if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
+            {
+                OnRawParsed(raw);
+                return raw;
+            }
+            return null;            
         }
 
         private delegate void ProgressDelegate(int i);
@@ -95,7 +103,7 @@ namespace IPTComShark.FileManager
         private int PacketCounter { get; set; }
         private int PacketTotal { get; set; }
 
-        public void EnumerateFiles(List<DataSource> dataSources)
+        public IEnumerable<Raw> EnumerateFiles(List<DataSource> dataSources)
         {
             _popup.Show();
 
@@ -121,13 +129,24 @@ namespace IPTComShark.FileManager
                     {
                         foreach (var pcapBlock in pcapFileReader.Enumerate())
                         {
-                            ChunkRead(pcapBlock);
+                            Raw raw = ChunkRead(pcapBlock);
+                            if(raw != null)
+                                yield return raw;
                         }
                     }
                 }
                 else if (source.SourceType == SourceType.PCAPNG)
                 {
                     pcapngReader.Read(source.FileInfo.FullName);
+                    using (FileStream fileStream = File.OpenRead(source.FileInfo.FullName))
+                    {
+                        foreach (var block in pcapngReader.Enumerate(fileStream))
+                        {
+                            Raw raw = ChunkRead(block);
+                            if (raw != null)
+                                yield return raw;
+                        }
+                    }
                 }
                 else if (source.SourceType == SourceType.Zip)
                 {
@@ -137,7 +156,10 @@ namespace IPTComShark.FileManager
                         {
                             using (var reader = sevenZipArchive.ExtractAllEntries())
                             {
-                                ZipReader(reader, source);
+                                foreach(var raw in ZipReader(reader, source))
+                                {
+                                    yield return raw;
+                                }
                             }
                         }
 
@@ -145,19 +167,20 @@ namespace IPTComShark.FileManager
                     }
                     else
                     {
-                        try
-                        {
+                        
+                        
                             using (var filestream = File.OpenRead(source.FileInfo.FullName))
                             {
                                 using (var reader = ReaderFactory.Open(filestream))
                                 {
-                                    ZipReader(reader, source);
+                                    foreach (var raw in ZipReader(reader, source))
+                                    {
+                                        yield return raw;
+                                    }
                                 }
                             }
-                        }
-                        catch (InvalidOperationException ex)
-                        {
-                        }
+                        
+                        
 
                         GC.Collect();
                     }
@@ -167,7 +190,7 @@ namespace IPTComShark.FileManager
             _popup.Close();
         }
 
-        private void ZipReader(IReader reader, DataSource dataSource)
+        private IEnumerable<Raw> ZipReader(IReader reader, DataSource dataSource)
         {
             //try
             {
@@ -189,13 +212,20 @@ namespace IPTComShark.FileManager
                             var pcapStreamReader = new PCAPStreamReader(memstream);
                             foreach (var pcapBlock in pcapStreamReader.Enumerate())
                             {
-                                ChunkRead(pcapBlock);
+                                Raw raw = ChunkRead(pcapBlock);
+                                if (raw != null)
+                                    yield return raw;
                             }
                         }
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAPNG)
                         {
-                            pcapngReader.ReadStream(memstream);
+                            foreach(var block in pcapngReader.Enumerate(memstream))
+                            {
+                                Raw raw = ChunkRead(block);
+                                if (raw != null)
+                                    yield return raw;
+                            }
                         }
                     }
                 }
@@ -210,7 +240,7 @@ namespace IPTComShark.FileManager
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public List<Raw> OpenFiles(string[] inputs)
+        public IEnumerable<Raw> OpenFiles(string[] inputs)
         {
             List<string> fileNames = new List<string>();
 
@@ -220,17 +250,16 @@ namespace IPTComShark.FileManager
             {
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
+                ProcessingFilters = fo.ProcessingFilters;
+                               
 
-                var raws = new List<Raw>();
+                foreach(var raw in EnumerateFiles(fo.DataSources))
+                {
+                    yield return raw;
+                }
 
-                RawParsed += (sender, raw) => { raws.Add(raw); };
-
-                EnumerateFiles(fo.DataSources);
-
-                return raws;
-            }
-
-            return null;
+                
+            }            
         }
 
         /// <summary>
@@ -245,7 +274,8 @@ namespace IPTComShark.FileManager
             {
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
-                                
+                ProcessingFilters = fo.ProcessingFilters;
+
                 Thread thread = new Thread((object o)=> {
                     EnumerateFiles(fo.DataSources);
                     OpenFilesAsyncFinished.Set();
@@ -258,7 +288,7 @@ namespace IPTComShark.FileManager
         public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
 
         public DateTime FilterTo { get; set; }
-
+        public ProcessingFilter ProcessingFilters { get; private set; }
         public DateTime FilterFrom { get; set; }
 
 

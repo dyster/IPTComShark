@@ -27,10 +27,27 @@ namespace IPTComShark.Export
         public List<CapturePacket> Selection { get; set; }
 
         public bool ExportProfibus { get; set; }
+        public bool ExportSAPIdleAnalysis { get; private set; }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
             BackStore.BackStore activeStore = _backStore;
+            ExportEverything = checkBoxEverything.Checked;
+            ExportProfibus = checkBoxProfibus.Checked;
+            ExportSAPIdleAnalysis = checkBoxSAPIdle.Checked;
+
+            var saveFileDialog = new SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = "xlsx",
+                Title = "Select export filename"
+            };
+            var dialogResult = saveFileDialog.ShowDialog();
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+                
+            }
 
             if (radioButtonSelectAll.Checked)
                 Selection = _getAllPackets;
@@ -41,41 +58,37 @@ namespace IPTComShark.Export
             else if (radioButtonSelectFile.Checked)
             {
                 var openFileDialog = new OpenFileDialog();
+                openFileDialog.Title = "Select source for export";
+                openFileDialog.Multiselect = true;
                 var showDialog = openFileDialog.ShowDialog(this);
                 if (showDialog == DialogResult.OK)
                 {
-                    var openFiles = new FileManager.FileManager().OpenFiles(openFileDialog.FileNames);
-                    var backStore = new BackStore.BackStore();
+                    FileManager.FileManager fileManager = new FileManager.FileManager();
+                    var fileRaws = fileManager.OpenFiles(openFileDialog.FileNames);
+                    var backStore = new BackStore.BackStore(true);
+                    backStore.ProcessingFilters = fileManager.ProcessingFilters;
                     Selection = new List<CapturePacket>();
-                    foreach (var openFile in openFiles)
-                        Selection.Add(backStore.Add(openFile, out var parsedlist));
 
-                    activeStore = backStore;
+                    XLSMaker xLSMaker = new XLSMaker(saveFileDialog.FileName, ExportEverything, ExportProfibus, ExportSAPIdleAnalysis);
+                    foreach (var raw in fileRaws)
+                    {
+                        CapturePacket capturePacket = backStore.Add(raw, out var parse);
+                        xLSMaker.Push(capturePacket, parse);
+
+                    }
+                    xLSMaker.Finalize();
+                                        
                 }
                 else
                 {
                     return;
                 }
-                
+
+                return;
             }
 
-            ExportEverything = checkBoxEverything.Checked;
-            ExportProfibus = checkBoxProfibus.Checked;
-
-            var saveFileDialog = new SaveFileDialog
-            {
-                AddExtension = true,
-                DefaultExt = "xlsx"
-            };
-            var dialogResult = saveFileDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                IPTComShark.Export.Export.MakeXLSX(Selection, saveFileDialog.FileName, activeStore, ExportEverything, ExportProfibus);
-            }
-            else
-            {
-                
-            }
+            IPTComShark.Export.Export.MakeXLSX(Selection, saveFileDialog.FileName, activeStore, ExportEverything, ExportProfibus);
+                        
         }
 
         public bool ExportEverything { get; set; }
