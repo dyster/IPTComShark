@@ -277,7 +277,10 @@ namespace IPTComShark.FileManager
                 ProcessingFilters = fo.ProcessingFilters;
 
                 Thread thread = new Thread((object o)=> {
-                    EnumerateFiles(fo.DataSources);
+                    foreach(var raw in EnumerateFiles(fo.DataSources))
+                    {
+                        OnRawParsed(raw);
+                    }
                     OpenFilesAsyncFinished.Set();
                 });
 

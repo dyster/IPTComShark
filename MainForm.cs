@@ -27,10 +27,7 @@ namespace IPTComShark
         private long _capturedData;
 
         private NpcapDevice _device;
-        private long _discardedData;
-        private long _discardedPackets;
-
-
+        
         //private PCAPWriter _pcapWriter;
 
         public MainForm()
@@ -84,9 +81,7 @@ namespace IPTComShark
             _backStore.Clear();
 
 
-            _capturedData = 0;
-            _discardedData = 0;
-            _discardedPackets = 0;
+            _capturedData = 0;            
         }
 
         private void UpdateStatus(string text)
@@ -356,7 +351,7 @@ namespace IPTComShark
                     fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
 
                     fileManager.OpenFilesAsync(paths);
-
+                    _backStore.ProcessingFilters = fileManager.ProcessingFilters;
                     //fileManager.OpenFilesAsyncFinished.WaitOne();
                 }
 
