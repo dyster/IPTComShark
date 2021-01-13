@@ -87,7 +87,14 @@ namespace IPTComShark.Export
                 return;
             }
 
-            IPTComShark.Export.Export.MakeXLSX(Selection, saveFileDialog.FileName, activeStore, ExportEverything, ExportProfibus);
+            XLSMaker xLSMaker2 = new XLSMaker(saveFileDialog.FileName, ExportEverything, ExportProfibus, ExportSAPIdleAnalysis);
+            foreach(var packet in Selection)
+            {
+                Parsers.Parse? parse = _backStore.GetParse(packet.No);
+                if(parse.HasValue)
+                    xLSMaker2.Push(packet, parse.Value);
+            }
+            xLSMaker2.Finalize();
                         
         }
 

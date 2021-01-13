@@ -671,6 +671,11 @@ namespace IPTComShark.Export
 
             if(ExportProfibus)
             {
+                
+            }
+
+            if(ExportSAPIdleAnalysis)
+            {
                 var plotModel = _idleAnalyser.Finalize();
 
                 SvgExporter.Export(plotModel, File.OpenWrite(Path.ChangeExtension(Outputfile, ".svg")), 10000, 10000, true);
@@ -827,12 +832,6 @@ namespace IPTComShark.Export
             }
         }
 
-
-        public static void MakeXLSX(List<CapturePacket> packets, string outputfile, BackStore.BackStore backStore,
-            bool exportEverything, bool exportProfibus)
-        {
-
-        }
 
 
 
