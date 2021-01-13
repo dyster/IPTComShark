@@ -279,7 +279,7 @@ namespace IPTComShark.FileManager
                 Thread thread = new Thread((object o)=> {
                     foreach(var raw in EnumerateFiles(fo.DataSources))
                     {
-                        OnRawParsed(raw);
+                        // Enu merate good times come on                        
                     }
                     OpenFilesAsyncFinished.Set();
                 });
