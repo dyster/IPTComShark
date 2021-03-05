@@ -63,11 +63,47 @@ namespace IPTComShark.Controls
                 fastObjectListView1.RebuildColumns();
             }
 
+            olvColumnNo.AspectGetter += rowObject =>
+            {
+                var packet = (CapturePacket)rowObject;
+                return packet?.No;
+            };
+
+            olvColumnDate.AspectGetter += rowObject =>
+            {
+                var packet = (CapturePacket)rowObject;
+                return packet?.Date.ToString();
+            };
+
             olvColumnMS.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket) rowObject;
                 //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
                 return packet?.Date.Millisecond;
+            };
+
+            olvColumnFrom.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket?.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
+            };
+
+            olvColumnTo.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket?.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
+            };
+
+            olvColumnProtocol.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket?.Protocol.ToString();
+            };
+
+            olvColumnProtocolInfo.AspectGetter += rowObject =>
+            {
+                var capturePacket = (CapturePacket)rowObject;
+                return capturePacket?.ProtocolInfo;
             };
 
             olvColumnComId.AspectGetter += rowObject =>
@@ -85,8 +121,12 @@ namespace IPTComShark.Controls
             olvColumnIPTWPType.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket) rowObject;
-                return packet?.IPTWPType;
+                if (packet != null && packet.IPTWPType.HasValue)
+                    return packet.IPTWPType.Value.ToString();
+                return null;
             };
+
+            
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
             fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
@@ -205,17 +245,7 @@ namespace IPTComShark.Controls
                 }
             };
 
-            olvColumnFrom.AspectGetter += rowObject =>
-            {
-                var capturePacket = (CapturePacket) rowObject;
-                return capturePacket?.Source != null ? new IPAddress(capturePacket.Source).ToString() : null;
-            };
-
-            olvColumnTo.AspectGetter += rowObject =>
-            {
-                var capturePacket = (CapturePacket) rowObject;
-                return capturePacket?.Destination != null ? new IPAddress(capturePacket.Destination).ToString() : null;
-            };
+            
 
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
