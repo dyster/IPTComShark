@@ -43,7 +43,7 @@ namespace IPTComShark
             packetListView1.BackStore = _backStore;
             packetDisplay1.BackStore = _backStore;
 
-            Text = Text += " " + Application.ProductVersion + " EXPERIMENTAL";// " codename \"Roger\"";
+            Text = Text += " " + Application.ProductVersion + " codename \"Roger\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
