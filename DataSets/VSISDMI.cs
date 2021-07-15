@@ -832,13 +832,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "NID_STM in HS state",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"20", "TPWS"},
-                        {"21", "TPWS Fixed"},
-                        {"50", "CBTC"},
-                        {"255", "none"}
-                    }
+                    LookupTable = STM_LookupTable                
                 },
                 new BitField
                 {
@@ -846,13 +840,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "NID_STM in DA state",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"20", "TPWS"},
-                        {"21", "TPWS Fixed"},
-                        {"50", "CBTC"},
-                        {"255", "none"}
-                    }
+                    LookupTable = STM_LookupTable
                 },
                 new BitField
                 {
@@ -2831,7 +2819,7 @@ namespace IPTComShark.DataSets
 
         #endregion
 
-        #region EVC-100 to EVC-152 (DMI->EVC)
+        #region EVC-100 to EVC-153 (DMI->EVC)
 
         // checked RVV 01-07-2020 2.14
         public static DataSetDefinition EVC_100 => new DataSetDefinition
@@ -5071,13 +5059,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Identity of the NTC",
-            LookupTable = new Dictionary<string, string>
-            {
-                {"20", "TPWS"},
-                {"21", "TPWS Fixed"},
-                {"50", "CBTC"},
-                {"255", "exit"}
-            }
+            LookupTable = STM_LookupTable
         };
 
         public static BitField MMI_NID_NTC2 => new BitField
@@ -5088,13 +5070,7 @@ namespace IPTComShark.DataSets
             Comment =
                 "STM identity used to point to the corresponding palette of Specific STM Data variables. " +
                 "This NID_STM may be different from the one in the message header as the STM is allowed to re-use Specific STM data from another STM.",
-            LookupTable = new Dictionary<string, string>
-            {
-                {"20", "TPWS"},
-                {"21", "TPWS Fixed"},
-                {"50", "CBTC"},
-                {"255", "exit"}
-            }
+            LookupTable = STM_LookupTable
         };
 
         public static BitField MMI_NID_RADIO => new BitField
@@ -5578,6 +5554,8 @@ namespace IPTComShark.DataSets
             }
         };
 
+
+
         #endregion
 
         #region Common OBU Variables
@@ -5710,6 +5688,15 @@ namespace IPTComShark.DataSets
                     Comment = "Reserved. Set to zero."
                 }
             }
+        };
+
+        // checked 01-03-2021
+        public static Dictionary<string, string> STM_LookupTable => new Dictionary<string, string>
+        {
+            {"20", "TPWS"},
+            {"21", "TPWS Fixed"},
+            {"50", "CBTC"},
+            {"255", "exit"},
         };
     }
 }
