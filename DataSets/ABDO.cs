@@ -537,12 +537,85 @@ namespace IPTComShark.DataSets
             {
                 "230560010",
                 "230560011"
+            },
+            BitFields = new List<BitField>()
+            {
+                new BitField()
+                {
+                    Name = "ATO1_reference_speed",
+                    Comment = "cm/s",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "ATO1_indication_type",                    
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Available"},
+                        {"1", "Active"},
+                        {"2", "Enabled"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "ATO1_indication_attribute",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Invisible"},
+                        {"1", "Steady"},
+                        {"2", "Flashing"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "ATO1_train_stop_indication",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Invisible"},
+                        {"1", "Steady"},
+                    }
+                },
+                new BitField
+                {
+                    Name = "ATO1_Text_Criteria",
+                    Comment = "DMI criteria for handling the text. Note: see MMI_Q_TEXT_CRITERIA in EVC8",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,                    
+                },
+                new BitField
+                {
+                    Name = "ATO1_I_Text",
+                    Comment = "Text Identifier",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                },
+                new BitField
+                {
+                    Name = "ATO1_L_Text",
+                    Comment = "Text Length",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                },
+                new BitField
+                {
+                    Name = "ATO1_X_Text",
+                    Comment = "Text string",
+                    BitFieldType = BitFieldType.StringAscii,
+                    VariableLengthSettings = new VariableLengthSettings(){ Name = "ATO1_L_Text" }                    
+                },
             }
         };
 
         public static DataSetDefinition DIA_166 => new DataSetDefinition
         {
-            Name = "Obu27",
+            Name = "DIA_166",
             Comment = "",
             Identifiers = new List<string>
             {

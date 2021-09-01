@@ -8,7 +8,6 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using BustPCap;
-using System.Threading.Tasks;
 using IPTComShark.BackStore;
 
 namespace IPTComShark.FileManager

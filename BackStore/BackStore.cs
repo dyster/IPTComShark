@@ -8,7 +8,6 @@ using System.Threading;
 using IPTComShark.Parsers;
 using PacketDotNet;
 using PacketDotNet.Utils;
-using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.BackStore
 {
