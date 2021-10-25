@@ -103,7 +103,7 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                    else if (parse.HasValue)
+                    else if (parse.HasValue && !parse.Value.NoParserInstalled)
                     {
                         foreach (var parsedDataSet in parse.Value.ParsedData)
                         {
@@ -113,6 +113,10 @@ namespace IPTComShark.Controls
                                 dataLines.Add(new DataLine(field, ticker++));
                             }
                         }
+                    }
+                    else
+                    {
+                        // where does that leave us?
                     }
                 }
                 else if (parse.HasValue)
