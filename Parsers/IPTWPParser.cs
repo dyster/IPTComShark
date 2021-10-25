@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using IPTComShark.Classes;
 using IPTComShark.XmlFiles;
@@ -12,12 +13,19 @@ namespace IPTComShark.Parsers
         private DataStore _dataStore;
         private IPTConfigReader IptConfigReader;
 
-        public IPTWPParser()
+        public IPTWPParser(string folder)
         {
-            IptConfigReader = new IPTConfigReader(Iptfile);
-
             _dataStore = new DataStore();
-            _dataStore.Add(IptConfigReader.GetDataSetCollection());
+
+            var files = Directory.GetFiles(folder);
+
+            foreach(var file in files)
+            {
+                IptConfigReader = new IPTConfigReader(file);
+                _dataStore.Add(IptConfigReader.GetDataSetCollection());
+            }
+                        
+            
             _dataStore.RebuildIndex();
         }
 

@@ -39,6 +39,11 @@ namespace IPTComShark
             InitializeComponent();
 
             _parserFactory = new ParserFactory();
+            _parserFactory.AddParser(new NTPParser());
+            _parserFactory.AddParser(new SPLParser());
+            _parserFactory.AddParser(new JRUParser());
+            
+            _parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
 
             _backStore = new BackStore.BackStore(_parserFactory);
 

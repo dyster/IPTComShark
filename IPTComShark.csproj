@@ -53,7 +53,7 @@
   </Compile>
 </ItemGroup>
 <ItemGroup>
-  <None Update="ECN1_ipt_config.xml">
+  <None Update="IPTXMLFiles\ECN1_ipt_config.xml">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
 </ItemGroup>
