@@ -1,3 +1,4 @@
+using IPTComShark.Parsers;
 using sonesson_tools;
 using Svg;
 using Svg.DataTypes;
@@ -14,7 +15,7 @@ namespace IPTComShark.SeqDiagram
 {
     public class SeqDiagramExporter
     {
-        public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore.BackStore backStore)
+        public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             const int baselinestep = 250; // distance between vertical lines
             const int horizontalBase = 130; // upper range for the vertical lines
@@ -31,7 +32,7 @@ namespace IPTComShark.SeqDiagram
             int arrowgen = horizontalBase + firstarrowdistance; // iterator for making sequence arrows
 
             // iterate through the data and gather what we need into a little struct for convenience
-            List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen, backStore);
+            List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen, backStore, parserFactory);
 
             // after all vertical lines have been placed, make one for the description boxes
             int descriptionBaseline = baselinegen + 50;
@@ -427,7 +428,7 @@ namespace IPTComShark.SeqDiagram
         }*/
 
         private static List<Sequence> GetSequences(List<CapturePacket> packets, int baselinestep,
-            out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore.BackStore backStore)
+            out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             var list = new List<Sequence>();
             devices = new Dictionary<IPAddress, int>();
@@ -441,7 +442,8 @@ namespace IPTComShark.SeqDiagram
                 if (!devices.ContainsKey(new IPAddress(packet.Destination)))
                     devices.Add(new IPAddress(packet.Destination), baselinegen += baselinestep);
 
-                var parse = backStore.GetParse(packet.No);
+                var payload = backStore.GetPayload(packet.No);
+                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload);
 
                 if (!parse.HasValue)
                     continue;
@@ -455,7 +457,8 @@ namespace IPTComShark.SeqDiagram
 
                 if (packet.Previous != null)
                 {
-                    var parseOld = backStore.GetParse(packet.Previous.No);
+                    var payloadOld = backStore.GetPayload(packet.Previous.No);
+                    Parse? parseOld = parserFactory.DoPacket(packet.Previous.Protocol, payloadOld);
 
                     if (parseOld.HasValue)
                     {

@@ -14,9 +14,7 @@ namespace IPTComShark
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
-
-        private static readonly ParserFactory _parseFactory = new ParserFactory();
-
+        
         private string _customName = null;
 
 
@@ -37,64 +35,67 @@ namespace IPTComShark
         //{
         //}
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket)
+        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, ParserFactory parserFactory)
         {
-            return ExtractParsedData(packet, topPacket, false);
+            return ExtractParsedData(packet, topPacket, false, parserFactory);
         }
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive)
+        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive, ParserFactory parserFactory)
         {
             if (!string.IsNullOrEmpty(packet.Error))
                 return null;
 
-            if (topPacket.PayloadPacket is IPv4Packet)
+            if (topPacket.PayloadPacket is not IPv4Packet)
             {
-                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
+                return null;
+            }
+            var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 
-                if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+            byte[] payloadData = null;
+
+            if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+            {
+                var udp = (UdpPacket)ipv4.PayloadPacket;
+                if (udp == null)
+                    return null;
+                // protect against corrupted data with a try read
+                try
                 {
-                    var udp = (UdpPacket) ipv4.PayloadPacket;
-                    if (udp == null)
-                        return null;
-                    // protect against corrupted data with a try read
-                    try
-                    {
-                        var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
-
-                    var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
-                    if (!parse.NoParserInstalled)
-                    {
-                        packet.HasData = true;
-                        return parse;
-                    }
+                    var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
                 }
-                else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+                catch (Exception e)
                 {
-                    var tcp = (TcpPacket) ipv4.PayloadPacket;
-                    if (tcp == null)
-                        return null;
-                    // protect against corrupted data with a try read
-                    try
-                    {
-                        var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
-
-                    var parse = _parseFactory.DoPacket(packet.Protocol, tcp.PayloadData);
-                    if (!parse.NoParserInstalled)
-                    {
-                        packet.HasData = true;
-                        return parse;
-                    }
+                    return null;
                 }
+
+                payloadData = udp.PayloadData;
+                
+            }
+            else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+            {
+                var tcp = (TcpPacket)ipv4.PayloadPacket;
+                if (tcp == null)
+                    return null;
+                // protect against corrupted data with a try read
+                try
+                {
+                    var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+
+                payloadData = tcp.PayloadData;                
+            }
+
+            // TODO check payload data for null here? currently sent to parser to fail there
+
+            var parse = parserFactory.DoPacket(packet.Protocol, payloadData);
+            if (!parse.NoParserInstalled)
+            {
+                packet.HasData = true;
+                return parse;
             }
 
             return null;

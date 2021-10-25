@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Export;
+using IPTComShark.Parsers;
 
 namespace IPTComShark.Controls
 {
@@ -257,6 +258,7 @@ namespace IPTComShark.Controls
         }
 
         public BackStore.BackStore BackStore { get; set; }
+        public ParserFactory ParserFactory { get; set; }
 
         private static List<ICluster> StringsToClusters(IEnumerable<string> strings)
         {
@@ -487,7 +489,8 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var parse = BackStore.GetParse(o.No);
+                var payload = BackStore.GetPayload(o.No);
+                Parse? parse = ParserFactory.DoPacket(o.Protocol, payload);
                 if (parse.HasValue)
                 {
                     var list = new List<DisplayField>();
@@ -527,7 +530,7 @@ namespace IPTComShark.Controls
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
-                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName, BackStore);
+                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName, BackStore, ParserFactory);
                 }
             }
         }
@@ -592,7 +595,7 @@ namespace IPTComShark.Controls
             DialogResult dialogResult = saveFileDialog.ShowDialog(this);
             if (dialogResult == DialogResult.OK)
             {
-                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore);
+                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore, ParserFactory);
                 exporterer.ShowDialog(this);
             }
 

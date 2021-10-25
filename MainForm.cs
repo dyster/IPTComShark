@@ -16,13 +16,14 @@ using IPTComShark.DataSets;
 using IPTComShark.Export;
 using SharpPcap.Npcap;
 using sonesson_tools.FileReaders;
+using IPTComShark.Parsers;
 
 namespace IPTComShark
 {
     public partial class MainForm : Form
     {
         private BackStore.BackStore _backStore;
-
+        private ParserFactory _parserFactory;
 
         private long _capturedData;
 
@@ -37,11 +38,14 @@ namespace IPTComShark
 
             InitializeComponent();
 
+            _parserFactory = new ParserFactory();
 
-            _backStore = new BackStore.BackStore();
+            _backStore = new BackStore.BackStore(_parserFactory);
 
             packetListView1.BackStore = _backStore;
+            packetListView1.ParserFactory = _parserFactory;
             packetDisplay1.BackStore = _backStore;
+            packetDisplay1.ParserFactory = _parserFactory;
 
             Text = Text += " " + Application.ProductVersion + " EXPERIMENTAL";// " codename \"Roger\"";
 
@@ -394,7 +398,7 @@ namespace IPTComShark
             if (dialogResult == DialogResult.OK)
             {
                 SeqDiagram.SeqDiagramExporter.MakeSVG(packetListView1.GetFilteredPackets(), saveFileDialog.FileName,
-                    _backStore);
+                    _backStore, _parserFactory);
             }
         }
 
@@ -402,7 +406,7 @@ namespace IPTComShark
         {
             
             
-                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore);
+                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
                 var showDialog = exporterer.ShowDialog(this);
             
         }

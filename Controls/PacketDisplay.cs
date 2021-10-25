@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using IPTComShark.Windows;
+using IPTComShark.Parsers;
 
 namespace IPTComShark.Controls
 {
@@ -28,6 +29,7 @@ namespace IPTComShark.Controls
         }
 
         public BackStore.BackStore BackStore { get; set; }
+        public ParserFactory ParserFactory { get; set; }
 
         public void SetObject(CapturePacket originalpacket)
         {
@@ -56,7 +58,9 @@ namespace IPTComShark.Controls
 
             try
             {
-                var extensiveData = CapturePacket.ExtractParsedData(originalpacket, topPacket, true);
+                var payload = BackStore.GetPayload(originalpacket.No);
+                
+                Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload);
 
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP && topPacket.PayloadPacket.PayloadPacket != null)
@@ -71,17 +75,18 @@ namespace IPTComShark.Controls
                     textBoxSize.Text = iptPacket.IPTWPSize.ToString();
                     textBoxType.Text = iptPacket.IPTWPType.ToString();
 
-                    if (extensiveData.HasValue && extensiveData.Value.ParsedData.Count == 1 &&
+                    if (parse.HasValue && parse.Value.ParsedData.Count == 1 &&
                         originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection
-                        var oldparse = BackStore.GetParse(originalpacket.Previous.No);
+                        var oldpayload = BackStore.GetPayload(originalpacket.Previous.No);                        
+                        Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload);
 
                         dataLines.Add(new DataLine(ticker++)
-                            {IsCategory = true, Name = extensiveData.Value.ParsedData[0].Name});
-                        for (var index = 0; index < extensiveData.Value.ParsedData[0].ParsedFields.Count; index++)
+                            {IsCategory = true, Name = parse.Value.ParsedData[0].Name});
+                        for (var index = 0; index < parse.Value.ParsedData[0].ParsedFields.Count; index++)
                         {
-                            var field = extensiveData.Value.ParsedData[0].ParsedFields[index];
+                            var field = parse.Value.ParsedData[0].ParsedFields[index];
                             bool changed = false;
 
 
@@ -98,9 +103,9 @@ namespace IPTComShark.Controls
                             });
                         }
                     }
-                    else if (extensiveData.HasValue)
+                    else if (parse.HasValue)
                     {
-                        foreach (var parsedDataSet in extensiveData.Value.ParsedData)
+                        foreach (var parsedDataSet in parse.Value.ParsedData)
                         {
                             dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                             foreach (var field in parsedDataSet.ParsedFields)
@@ -110,9 +115,9 @@ namespace IPTComShark.Controls
                         }
                     }
                 }
-                else if (extensiveData.HasValue)
+                else if (parse.HasValue)
                 {
-                    foreach (var parsedDataSet in extensiveData.Value.ParsedData)
+                    foreach (var parsedDataSet in parse.Value.ParsedData)
                     {
                         dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
                         foreach (var field in parsedDataSet.ParsedFields)
