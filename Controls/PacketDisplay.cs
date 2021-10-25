@@ -119,7 +119,7 @@ namespace IPTComShark.Controls
                         // where does that leave us?
                     }
                 }
-                else if (parse.HasValue)
+                else if (parse.HasValue && !parse.Value.NoParserInstalled)
                 {
                     foreach (var parsedDataSet in parse.Value.ParsedData)
                     {
