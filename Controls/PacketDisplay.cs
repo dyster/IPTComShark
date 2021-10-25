@@ -75,7 +75,7 @@ namespace IPTComShark.Controls
                     textBoxSize.Text = iptPacket.IPTWPSize.ToString();
                     textBoxType.Text = iptPacket.IPTWPType.ToString();
 
-                    if (parse.HasValue && parse.Value.ParsedData.Count == 1 &&
+                    if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
                         originalpacket.Previous != null)
                     {
                         // if only one set we can do change detection
