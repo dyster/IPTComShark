@@ -92,49 +92,62 @@ namespace IPTComShark.BackStore
             if (!string.IsNullOrEmpty(packet.Error))
                 return null;
 
-            if (topPacket.PayloadPacket is not IPv4Packet)
-            {
-                return null;
-            }
-            var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
+            var actionpacket = topPacket.PayloadPacket;
 
+            if(actionpacket is Ieee8021QPacket vlanpacket)
+            {
+                if (vlanpacket.PayloadPacket == null)
+                    return null;
+
+                actionpacket = vlanpacket.PayloadPacket;
+            }
+             
             byte[] payloadData = null;
 
-            if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+            if(actionpacket is IPv4Packet ipv4)
             {
-                var udp = (UdpPacket)ipv4.PayloadPacket;
-                if (udp == null)
-                    return null;
-                // protect against corrupted data with a try read
-                try
+                if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
                 {
-                    var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                    var udp = (UdpPacket)ipv4.PayloadPacket;
+                    if (udp == null)
+                        return null;
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    payloadData = udp.PayloadData;
+
                 }
-                catch (Exception e)
+                else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
                 {
-                    return null;
+                    var tcp = (TcpPacket)ipv4.PayloadPacket;
+                    if (tcp == null)
+                        return null;
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    payloadData = tcp.PayloadData;
                 }
-
-                payloadData = udp.PayloadData;
-
             }
-            else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+            else if(actionpacket is ArpPacket arp)
             {
-                var tcp = (TcpPacket)ipv4.PayloadPacket;
-                if (tcp == null)
-                    return null;
-                // protect against corrupted data with a try read
-                try
-                {
-                    var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
-
-                payloadData = tcp.PayloadData;
+                return arp.Bytes;
             }
+            
+            
 
             return payloadData;
         }

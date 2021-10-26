@@ -6,7 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>IPTComShark</RootNamespace>
     <AssemblyName>IPTComShark</AssemblyName>
-    <Version>1.9.2.0</Version>
+    <Version>1.9.3.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

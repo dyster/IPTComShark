@@ -42,6 +42,7 @@ namespace IPTComShark
             _parserFactory.AddParser(new NTPParser());
             _parserFactory.AddParser(new SPLParser());
             _parserFactory.AddParser(new JRUParser());
+            _parserFactory.AddParser(new ARPParser());
             
             _parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
 
@@ -52,7 +53,7 @@ namespace IPTComShark
             packetDisplay1.BackStore = _backStore;
             packetDisplay1.ParserFactory = _parserFactory;
 
-            Text = Text += " " + Application.ProductVersion + " EXPERIMENTAL";// " codename \"Roger\"";
+            Text = Text += " " + Application.ProductVersion + " The ROGINATOR";// " codename \"Roger\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
