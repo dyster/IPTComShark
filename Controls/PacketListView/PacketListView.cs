@@ -252,9 +252,9 @@ namespace IPTComShark.Controls
 
             UpdateFilter();
 
-            timerFlicker.Enabled = true;
+            
 
-            fastObjectListView1.OverlayText = new TextOverlay(){Text = "PENIS"};
+            fastObjectListView1.OverlayText = new TextOverlay(){Text = "If you can read this, the universe has come apart"};
         }
 
         public BackStore.BackStore BackStore { get; set; }
@@ -470,6 +470,8 @@ namespace IPTComShark.Controls
                 if (args.PropertyName != "AutoScroll")
                     UpdateFilter();
             };
+
+            timerFlicker.Enabled = true;
         }
 
         private void copyRawByteshexStringToolStripMenuItem_Click(object sender, EventArgs e)

@@ -110,7 +110,7 @@ namespace IPTComShark
             // 
             // timerFlicker
             // 
-            this.timerFlicker.Enabled = true;
+            this.timerFlicker.Enabled = false;
             this.timerFlicker.Interval = 500;
             this.timerFlicker.Tick += new System.EventHandler(this.timerFlicker_Tick);
             // 

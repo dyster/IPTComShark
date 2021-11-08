@@ -391,6 +391,8 @@ namespace IPTComShark
         private void MainForm_Load(object sender, EventArgs e)
         {
             //GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
+
+            timerFlicker.Enabled = true;
         }
 
         private void exportSVGSequenceDiagramToolStripMenuItem_Click(object sender, EventArgs e)
