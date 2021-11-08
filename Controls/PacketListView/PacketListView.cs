@@ -98,7 +98,7 @@ namespace IPTComShark.Controls
             olvColumnProtocol.AspectGetter += rowObject =>
             {
                 var capturePacket = (CapturePacket)rowObject;
-                return capturePacket?.Protocol.ToString();
+                return capturePacket?.Protocol;
             };
 
             olvColumnProtocolInfo.AspectGetter += rowObject =>
@@ -123,7 +123,7 @@ namespace IPTComShark.Controls
             {
                 var packet = (CapturePacket) rowObject;
                 if (packet != null && packet.IPTWPType.HasValue)
-                    return packet.IPTWPType.Value.ToString();
+                    return packet.IPTWPType.Value;
                 return null;
             };
 
