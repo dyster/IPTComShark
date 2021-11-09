@@ -14,9 +14,7 @@ namespace IPTComShark
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
-
-        private static readonly ParserFactory _parseFactory = new ParserFactory();
-
+        
         private string _customName = null;
 
 
@@ -37,64 +35,67 @@ namespace IPTComShark
         //{
         //}
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket)
+        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, ParserFactory parserFactory)
         {
-            return ExtractParsedData(packet, topPacket, false);
+            return ExtractParsedData(packet, topPacket, false, parserFactory);
         }
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive)
+        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive, ParserFactory parserFactory)
         {
             if (!string.IsNullOrEmpty(packet.Error))
                 return null;
 
-            if (topPacket.PayloadPacket is IPv4Packet)
+            if (topPacket.PayloadPacket is not IPv4Packet)
             {
-                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
+                return null;
+            }
+            var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 
-                if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+            byte[] payloadData = null;
+
+            if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+            {
+                var udp = (UdpPacket)ipv4.PayloadPacket;
+                if (udp == null)
+                    return null;
+                // protect against corrupted data with a try read
+                try
                 {
-                    var udp = (UdpPacket) ipv4.PayloadPacket;
-                    if (udp == null)
-                        return null;
-                    // protect against corrupted data with a try read
-                    try
-                    {
-                        var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
-
-                    var parse = _parseFactory.DoPacket(packet.Protocol, udp.PayloadData);
-                    if (!parse.NoParserInstalled)
-                    {
-                        packet.HasData = true;
-                        return parse;
-                    }
+                    var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
                 }
-                else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+                catch (Exception e)
                 {
-                    var tcp = (TcpPacket) ipv4.PayloadPacket;
-                    if (tcp == null)
-                        return null;
-                    // protect against corrupted data with a try read
-                    try
-                    {
-                        var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
-
-                    var parse = _parseFactory.DoPacket(packet.Protocol, tcp.PayloadData);
-                    if (!parse.NoParserInstalled)
-                    {
-                        packet.HasData = true;
-                        return parse;
-                    }
+                    return null;
                 }
+
+                payloadData = udp.PayloadData;
+                
+            }
+            else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+            {
+                var tcp = (TcpPacket)ipv4.PayloadPacket;
+                if (tcp == null)
+                    return null;
+                // protect against corrupted data with a try read
+                try
+                {
+                    var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+
+                payloadData = tcp.PayloadData;                
+            }
+
+            // TODO check payload data for null here? currently sent to parser to fail there
+
+            var parse = parserFactory.DoPacket(packet.Protocol, payloadData);
+            if (!parse.NoParserInstalled)
+            {
+                packet.HasData = true;
+                return parse;
             }
 
             return null;
@@ -105,17 +106,17 @@ namespace IPTComShark
             // TODO obsolete this constructor
         }
 
-        public CapturePacket(Raw raw, Packet topPacket)
+        public CapturePacket(Raw raw, Packet originalPacket)
         {
             Date = raw.TimeStamp;
 
-            if (topPacket == null)
+            if (originalPacket == null)
                 return;
 
             // protect against corrupted data with a try read
             try
             {
-                var throwaway = topPacket.Bytes.Length + topPacket.HeaderData.Length;
+                var throwaway = originalPacket.Bytes.Length + originalPacket.HeaderData.Length;
             }
             catch (Exception e)
             {
@@ -124,9 +125,25 @@ namespace IPTComShark
                 return;
             }
 
-            if (topPacket.PayloadPacket is IPv4Packet)
+            Packet actionPacket = originalPacket.PayloadPacket;
+
+            // if this is a vlan packet, just use the underlying packet instead
+            // TODO figure out how to detect other VLAN packets
+            if (originalPacket.PayloadPacket is Ieee8021QPacket vlanpacket)
             {
-                var ipv4 = (IPv4Packet) topPacket.PayloadPacket;
+                if (vlanpacket.HasPayloadPacket)
+                {
+                    actionPacket = vlanpacket.PayloadPacket;
+                }
+            }
+
+            if(actionPacket == null)
+            {
+                this.Protocol = ProtocolType.UNKNOWN;
+                this.ProtocolInfo = "No payload";
+            }
+            else if (actionPacket is IPv4Packet ipv4)
+            {               
 
                 if (ipv4.SourceAddress != null) Source = ipv4.SourceAddress.GetAddressBytes();
                 if (ipv4.DestinationAddress != null) Destination = ipv4.DestinationAddress.GetAddressBytes();
@@ -364,37 +381,40 @@ namespace IPTComShark
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            else if (topPacket.PayloadPacket is ArpPacket arpPacket)
-            {
+            else if (actionPacket is ArpPacket arpPacket)
+            {                
                 Protocol = ProtocolType.ARP;
                 ProtocolInfo = arpPacket.Operation.ToString();
             }
-            else if (topPacket.PayloadPacket is IPv6Packet)
+            else if (actionPacket is IPv6Packet)
             {
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
-            }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && topPacket.HeaderData[12] == 0x88 &&
-                     topPacket.HeaderData[13] == 0xe1)
-            {
-                Protocol = ProtocolType.HomeplugAV;
-                // ignore
-            }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && topPacket.HeaderData[12] == 0x89 &&
-                     topPacket.HeaderData[13] == 0x12)
-            {
-                Protocol = ProtocolType.Mediaxtream;
-                // ignore
-            }
-            else if (raw.LinkLayer == LinkLayerType.Ethernet && topPacket.HeaderData[12] == 0x88 &&
-                     topPacket.HeaderData[13] == 0xcc)
-            {
-                Protocol = ProtocolType.LLDP;
-                // ignore
-            }
+            } 
+            // reading headers might fail so removing
+            //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x88 &&
+            //         actionPacket.HeaderData[13] == 0xe1)
+            //{
+            //    Protocol = ProtocolType.HomeplugAV;
+            //    // ignore
+            //}
+            //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x89 &&
+            //         actionPacket.HeaderData[13] == 0x12)
+            //{
+            //    Protocol = ProtocolType.Mediaxtream;
+            //    // ignore
+            //}
+            //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x88 &&
+            //         actionPacket.HeaderData[13] == 0xcc)
+            //{
+            //    Protocol = ProtocolType.LLDP;
+            //    // ignore
+            //}
             else
             {
                 Protocol = ProtocolType.UNKNOWN;
+                ProtocolInfo = "Type: " + actionPacket.GetType().ToString();                
+                
 #if DEBUG
                 // if we are in debug, we might want to know what is in the unknown
                 //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));

@@ -2,11 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFrameworks>net5.0-windows</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>IPTComShark</RootNamespace>
     <AssemblyName>IPTComShark</AssemblyName>
-    <Version>1.9.1.0</Version>
+    <Version>1.9.3.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BustPCap\src\BustPCap.csproj" />
@@ -49,7 +53,7 @@
   </Compile>
 </ItemGroup>
 <ItemGroup>
-  <None Update="ECN1_ipt_config.xml">
+  <None Update="IPTXMLFiles\ECN1_ipt_config.xml">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
 </ItemGroup>

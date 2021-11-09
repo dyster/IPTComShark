@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Export;
+using IPTComShark.Parsers;
 
 namespace IPTComShark.Controls
 {
@@ -97,7 +98,7 @@ namespace IPTComShark.Controls
             olvColumnProtocol.AspectGetter += rowObject =>
             {
                 var capturePacket = (CapturePacket)rowObject;
-                return capturePacket?.Protocol.ToString();
+                return capturePacket?.Protocol;
             };
 
             olvColumnProtocolInfo.AspectGetter += rowObject =>
@@ -122,7 +123,7 @@ namespace IPTComShark.Controls
             {
                 var packet = (CapturePacket) rowObject;
                 if (packet != null && packet.IPTWPType.HasValue)
-                    return packet.IPTWPType.Value.ToString();
+                    return packet.IPTWPType.Value;
                 return null;
             };
 
@@ -251,12 +252,13 @@ namespace IPTComShark.Controls
 
             UpdateFilter();
 
-            timerFlicker.Enabled = true;
+            
 
-            fastObjectListView1.OverlayText = new TextOverlay(){Text = "PENIS"};
+            fastObjectListView1.OverlayText = new TextOverlay(){Text = "If you can read this, the universe has come apart"};
         }
 
         public BackStore.BackStore BackStore { get; set; }
+        public ParserFactory ParserFactory { get; set; }
 
         private static List<ICluster> StringsToClusters(IEnumerable<string> strings)
         {
@@ -468,6 +470,8 @@ namespace IPTComShark.Controls
                 if (args.PropertyName != "AutoScroll")
                     UpdateFilter();
             };
+
+            timerFlicker.Enabled = true;
         }
 
         private void copyRawByteshexStringToolStripMenuItem_Click(object sender, EventArgs e)
@@ -487,7 +491,8 @@ namespace IPTComShark.Controls
             CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                var parse = BackStore.GetParse(o.No);
+                var payload = BackStore.GetPayload(o.No);
+                Parse? parse = ParserFactory.DoPacket(o.Protocol, payload);
                 if (parse.HasValue)
                 {
                     var list = new List<DisplayField>();
@@ -527,7 +532,7 @@ namespace IPTComShark.Controls
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
-                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName, BackStore);
+                    Export.Export.AnalyseChain(linked, saveFileDialog.FileName, BackStore, ParserFactory);
                 }
             }
         }
@@ -592,7 +597,7 @@ namespace IPTComShark.Controls
             DialogResult dialogResult = saveFileDialog.ShowDialog(this);
             if (dialogResult == DialogResult.OK)
             {
-                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore);
+                var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore, ParserFactory);
                 exporterer.ShowDialog(this);
             }
 

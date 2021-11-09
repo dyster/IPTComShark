@@ -713,7 +713,7 @@ namespace IPTComShark.Export
     }
     internal static class Export
     {
-        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile, BackStore.BackStore backStore)
+        public static void AnalyseChain(LinkedList<CapturePacket> packets, string outputfile, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -740,7 +740,8 @@ namespace IPTComShark.Export
 
                 int topcol = 4;
                 // TODO fix so it uses the whole list
-                var extractParse = backStore.GetParse(packets.First.Value.No);
+                var payload = backStore.GetPayload(packets.First.Value.No);
+                Parse? extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload);
 
                 if (extractParse.HasValue)
                 {
@@ -878,7 +879,7 @@ namespace IPTComShark.Export
             return list;
         }
 
-        public static string MakeRTF(List<CapturePacket> packets, BackStore.BackStore backStore)
+        public static string MakeRTF(List<CapturePacket> packets, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             var sb = new StringBuilder(
                 @"{\rtf1\ansi\ansicpg1252\deff0\deflang2057{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
@@ -893,7 +894,8 @@ namespace IPTComShark.Export
                 sb.Append(packet.Name);
                 sb.Append(@" ");
 
-                var parse = backStore.GetParse(packet.No);
+                var payload = backStore.GetPayload(packet.No);
+                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload);
                 if (parse.HasValue)
                 {
                     var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
@@ -926,7 +928,7 @@ namespace IPTComShark.Export
         }
 
 
-        public static string MakeCSV(List<CapturePacket> packets, BackStore.BackStore backStore)
+        public static string MakeCSV(List<CapturePacket> packets, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             var csvExport = new CsvExport();
 
@@ -939,7 +941,8 @@ namespace IPTComShark.Export
 
 
                 csvExport["Name"] = packet.Name;
-                var parse = backStore.GetParse(packet.No);
+                var payload = backStore.GetPayload(packet.No);
+                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload);
                 if (parse.HasValue)
                 {
                     var displayFields = parse.Value.ParsedData.SelectMany(dataset =>

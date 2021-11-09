@@ -37,7 +37,9 @@ namespace IPTComShark.Classes
                     {
                         var i = uint.Parse(identifier);
                         if (_comidIndex.ContainsKey(i))
-                            Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
+                        { 
+                            //Logger.Log("Conflicting identifier " + identifier, Severity.Warning); 
+                        }
                         else
                             _comidIndex.Add(i, dataSetDefinition);
                     }

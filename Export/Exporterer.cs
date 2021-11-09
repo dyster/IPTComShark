@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IPTComShark.Parsers;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -10,13 +11,15 @@ namespace IPTComShark.Export
         private readonly List<CapturePacket> _getFilteredPackets;
         private readonly List<CapturePacket> _getSelectedPackets;
         private readonly BackStore.BackStore _backStore;
+        private readonly ParserFactory _parserFactory;
 
-        public Exporterer(List<CapturePacket> getAllPackets, List<CapturePacket> getFilteredPackets, List<CapturePacket> getSelectedPackets, BackStore.BackStore backStore)
+        public Exporterer(List<CapturePacket> getAllPackets, List<CapturePacket> getFilteredPackets, List<CapturePacket> getSelectedPackets, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             _getAllPackets = getAllPackets;
             _getFilteredPackets = getFilteredPackets;
             _getSelectedPackets = getSelectedPackets;
             _backStore = backStore;
+            _parserFactory = parserFactory;
             InitializeComponent();
             
             radioButtonSelectAll.Text = $"All packets ({getAllPackets.Count:n0})";
@@ -65,7 +68,7 @@ namespace IPTComShark.Export
                 {
                     FileManager.FileManager fileManager = new FileManager.FileManager();
                     var fileRaws = fileManager.OpenFiles(openFileDialog.FileNames);
-                    var backStore = new BackStore.BackStore(true);
+                    var backStore = new BackStore.BackStore(_parserFactory, true);
                     backStore.ProcessingFilters = fileManager.ProcessingFilters;
                     Selection = new List<CapturePacket>();
 
@@ -90,7 +93,8 @@ namespace IPTComShark.Export
             XLSMaker xLSMaker2 = new XLSMaker(saveFileDialog.FileName, ExportEverything, ExportProfibus, ExportSAPIdleAnalysis);
             foreach(var packet in Selection)
             {
-                Parsers.Parse? parse = _backStore.GetParse(packet.No);
+                var payload = _backStore.GetPayload(packet.No);
+                Parsers.Parse? parse = _parserFactory.DoPacket(packet.Protocol, payload);
                 if(parse.HasValue)
                     xLSMaker2.Push(packet, parse.Value);
             }

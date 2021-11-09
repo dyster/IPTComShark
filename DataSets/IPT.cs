@@ -10,6 +10,7 @@ namespace IPTComShark.DataSets
             this.Name = "IPTCom general datasets";
             this.Description = "Built into IPTCom";
 
+            DataSets.Add(PISRepManMsgLst);
             DataSets.Add(com100);
             DataSets.Add(com101);
             DataSets.Add(com102);
@@ -17,6 +18,82 @@ namespace IPTComShark.DataSets
             DataSets.Add(com222);
             DataSets.Add(com223);
         }
+
+        public static DataSetDefinition PISRepManMsgLst => new DataSetDefinition
+        {
+            Name = "PISRepManMsgLst",
+            Comment = "Request PIS Manual Message List",
+            Identifiers = new List<string> { "1055910100" },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "IStatus",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "The status of this reply"
+                },
+                new BitField
+                {
+                    Name = "Reserved",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*29,
+                    Comment = "Reserved"
+                },
+                new BitField
+                {
+                    Name = "INbrOfRecords",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "The number of records in the following array. Only use when IStatus = ok"
+                },
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings{Name = "INbrOfRecords"},
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "IMsgId",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 16,
+                                Comment = "PIS identifier for the message"
+                            },
+                            new BitField
+                            {
+                                Name = "IGroupID",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment = "Indicates the group ID that the message is assigned to. 0 : No group ID assigned to the message, 1 to 255 : The group ID assigned to the message"
+                            },
+                            new BitField
+                            {
+                                Name = "Reserved",
+                                BitFieldType = BitFieldType.Spare,
+                                Length = 8,
+                                Comment = "Reserved"
+                            },
+                            new BitField
+                            {
+                                Name = "IMsgDsc",
+                                BitFieldType = BitFieldType.StringUtf8,
+                                Length = 8*128,
+                                Comment = "Short description of the message. UTF-8 Encoded char array, Null terminated string character to indicate end of the message"
+                            },
+                            new BitField
+                            {
+                                Name = "Reserved",
+                                BitFieldType = BitFieldType.Spare,
+                                Length = 8*60,
+                                Comment = "Reserved"
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
         public static DataSetDefinition com100 => new DataSetDefinition
         {

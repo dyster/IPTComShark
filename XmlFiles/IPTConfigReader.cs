@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -78,19 +79,30 @@ namespace IPTComShark.XmlFiles
 
                 var datasetdef = datasetdic[serial];
 
+                var name = Regex.Replace(t.Name, @"\d+$", "NN");
+                if(Regex.IsMatch(name, @"^[io][A-Z]"))
+                {
+                    name = Regex.Replace(name, @"^[io]", "");
+                }
+
                 if (string.IsNullOrEmpty(datasetdef.Name))
-                    datasetdef.Name = t.Name;
-                else if (!datasetdef.Name.Contains(t.Name))
-                    datasetdef.Name += "," + t.Name;
+                    datasetdef.Name = name;               
+                else if (!datasetdef.Name.Contains(name))
+                    datasetdef.Name += "," + name;
 
                 if (!datasetdef.Identifiers.Contains(comid))
                     datasetdef.Identifiers.Add(comid);
             }
 
             var outlist = datasetdic.Values.ToList();
-            outlist.RemoveAll(d => d.Identifiers.Count == 0);
+            var removed = outlist.RemoveAll(d => d.Identifiers.Count == 0);
 
-            c.DataSets.AddRange(outlist);
+            foreach(var dataset in outlist)
+            {
+                c.DataSets.Add(dataset);
+            }
+
+            
 
 
             return c;

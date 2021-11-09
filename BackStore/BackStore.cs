@@ -8,7 +8,6 @@ using System.Threading;
 using IPTComShark.Parsers;
 using PacketDotNet;
 using PacketDotNet.Utils;
-using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.BackStore
 {
@@ -17,6 +16,7 @@ namespace IPTComShark.BackStore
         private int _seed = 0;
 
         private BackgroundWorker _worker;
+        private ParserFactory _parserFactory;
 
         private ConcurrentQueue<Raw> _addBuffer = new ConcurrentQueue<Raw>();
 
@@ -45,10 +45,13 @@ namespace IPTComShark.BackStore
         /// <summary>
         /// Creates an instance of the BackStore to process and save packets
         /// </summary>
+        /// <param name="parserFactory">The parser factory used to process incoming data</param>
         /// <param name="processingOnly">If set to true, the backstore will only process packets and return them, not save them</param>
-        public BackStore(bool processingOnly = false)
+        public BackStore(ParserFactory parserFactory, bool processingOnly = false)
         {
             //fileStream = File.Create(@"c:\temp\iptsharkstream");
+
+            _parserFactory = parserFactory;
 
             _worker = new BackgroundWorker();
             _worker.WorkerSupportsCancellation = true;
@@ -76,13 +79,77 @@ namespace IPTComShark.BackStore
         public Raw GetRaw(int number)
         {
             return _rawStore[number];
+        }       
+
+        public byte[] GetPayload(int number)
+        {
+            return GetPayloadData(_packetStore[number],
+                GetPacket(number));
         }
 
-        public Parse? GetParse(int number)
+        public static byte[] GetPayloadData(CapturePacket packet, Packet topPacket)
         {
-            var extractParsedData = CapturePacket.ExtractParsedData(_packetStore[number],
-                GetPacket(number));
-            return extractParsedData;
+            if (!string.IsNullOrEmpty(packet.Error))
+                return null;
+
+            var actionpacket = topPacket.PayloadPacket;
+
+            if(actionpacket is Ieee8021QPacket vlanpacket)
+            {
+                if (vlanpacket.PayloadPacket == null)
+                    return null;
+
+                actionpacket = vlanpacket.PayloadPacket;
+            }
+             
+            byte[] payloadData = null;
+
+            if(actionpacket is IPv4Packet ipv4)
+            {
+                if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
+                {
+                    var udp = (UdpPacket)ipv4.PayloadPacket;
+                    if (udp == null)
+                        return null;
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    payloadData = udp.PayloadData;
+
+                }
+                else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
+                {
+                    var tcp = (TcpPacket)ipv4.PayloadPacket;
+                    if (tcp == null)
+                        return null;
+                    // protect against corrupted data with a try read
+                    try
+                    {
+                        var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    payloadData = tcp.PayloadData;
+                }
+            }
+            else if(actionpacket is ArpPacket arp)
+            {
+                return arp.Bytes;
+            }
+            
+            
+
+            return payloadData;
         }
 
         public bool Working { get; set; }
@@ -253,7 +320,8 @@ namespace IPTComShark.BackStore
 
 
             // try to parse data if there is any
-            var extractParsedData = CapturePacket.ExtractParsedData(capturePacket, topPacket);
+            var payload = GetPayloadData(capturePacket, topPacket);
+            Parse? extractParsedData = _parserFactory.DoPacket(capturePacket.Protocol, payload);
 
             if (extractParsedData.HasValue)
             {

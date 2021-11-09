@@ -7,13 +7,10 @@ namespace IPTComShark.Parsers
     public class ParserFactory
     {
         private List<IParser> _parsers = new List<IParser>();
-
-        public ParserFactory()
+        
+        public void AddParser(IParser parser)
         {
-            _parsers.Add(new NTPParser());
-            _parsers.Add(new SPLParser());
-            _parsers.Add(new JRUParser());
-            _parsers.Add(new IPTWPParser());
+            _parsers.Add(parser);
         }
 
         public Parse DoPacket(ProtocolType protocol, byte[] data)

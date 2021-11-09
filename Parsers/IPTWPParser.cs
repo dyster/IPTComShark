@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using IPTComShark.Classes;
+using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
+using sonesson_tools;
 using sonesson_tools.BitStreamParser;
 
 namespace IPTComShark.Parsers
@@ -12,12 +18,36 @@ namespace IPTComShark.Parsers
         private DataStore _dataStore;
         private IPTConfigReader IptConfigReader;
 
-        public IPTWPParser()
+        public IPTWPParser(string folder)
         {
-            IptConfigReader = new IPTConfigReader(Iptfile);
-
             _dataStore = new DataStore();
-            _dataStore.Add(IptConfigReader.GetDataSetCollection());
+
+            var files = Directory.GetFiles(folder);
+
+            var watch = new Stopwatch();
+
+            foreach(var file in files)
+            {
+
+                try
+                {
+                    Logger.Log("Parsing " + file, Severity.Info);
+                    watch.Restart();
+                    IptConfigReader = new IPTConfigReader(file);
+                    var datasets = IptConfigReader.GetDataSetCollection();
+                    _dataStore.Add(datasets);
+                    watch.Stop();
+                    Logger.Log(datasets.DataSets.Count + " datasets added in "+watch.ElapsedMilliseconds + "ms", Severity.Info);
+                }
+                catch(Exception e)
+                {
+                    var text = "Error parsing " + file + Environment.NewLine + Environment.NewLine + e.ToString();
+                    var window = new TextWindow(text);
+                    window.ShowDialog();                    
+                }
+            }
+                        
+            
             _dataStore.RebuildIndex();
         }
 
