@@ -158,7 +158,7 @@ namespace IPTComShark.XmlFiles
                                 field.Length = 8;
                                 break;
                             case "UINT8":
-                                field.BitFieldType = BitFieldType.UInt16;
+                                field.BitFieldType = BitFieldType.UInt8;
                                 field.Length = 8;
                                 break;
                             case "INT8":
