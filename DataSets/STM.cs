@@ -43,7 +43,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -129,7 +130,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -178,7 +180,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -200,14 +203,24 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment =
-                                    "STM identity used to point to the corresponding palette for button and icon. This NID_STM may be different from the one in the message header as the STM is allowed to re-use buttons from another STM."
+                                    "STM identity used to point to the corresponding palette for button and icon. This NID_STM may be different from the one in the message header as the STM is allowed to re-use buttons from another STM.",
+                                LookupTable = NID_STM_LookupTable
                             },
                             new BitField
                             {
                                 Name = "STM_NID_BUTTON",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Functional identity of button from button palette given by NID_STM"
+                                Comment = "Functional identity of button from button palette given by NID_STM",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"10", "SPAD Indicator"},
+                                    {"11", "OSS Indicator"},
+                                    {"12", "Brake Release Indicator"},
+                                    {"13", "AWS Brake Indicator"},
+                                    {"14", "TSO Indicator"},
+                                    {"15", "TSO anti-valent Indicator"}
+                                }
                             },
                             new BitField
                             {
@@ -221,7 +234,22 @@ namespace IPTComShark.DataSets
                                 Name = "STM_NID_ICON",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Identity of button icon to be displayed"
+                                Comment = "Identity of button icon to be displayed",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"1", "Disabled"},
+                                    {"2", "Disabled"},
+                                    {"3", "Invisible/Disabled"},
+                                    {"4", "Disabled"},
+                                    {"5", "Inactive"},
+                                    {"21", "Enabled"},
+                                    {"22", "Enabled"},
+                                    {"23", "Enabled"},
+                                    {"24", "Enabled"},
+                                    {"25", "Active"},
+                                    {"230", "Anti-valent Active"},
+                                    {"250", "Anti-valent Inactive"}
+                                }
                             },
                             new BitField
                             {
@@ -300,7 +328,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -322,14 +351,21 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment =
-                                    "STM identity used to point to the corresponding palette for indicator and icon. This NID_STM may be different from the one in the message header as the STM is allowed to re-use indicators from another STM."
+                                    "STM identity used to point to the corresponding palette for indicator and icon. This NID_STM may be different from the one in the message header as the STM is allowed to re-use indicators from another STM.",
+                                LookupTable = NID_STM_LookupTable
                             },
                             new BitField
                             {
                                 Name = "STM_NID_INDICATOR",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Functional identity of indicator from indicator palette given by NID_STM"
+                                Comment = "Functional identity of indicator from indicator palette given by NID_STM",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"10", "AWS Sunflower"},
+                                    {"20", "TI/FLT Indicator"},
+                                    {"21", "Anti-valent TI/FLT Indicator"}
+                                }
                             },
                             new BitField
                             {
@@ -343,7 +379,14 @@ namespace IPTComShark.DataSets
                                 Name = "STM_NID_ICON",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Identity of icon from palette given by icon palette given by NID_STM"
+                                Comment = "Identity of icon from palette given by icon palette given by NID_STM",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"7", "Black"},
+                                    {"8", "Black/Yellow"},
+                                    {"9", "Enabled/Disabled/Flashing"},
+                                    {"246", "Anti-valent Enabled/Disabled/Flashing"}
+                                }
                             },
                             new BitField
                             {
@@ -400,7 +443,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -459,7 +503,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -496,7 +541,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -592,7 +638,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -618,14 +665,26 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment =
-                                    "STM identity used to point to the corresponding sound palette. This NID_STM may be different from the one in the message header as the STM is allowed to re-use sounds from another STM. "
+                                    "STM identity used to point to the corresponding sound palette. This NID_STM may be different from the one in the message header as the STM is allowed to re-use sounds from another STM. ",
+                                LookupTable = NID_STM_LookupTable
                             },
                             new BitField
                             {
                                 Name = "STM_NID_SOUND",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Functional identity of sound from sound palette given by NID_STM"
+                                Comment = "Functional identity of sound from sound palette given by NID_STM",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"0", "Turn off ongoing sound"},
+                                    {"1", "SPAD Alert with Prime tone"},
+                                    {"2", "OSS Alert with Prime tone"},
+                                    {"3", "Self Test Announcement"},
+                                    {"4", "AWS Clear (Bell)"},
+                                    {"5", "AWS Warning (Horn)"},
+                                    {"6", "SPAD Alert"},
+                                    {"7", "OSS Alert"}
+                                }
                             },
                             new BitField
                             {
@@ -713,7 +772,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC_IP",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -743,7 +803,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
 
                 new BitField
@@ -769,14 +830,16 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment =
-                                    "STM identity used to point to the corresponding Button palette.\r\nThis NID_STM may be different from the one in the message header as the STM is allowed to re-use buttons from another STM."
+                                    "STM identity used to point to the corresponding Button palette.\r\nThis NID_STM may be different from the one in the message header as the STM is allowed to re-use buttons from another STM.",
+                                LookupTable = NID_STM_LookupTable
                             },
                             new BitField
                             {
                                 Name = "STM_NID_BUTTON",
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
-                                Comment = "Functional identity of button from button palette given by NID_STM"
+                                Comment = "Functional identity of button from button palette given by NID_STM",
+                                LookupTable = NID_BUTTON_LookupTable
                             },
                             new BitField
                             {
@@ -828,7 +891,8 @@ namespace IPTComShark.DataSets
                     Name = "NID_NTC_IP",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    Comment = "Identity of the STM that sent the data"
+                    Comment = "Identity of the STM that sent the data",
+                    LookupTable = NID_STM_LookupTable
                 },
                 new BitField
                 {
@@ -845,6 +909,25 @@ namespace IPTComShark.DataSets
                     Comment = "spare for 32-bit alignment"
                 }
             }
+        };
+
+         // checked 01-03-2021
+        public static Dictionary<string, string> NID_STM_LookupTable => new Dictionary<string, string>
+        {
+            {"20", "TPWS"},
+            {"21", "TPWS Fixed"},
+            {"50", "CBTC"},
+            {"255", "exit"},
+        };
+
+        public static Dictionary<string, string> NID_BUTTON_LookupTable => new Dictionary<string, string>
+        {
+            {"10", "SPAD Indicator"},
+            {"11", "OSS Indicator"},
+            {"12", "Brake Release Indicator"},
+            {"13", "AWS Brake Indicator"},
+            {"14", "TSO Indicator"},
+            {"15", "TSO anti-valent Indicator"}
         };
     }
 }
