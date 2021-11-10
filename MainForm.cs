@@ -53,7 +53,7 @@ namespace IPTComShark
             packetDisplay1.BackStore = _backStore;
             packetDisplay1.ParserFactory = _parserFactory;
 
-            Text = Text += " " + Application.ProductVersion + " The ROGINATOR";// " codename \"Roger\"";
+            Text = Text += " " + Application.ProductVersion + " ROGINATOR II: Parsing Day";// " codename \"Roger\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 

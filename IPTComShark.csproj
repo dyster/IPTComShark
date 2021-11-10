@@ -6,7 +6,12 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>IPTComShark</RootNamespace>
     <AssemblyName>IPTComShark</AssemblyName>
-    <Version>1.9.3.0</Version>
+    <Version>1.9.4.0</Version>
+    <AssemblyVersion>1.9.4.0</AssemblyVersion>
+    <FileVersion>1.9.4.0</FileVersion>
+    <PackageIcon>shark-icon-24347.jpg</PackageIcon>
+    <PackageIconUrl />
+    <ApplicationIcon>shark-icon-24347-16x16.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -51,6 +56,10 @@
     <DependentUpon>Settings.settings</DependentUpon>
     <DesignTimeSharedInput>True</DesignTimeSharedInput>
   </Compile>
+  <None Include="Resources\shark-icon-24347.jpg">
+    <Pack>True</Pack>
+    <PackagePath></PackagePath>
+  </None>
 </ItemGroup>
 <ItemGroup>
   <None Update="IPTXMLFiles\ECN1_ipt_config.xml">
