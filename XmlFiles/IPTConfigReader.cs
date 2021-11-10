@@ -79,7 +79,8 @@ namespace IPTComShark.XmlFiles
 
                 var datasetdef = datasetdic[serial];
 
-                var name = Regex.Replace(t.Name, @"\d+$", "NN");
+                //var name = Regex.Replace(t.Name, @"\d+$", "NN");
+                var name = t.Name;
                 if(Regex.IsMatch(name, @"^[io][A-Z]"))
                 {
                     name = Regex.Replace(name, @"^[io]", "");
