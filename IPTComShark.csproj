@@ -19,7 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BustPCap\src\BustPCap.csproj" />
-    <ProjectReference Include="..\ObjectListViewCore\ObjectListView\ObjectListView2012.csproj" />
+    <ProjectReference Include="..\ObjectListView\ObjectListView\ObjectListView2012.csproj" />
     <ProjectReference Include="..\sonesson-tools\sonesson-toolsNETSTANDARD.csproj" />
   </ItemGroup>
   <ItemGroup>
