@@ -377,8 +377,11 @@ namespace IPTComShark
                         // dunno
                         break;
 
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    default:                        
+                        Protocol = ProtocolType.UNKNOWN;
+                        //throw new ArgumentOutOfRangeException(); 
+                        break;
+                        
                 }
             }
             else if (actionPacket is ArpPacket arpPacket)
