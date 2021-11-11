@@ -59,64 +59,83 @@ namespace IPTComShark.Controls
             try
             {
                 var payload = BackStore.GetPayload(originalpacket.No);
+
+                Packet actionPacket = topPacket.PayloadPacket;
+
+                // if this is a vlan packet, just use the underlying packet instead
+                // TODO figure out how to detect other VLAN packets
+                if (topPacket.PayloadPacket is Ieee8021QPacket vlanpacket)
+                {
+                    if (vlanpacket.HasPayloadPacket)
+                    {
+                        actionPacket = vlanpacket.PayloadPacket;
+                    }
+                }
+
+                
                 
                 Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload);
 
 
-                if (originalpacket.Protocol == ProtocolType.IPTWP && topPacket.PayloadPacket.PayloadPacket != null)
+                if (originalpacket.Protocol == ProtocolType.IPTWP && actionPacket.PayloadPacket != null)
                 {
-                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)actionPacket.PayloadPacket;
                     var iptPacket = IPTWPPacket.Extract(udp.PayloadData);
-                    var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
-                    var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
-                    textBoxComid.Text = originalpacket.Comid.ToString();
+                    if (iptPacket != null)
+                    { 
 
-                    textBoxSize.Text = iptPacket.IPTWPSize.ToString();
-                    textBoxType.Text = iptPacket.IPTWPType.ToString();
+                        var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
+                        var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
-                    if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
-                        originalpacket.Previous != null)
-                    {
-                        // if only one set we can do change detection
-                        var oldpayload = BackStore.GetPayload(originalpacket.Previous.No);                        
-                        Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload);
+                        textBoxComid.Text = originalpacket.Comid.ToString();
 
-                        dataLines.Add(new DataLine(ticker++)
-                            {IsCategory = true, Name = parse.Value.ParsedData[0].Name});
-                        for (var index = 0; index < parse.Value.ParsedData[0].ParsedFields.Count; index++)
+                        textBoxSize.Text = iptPacket.IPTWPSize.ToString();
+                        textBoxType.Text = iptPacket.IPTWPType.ToString();
+
+                        if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
+                            originalpacket.Previous != null)
                         {
-                            var field = parse.Value.ParsedData[0].ParsedFields[index];
-                            bool changed = false;
+                            // if only one set we can do change detection
+                            var oldpayload = BackStore.GetPayload(originalpacket.Previous.No);
+                            Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload);
 
-
-                            if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
+                            dataLines.Add(new DataLine(ticker++)
+                            { IsCategory = true, Name = parse.Value.ParsedData[0].Name });
+                            for (var index = 0; index < parse.Value.ParsedData[0].ParsedFields.Count; index++)
                             {
-                                var parsedField = oldparse.Value.ParsedData[0][index];
-                                changed = !parsedField.Value.Equals(field.Value);
-                            }
+                                var field = parse.Value.ParsedData[0].ParsedFields[index];
+                                bool changed = false;
 
 
-                            dataLines.Add(new DataLine(field, ticker++)
-                            {
-                                Changed = changed
-                            });
-                        }
-                    }
-                    else if (parse.HasValue && !parse.Value.NoParserInstalled)
-                    {
-                        foreach (var parsedDataSet in parse.Value.ParsedData)
-                        {
-                            dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
-                            foreach (var field in parsedDataSet.ParsedFields)
-                            {
-                                dataLines.Add(new DataLine(field, ticker++));
+                                if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
+                                {
+                                    var parsedField = oldparse.Value.ParsedData[0][index];
+                                    changed = !parsedField.Value.Equals(field.Value);
+                                }
+
+
+                                dataLines.Add(new DataLine(field, ticker++)
+                                {
+                                    Changed = changed
+                                });
                             }
                         }
-                    }
-                    else
-                    {
-                        // where does that leave us?
+                        else if (parse.HasValue && !parse.Value.NoParserInstalled)
+                        {
+                            foreach (var parsedDataSet in parse.Value.ParsedData)
+                            {
+                                dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                                foreach (var field in parsedDataSet.ParsedFields)
+                                {
+                                    dataLines.Add(new DataLine(field, ticker++));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // where does that leave us?
+                        }
                     }
                 }
                 else if (parse.HasValue && !parse.Value.NoParserInstalled)
@@ -140,11 +159,22 @@ namespace IPTComShark.Controls
             {
                 var text = new StringBuilder(topPacket.ToString(StringOutputType.Verbose));
 
+                Packet actionPacket = topPacket.PayloadPacket;
+
+                // if this is a vlan packet, just use the underlying packet instead
+                // TODO figure out how to detect other VLAN packets
+                if (topPacket.PayloadPacket is Ieee8021QPacket vlanpacket)
+                {
+                    if (vlanpacket.HasPayloadPacket)
+                    {
+                        actionPacket = vlanpacket.PayloadPacket;
+                    }
+                }
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP)
                 {
                     // since we have IPT, straight cast to UDP, BAM
-                    var udp = (UdpPacket) topPacket.PayloadPacket.PayloadPacket;
+                    var udp = (UdpPacket)actionPacket.PayloadPacket;
                     var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                     var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
