@@ -236,7 +236,7 @@ namespace IPTComShark.BackStore
             try
             {
                 // re-assemble fragments
-                if (topPacket.PayloadPacket is IPv4Packet)
+                if (topPacket.PayloadPacket is IPv4Packet )
                 {
                     var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 
