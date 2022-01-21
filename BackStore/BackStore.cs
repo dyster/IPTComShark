@@ -72,7 +72,8 @@ namespace IPTComShark.BackStore
             else
             {
                 var raw = GetRaw(number);
-                return Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+                return PacketWrapper.Parse(raw);
+                
             }
         }
 
@@ -92,19 +93,11 @@ namespace IPTComShark.BackStore
             if (!string.IsNullOrEmpty(packet.Error))
                 return null;
 
-            var actionpacket = topPacket.PayloadPacket;
-
-            if(actionpacket is Ieee8021QPacket vlanpacket)
-            {
-                if (vlanpacket.PayloadPacket == null)
-                    return null;
-
-                actionpacket = vlanpacket.PayloadPacket;
-            }
+            var actionpacket = PacketWrapper.GetActionPacket(topPacket);
              
             byte[] payloadData = null;
 
-            if(actionpacket is IPv4Packet ipv4)
+            if (actionpacket is IPv4Packet ipv4)
             {
                 if (ipv4.Protocol == PacketDotNet.ProtocolType.Udp)
                 {
@@ -142,10 +135,12 @@ namespace IPTComShark.BackStore
                     payloadData = tcp.PayloadData;
                 }
             }
-            else if(actionpacket is ArpPacket arp)
+            else if (actionpacket is ArpPacket arp)
             {
                 return arp.Bytes;
             }
+            else if (actionpacket is BDSPacket bdspacket)
+                return bdspacket.PayloadData;
             
             
 
@@ -230,13 +225,14 @@ namespace IPTComShark.BackStore
         {
             var seed = ++_seed;
             parse = new Parse();
-            
-            var topPacket = Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData);
+
+            Packet topPacket = PacketWrapper.Parse(raw);
+                       
 
             try
             {
                 // re-assemble fragments
-                if (topPacket.PayloadPacket is IPv4Packet )
+                if (topPacket.HasPayloadPacket && topPacket.PayloadPacket is IPv4Packet )
                 {
                     var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 
@@ -278,7 +274,7 @@ namespace IPTComShark.BackStore
 
             if (ProcessingFilters != null)
             {
-                if (topPacket.PayloadPacket is IPv4Packet)
+                if (topPacket.HasPayloadPacket && topPacket.PayloadPacket is IPv4Packet)
                 {
                     var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 

@@ -17,6 +17,7 @@
         UDP_SPL,
         NTP,
         Virtual,
-        JRUStatus
+        JRUStatus,
+        BDS
     }
 }

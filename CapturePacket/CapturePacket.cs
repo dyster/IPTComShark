@@ -116,6 +116,7 @@ namespace IPTComShark
             // protect against corrupted data with a try read
             try
             {
+                // TODO change this, the bytes read is really expensive as it reassambles the whole packet
                 var throwaway = originalPacket.Bytes.Length + originalPacket.HeaderData.Length;
             }
             catch (Exception e)
@@ -125,18 +126,8 @@ namespace IPTComShark
                 return;
             }
 
-            Packet actionPacket = originalPacket.PayloadPacket;
-
-            // if this is a vlan packet, just use the underlying packet instead
-            // TODO figure out how to detect other VLAN packets
-            if (originalPacket.PayloadPacket is Ieee8021QPacket vlanpacket)
-            {
-                if (vlanpacket.HasPayloadPacket)
-                {
-                    actionPacket = vlanpacket.PayloadPacket;
-                }
-            }
-
+            Packet actionPacket = PacketWrapper.GetActionPacket(originalPacket);
+            
             if(actionPacket == null)
             {
                 this.Protocol = ProtocolType.UNKNOWN;
@@ -394,6 +385,14 @@ namespace IPTComShark
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
             } 
+            else if(actionPacket is BDSPacket)
+            {
+                Protocol = ProtocolType.BDS;
+                var bds = (BDSPacket)actionPacket;
+                ProtocolInfo = bds.ProtocolInfo;
+                DisplayFields = bds.DisplayFields;
+                Name = bds.Name;
+            }
             // reading headers might fail so removing
             //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x88 &&
             //         actionPacket.HeaderData[13] == 0xe1)
