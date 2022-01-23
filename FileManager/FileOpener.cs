@@ -177,7 +177,7 @@ namespace IPTComShark.FileManager
 
         private void PeekReader(IReader reader, FileInfo finfo)
         {
-            //try
+            try
             {
                 while (reader.MoveToNextEntry())
                 {
@@ -232,8 +232,9 @@ namespace IPTComShark.FileManager
                     }
                 }
             }
-            //catch(Exception e)
+            catch(Exception e)
             {
+                UpdateList(finfo.FullName + " " + e.Message);
             }
         }
 
