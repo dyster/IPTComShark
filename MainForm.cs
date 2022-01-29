@@ -17,6 +17,7 @@ using IPTComShark.Export;
 using SharpPcap.Npcap;
 using sonesson_tools.FileReaders;
 using IPTComShark.Parsers;
+using BustPCap;
 
 namespace IPTComShark
 {
@@ -663,38 +664,32 @@ namespace IPTComShark
             var list = new List<CapturePacket>();
             var count = 0;
 
-            var pcapReader = new PCAPReader();
+            
 
-            List<FileReadObject> fileReadObjects;
-            if (pcapReader.CanRead(file))
+            var format = PCAPReader.CanRead(file);
+            if (format == Format.PCAP)
             {
-                fileReadObjects = pcapReader.Read(file);
-            }
-            else
-            {
-                var pcapngReader = new PCAPNGReader();
-                fileReadObjects = pcapngReader.Read(file);
-            }
-
-            foreach (var fileReadObject in fileReadObjects)
-            {
-                Raw raw;
-                if (fileReadObject.ReadObject is PCAPBlock)
+                var pcapReader = new PCAPFileReader(file);
+                foreach (var block in pcapReader.Enumerate())
                 {
-                    var pcapBlock = (PCAPBlock) fileReadObject.ReadObject;
-                    raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                        (LinkLayerType) pcapBlock.Header.network);
+                    list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network)));
+                    count++;
                 }
-                else
-                {
-                    var pcapngBlock = (PCAPNGBlock) fileReadObject.ReadObject;
-                    raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                        (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
-                }
-
-                list.Add(new CapturePacket(raw));
-                count++;
             }
+            else if(format == Format.PCAPNG)
+            {
+                var pcapReader = new PCAPNGFileReader(file);
+                foreach (var block in pcapReader.Enumerate())
+                {
+                    if(block.Header == PCAPNGHeader.EnhancedPacket)
+                    {
+                        list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType)));
+                        count++;
+                    }
+                    
+                }
+            }
+                       
 
             stopwatch.Stop();
 

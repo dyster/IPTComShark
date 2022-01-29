@@ -15,8 +15,7 @@ namespace IPTComShark.FileManager
     public class FileManager : IDisposable
     {
         private ZipReader zipReader = new ZipReader();
-        private PCAPNGReader pcapngReader = new PCAPNGReader();
-
+        
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
@@ -54,13 +53,13 @@ namespace IPTComShark.FileManager
             return null;
         }
 
-        private Raw ChunkRead(PCAPNGBlock pcapBlock)
+        private Raw ChunkRead(BustPCap.PCAPNGBlock pcapBlock)
         {
             PacketCounter++;
             UpdateProgress((PacketCounter * 100) / PacketTotal);
 
-            var raw = new Raw(pcapBlock.Timestamp, pcapBlock.PayLoad,
-                (LinkLayerType)pcapBlock.Interface.LinkLayerType);
+            var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
+                (LinkLayerType)pcapBlock.LinkLayerType);
             if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
             {
                 OnRawParsed(raw);
@@ -136,16 +135,15 @@ namespace IPTComShark.FileManager
                 }
                 else if (source.SourceType == SourceType.PCAPNG)
                 {
-                    pcapngReader.Read(source.FileInfo.FullName);
-                    using (FileStream fileStream = File.OpenRead(source.FileInfo.FullName))
+                    using (var pcapFileReader = new PCAPNGFileReader(source.FileInfo.FullName))
                     {
-                        foreach (var block in pcapngReader.Enumerate(fileStream))
+                        foreach (var pcapBlock in pcapFileReader.Enumerate())
                         {
-                            Raw raw = ChunkRead(block);
+                            Raw raw = ChunkRead(pcapBlock);
                             if (raw != null)
                                 yield return raw;
                         }
-                    }
+                    }                    
                 }
                 else if (source.SourceType == SourceType.Zip)
                 {
@@ -219,7 +217,8 @@ namespace IPTComShark.FileManager
 
                         if (dataSource.ArchiveSourceType == SourceType.PCAPNG)
                         {
-                            foreach(var block in pcapngReader.Enumerate(memstream))
+                            var pcapngReader = new PCAPNGStreamReader(memstream);
+                            foreach(var block in pcapngReader.Enumerate())
                             {
                                 Raw raw = ChunkRead(block);
                                 if (raw != null)

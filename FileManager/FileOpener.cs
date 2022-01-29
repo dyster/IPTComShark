@@ -19,8 +19,7 @@ namespace IPTComShark.FileManager
     public partial class FileOpener : Form
     {
         private string[] _inputstrings;
-        
-        private PCAPNGReader pcapngReader = new PCAPNGReader();
+                
         private BindingList<DataSource> _dataSources = new BindingList<DataSource>();
 
         public List<DataSource> DataSources { get; private set; }
@@ -74,46 +73,55 @@ namespace IPTComShark.FileManager
             {
                 var finfo = new FileInfo(fileName);
 
-                
-                if (BustPCap.PCAPReader.CanRead(fileName))
+
+                switch (PCAPReader.CanRead(fileName))
                 {
-                    using (var pcapFileReader = new PCAPFileReader(fileName))
-                    {
-                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                    case Format.PCAP:
                         {
-                            // enumerate to gather info
+                            using (var pcapFileReader = new PCAPFileReader(fileName))
+                            {
+                                foreach (var pcapBlock in pcapFileReader.Enumerate())
+                                {
+                                    // enumerate to gather info
+                                }
+
+                                var dsource = new DataSource
+                                {
+                                    FileInfo = finfo,
+                                    StartTime = pcapFileReader.StartTime,
+                                    EndTime = pcapFileReader.EndTime,
+                                    SourceType = SourceType.PCAP,
+                                    Packets = pcapFileReader.Count
+                                };
+                                UpdateList(dsource);
+                            }
+
+
+                            continue;
                         }
 
-                        var dsource = new DataSource
+                    case Format.PCAPNG:
                         {
-                            FileInfo = finfo,
-                            StartTime = pcapFileReader.StartTime,
-                            EndTime = pcapFileReader.EndTime,
-                            SourceType = SourceType.PCAP,
-                            Packets = pcapFileReader.Count
-                        };
-                        UpdateList(dsource);
-                    }
-                    
-                    
-                    continue;
-                }
-                else if (pcapngReader.CanRead(fileName))
-                {
-                    var reader = new PCAPNGReader();
-                    var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
-                    var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
-                    var dsource = new DataSource
-                    {
-                        FileInfo = finfo,
-                        StartTime = first.Timestamp,
-                        EndTime = last.Timestamp,
-                        SourceType = SourceType.PCAPNG,
-                        Packets = fileReadObjects.Count
-                    };
-                    UpdateList(dsource);
-                    continue;
+                            using (var pcapFileReader = new PCAPNGFileReader(fileName))
+                            {
+                                foreach (var pcapBlock in pcapFileReader.Enumerate())
+                                {
+                                    // enumerate to gather info
+                                }
+
+                                var dsource = new DataSource
+                                {
+                                    FileInfo = finfo,
+                                    StartTime = pcapFileReader.StartTime,
+                                    EndTime = pcapFileReader.EndTime,
+                                    SourceType = SourceType.PCAPNG,
+                                    Packets = pcapFileReader.Count
+                                };
+                                UpdateList(dsource);
+                                continue;
+                            }                                                       
+                            
+                        }
                 }
 
                 if (SevenZipArchive.IsSevenZipFile(fileName))
@@ -195,8 +203,8 @@ namespace IPTComShark.FileManager
                                 ArchiveKey = reader.Entry.Key
                             };
 
-
-                            if (IsPCAP(readbytes))
+                            
+                            if (PCAPReader.IsPCAP(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
                                 
@@ -214,19 +222,22 @@ namespace IPTComShark.FileManager
                                 UpdateList(dsource);
                             }
 
-                            if (IsPCAPNG(readbytes))
+                            if (PCAPReader.IsPCAPNG(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
 
-                                var pcapngreader = new PCAPNGReader();
-                                var fileReadObjects = pcapngreader.ReadStream(memstream);
-                                var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
-                                var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
-                                dsource.StartTime = first.Timestamp;
-                                dsource.EndTime = last.Timestamp;
-                                dsource.Packets = fileReadObjects.Count();
+                                var pcapngreader = new PCAPNGStreamReader(memstream);
+
+                                foreach (var pcapBlock in pcapngreader.Enumerate())
+                                {
+                                    // enumerate to gather info
+                                }
+
+                                dsource.StartTime = pcapngreader.StartTime;
+                                dsource.EndTime = pcapngreader.EndTime;
+                                dsource.Packets = pcapngreader.Count;
                                 dsource.ArchiveSourceType = SourceType.PCAPNG;
-                                UpdateList(dsource);
+                                UpdateList(dsource);                                
                             }
                         }
                     }
@@ -295,18 +306,7 @@ namespace IPTComShark.FileManager
 
                 datePicker1.Update(list);
             }
-        }
-
-        private bool IsPCAP(byte[] bytes)
-        {
-            return bytes[0] == 0xd4 && bytes[1] == 0xc3 && bytes[2] == 0xb2 && bytes[3] == 0xa1 || bytes[0] == 0xa1 &&
-                bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
-        }
-
-        private bool IsPCAPNG(byte[] bytes)
-        {
-            return bytes[0] == '\n' && bytes[1] == '\r' && bytes[2] == '\r' && bytes[3] == '\n';
-        }
+        }        
 
         private List<string> Uniquify(List<string> strings)
         {
