@@ -422,6 +422,7 @@ namespace IPTComShark.BackStore
             _rawStore.Clear();
             _fragmentStore.Clear();
             _packetStore.Clear();
+            _topPacketStore.Clear();
             _lastKnowns = new LastKnownStore();
             DiscardedPackets = 0;
         }
