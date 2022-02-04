@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -17,12 +18,20 @@ namespace IPTComShark.XmlFiles
         public IPTConfigReader(string path)
         {
             var xmlSerializer = new XmlSerializer(typeof(cpu));
-            var deserialize = (cpu) xmlSerializer.Deserialize(File.OpenRead(path));
-            foreach (cpuBusinterfacelist o in deserialize.Items.Where(i => i is cpuBusinterfacelist))
-            foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
-                Telegrams.AddRange(businterface.Telegram);
-            foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
-                Datasets.AddRange(cpuDatasetlist.Dataset);
+            var settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            using (var fileStream = File.OpenRead(path))
+            {
+                using (var reader = XmlReader.Create(fileStream, settings))
+                {
+                    var deserialize = (cpu)xmlSerializer.Deserialize(reader);
+                    foreach (cpuBusinterfacelist o in deserialize.Items.Where(i => i is cpuBusinterfacelist))
+                        foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
+                            Telegrams.AddRange(businterface.Telegram);
+                    foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
+                        Datasets.AddRange(cpuDatasetlist.Dataset);
+                }
+            }
         }
 
         public List<Telegram> Telegrams { get; set; } = new List<Telegram>();
