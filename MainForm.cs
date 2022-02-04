@@ -24,7 +24,7 @@ namespace IPTComShark
     public partial class MainForm : Form
     {
         private BackStore.BackStore _backStore;
-        private ParserFactory _parserFactory;
+        private static ParserFactory _parserFactory;
 
         private long _capturedData;
 
@@ -39,13 +39,7 @@ namespace IPTComShark
 
             InitializeComponent();
 
-            _parserFactory = new ParserFactory();
-            _parserFactory.AddParser(new NTPParser());
-            _parserFactory.AddParser(new SPLParser());
-            _parserFactory.AddParser(new JRUParser());
-            _parserFactory.AddParser(new ARPParser());
-            
-            _parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
+            _parserFactory = GenerateParserFactory();
 
             _backStore = new BackStore.BackStore(_parserFactory);
 
@@ -84,6 +78,19 @@ namespace IPTComShark
 
             stopwatch.Stop();
             Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
+        }
+
+        public static ParserFactory GenerateParserFactory()
+        {
+            var parserFactory = new ParserFactory();
+            parserFactory.AddParser(new NTPParser());
+            parserFactory.AddParser(new SPLParser());
+            parserFactory.AddParser(new JRUParser());
+            parserFactory.AddParser(new ARPParser());
+
+            parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
+
+            return parserFactory;
         }
 
         private void InitData()
@@ -635,7 +642,7 @@ namespace IPTComShark
                 RunBenchmark(@"c:\temp\benchmark3.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
-                RunBenchmark(@"c:\temp\benchmark4.pcap");
+                //RunBenchmark(@"c:\temp\benchmark4.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
                 RunBenchmark(@"c:\temp\benchmark5.pcap");
@@ -664,7 +671,7 @@ namespace IPTComShark
             var list = new List<CapturePacket>();
             var count = 0;
 
-            
+            var processor = new BackStore.BackStore(_parserFactory, true);
 
             var format = PCAPReader.CanRead(file);
             if (format == Format.PCAP)
@@ -672,7 +679,8 @@ namespace IPTComShark
                 var pcapReader = new PCAPFileReader(file);
                 foreach (var block in pcapReader.Enumerate())
                 {
-                    list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network)));
+                    processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network), out var notused);
+                    //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network)));
                     count++;
                 }
             }
@@ -683,7 +691,8 @@ namespace IPTComShark
                 {
                     if(block.Header == PCAPNGHeader.EnhancedPacket)
                     {
-                        list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType)));
+                        processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
+                        //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType)));
                         count++;
                     }
                     
