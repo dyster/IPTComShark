@@ -44,10 +44,7 @@ namespace IPTComShark
             {0x4D41, IPTTypes.MA},
             {0x4D61, IPTTypes.Ma},
             {0x4D52, IPTTypes.MR}
-        };
-
-        public uint Comid { get; set; }
-        public IPTTypes IPTWPType { get; set; }
+        };                       
 
         public uint IPTWPSize { get; set; }
         //public byte[] IPTWPPayload { get; set; }
@@ -104,10 +101,8 @@ namespace IPTComShark
                 return null;
 
             // we have valid IPTCom!
-
-            iptPacket.Comid = (uint) header["ComID"];
-            iptPacket.IPTWPSize = datasetlength;
-            iptPacket.IPTWPType = MessageTypes[(ushort) header["Type"]];
+                        
+            iptPacket.IPTWPSize = datasetlength;            
 
             return iptPacket;
         }
