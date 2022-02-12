@@ -1,25 +1,23 @@
-﻿using SharpCompress.Archives.SevenZip;
+﻿using BustPCap;
+using IPTComShark.BackStore;
+using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
-using sonesson_tools.FileReaders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-
-using BustPCap;
 using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
-using IPTComShark.BackStore;
-using System.Net;
 
 namespace IPTComShark.FileManager
 {
     public partial class FileOpener : Form
     {
         private string[] _inputstrings;
-                
+
         private BindingList<DataSource> _dataSources = new BindingList<DataSource>();
 
         public List<DataSource> DataSources { get; private set; }
@@ -37,8 +35,8 @@ namespace IPTComShark.FileManager
             dataListView1.PrimarySortColumn = olvColumnStart;
 
             Load += (object sender, EventArgs e) => { backgroundWorker1.RunWorkerAsync(); };
-            
-        }        
+
+        }
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -73,56 +71,66 @@ namespace IPTComShark.FileManager
             {
                 var finfo = new FileInfo(fileName);
 
-
-                switch (PCAPReader.CanRead(fileName))
+                var first4 = new byte[4];
+                using (FileStream fileStream = File.OpenRead(fileName))
                 {
-                    case Format.PCAP:
-                        {
-                            using (var pcapFileReader = new PCAPFileReader(fileName))
-                            {
-                                foreach (var pcapBlock in pcapFileReader.Enumerate())
-                                {
-                                    // enumerate to gather info
-                                }
-
-                                var dsource = new DataSource
-                                {
-                                    FileInfo = finfo,
-                                    StartTime = pcapFileReader.StartTime,
-                                    EndTime = pcapFileReader.EndTime,
-                                    SourceType = SourceType.PCAP,
-                                    Packets = pcapFileReader.Count
-                                };
-                                UpdateList(dsource);
-                            }
-
-
-                            continue;
-                        }
-
-                    case Format.PCAPNG:
-                        {
-                            using (var pcapFileReader = new PCAPNGFileReader(fileName))
-                            {
-                                foreach (var pcapBlock in pcapFileReader.Enumerate())
-                                {
-                                    // enumerate to gather info
-                                }
-
-                                var dsource = new DataSource
-                                {
-                                    FileInfo = finfo,
-                                    StartTime = pcapFileReader.StartTime,
-                                    EndTime = pcapFileReader.EndTime,
-                                    SourceType = SourceType.PCAPNG,
-                                    Packets = pcapFileReader.Count
-                                };
-                                UpdateList(dsource);
-                                continue;
-                            }                                                       
-                            
-                        }
+                    fileStream.Read(first4, 0, 4);
                 }
+
+
+                if (BaseReader.IsPCAP(first4))
+                {
+                    using (var pcapFileReader = new PCAPFileReader(fileName))
+                    {
+                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        {
+                            // enumerate to gather info
+                        }
+
+                        var dsource = new DataSource
+                        {
+                            FileInfo = finfo,
+                            StartTime = pcapFileReader.StartTime,
+                            EndTime = pcapFileReader.EndTime,
+                            SourceType = SourceType.PCAP,
+                            Packets = pcapFileReader.Count
+                        };
+                        UpdateList(dsource);
+                    }
+
+
+                    continue;
+                }
+
+                if (BaseReader.IsPCAPNG(first4))
+                {
+                    using (var pcapFileReader = new PCAPNGFileReader(fileName))
+                    {
+                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        {
+                            // enumerate to gather info
+                        }
+
+                        var dsource = new DataSource
+                        {
+                            FileInfo = finfo,
+                            StartTime = pcapFileReader.StartTime,
+                            EndTime = pcapFileReader.EndTime,
+                            SourceType = SourceType.PCAPNG,
+                            Packets = pcapFileReader.Count
+                        };
+                        UpdateList(dsource);
+                        continue;
+                    }
+
+                }
+
+                if(first4[3] == 0xFD && first4[2] == 0x2F && first4[1] == 0xB5 && first4[0] == 0x28)
+                {
+                    // Zstandard
+                    continue;
+                }
+
 
                 if (SevenZipArchive.IsSevenZipFile(fileName))
                 {
@@ -134,6 +142,7 @@ namespace IPTComShark.FileManager
 
                     continue;
                 }
+
 
                 // zip performance is much better and we will not thread
                 DoZip(finfo);
@@ -203,18 +212,18 @@ namespace IPTComShark.FileManager
                                 ArchiveKey = reader.Entry.Key
                             };
 
-                            
-                            if (PCAPReader.IsPCAP(readbytes))
+
+                            if (BaseReader.IsPCAP(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
-                                
+
                                 var pcapStreamReader = new PCAPStreamReader(memstream);
-                                
+
                                 foreach (var pcapBlock in pcapStreamReader.Enumerate())
                                 {
                                     // enumerate to gather info
                                 }
-                                
+
                                 dsource.StartTime = pcapStreamReader.StartTime;
                                 dsource.EndTime = pcapStreamReader.EndTime;
                                 dsource.Packets = pcapStreamReader.Count;
@@ -222,7 +231,7 @@ namespace IPTComShark.FileManager
                                 UpdateList(dsource);
                             }
 
-                            if (PCAPReader.IsPCAPNG(readbytes))
+                            if (BaseReader.IsPCAPNG(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
 
@@ -237,13 +246,13 @@ namespace IPTComShark.FileManager
                                 dsource.EndTime = pcapngreader.EndTime;
                                 dsource.Packets = pcapngreader.Count;
                                 dsource.ArchiveSourceType = SourceType.PCAPNG;
-                                UpdateList(dsource);                                
+                                UpdateList(dsource);
                             }
                         }
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 UpdateList(finfo.FullName + " " + e.Message);
             }
@@ -306,7 +315,7 @@ namespace IPTComShark.FileManager
 
                 datePicker1.Update(list);
             }
-        }        
+        }
 
         private List<string> Uniquify(List<string> strings)
         {
@@ -336,11 +345,11 @@ namespace IPTComShark.FileManager
             this.DialogResult = DialogResult.OK;
 
             this.ProcessingFilters = new ProcessingFilter();
-            if(!string.IsNullOrWhiteSpace(textBoxExcludeIP.Text))
+            if (!string.IsNullOrWhiteSpace(textBoxExcludeIP.Text))
             {
                 string[] vs = textBoxExcludeIP.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 ProcessingFilters.ExcludeIPs = new List<IPAddress>();
-                foreach(var stringip in vs)
+                foreach (var stringip in vs)
                 {
                     if (IPAddress.TryParse(stringip, out var ip))
                         ProcessingFilters.ExcludeIPs.Add(ip);
@@ -390,7 +399,7 @@ namespace IPTComShark.FileManager
                 {
                     if (!started)
                     {
-                        pcapWriter.LinkLayerType = (uint) raw.LinkLayer;
+                        pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
 
                         started = true;
                     }
