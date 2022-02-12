@@ -673,7 +673,7 @@ namespace IPTComShark
 
             var processor = new BackStore.BackStore(_parserFactory, true);
 
-            var format = PCAPReader.CanRead(file);
+            var format = BaseReader.CanRead(file);
             if (format == Format.PCAP)
             {
                 var pcapReader = new PCAPFileReader(file);
