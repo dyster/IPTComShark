@@ -65,6 +65,7 @@ namespace IPTComShark.FileManager
 
         private void InspectFiles(List<string> fileNames)
         {
+            var threadCount = 0;
             var threads = new List<Thread>();
 
             foreach (var fileName in fileNames)
@@ -78,54 +79,76 @@ namespace IPTComShark.FileManager
                 }
 
 
+
+
                 if (BaseReader.IsPCAP(first4))
                 {
-                    using (var pcapFileReader = new PCAPFileReader(fileName))
+                    ThreadPool.QueueUserWorkItem(x =>
                     {
-                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        Interlocked.Increment(ref threadCount);
+
+                        using (var pcapFileReader = new PCAPFileReader(fileName))
                         {
-                            // enumerate to gather info
+                            foreach (var pcapBlock in pcapFileReader.Enumerate())
+                            {
+                                // enumerate to gather info
+                            }
+
+                            var dsource = new DataSource
+                            {
+                                FileInfo = finfo,
+                                StartTime = pcapFileReader.StartTime,
+                                EndTime = pcapFileReader.EndTime,
+                                SourceType = SourceType.PCAP,
+                                Packets = pcapFileReader.Count
+                            };
+                            UpdateList(dsource);
                         }
 
-                        var dsource = new DataSource
-                        {
-                            FileInfo = finfo,
-                            StartTime = pcapFileReader.StartTime,
-                            EndTime = pcapFileReader.EndTime,
-                            SourceType = SourceType.PCAP,
-                            Packets = pcapFileReader.Count
-                        };
-                        UpdateList(dsource);
-                    }
-
+                        Interlocked.Decrement(ref threadCount);
+                    });
 
                     continue;
                 }
 
                 if (BaseReader.IsPCAPNG(first4))
                 {
-                    using (var pcapFileReader = new PCAPNGFileReader(fileName))
+                    ThreadPool.QueueUserWorkItem(x =>
                     {
-                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        Interlocked.Increment(ref threadCount);
+
+                        using (var pcapFileReader = new PCAPNGFileReader(fileName))
                         {
-                            // enumerate to gather info
+                            foreach (var pcapBlock in pcapFileReader.Enumerate())
+                            {
+                                // enumerate to gather info
+                            }
+
+                            var dsource = new DataSource
+                            {
+                                FileInfo = finfo,
+                                StartTime = pcapFileReader.StartTime,
+                                EndTime = pcapFileReader.EndTime,
+                                SourceType = SourceType.PCAPNG,
+                                Packets = pcapFileReader.Count
+                            };
+                            UpdateList(dsource);
+
+
+
+
                         }
 
-                        var dsource = new DataSource
-                        {
-                            FileInfo = finfo,
-                            StartTime = pcapFileReader.StartTime,
-                            EndTime = pcapFileReader.EndTime,
-                            SourceType = SourceType.PCAPNG,
-                            Packets = pcapFileReader.Count
-                        };
-                        UpdateList(dsource);
-                        continue;
-                    }
+                        Interlocked.Decrement(ref threadCount);
+                    });
+
+                    continue;
+
+                    
 
                 }
 
-                if(first4[3] == 0xFD && first4[2] == 0x2F && first4[1] == 0xB5 && first4[0] == 0x28)
+                if (first4[3] == 0xFD && first4[2] == 0x2F && first4[1] == 0xB5 && first4[0] == 0x28)
                 {
                     // Zstandard
                     continue;
@@ -134,25 +157,47 @@ namespace IPTComShark.FileManager
 
                 if (SevenZipArchive.IsSevenZipFile(fileName))
                 {
-                    // because of lousy performance when operating on 7zip, we launch a new thread instead of using tasks
-                    var thread = new Thread(() => DoSevenZip(finfo));
-                    thread.Start();
-                    threads.Add(thread);
+                    ThreadPool.QueueUserWorkItem(x =>
+                    {
+                        Interlocked.Increment(ref threadCount);
 
+                        DoSevenZip(finfo);
+
+                        Interlocked.Decrement(ref threadCount);
+                    });
+
+                    // because of lousy performance when operating on 7zip, we launch a new thread instead of using tasks
+                    //var thread = new Thread(() => DoSevenZip(finfo));
+                    //thread.Start();
+                    //threads.Add(thread);
 
                     continue;
                 }
 
+                                
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Interlocked.Increment(ref threadCount);
 
-                // zip performance is much better and we will not thread
-                DoZip(finfo);
+                    DoZip(finfo);
+
+                    Interlocked.Decrement(ref threadCount);
+                });
+               
             }
 
-            UpdateList("Waiting for all threads to finish");
-            foreach (Thread thread in threads)
+            // Give all threads a chance to start
+            Thread.Sleep(100);
+                        
+            while(threadCount > 0)
             {
-                thread.Join();
+                UpdateList("Processing threads: " + threadCount.ToString());
+                Thread.Sleep(1000);
             }
+            //foreach (Thread thread in threads)
+            //{
+            //    thread.Join();
+            //}
 
             UpdateList("All threads finished");
         }
