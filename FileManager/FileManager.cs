@@ -289,7 +289,7 @@ namespace IPTComShark.FileManager
         public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
 
         public DateTime FilterTo { get; set; }
-        public ProcessingFilter ProcessingFilters { get; private set; }
+        public ProcessingFilter ProcessingFilters { get; set; }
         public DateTime FilterFrom { get; set; }
 
 

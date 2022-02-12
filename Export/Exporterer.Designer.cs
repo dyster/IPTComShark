@@ -37,6 +37,7 @@
             this.checkBoxProfibus = new System.Windows.Forms.CheckBox();
             this.checkBoxEverything = new System.Windows.Forms.CheckBox();
             this.checkBoxSAPIdle = new System.Windows.Forms.CheckBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBoxPacketSelect.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,10 +106,11 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(652, 185);
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(653, 238);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(88, 27);
+            this.buttonOK.Size = new System.Drawing.Size(88, 23);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -153,11 +155,21 @@
             this.checkBoxSAPIdle.Text = "SAP Idle Analysis";
             this.checkBoxSAPIdle.UseVisualStyleBackColor = true;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(13, 238);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(633, 23);
+            this.progressBar1.TabIndex = 5;
+            // 
             // Exporterer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 240);
+            this.ClientSize = new System.Drawing.Size(754, 273);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.checkBoxSAPIdle);
             this.Controls.Add(this.checkBoxEverything);
             this.Controls.Add(this.checkBoxProfibus);
@@ -184,5 +196,6 @@
         private System.Windows.Forms.RadioButton radioButtonSelectFile;
         private System.Windows.Forms.CheckBox checkBoxEverything;
         private System.Windows.Forms.CheckBox checkBoxSAPIdle;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
