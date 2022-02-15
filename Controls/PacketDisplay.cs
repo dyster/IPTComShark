@@ -91,7 +91,7 @@ namespace IPTComShark.Controls
                         textBoxComid.Text = originalpacket.Comid.ToString();
 
                         textBoxSize.Text = iptPacket.IPTWPSize.ToString();
-                        textBoxType.Text = iptPacket.IPTWPType.ToString();
+                        textBoxType.Text = originalpacket.IPTWPType.ToString();
 
                         if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
                             originalpacket.Previous != null)

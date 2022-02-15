@@ -1,26 +1,23 @@
-﻿using SharpCompress.Archives.SevenZip;
+﻿using BustPCap;
+using IPTComShark.BackStore;
+using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
-using sonesson_tools.FileReaders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-
-using BustPCap;
 using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
-using IPTComShark.BackStore;
-using System.Net;
 
 namespace IPTComShark.FileManager
 {
     public partial class FileOpener : Form
     {
         private string[] _inputstrings;
-        
-        private PCAPNGReader pcapngReader = new PCAPNGReader();
+
         private BindingList<DataSource> _dataSources = new BindingList<DataSource>();
 
         public List<DataSource> DataSources { get; private set; }
@@ -38,8 +35,8 @@ namespace IPTComShark.FileManager
             dataListView1.PrimarySortColumn = olvColumnStart;
 
             Load += (object sender, EventArgs e) => { backgroundWorker1.RunWorkerAsync(); };
-            
-        }        
+
+        }
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -68,74 +65,139 @@ namespace IPTComShark.FileManager
 
         private void InspectFiles(List<string> fileNames)
         {
+            var threadCount = 0;
             var threads = new List<Thread>();
 
             foreach (var fileName in fileNames)
             {
                 var finfo = new FileInfo(fileName);
 
-                
-                if (BustPCap.PCAPReader.CanRead(fileName))
+                var first4 = new byte[4];
+                using (FileStream fileStream = File.OpenRead(fileName))
                 {
-                    using (var pcapFileReader = new PCAPFileReader(fileName))
+                    fileStream.Read(first4, 0, 4);
+                }
+
+
+
+
+                if (BaseReader.IsPCAP(first4))
+                {
+                    ThreadPool.QueueUserWorkItem(x =>
                     {
-                        foreach (var pcapBlock in pcapFileReader.Enumerate())
+                        Interlocked.Increment(ref threadCount);
+
+                        using (var pcapFileReader = new PCAPFileReader(fileName))
                         {
-                            // enumerate to gather info
+                            foreach (var pcapBlock in pcapFileReader.Enumerate())
+                            {
+                                // enumerate to gather info
+                            }
+
+                            var dsource = new DataSource
+                            {
+                                FileInfo = finfo,
+                                StartTime = pcapFileReader.StartTime,
+                                EndTime = pcapFileReader.EndTime,
+                                SourceType = SourceType.PCAP,
+                                Packets = pcapFileReader.Count
+                            };
+                            UpdateList(dsource);
                         }
 
-                        var dsource = new DataSource
-                        {
-                            FileInfo = finfo,
-                            StartTime = pcapFileReader.StartTime,
-                            EndTime = pcapFileReader.EndTime,
-                            SourceType = SourceType.PCAP,
-                            Packets = pcapFileReader.Count
-                        };
-                        UpdateList(dsource);
-                    }
-                    
-                    
+                        Interlocked.Decrement(ref threadCount);
+                    });
+
                     continue;
                 }
-                else if (pcapngReader.CanRead(fileName))
+
+                if (BaseReader.IsPCAPNG(first4))
                 {
-                    var reader = new PCAPNGReader();
-                    var fileReadObjects = reader.Read(fileName);
-                    var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
-                    var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
-                    var dsource = new DataSource
+                    ThreadPool.QueueUserWorkItem(x =>
                     {
-                        FileInfo = finfo,
-                        StartTime = first.Timestamp,
-                        EndTime = last.Timestamp,
-                        SourceType = SourceType.PCAPNG,
-                        Packets = fileReadObjects.Count
-                    };
-                    UpdateList(dsource);
+                        Interlocked.Increment(ref threadCount);
+
+                        using (var pcapFileReader = new PCAPNGFileReader(fileName))
+                        {
+                            foreach (var pcapBlock in pcapFileReader.Enumerate())
+                            {
+                                // enumerate to gather info
+                            }
+
+                            var dsource = new DataSource
+                            {
+                                FileInfo = finfo,
+                                StartTime = pcapFileReader.StartTime,
+                                EndTime = pcapFileReader.EndTime,
+                                SourceType = SourceType.PCAPNG,
+                                Packets = pcapFileReader.Count
+                            };
+                            UpdateList(dsource);
+
+
+
+
+                        }
+
+                        Interlocked.Decrement(ref threadCount);
+                    });
+
+                    continue;
+
+                    
+
+                }
+
+                if (first4[3] == 0xFD && first4[2] == 0x2F && first4[1] == 0xB5 && first4[0] == 0x28)
+                {
+                    // Zstandard
                     continue;
                 }
+
 
                 if (SevenZipArchive.IsSevenZipFile(fileName))
                 {
-                    // because of lousy performance when operating on 7zip, we launch a new thread instead of using tasks
-                    var thread = new Thread(() => DoSevenZip(finfo));
-                    thread.Start();
-                    threads.Add(thread);
+                    ThreadPool.QueueUserWorkItem(x =>
+                    {
+                        Interlocked.Increment(ref threadCount);
 
+                        DoSevenZip(finfo);
+
+                        Interlocked.Decrement(ref threadCount);
+                    });
+
+                    // because of lousy performance when operating on 7zip, we launch a new thread instead of using tasks
+                    //var thread = new Thread(() => DoSevenZip(finfo));
+                    //thread.Start();
+                    //threads.Add(thread);
 
                     continue;
                 }
 
-                // zip performance is much better and we will not thread
-                DoZip(finfo);
+                                
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    Interlocked.Increment(ref threadCount);
+
+                    DoZip(finfo);
+
+                    Interlocked.Decrement(ref threadCount);
+                });
+               
             }
 
-            UpdateList("Waiting for all threads to finish");
-            foreach (Thread thread in threads)
+            // Give all threads a chance to start
+            Thread.Sleep(100);
+                        
+            while(threadCount > 0)
             {
-                thread.Join();
+                UpdateList("Processing threads: " + threadCount.ToString());
+                Thread.Sleep(1000);
             }
+            //foreach (Thread thread in threads)
+            //{
+            //    thread.Join();
+            //}
 
             UpdateList("All threads finished");
         }
@@ -177,7 +239,7 @@ namespace IPTComShark.FileManager
 
         private void PeekReader(IReader reader, FileInfo finfo)
         {
-            //try
+            try
             {
                 while (reader.MoveToNextEntry())
                 {
@@ -196,17 +258,17 @@ namespace IPTComShark.FileManager
                             };
 
 
-                            if (IsPCAP(readbytes))
+                            if (BaseReader.IsPCAP(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
-                                
+
                                 var pcapStreamReader = new PCAPStreamReader(memstream);
-                                
+
                                 foreach (var pcapBlock in pcapStreamReader.Enumerate())
                                 {
                                     // enumerate to gather info
                                 }
-                                
+
                                 dsource.StartTime = pcapStreamReader.StartTime;
                                 dsource.EndTime = pcapStreamReader.EndTime;
                                 dsource.Packets = pcapStreamReader.Count;
@@ -214,17 +276,20 @@ namespace IPTComShark.FileManager
                                 UpdateList(dsource);
                             }
 
-                            if (IsPCAPNG(readbytes))
+                            if (BaseReader.IsPCAPNG(readbytes))
                             {
                                 var memstream = MemStream(readbytes, entryStream);
 
-                                var pcapngreader = new PCAPNGReader();
-                                var fileReadObjects = pcapngreader.ReadStream(memstream);
-                                var first = (PCAPNGBlock) fileReadObjects.First().ReadObject;
-                                var last = (PCAPNGBlock) fileReadObjects.Last().ReadObject;
-                                dsource.StartTime = first.Timestamp;
-                                dsource.EndTime = last.Timestamp;
-                                dsource.Packets = fileReadObjects.Count();
+                                var pcapngreader = new PCAPNGStreamReader(memstream);
+
+                                foreach (var pcapBlock in pcapngreader.Enumerate())
+                                {
+                                    // enumerate to gather info
+                                }
+
+                                dsource.StartTime = pcapngreader.StartTime;
+                                dsource.EndTime = pcapngreader.EndTime;
+                                dsource.Packets = pcapngreader.Count;
                                 dsource.ArchiveSourceType = SourceType.PCAPNG;
                                 UpdateList(dsource);
                             }
@@ -232,8 +297,9 @@ namespace IPTComShark.FileManager
                     }
                 }
             }
-            //catch(Exception e)
+            catch (Exception e)
             {
+                UpdateList(finfo.FullName + " " + e.Message);
             }
         }
 
@@ -296,17 +362,6 @@ namespace IPTComShark.FileManager
             }
         }
 
-        private bool IsPCAP(byte[] bytes)
-        {
-            return bytes[0] == 0xd4 && bytes[1] == 0xc3 && bytes[2] == 0xb2 && bytes[3] == 0xa1 || bytes[0] == 0xa1 &&
-                bytes[1] == 0xb2 && bytes[2] == 0xc3 && bytes[3] == 0xd4;
-        }
-
-        private bool IsPCAPNG(byte[] bytes)
-        {
-            return bytes[0] == '\n' && bytes[1] == '\r' && bytes[2] == '\r' && bytes[3] == '\n';
-        }
-
         private List<string> Uniquify(List<string> strings)
         {
             var unique_items = new HashSet<string>(strings);
@@ -335,11 +390,11 @@ namespace IPTComShark.FileManager
             this.DialogResult = DialogResult.OK;
 
             this.ProcessingFilters = new ProcessingFilter();
-            if(!string.IsNullOrWhiteSpace(textBoxExcludeIP.Text))
+            if (!string.IsNullOrWhiteSpace(textBoxExcludeIP.Text))
             {
                 string[] vs = textBoxExcludeIP.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 ProcessingFilters.ExcludeIPs = new List<IPAddress>();
-                foreach(var stringip in vs)
+                foreach (var stringip in vs)
                 {
                     if (IPAddress.TryParse(stringip, out var ip))
                         ProcessingFilters.ExcludeIPs.Add(ip);
@@ -389,7 +444,7 @@ namespace IPTComShark.FileManager
                 {
                     if (!started)
                     {
-                        pcapWriter.LinkLayerType = (uint) raw.LinkLayer;
+                        pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
 
                         started = true;
                     }

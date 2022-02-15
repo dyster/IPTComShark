@@ -37,6 +37,7 @@ namespace IPTComShark
         PppBSD = 16, // 0x10
         AtmClip = 19, // 0x13
         PppSerial = 50, // 0x32
+        BDS = 65, // EBICAB, not standard
         CiscoHDLC = 104, // 0x68
         Ieee80211 = 105, // 0x69
         Loop = 108, // 0x6C

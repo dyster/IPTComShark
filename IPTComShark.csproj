@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>IPTComShark</RootNamespace>
     <AssemblyName>IPTComShark</AssemblyName>
-    <Version>1.9.4.0</Version>
-    <AssemblyVersion>1.9.4.0</AssemblyVersion>
-    <FileVersion>1.9.4.0</FileVersion>
+    <Version>1.9.4.3</Version>
+    <AssemblyVersion>1.9.4.3</AssemblyVersion>
+    <FileVersion>1.9.4.3</FileVersion>
     <PackageIcon>shark-icon-24347.jpg</PackageIcon>
     <PackageIconUrl />
     <ApplicationIcon>shark-icon-24347-16x16.ico</ApplicationIcon>
@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus">
-      <Version>5.5.0</Version>
+      <Version>5.8.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

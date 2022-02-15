@@ -25,18 +25,18 @@ namespace IPTComShark.Parsers
 
             parse.ParsedData = new List<ParsedDataSet>();
             var dataset = new ParsedDataSet();
-           
 
-            foreach(var prop in arp.GetType().GetProperties())
-            {
-                var value = prop.GetValue(arp);
-                if (value == null)
-                    continue;
-                dataset.ParsedFields.Add(ParsedField.Create(prop.Name, value.ToString()));
-            }            
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.HardwareAddressLength), arp.HardwareAddressLength));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.HardwareAddressType), arp.HardwareAddressType));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.Operation), arp.Operation));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.ProtocolAddressLength), arp.ProtocolAddressLength));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.ProtocolAddressType), arp.ProtocolAddressType));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.SenderHardwareAddress), arp.SenderHardwareAddress));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.SenderProtocolAddress), arp.SenderProtocolAddress));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.TargetHardwareAddress), arp.TargetHardwareAddress));
+            dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.TargetProtocolAddress), arp.TargetProtocolAddress));
             
             parse.ParsedData.Add(dataset);
-
 
             return parse;
         }

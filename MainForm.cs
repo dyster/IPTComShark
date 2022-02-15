@@ -17,13 +17,14 @@ using IPTComShark.Export;
 using SharpPcap.Npcap;
 using sonesson_tools.FileReaders;
 using IPTComShark.Parsers;
+using BustPCap;
 
 namespace IPTComShark
 {
     public partial class MainForm : Form
     {
         private BackStore.BackStore _backStore;
-        private ParserFactory _parserFactory;
+        private static ParserFactory _parserFactory;
 
         private long _capturedData;
 
@@ -38,13 +39,7 @@ namespace IPTComShark
 
             InitializeComponent();
 
-            _parserFactory = new ParserFactory();
-            _parserFactory.AddParser(new NTPParser());
-            _parserFactory.AddParser(new SPLParser());
-            _parserFactory.AddParser(new JRUParser());
-            _parserFactory.AddParser(new ARPParser());
-            
-            _parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
+            _parserFactory = GenerateParserFactory();
 
             _backStore = new BackStore.BackStore(_parserFactory);
 
@@ -53,7 +48,7 @@ namespace IPTComShark
             packetDisplay1.BackStore = _backStore;
             packetDisplay1.ParserFactory = _parserFactory;
 
-            Text = Text += " " + Application.ProductVersion + " ROGINATOR II: Parsing Day";// " codename \"Roger\"";
+            Text = Text += " " + Application.ProductVersion + " Bugsquash Edition";// " codename \"Roger\"";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
@@ -83,6 +78,19 @@ namespace IPTComShark
 
             stopwatch.Stop();
             Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
+        }
+
+        public static ParserFactory GenerateParserFactory()
+        {
+            var parserFactory = new ParserFactory();
+            parserFactory.AddParser(new NTPParser());
+            parserFactory.AddParser(new SPLParser());
+            parserFactory.AddParser(new JRUParser());
+            parserFactory.AddParser(new ARPParser());
+
+            parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
+
+            return parserFactory;
         }
 
         private void InitData()
@@ -634,7 +642,7 @@ namespace IPTComShark
                 RunBenchmark(@"c:\temp\benchmark3.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
-                RunBenchmark(@"c:\temp\benchmark4.pcap");
+                //RunBenchmark(@"c:\temp\benchmark4.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
                 RunBenchmark(@"c:\temp\benchmark5.pcap");
@@ -663,38 +671,34 @@ namespace IPTComShark
             var list = new List<CapturePacket>();
             var count = 0;
 
-            var pcapReader = new PCAPReader();
+            var processor = new BackStore.BackStore(_parserFactory, true);
 
-            List<FileReadObject> fileReadObjects;
-            if (pcapReader.CanRead(file))
+            var format = BaseReader.CanRead(file);
+            if (format == Format.PCAP)
             {
-                fileReadObjects = pcapReader.Read(file);
-            }
-            else
-            {
-                var pcapngReader = new PCAPNGReader();
-                fileReadObjects = pcapngReader.Read(file);
-            }
-
-            foreach (var fileReadObject in fileReadObjects)
-            {
-                Raw raw;
-                if (fileReadObject.ReadObject is PCAPBlock)
+                var pcapReader = new PCAPFileReader(file);
+                foreach (var block in pcapReader.Enumerate())
                 {
-                    var pcapBlock = (PCAPBlock) fileReadObject.ReadObject;
-                    raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
-                        (LinkLayerType) pcapBlock.Header.network);
+                    processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network), out var notused);
+                    //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network)));
+                    count++;
                 }
-                else
-                {
-                    var pcapngBlock = (PCAPNGBlock) fileReadObject.ReadObject;
-                    raw = new Raw(pcapngBlock.Timestamp, pcapngBlock.PayLoad,
-                        (LinkLayerType) pcapngBlock.Interface.LinkLayerType);
-                }
-
-                list.Add(new CapturePacket(raw));
-                count++;
             }
+            else if(format == Format.PCAPNG)
+            {
+                var pcapReader = new PCAPNGFileReader(file);
+                foreach (var block in pcapReader.Enumerate())
+                {
+                    if(block.Header == PCAPNGHeader.EnhancedPacket)
+                    {
+                        processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
+                        //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType)));
+                        count++;
+                    }
+                    
+                }
+            }
+                       
 
             stopwatch.Stop();
 

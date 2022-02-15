@@ -13,28 +13,34 @@ namespace IPTComShark.Windows
 {
     public partial class TrafficSim : Form
     {
-        private List<CapturePacket> _packets;
+        private Dictionary<int, IPv4Packet> _packets = new Dictionary<int, IPv4Packet>();
+        private Dictionary<int, DateTime> _packetTimes = new Dictionary<int, DateTime>();
         private List<IPAddress> _ips = new List<IPAddress>();
         private IPAddress _ip;
+        //private readonly BackStore.BackStore _backStore;
 
         public TrafficSim()
         {
             InitializeComponent();
+            //this._backStore = new BackStore.BackStore(new Parsers.ParserFactory());
         }
 
         private class SendPacket
         {
             public SendPacket(DateTime dateTime, IPv4Packet ipv4)
             {
-                UdpPacket udp = (UdpPacket) ipv4.PayloadPacket;
+                Ipv4Packet = ipv4;
+                //UdpPacket udp = (UdpPacket) ipv4.PayloadPacket;
                 Date = dateTime;
-                PayLoad = udp.PayloadData;
-                Destination = new IPEndPoint(ipv4.DestinationAddress, udp.DestinationPort);
+                //PayLoad = udp.PayloadData;
+                //Destination = new IPEndPoint(ipv4.DestinationAddress, udp.DestinationPort);
             }
 
             public DateTime Date { get; }
             public byte[] PayLoad { get; }
             public IPEndPoint Destination { get; set; }
+
+            public IPv4Packet Ipv4Packet { get; set; }
 
             public TimeSpan TimeSpan { get; set; }
         }
@@ -49,18 +55,18 @@ namespace IPTComShark.Windows
 
 
             var que = new Queue<SendPacket>();
-            foreach (CapturePacket capturePacket in _packets.Where(packet => packet.Source.ToString() == _ip.ToString())
-            )
+            foreach (var kvp in _packets)
             {
-                // TODO temporarily disabled !!!!
+                var packet = kvp.Value;
+                if (packet.SourceAddress.ToString() == _ip.ToString())
+                {
+                    var sendPacket = new SendPacket(_packetTimes[kvp.Key], packet);
+                    que.Enqueue(sendPacket);
+                }
 
-                //Packet packet = capturePacket.Packet;
-                //
-                //IPv4Packet ipv4 = (IPv4Packet) packet.PayloadPacket;
-                //
-                //
-                //var sendPacket = new SendPacket(capturePacket.Date, ipv4);
-                //que.Enqueue(sendPacket);
+
+
+
             }
 
             DateTime startTime = que.Peek().Date;
@@ -106,15 +112,23 @@ namespace IPTComShark.Windows
 
                 ThreadPool.QueueUserWorkItem(thing =>
                 {
-                    udpClient.SendAsync(dequeue.PayLoad,
-                        dequeue.PayLoad.Length, dequeue.Destination);
+                    if (dequeue.Ipv4Packet.PayloadPacket is UdpPacket udp)
+                    {
+                        udpClient.SendAsync(udp.PayloadData,
+                        udp.PayloadData.Length, new IPEndPoint(dequeue.Ipv4Packet.DestinationAddress, udp.DestinationPort));
+                    }
+                    else if (dequeue.Ipv4Packet.PayloadPacket is TcpPacket tcp)
+                    {
+
+                    }
+
                 });
 
                 if (que.Count > 0)
                 {
                     double perc = (dequeue.Date - startTime).TotalMilliseconds / totalMS;
 
-                    backgroundWorker1.ReportProgress((int) (perc * 100));
+                    backgroundWorker1.ReportProgress((int)(perc * 100));
                 }
                 else
                 {
@@ -151,7 +165,8 @@ namespace IPTComShark.Windows
 
         private void TrafficSim_Load(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog {Multiselect = true};
+            int seed = 0;
+            var openFileDialog = new OpenFileDialog { Multiselect = true };
             DialogResult dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
@@ -159,7 +174,15 @@ namespace IPTComShark.Windows
                 var raws = fileManager.OpenFiles(openFileDialog.FileNames);
                 foreach (var raw in raws)
                 {
-                    _packets.Add(new CapturePacket(raw));
+                    //_backStore.Add(raw, out var unused);
+                    var parse = PacketWrapper.Parse(raw);
+                    if (parse.HasPayloadPacket && parse.PayloadPacket is IPv4Packet ipv4)
+                    {
+
+                        _packets.Add(seed, ipv4);
+                        _packetTimes.Add(seed, raw.TimeStamp);
+                        seed++;
+                    }
                 }
             }
             else
@@ -169,25 +192,26 @@ namespace IPTComShark.Windows
             }
 
             // remove all non IPTCom packets
-            _packets.RemoveAll(packet => packet.Protocol != ProtocolType.IPTWP);
+            //_packets.RemoveAll(packet => packet.Protocol != ProtocolType.IPTWP);
 
-            foreach (var packet1 in _packets)
+            foreach (IPv4Packet packet1 in _packets.Values)
             {
-                IPAddress ip = new IPAddress(packet1.Source);
+                IPAddress ip = packet1.SourceAddress;
 
                 if (!_ips.Contains(ip))
                     _ips.Add(ip);
             }
 
-            _packets.Sort();
+            //_packets.Sort();
 
-            var startTime = _packets.First().Date;
+            //var firstPack = _packets.First();
+            //var startTime = DateTime.Now;
 
 
             comboBox1.DataSource = _ips;
 
-            labelStart.Text += " " + _packets.First().Date;
-            labelEnd.Text += " " + _packets.Last().Date;
+            labelStart.Text += " " + _packetTimes.First().Value.ToString();
+            labelEnd.Text += " " + _packets.Last().Value.ToString();
         }
     }
 }
