@@ -11,8 +11,8 @@ namespace IPTComShark.DataSets
     {
         public VSISDMI()
         {
-            this.Name = "VSIS 2.11";
-            this.Description = "EVC Telegrams based on the VSIS v2.11";
+            this.Name = "VSIS 2.16";
+            this.Description = "EVC Telegrams based on the VSIS v2.16";
 
             DataSets.Add(EVC_0);
             DataSets.Add(EVC_1);
@@ -76,9 +76,11 @@ namespace IPTComShark.DataSets
             DataSets.Add(EVC_151);
             DataSets.Add(EVC_152);
             DataSets.Add(EVC_153);
+            DataSets.Add(EVC_154);
+            DataSets.Add(EVC_155);
         }
 
-        #region EVC-0 to EVC-99 (EVC->DMI)
+#region EVC-0 to EVC-99 (EVC->DMI)
 
         // checked RVV 26-10-2019 2.11
         public static DataSetDefinition EVC_0 => new DataSetDefinition
@@ -388,12 +390,12 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 26-10-2019 2.11
+        // checked RVV 15-11-2021 2.16
         public static DataSetDefinition EVC_2 => new DataSetDefinition
         {
             Name = "EVC_2 MMI_STATUS",
             Comment =
-                "This packet contains status information for the driver and shall be sent to the MMI when­ever any of the status has changed.",
+                "This packet contains status information for the driver and shall be sent to the MMI when­ever any of the status has changed, and at least once every 5 seconds.",
             Identifiers = new List<string>
             {
                 "230530020",
@@ -465,13 +467,14 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 24-10-2019 2.11
+        // checked RVV 15-11-2021 2.16
         public static DataSetDefinition EVC_4 => new DataSetDefinition
         {
             Name = "EVC_4 MMI_TRACK_DESCRIPTION",
             Comment =
                 "This packet contains trackside information to the driver. " +
-                "Whenever new information is received from trackside the speed profile and the gradient profile shall be sent to the MMI.",
+                "Whenever new information is received from trackside, and at least once every 5 seconds, " +
+                "the speed profile and the gradient profile shall be sent to the MMI.",
             Identifiers = new List<string>
             {
                 "230530040",
@@ -511,7 +514,8 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.Int32,
                                 Length = 32,
                                 Comment =
-                                    "This is the position in odometer co-ordinates of the start location of a speed discontinuity in the most restrictive speed profile. This position can be adjusted depending on supervision."
+                                    "This is the position in odometer co-ordinates of the start location of a speed discontinuity in the most restrictive speed profile. " +
+                                    "This position can be adjusted depending on supervision."
                             },
                             new BitField
                             {
@@ -699,7 +703,7 @@ namespace IPTComShark.DataSets
                             {
                                 Name = "MMI_X_CAPTION_TRAINSET",
                                 BitFieldType = BitFieldType.StringLatin,
-                                Comment = "Train data set caption text",
+                                Comment = "Gives the content (character by character) of the caption text of a preconfigured train data set",
                                 VariableLengthSettings = new VariableLengthSettings
                                 {
                                     Name = "MMI_N_CAPTION_TRAINSET",
@@ -1695,7 +1699,9 @@ namespace IPTComShark.DataSets
                               "\r\n8: Spare" +
                               "\r\n9: DRU installed" +
                               "\r\n10: Euroloop BTM(s) installed" +
-                              "\r\n11..15: Spare"
+                              "\r\n11: ATO service enabled" +
+                              "\r\n12: CMD installed" +
+                              "\r\n13..15: Spare"
                 },
                 new BitField
                 {
@@ -1770,7 +1776,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked
+        // checked RVV 22-11-2021 2.16
         public static DataSetDefinition EVC_25 => new DataSetDefinition
         {
             Name = "EVC_25 MMI_SPECIFIC_STM_DE_REQUEST",
@@ -1863,7 +1869,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked
+        // checked RVV 22-11-2021 2.16
         public static DataSetDefinition EVC_26 => new DataSetDefinition
         {
             Name = "EVC_26 MMI_SPECIFIC_STM_DW_VALUES",
@@ -1927,7 +1933,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked
+        // checked RVV 22-11-2021 2.16
         public static DataSetDefinition EVC_27 => new DataSetDefinition
         {
             Name = "EVC_27 MMI_SPECIFIC_STM_TEST_REQUEST",
@@ -1981,7 +1987,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked 20190510 2.11
+        // checked RVV 22-11-2021 2.16
         public static DataSetDefinition EVC_28 => new DataSetDefinition
         {
             Name = "EVC_28 MMI_ECHOED_SET_VBC_DATA",
@@ -2022,7 +2028,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked 20190510 2.11
+        // checked RVV 22-11-2021 2.16
         public static DataSetDefinition EVC_29 => new DataSetDefinition
         {
             Name = "EVC_29 MMI_ECHOED_REMOVE_VBC_DATA",
@@ -2817,9 +2823,9 @@ namespace IPTComShark.DataSets
             }
         };
 
-        #endregion
+#endregion
 
-        #region EVC-100 to EVC-153 (DMI->EVC)
+#region EVC-100 to EVC-155 (DMI->EVC)
 
         // checked RVV 01-07-2020 2.14
         public static DataSetDefinition EVC_100 => new DataSetDefinition
@@ -3806,7 +3812,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 6-12-2019 DMI VSIS 1.5
+        // checked RVV 06-12-2019 DMI VSIS 1.5
         public static DataSetDefinition EVC_142 => new DataSetDefinition
         {
             Name = "EVC_142 MMI_KMC_ID_REQUEST",
@@ -3849,7 +3855,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 6-12-2019 DMI VSIS 1.5
+        // checked RVV 06-12-2019 DMI VSIS 1.5
         public static DataSetDefinition EVC_151 => new DataSetDefinition
         {
             Name = "EVC_151 MMI_CONFIRMED_BRAKE_PERCENTAGE",
@@ -3883,11 +3889,11 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 6-12-2019 DMI VSIS 1.5
+        // checked RVV 15-11-2021 2.16
         public static DataSetDefinition EVC_152 => new DataSetDefinition
         {
             Name = "EVC_152 MMI_DRIVER_ACTION",
-            Comment = "This packet shall be sent when the corresponding driver action is  performed." +
+            Comment = "This packet shall be sent when the corresponding driver action is performed." +
                       "\r\nThe data is used by ETC to record the driver actions in JRU.",
             Identifiers =
             {
@@ -3898,6 +3904,7 @@ namespace IPTComShark.DataSets
             {
                 MMI_M_PACKET,
                 MMI_L_PACKET,
+                MMI_T_DMILM,
                 new BitField
                 {
                     Name = "MMI_M_DRIVER_ACTION",
@@ -3954,7 +3961,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 6-12-2019 DMI VSIS 1.5
+        // checked RVV 16-11-2021 2.16
         public static DataSetDefinition EVC_153 => new DataSetDefinition
         {
             Name = "EVC_153 MMI_DISPLAY_STATUS_JRU",
@@ -4067,31 +4074,26 @@ namespace IPTComShark.DataSets
                     {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField
+                    {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                {
-                    Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false
-                },
+                new BitField              
+                    {Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
-                {
-                    Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                    {Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
                 new BitField
-                {
-                    Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                    {Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
                 new BitField
                     {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
@@ -4105,52 +4107,41 @@ namespace IPTComShark.DataSets
                 new BitField
                     {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
-                {
-                    Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                    {Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
                 new BitField
-                {
-                    Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                    {Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
                 new BitField
-                {
-                    Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
+                    {Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
                 new BitField
-                {
-                    Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,
-                    SkipIfValue = false
-                },
-
-                MMI_V_SETSPEED,
+                    {Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
 
                 new BitField
                 {
-                    Name = "MMI_M_TTI",
-                    BitFieldType = BitFieldType.UInt8,
+                    Name = "DMI_SYSTEM_STATUS_spare",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 14,
+                    Comment = "Spare for alignment"
+                },
+
+                new BitField
+                {
+                    Name = "evc153_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Spare for alignment"
+                },
+
+                new BitField
+                {
+                    Name = "evc153_spare2",
+                    BitFieldType = BitFieldType.Spare,
                     Length = 8,
-                    Comment = "Time to Indication square size on DMI",
-                    LookupTable = new Dictionary<string, string>
-                    {
-                        {"0", "0 cells"},
-                        {"1", "5 x 5 cells"},
-                        {"2", "10 x 10 cells"},
-                        {"3", "15 x 15 cells"},
-                        {"4", "20 x 20 cells"},
-                        {"5", "25 x 25 cells"},
-                        {"6", "30 x 30 cells"},
-                        {"7", "35 x 35 cells"},
-                        {"8", "40 x 40 cells"},
-                        {"9", "45 x 45 cells"},
-                        {"10", "50 x 50 cells"},
-                    }
+                    Comment = "Spare for alignment"
                 },
 
-                // DMI Sound Status as per Subset27
-                new BitField {Name = "Sound Sinfo", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                // DMI SOUND STATUS as per Subset27
+                new BitField
+                    {Name = "Sound Sinfo", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
                     {Name = "Sound S1 Over-speed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
                 new BitField
@@ -4158,20 +4149,272 @@ namespace IPTComShark.DataSets
 
                 new BitField
                 {
+                    Name = "DMI_SOUND_STATUS_spare",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 5,
+                    Comment = "Spare for alignment"
+                },
+
+                new BitField
+                {
                     Name = "MMI_Q_DISPLAY_CHANGE",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment =
-                        "Status of the packet contents of EVC-153. Set corresponding bit to 1 when the content of the variable changes since last message sent.",
+                        "Status of the packet contents of EVC-153. Set corresponding bit to 1 when the content of the variable changes since last message sent."
+                }
+            }
+        };
+
+        // checked RVV 16-11-2021 2.16
+        public static DataSetDefinition EVC_154 => new DataSetDefinition
+        {
+            Name = "EVC_154 MMI_SPEED_DISTANCE_INFORMATION_JRU",
+            Comment =
+                "This packet shall be sent periodically (process data) and contains all information necessary to create the " +
+            "JRU messages 20 (Speed and Distance Monitoring Information) and 44 (LSSMA)." +
+            "Note: Size is 32 Bytes, cycle time is 512 ms.",
+            Identifiers =
+            {
+                "230531250",
+                "230536250"
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_T_DMILM,
+                new BitField
+                {
+                    Name = "MMI_M_SDMTYPE",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Type of the speed and distance monitoring. Based on information provided in EVC-1 MMI_M_WARNING",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "MMI_M_SYMB_STATUS changed"},
-                        {"1", "MMI_M_SYSTEM_STATUS changed"},
-                        {"2", "MMI_V_SETSPEED changed"},
-                        {"3", "MMI_M_TTI changed"},
-                        {"4", "MMI_M_SOUND_STATUS changed"}
+                        {"0", "Ceiling speed monitoring (CSM)"},
+                        {"1", "Pre indication monitoring (PMI)"},
+                        {"2", "Target speed monitoring (TSM)"},
+                        {"3", "Release speed monitoring (RSM)"}
                     }
-                }
+                },
+                new BitField
+                {
+                    Name = "MMI_M_SDMSUPSTAT",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Supervision status of the speed and distance monitoring. " +
+                                "Based on information provided in EVC-1 MMI_M_WARNING",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"0", "Normal status"},
+                        {"1", "Indication status"},
+                        {"2", "Overspeed status"},
+                        {"3", "Warning status"},
+                        {"4", "Intervention status"}
+                    }
+                },
+                new BitField
+                {
+                    Name = "MMI_V_PERM_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Permitted speed displayed to the driver. " +
+                                "Based on information provided in EVC-1 MMI_V_PERMITTED",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"1023", "None"}
+                    },
+                    AppendString = " km/h"
+                },
+                new BitField
+                {
+                    Name = "MMI_V_SBI_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "SBI speed displayed to the driver. " +
+                                "Based on information provided in EVC-1 MMI_V_INTERVENTION",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"1023", "None"}
+                    },
+                    AppendString = " km/h"
+                },
+                new BitField
+                {
+                    Name = "MMI_V_TARGET_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Target speed displayed to the driver. " +
+                                "Based on information provided in EVC-1 MMI_V_TARGET",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"1023", "None"}
+                    },
+                    AppendString = " km/h"
+                },
+                new BitField
+                {
+                    Name = "MMI_D_TARGET_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Target distance displayed to the driver. " +
+                                "Based on information provided in EVC-1 MMI_O_BRAKETARGET",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"32767", "None"}
+                    },
+                    AppendString = " m"
+                },
+                new BitField
+                {
+                    Name = "MMI_V_RELEASE_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "Release speed displayed to the driver. " +
+                                "Based on information provided in EVC-1 MMI_V_RELEASE",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"1023", "None"}
+                    },
+                    AppendString = " km/h"
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "Spare (MMI_M_TTI in P8e / BL3R2)"
+                    //new BitField
+                        //{
+                        //    Name = "MMI_M_TTI",
+                        //    BitFieldType = BitFieldType.UInt8,
+                        //    Length = 8,
+                        //    Comment = "Time to Indication square size on DMI",
+                        //    LookupTable = new Dictionary<string, string>
+                        //    {
+                        //        {"0", "0 cells"},
+                        //        {"1", "5 x 5 cells"},
+                        //        {"2", "10 x 10 cells"},
+                        //        {"3", "15 x 15 cells"},
+                        //        {"4", "20 x 20 cells"},
+                        //        {"5", "25 x 25 cells"},
+                        //        {"6", "30 x 30 cells"},
+                        //        {"7", "35 x 35 cells"},
+                        //        {"8", "40 x 40 cells"},
+                        //        {"9", "45 x 45 cells"},
+                        //        {"10", "50 x 50 cells"},
+                        //    }
+                        //},
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "Spare for alignment"
+                },
+                new BitField
+                {
+                    Name = "MMI_V_LSSMA_JRU",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16,
+                    Comment = "LSSMA speed displayed to the driver. " +
+                                "Based on information provided in EVC-23 MMI_V_LSSMA",
+                    LookupTable = new Dictionary<string, string>
+                    {
+                        {"1023", "None"}
+                    },
+                    AppendString = " km/h"
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_3",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Spare (MMI_V_SETSPEED in P8e / BL3R2)"
+                        //MMI_V_SETSPEED
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_4",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16,
+                    Comment = "Spare for alignment"
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_5",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 32,
+                    Comment = "Spare for alignment"
+                },
+                new BitField
+                {
+                    Name = "evc154_spare_6",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 32,
+                    Comment = "Spare for alignment"
+                },
+            }
+        };
+
+        // checked RVV 22-11-2021 2.16
+        public static DataSetDefinition EVC_155 => new DataSetDefinition
+        {
+            Name = "EVC_155 MMI_TEXT_MESSAGE_STATUS_JRU",
+            Comment =
+                "This packet is used to inform the ETC when text messages are shown or removed on the DMI and contains all information necessary to create the " +
+            "JRU messages 16, 17, 18 and 19 (Start/Stop displaying Fixed/Plain text messages). To record JRU messages 16 and 17(Fixed text), only MMI_Q_TEXT is needed. " +
+            "To record JRU messages 18 and 19 (Plain text), only MMI_I_TEXT is needed." +
+            "" +
+            "Note: The full text needs to be recorded in JRU Messages 18 and 19. However, these plain text messages can be very large " +
+            "(up to 255 characters) and such a transfer on the GPP may take several seconds. " +
+            "The strategy to reduce the load on the GPP is to identify each plain text message by the identifier MMI_I_TEXT and cache it in the ETC. " +
+            "The DMI can report back only this identifier.",
+            Identifiers =
+            {
+                "230531260",
+                "230536260"
+            },
+            BitFields = new List<BitField>
+            {
+                MMI_M_PACKET,
+                MMI_L_PACKET,
+                MMI_T_DMILM,
+                new BitField
+                {
+                    Name = "MMI_N_TEXT_MESSAGES",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "Number of text messages [0..50]"
+                },
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "MMI_N_TEXT_MESSAGES"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            MMI_Q_TEXT,
+                            MMI_I_TEXT,
+                            new BitField
+                            {
+                                Name = "MMI_Q_TEXT_MESSAGE_STATUS",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8,
+                                Comment = "Status of Text Message",
+                                LookupTable = new Dictionary<string, string>
+                                {
+                                    {"0", "Start showing Text Message to Driver"},
+                                    {"1", "Stop displaying Text Message to Driver"},
+                                    {"2", "Stop displaying Text Message to Driver, that was never shown"}
+                                }
+                            }
+                        }
+                    }
+                }                
             }
         };
 
@@ -4203,7 +4446,7 @@ namespace IPTComShark.DataSets
             Comment = "Safe status word for IPTCom (variables > 16)"
         };
 
-        #endregion
+#endregion
 
         public static DataSetDefinition SDT_Trailer => new DataSetDefinition
         {
@@ -4256,7 +4499,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        #region Common MMI Variables
+#region Common MMI Variables
 
         public static BitField MMI_EVC_M_XATTRIBUTE => new BitField
         {
@@ -4588,7 +4831,11 @@ namespace IPTComShark.DataSets
         {
             Name = "MMI_M_DATA_ENABLE",
             Length = 1, // fixed to one iteration
-            Comment = "Enable Mask",
+            Comment = "A bit mask that, for each variable, tells if a data value is enabled (e.g. for 'edit' in EVC-6). 1== 'enabled'." +
+            "The variable supports the following use cases:" +
+            "1.) Controls edit ability of related data object during TDE procedure(EVC - 6, no data view)." +
+            "2.) In case of a Train Data View procedure this variable controls visibility of data items(ERA_ERTMS_015560, v3.4.0, chapter 11.5.1.5)." +
+            "3.) In packet EVC - 10 this variable controls highlighting of changed data items(ERA_ERTMS_015560, v3.4.0, chapter 11.4.1.4, 10.3.3.5).",
             NestedDataSet = new DataSetDefinition
             {
                 BitFields = new List<BitField>
@@ -4643,9 +4890,51 @@ namespace IPTComShark.DataSets
                     },
                     new BitField
                     {
-                        Name = "Spares",
-                        BitFieldType = BitFieldType.Spare,
-                        Length = 8
+                        Name = "Highlight Train Set ID",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Train Category",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Train Length",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Brake Percentage",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Max. Train Speed",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Axle Load Category",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Airtightness",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
+                    },
+                    new BitField
+                    {
+                        Name = "Highlight Loading Gauge",
+                        BitFieldType = BitFieldType.Bool,
+                        Length = 1,
                     }
                 }
             }
@@ -5248,31 +5537,53 @@ namespace IPTComShark.DataSets
                 {"267", "Balise read error"},
                 {"268", "Communication error"},
                 {"269", "Runaway movement"},
+                {"270", "Spare"},
+                {"271", "Spare"},
+                {"272", "Spare"},
                 {"273", "Unauthorized passing of EOA / LOA"},
                 {"274", "Entering FS"},
                 {"275", "Entering OS"},
                 {"276", "#3 LE06/LE10/LE12/LE14 (Transition to Level #4)"},
                 {"277", "#3 LE08 (Transition to NTC #2)"},
                 {"278", "Emergency Brake Failure"},
-                {"279", "Apply brakes"},
-                {"280", " Emergency stop"},
+                {"279", "Spare"},
+                {"280", "Emergency stop"},
                 {"281", "Spare"},
                 {"282", "#3 ST04 (Connection Lost/Set-Up failed)"},
                 {"286", "#3 ST06 (Reversing is possible)"},
                 {"290", "SH refused"},
                 {"291", "Spare"},
                 {"292", "SH request failed"},
+                {"293", "Spare"},
+                {"294", "Spare"},
+                {"295", "Spare"},
                 {"296", "Trackside not compatible"},
                 {"297", "Spare"},
                 {"298", "#3 DR02 (Confirm Track Ahead Free)"},
                 {"299", "Train is rejected"},
                 {"300", "No MA received at level transition"},
+                {"301", "Spare"},
+                {"302", "Spare"},
+                {"303", "Spare"},
+                {"304", "Spare"},
                 {"305", "Train divided"},
+                {"306", "Spare"},
+                {"307", "Spare"},
+                {"308", "Spare"},
+                {"309", "Spare"},
                 {"310", "Train data changed"},
+                {"311", "Spare"},
+                {"312", "Spare"},
+                {"313", "Spare"},
+                {"314", "Spare"},
                 {"315", "SR distance exceeded"},
                 {"316", "SR stop order"},
+                {"317", "Spare"},
+                {"318", "Spare"},
+                {"319", "Spare"},
                 {"320", "RV distance exceeded"},
                 {"321", "ETCS Isolated"},
+                //322...513 = Spare
                 {"514", "Perform Brake Test!"},
                 {"515", "Unable to start Brake Test"},
                 {"516", "Brake Test in Progress"},
@@ -5290,12 +5601,11 @@ namespace IPTComShark.DataSets
                 {"532", "BTM Test Failure"},
                 {"533", "BTM Test Timeout"},
                 {"534", "BTM Test Timeout in #1 hours"},
-                {"535", "ATP Restart required in #1 Hours"},
+                {"535", "Spare"},
                 {"536", "Restart ATP!"},
                 {"540", "No Level available Onboard"},
                 {"543", "#2 failed"},
                 {"544", "Spare"},
-                {"545", "#3 LE02A (Confirm LZB NTC)"},
                 {"552", "Announced level(s) not supported Onboard"},
                 {"553", "Spare"},
                 {"554", "Reactivate the Cabin!"},
@@ -5316,6 +5626,7 @@ namespace IPTComShark.DataSets
                 {"581", "Procedure Wheel Diameter Entry terminated by ATP"},
                 {"582", "Procedure Doppler Radar Entry terminated by ATP"},
                 {"583", "Spare"},
+                //584...605 Spare
                 {"606", "SH Stop Order"},
                 {"609", "#3 Symbol ST100 (Network registered via one modem)"},
                 {"610", "#3 Symbol ST102 (Network registered via two modems)"},
@@ -5334,13 +5645,19 @@ namespace IPTComShark.DataSets
                 {"630", "ETCS Isolation Switch failure"},
                 {"631", "#2 Isolation input not recognized"},
                 {"632", "Coasting input not recognised"},
-                {"633", "Spare"},
-                {"634", "Spare"},
+                {"633", "Speed Sensor maintenance required in #1 hours."},
+                {"634", "Speed Sensor maintenance required now!"},
                 {"635", "Juridical Recording not available"},
                 {"636", "Euroloop not available"},
                 {"637", "TIMS not available"},
                 {"638", "Degraded Radio service"},
                 {"639", "No Radio connection possible"},
+                {"640", "CMD not available"},
+                {"641", "CMD configured"},
+                {"649", "Critical Odometry"},
+                {"650", "Brake applied due to exceeded speed confidence"},
+                {"651", "Odometry fallback level active"},
+                //652...699 Spare
                 {"700", "#2 brake demand"},
                 {"701", "Route unsuitable – axle load category"},
                 {"702", "Route unsuitable – loading gauge"},
@@ -5351,13 +5668,17 @@ namespace IPTComShark.DataSets
                 {"707", "Spare"},
                 {"708", "Spare"},
                 {"709", "#3 MO22 (Acknowledgement for Limited Supervision)"},
-                {"710", "#3 (Train divided)"},
+                {"710", "Spare"},
                 {"711", "NL-input signal is withdrawn"},
                 {"712", "Wheel data settings were successfully changed"},
                 {"713", "Doppler radar settings were successfully changed"},
                 {"714", "Brake percentage was successfully changed"},
                 {"715", "No Country Selection in LZB PB Mode"},
-                {"716", "#3 Symbol ST05 (hour glass)"}
+                {"716", "#3 Symbol ST05 (hour glass)"},
+                {"717", "Brake Test request is forbidden in level NTC CBTC"},
+                //718...997 Spare
+                {"9998", "Remote Control"},
+                {"9999", "Remote Control Failure"}
             }
         };
 
@@ -5556,9 +5877,9 @@ namespace IPTComShark.DataSets
 
 
 
-        #endregion
+#endregion
 
-        #region Common OBU Variables
+#region Common OBU Variables
 
         public static BitField OBU_TR_M_Mode => new BitField
         {
@@ -5598,7 +5919,7 @@ namespace IPTComShark.DataSets
             AppendString = " cm"
         };
 
-        #endregion
+#endregion
 
         // checked 25-10-2019 RVV
         public static DataSetDefinition IPT_ECHO => new DataSetDefinition
@@ -5698,5 +6019,5 @@ namespace IPTComShark.DataSets
             {"50", "CBTC"},
             {"255", "exit"},
         };
-    }
+    }   
 }
