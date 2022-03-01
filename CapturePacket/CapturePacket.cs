@@ -1,11 +1,11 @@
 ﻿using IPTComShark.Parsers;
-using Newtonsoft.Json;
 using PacketDotNet;
 using sonesson_tools.BitStreamParser;
 using sonesson_tools.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace IPTComShark
 {
