@@ -29,6 +29,7 @@ namespace IPTComShark.Controls
         private static readonly Color ArpColor = Color.FromArgb(214, 232, 255);
         private static readonly Color ErrorColor = Color.Crimson;
 
+        private static readonly IPAddress localhost = IPAddress.Parse("127.0.0.1");
         private const string EmptyText = "No files loaded, use File->Open or Drag&Drop";
         private const string EmptyFilterText = "The filter has excluded everything";
         private string _lastBackStoreStatus = "";
@@ -323,9 +324,7 @@ namespace IPTComShark.Controls
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
-
-                //TODO optimise this with some byte comparison instead of all this instance creation
-                var localhost = IPAddress.Parse("127.0.0.1");
+                                
 
                 if (Settings.IgnoreLoopback && capturePacket.Source != null && capturePacket.Destination != null &&
                     Equals(new IPAddress(capturePacket.Source), localhost) &&
