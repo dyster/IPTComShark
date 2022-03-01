@@ -32,19 +32,6 @@ namespace IPTComShark
         {
             this.components = new System.ComponentModel.Container();
             IPTComShark.Controls.PacketListSettings packetListSettings1 = new IPTComShark.Controls.PacketListSettings();
-            IPTComShark.Properties.Settings settings1 = new IPTComShark.Properties.Settings();
-            IPTComShark.Controls.ColumnInfo columnInfo1 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo2 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo3 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo4 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo5 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo6 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo7 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo8 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo9 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo10 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo11 = new IPTComShark.Controls.ColumnInfo();
-            IPTComShark.Controls.ColumnInfo columnInfo12 = new IPTComShark.Controls.ColumnInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timerFlicker = new System.Windows.Forms.Timer(this.components);
@@ -110,7 +97,6 @@ namespace IPTComShark
             // 
             // timerFlicker
             // 
-            this.timerFlicker.Enabled = false;
             this.timerFlicker.Interval = 500;
             this.timerFlicker.Tick += new System.EventHandler(this.timerFlicker_Tick);
             // 
@@ -174,12 +160,17 @@ namespace IPTComShark
             this.packetListView1.Location = new System.Drawing.Point(0, 0);
             this.packetListView1.Margin = new System.Windows.Forms.Padding(5);
             this.packetListView1.Name = "packetListView1";
+            this.packetListView1.ParserFactory = null;
             this.packetListView1.SearchString = null;
-            packetListSettings1.AutoScroll = true;
-            packetListSettings1.IgnoreComid = null;
-            packetListSettings1.IgnoreDuplicatedPD = true;
-            packetListSettings1.IgnoreLoopback = true;
-            packetListSettings1.IgnoreUnknownData = true;
+            packetListSettings1.AutoScroll = false;
+            packetListSettings1.ColumnInfos = null;
+            packetListSettings1.IgnoreComid = "";
+            packetListSettings1.IgnoreDuplicatedPD = false;
+            packetListSettings1.IgnoreLoopback = false;
+            packetListSettings1.IgnoreUnknownData = false;
+            packetListSettings1.IgnoreVariables = new string[] {
+        "MMI_M_PACKET",
+        "MMI_L_PACKET"};
             this.packetListView1.Settings = packetListSettings1;
             this.packetListView1.Size = new System.Drawing.Size(1200, 629);
             this.packetListView1.TabIndex = 0;
@@ -217,6 +208,7 @@ namespace IPTComShark
             this.packetDisplay1.Location = new System.Drawing.Point(4, 3);
             this.packetDisplay1.Margin = new System.Windows.Forms.Padding(5);
             this.packetDisplay1.Name = "packetDisplay1";
+            this.packetDisplay1.ParserFactory = null;
             this.packetDisplay1.Size = new System.Drawing.Size(451, 595);
             this.packetDisplay1.TabIndex = 0;
             // 
@@ -280,7 +272,7 @@ namespace IPTComShark
             this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 3);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(451, 117);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(451, 132);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // checkBoxParserOnly
@@ -355,80 +347,6 @@ namespace IPTComShark
             // 
             this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            settings1.AutoScroll = false;
-            columnInfo1.DisplayIndex = 0;
-            columnInfo1.IsVisible = true;
-            columnInfo1.Name = "No";
-            columnInfo1.Width = 60;
-            columnInfo2.DisplayIndex = 1;
-            columnInfo2.IsVisible = true;
-            columnInfo2.Name = "Date";
-            columnInfo2.Width = 130;
-            columnInfo3.DisplayIndex = 2;
-            columnInfo3.IsVisible = true;
-            columnInfo3.Name = "ms";
-            columnInfo3.Width = 40;
-            columnInfo4.DisplayIndex = 3;
-            columnInfo4.IsVisible = true;
-            columnInfo4.Name = "From";
-            columnInfo4.Width = 60;
-            columnInfo5.DisplayIndex = 4;
-            columnInfo5.IsVisible = true;
-            columnInfo5.Name = "To";
-            columnInfo5.Width = 60;
-            columnInfo6.DisplayIndex = 5;
-            columnInfo6.IsVisible = true;
-            columnInfo6.Name = "Protocol";
-            columnInfo6.Width = 100;
-            columnInfo7.DisplayIndex = 6;
-            columnInfo7.IsVisible = true;
-            columnInfo7.Name = "Protocol Info";
-            columnInfo7.Width = 100;
-            columnInfo8.DisplayIndex = 7;
-            columnInfo8.IsVisible = true;
-            columnInfo8.Name = "Name";
-            columnInfo8.Width = 150;
-            columnInfo9.DisplayIndex = 8;
-            columnInfo9.IsVisible = true;
-            columnInfo9.Name = "Parsed";
-            columnInfo9.Width = 398;
-            columnInfo10.DisplayIndex = 9;
-            columnInfo10.IsVisible = true;
-            columnInfo10.Name = "IPTWP Type";
-            columnInfo10.Width = 60;
-            columnInfo11.DisplayIndex = 10;
-            columnInfo11.IsVisible = true;
-            columnInfo11.Name = "ComID";
-            columnInfo11.Width = 60;
-            columnInfo12.DisplayIndex = 11;
-            columnInfo12.IsVisible = true;
-            columnInfo12.Name = "Error";
-            columnInfo12.Width = 60;
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo1);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo2);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo3);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo4);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo5);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo6);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo7);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo8);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo9);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo10);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo11);
-            new IPTComShark.Controls.ColumnSettings().Add(columnInfo12);
-            settings1.IgnoredComIds = "";
-            settings1.IgnoreDuplicatedPD = false;
-            settings1.IgnoreLoopback = false;
-            settings1.IgnoreUnknownData = false;
-            settings1.IgnoreVariables = "MMI_M_PACKET\r\nMMI_L_PACKET";
-            settings1.RemoteCapFolder = "";
-            settings1.RemoteCapIP = "";
-            settings1.RemoteCapPassword = "";
-            settings1.RemoteCapPort = "";
-            settings1.RemoteCapPrefix = "";
-            settings1.RemoteCapUsername = "";
-            settings1.SettingsKey = "";
-            this.textBoxIgnoreVars.DataBindings.Add(new System.Windows.Forms.Binding("Text", settings1, "IgnoreVariables", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 202);
             this.textBoxIgnoreVars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxIgnoreVars.Multiline = true;

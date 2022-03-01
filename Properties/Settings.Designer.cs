@@ -12,7 +12,7 @@ namespace IPTComShark.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,71 +26,12 @@ namespace IPTComShark.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string IgnoredComIds {
+        public string ColumnSettingsJSON {
             get {
-                return ((string)(this["IgnoredComIds"]));
+                return ((string)(this["ColumnSettingsJSON"]));
             }
             set {
-                this["IgnoredComIds"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoScroll {
-            get {
-                return ((bool)(this["AutoScroll"]));
-            }
-            set {
-                this["AutoScroll"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IgnoreDuplicatedPD {
-            get {
-                return ((bool)(this["IgnoreDuplicatedPD"]));
-            }
-            set {
-                this["IgnoreDuplicatedPD"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IgnoreLoopback {
-            get {
-                return ((bool)(this["IgnoreLoopback"]));
-            }
-            set {
-                this["IgnoreLoopback"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IgnoreUnknownData {
-            get {
-                return ((bool)(this["IgnoreUnknownData"]));
-            }
-            set {
-                this["IgnoreUnknownData"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::IPTComShark.Controls.ColumnSettings ColumnSettings {
-            get {
-                return ((global::IPTComShark.Controls.ColumnSettings)(this["ColumnSettings"]));
-            }
-            set {
-                this["ColumnSettings"] = value;
+                this["ColumnSettingsJSON"] = value;
             }
         }
         
@@ -168,13 +109,13 @@ namespace IPTComShark.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MMI_M_PACKET\r\nMMI_L_PACKET")]
-        public string IgnoreVariables {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PacketListSettings {
             get {
-                return ((string)(this["IgnoreVariables"]));
+                return ((string)(this["PacketListSettings"]));
             }
             set {
-                this["IgnoreVariables"] = value;
+                this["PacketListSettings"] = value;
             }
         }
     }

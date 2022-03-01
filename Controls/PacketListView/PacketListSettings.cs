@@ -1,15 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace IPTComShark.Controls
 {
     public class PacketListSettings : INotifyPropertyChanged
     {
-        private bool _ignoreLoopback = true;
-        private bool _autoScroll = true;
-        private bool _ignoreDupePd = true;
-        private bool _ignoreUnknown = true;
-        private string _ignoreComid;
+        private bool _ignoreLoopback = false;
+        private bool _autoScroll = false;
+        private bool _ignoreDupePd = false;
+        private bool _ignoreUnknown = false;
+        private string _ignoreComid = "";
+        private string[] _ignoreVariables = new string[] { "MMI_M_PACKET", "MMI_L_PACKET" };
+        private List<ColumnInfo> _columnSettings;
 
         public string IgnoreComid
         {
@@ -27,7 +33,9 @@ namespace IPTComShark.Controls
             set
             {
                 _autoScroll = value;
-                OnPropertyChanged();
+
+                // This does not need it as it is read every time a packet is received
+                //OnPropertyChanged();
             }
         }
 
@@ -64,11 +72,61 @@ namespace IPTComShark.Controls
             }
         }
 
+        public string[] IgnoreVariables
+        {
+            get => _ignoreVariables;
+            set
+            {
+                _ignoreVariables = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<ColumnInfo> ColumnInfos
+        {
+            get => _columnSettings;
+            set
+            {
+                _columnSettings = value;
+                
+                // does not need as only read on startup
+                //OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void SerializeToFile(string file)
+        {
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(this, this.GetType(), options);
+            File.WriteAllBytes(file, bytes);
+        }
+
+        public string SerialiseToString()
+        {
+            return JsonSerializer.Serialize(this, this.GetType());
+        }
+
+
+        public static PacketListSettings DeserializeFile(string file)
+        {
+            using (var fileStream = File.OpenRead(file))
+            {
+                var settings = JsonSerializer.Deserialize<PacketListSettings>(fileStream);
+                return settings;
+            }
+        }
+
+        public static PacketListSettings DeserializeString(string str)
+        {
+            return JsonSerializer.Deserialize<PacketListSettings>(str);
         }
     }
 }

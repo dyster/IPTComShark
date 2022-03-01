@@ -7,6 +7,11 @@ namespace IPTComShark
         public string Name { get; }
         public object Val { get; }
 
+        /// <summary>
+        /// True to display, false to hide
+        /// </summary>
+        public bool Display { get; set; }
+
         public DisplayField(string name, object val)
         {
             Name = name;

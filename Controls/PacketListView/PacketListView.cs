@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.Export;
 using IPTComShark.Parsers;
+using System.Text.Json;
 
 namespace IPTComShark.Controls
 {
@@ -18,6 +19,7 @@ namespace IPTComShark.Controls
         private readonly List<CapturePacket> _listAddBuffer = new List<CapturePacket>();
         private readonly object _listAddLock = new object();
         private CapturePacket _selectedPacket;
+        private bool _loaded = false;
 
         private string _searchString;
 
@@ -31,6 +33,7 @@ namespace IPTComShark.Controls
         private const string EmptyFilterText = "The filter has excluded everything";
         private string _lastBackStoreStatus = "";
         private Font _statusFont = new Font("Tahoma", 20, FontStyle.Bold);
+        private PacketListSettings _settings = new PacketListSettings();
 
         public string SearchString
         {
@@ -51,18 +54,9 @@ namespace IPTComShark.Controls
         {
             InitializeComponent();
 
-            if (Properties.Settings.Default.ColumnSettings != null)
-            {
-                foreach (var cset in Properties.Settings.Default.ColumnSettings)
-                {
-                    var column = fastObjectListView1.AllColumns.Find(col => col.Text == cset.Name);
-                    column.DisplayIndex = cset.DisplayIndex;
-                    column.Width = cset.Width;
-                    column.IsVisible = cset.IsVisible;
-                }
 
-                fastObjectListView1.RebuildColumns();
-            }
+
+
 
             olvColumnNo.AspectGetter += rowObject =>
             {
@@ -78,7 +72,7 @@ namespace IPTComShark.Controls
 
             olvColumnMS.AspectGetter += rowObject =>
             {
-                var packet = (CapturePacket) rowObject;
+                var packet = (CapturePacket)rowObject;
                 //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
                 return packet?.Date.Millisecond;
             };
@@ -112,7 +106,7 @@ namespace IPTComShark.Controls
                 if (rowObject == null)
                     return null;
 
-                var packet = (CapturePacket) rowObject;
+                var packet = (CapturePacket)rowObject;
                 if (packet.Protocol == ProtocolType.IPTWP)
                     return packet.Comid;
 
@@ -121,13 +115,13 @@ namespace IPTComShark.Controls
 
             olvColumnIPTWPType.AspectGetter += rowObject =>
             {
-                var packet = (CapturePacket) rowObject;
+                var packet = (CapturePacket)rowObject;
                 if (packet != null && packet.IPTWPType.HasValue)
                     return packet.IPTWPType.Value;
                 return null;
             };
 
-            
+
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
             fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
@@ -218,7 +212,7 @@ namespace IPTComShark.Controls
             {
                 if (item.RowObject != null)
                 {
-                    var packet = (CapturePacket) item.RowObject;
+                    var packet = (CapturePacket)item.RowObject;
                     if (packet.Error != null)
                         item.BackColor = ErrorColor;
                     else
@@ -246,15 +240,15 @@ namespace IPTComShark.Controls
                 }
             };
 
-            
+
 
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
 
-            
 
-            fastObjectListView1.OverlayText = new TextOverlay(){Text = "If you can read this, the universe has come apart"};
+
+            fastObjectListView1.OverlayText = new TextOverlay() { Text = "If you can read this, the universe has come apart" };
         }
 
         public BackStore.BackStore BackStore { get; set; }
@@ -279,7 +273,7 @@ namespace IPTComShark.Controls
             var list = new List<ICluster>();
             foreach (var pair in dic)
             {
-                list.Add(new Cluster(pair.Key) {Count = pair.Value, DisplayLabel = pair.Key});
+                list.Add(new Cluster(pair.Key) { Count = pair.Value, DisplayLabel = pair.Key });
             }
 
             return list;
@@ -287,7 +281,8 @@ namespace IPTComShark.Controls
 
         private void FastObjectListView1_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            SaveColumns();
+            if(_loaded)
+                SaveColumns();
         }
 
         private void FastObjectListView1_ColumnReordered(object sender, ColumnReorderedEventArgs e)
@@ -297,9 +292,15 @@ namespace IPTComShark.Controls
             SaveColumns();
         }
 
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.PacketListSettings = Settings.SerialiseToString();
+            Properties.Settings.Default.Save();
+        }
+
         private void SaveColumns()
         {
-            var cset = new ColumnSettings();
+            var cset = new List<ColumnInfo>();
             foreach (var column in fastObjectListView1.AllColumns)
             {
                 cset.Add(new ColumnInfo()
@@ -311,16 +312,19 @@ namespace IPTComShark.Controls
                 });
             }
 
-            Properties.Settings.Default.ColumnSettings = cset;
-            Properties.Settings.Default.Save();
+            Settings.ColumnInfos = cset;
+
+
+            SaveSettings();
         }
 
         public void UpdateFilter()
         {
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
-                var capturePacket = (CapturePacket) model;
+                var capturePacket = (CapturePacket)model;
 
+                //TODO optimise this with some byte comparison instead of all this instance creation
                 var localhost = IPAddress.Parse("127.0.0.1");
 
                 if (Settings.IgnoreLoopback && capturePacket.Source != null && capturePacket.Destination != null &&
@@ -347,7 +351,7 @@ namespace IPTComShark.Controls
                         if (capturePacket.Comid == u)
                             return false;
                     }
-                }
+                }                
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
@@ -357,6 +361,17 @@ namespace IPTComShark.Controls
                         if (capturePacket.IsDupe)
                             return false;
                     }
+                }
+
+                if (this.Settings.IgnoreVariables.Length > 0)
+                {
+                    // this block does not filter out entire packets, but it is the most efficient place to refilter the displayfields for the text renderer to only work on a subset after the basic exclusions have been made
+
+                    foreach (var field in capturePacket.DisplayFields)
+                    {
+                        field.Display = !Settings.IgnoreVariables.Contains(field.Name);
+                    }
+
                 }
 
                 if (!string.IsNullOrEmpty(_searchString))
@@ -372,18 +387,45 @@ namespace IPTComShark.Controls
                     return false;
                 }
 
+
+
                 return true;
-            });
+            });            
         }
 
-        public PacketListSettings Settings { get; set; } = new PacketListSettings();
+        public PacketListSettings Settings
+        {
+            get => _settings; set
+            {
+                _settings = value;
 
+                if (_settings.ColumnInfos != null && _settings.ColumnInfos.Count > 0)
+                {
+                    foreach (var cset in _settings.ColumnInfos)
+                    {
+                        var column = fastObjectListView1.AllColumns.Find(col => col.Text == cset.Name);
+                        column.DisplayIndex = cset.DisplayIndex;
+                        column.Width = cset.Width;
+                        column.IsVisible = cset.IsVisible;
+                    }
+
+                    fastObjectListView1.RebuildColumns();
+                }
+
+                _settings.PropertyChanged += _settings_PropertyChanged;
+            }
+        }
+
+        private void _settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {            
+            UpdateFilter();
+        }
 
         private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (fastObjectListView1.SelectedObject == null) return;
 
-            var packet = (CapturePacket) fastObjectListView1.SelectedObject;
+            var packet = (CapturePacket)fastObjectListView1.SelectedObject;
             _selectedPacket = packet;
             OnPacketSelected(packet);
         }
@@ -465,18 +507,13 @@ namespace IPTComShark.Controls
 
         private void PacketListView_Load(object sender, EventArgs e)
         {
-            Settings.PropertyChanged += (o, args) =>
-            {
-                if (args.PropertyName != "AutoScroll")
-                    UpdateFilter();
-            };
-
             timerFlicker.Enabled = true;
+            _loaded = true;
         }
 
         private void copyRawByteshexStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var s = BitConverter.ToString(BackStore.GetRaw(o.No).RawData);
@@ -488,7 +525,7 @@ namespace IPTComShark.Controls
 
         private void copyParsedDatatextStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var payload = BackStore.GetPayload(o.No);
@@ -511,7 +548,7 @@ namespace IPTComShark.Controls
 
         private void analyzeChainToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 var linked = new LinkedList<CapturePacket>();
@@ -528,7 +565,7 @@ namespace IPTComShark.Controls
                     o = o.Next;
                 }
 
-                var saveFileDialog = new SaveFileDialog {DefaultExt = "xlsx"};
+                var saveFileDialog = new SaveFileDialog { DefaultExt = "xlsx" };
                 DialogResult dialogResult = saveFileDialog.ShowDialog(this);
                 if (dialogResult == DialogResult.OK)
                 {
@@ -539,7 +576,7 @@ namespace IPTComShark.Controls
 
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o?.Protocol == ProtocolType.IPTWP)
             {
                 var s = o.Comid.ToString();
@@ -554,7 +591,7 @@ namespace IPTComShark.Controls
 
         private void ContextMenuMouse_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            CapturePacket o = (CapturePacket) fastObjectListView1.SelectedObject;
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
                 addToIgnoredComIDsToolStripMenuItem.Enabled = o.Protocol == ProtocolType.IPTWP;
@@ -563,25 +600,25 @@ namespace IPTComShark.Controls
 
         private void timerFlicker_Tick(object sender, EventArgs e)
         {
-            var backStoreStatus = BackStore.Status;
-            if (backStoreStatus != _lastBackStoreStatus)
+            if(BackStore != null)
             {
-                _lastBackStoreStatus = backStoreStatus;
-                var textOverlay = new TextOverlay() {Text = backStoreStatus};
-                textOverlay.Alignment = ContentAlignment.MiddleCenter;
-                textOverlay.Font = _statusFont;
-                textOverlay.InsetY = 100;
-                textOverlay.BackColor = Color.White;
-                textOverlay.TextColor = Color.Black;
-                textOverlay.Transparency = 200;
-                //var measureText = TextRenderer.MeasureText(backStoreStatus, textOverlay.Font);
-                //var inset = this.Width / 2 + measureText.Width / 2;
-                //textOverlay.InsetX = inset;
-                fastObjectListView1.OverlayText = textOverlay;
+                var backStoreStatus = BackStore.Status;
+                if (backStoreStatus != _lastBackStoreStatus)
+                {
+                    _lastBackStoreStatus = backStoreStatus;
+                    var textOverlay = new TextOverlay() { Text = backStoreStatus };
+                    textOverlay.Alignment = ContentAlignment.MiddleCenter;
+                    textOverlay.Font = _statusFont;
+                    textOverlay.InsetY = 100;
+                    textOverlay.BackColor = Color.White;
+                    textOverlay.TextColor = Color.Black;
+                    textOverlay.Transparency = 200;
+                    //var measureText = TextRenderer.MeasureText(backStoreStatus, textOverlay.Font);
+                    //var inset = this.Width / 2 + measureText.Width / 2;
+                    //textOverlay.InsetX = inset;
+                    fastObjectListView1.OverlayText = textOverlay;
+                }
             }
-            
-            
-            
 
             if (_list.Count > 0)
                 fastObjectListView1.EmptyListMsg = EmptyFilterText;
@@ -609,14 +646,7 @@ namespace IPTComShark.Controls
         public ClusterGetterDelegate ClusterGetter { get; set; }
 
         public delegate List<ICluster> ClusterGetterDelegate(IEnumerable<CapturePacket> packets);
-    }
-
-    /// <summary>
-    /// Empty class to be used in Settings
-    /// </summary>
-    public class ColumnSettings : List<ColumnInfo>
-    {
-    }
+    }    
 
     public class ColumnInfo
     {

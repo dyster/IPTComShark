@@ -15,7 +15,6 @@ using System.Windows.Forms;
 using IPTComShark.DataSets;
 using IPTComShark.Export;
 using SharpPcap.Npcap;
-using sonesson_tools.FileReaders;
 using IPTComShark.Parsers;
 using BustPCap;
 
@@ -55,22 +54,22 @@ namespace IPTComShark
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
-            checkBoxAutoScroll.DataBindings.Add("Checked", packetListView1.Settings, "AutoScroll", true,
-                DataSourceUpdateMode.OnPropertyChanged);
-            checkBoxIgnoreLoopback.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreLoopback", true,
-                DataSourceUpdateMode.OnPropertyChanged);
-            checkBoxHideDupes.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreDuplicatedPD", true,
-                DataSourceUpdateMode.OnPropertyChanged);
-            checkBoxParserOnly.DataBindings.Add("Checked", packetListView1.Settings, "IgnoreUnknownData", true,
-                DataSourceUpdateMode.OnPropertyChanged);
-            textBoxIgnoreComid.DataBindings.Add("Text", packetListView1.Settings, "IgnoreComid", true,
-                DataSourceUpdateMode.OnValidation);
+            var packetSettings = IPTComShark.Controls.PacketListSettings.DeserializeString(Properties.Settings.Default.PacketListSettings);
 
-            packetListView1.Settings.IgnoreComid = Properties.Settings.Default.IgnoredComIds;
-            packetListView1.Settings.AutoScroll = Properties.Settings.Default.AutoScroll;
-            packetListView1.Settings.IgnoreDuplicatedPD = Properties.Settings.Default.IgnoreDuplicatedPD;
-            packetListView1.Settings.IgnoreLoopback = Properties.Settings.Default.IgnoreLoopback;
-            packetListView1.Settings.IgnoreUnknownData = Properties.Settings.Default.IgnoreUnknownData;
+            checkBoxAutoScroll.DataBindings.Add("Checked", packetSettings, "AutoScroll", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxIgnoreLoopback.DataBindings.Add("Checked", packetSettings, "IgnoreLoopback", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxHideDupes.DataBindings.Add("Checked", packetSettings, "IgnoreDuplicatedPD", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            checkBoxParserOnly.DataBindings.Add("Checked", packetSettings, "IgnoreUnknownData", true,
+                DataSourceUpdateMode.OnPropertyChanged);
+            textBoxIgnoreComid.DataBindings.Add("Text", packetSettings, "IgnoreComid", true,
+                DataSourceUpdateMode.OnValidation);
+            textBoxIgnoreVars.DataBindings.Add("Lines", packetSettings, "IgnoreVariables", true, 
+                DataSourceUpdateMode.OnValidation);
+            
+            packetListView1.Settings = packetSettings;
 
             InitData();
 
@@ -277,11 +276,8 @@ namespace IPTComShark
                 Logger.Log(exception.Message, Severity.Error);
             }
 
-            Properties.Settings.Default.IgnoredComIds = packetListView1.Settings.IgnoreComid;
-            Properties.Settings.Default.AutoScroll = packetListView1.Settings.AutoScroll;
-            Properties.Settings.Default.IgnoreDuplicatedPD = packetListView1.Settings.IgnoreDuplicatedPD;
-            Properties.Settings.Default.IgnoreLoopback = packetListView1.Settings.IgnoreLoopback;
-            Properties.Settings.Default.IgnoreUnknownData = packetListView1.Settings.IgnoreUnknownData;
+            Properties.Settings.Default.PacketListSettings = packetListView1.Settings.SerialiseToString();
+                        
             Properties.Settings.Default.Save();
 
             _backStore.Close();

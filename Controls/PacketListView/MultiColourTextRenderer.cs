@@ -21,25 +21,8 @@ namespace IPTComShark.Controls
                                     TextFormatFlags.EndEllipsis |
                                     TextFormatFlags.PreserveGraphicsTranslateTransform |
                                     CellVerticalAlignmentAsTextFormatFlag;
-
-
-            //Dictionary<string, string> dic = new Dictionary<string, string>();
-            var tuples = new List<Tuple<string, string>>();
-            if (RowObject is CapturePacket cpac)
-            {
-                var ignores = Settings.Default.IgnoreVariables
-                    .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                if (cpac.DisplayFields.Count > 0)
-                {
-                    foreach (var displayField in cpac.DisplayFields)
-                    {
-                        if (!ignores.Contains(displayField.Name))
-                            tuples.Add(new Tuple<string, string>(displayField.Name, displayField.Val.ToString()));
-                    }
-                }
-            }
-            else
+                        
+            if (RowObject is not CapturePacket cpac)
             {
                 return;
             }
@@ -55,9 +38,9 @@ namespace IPTComShark.Controls
             var foregroundColor = GetForegroundColor();
             //var brush = new SolidBrush(foregroundColor);
 
-            foreach (Tuple<string, string> o in tuples)
+            foreach(var field in cpac.DisplayFields.Where(df => df.Display))
             {
-                string text = o.Item1 + ": ";
+                string text = field.Name + ": ";
 
                 int width = TextRenderer.MeasureText(text, font1).Width;
 
@@ -71,13 +54,13 @@ namespace IPTComShark.Controls
 
                 TextRenderer.DrawText(g, text, font1, r, foregroundColor, backColor, flags);
 
-                text = o.Item2;
+                text = field.Val.ToString();
 
                 width = TextRenderer.MeasureText(text, font2).Width;
 
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
                 TextRenderer.DrawText(g, text, font2, r, foregroundColor, backColor, flags);
-            }
+            }            
         }
     }
 }

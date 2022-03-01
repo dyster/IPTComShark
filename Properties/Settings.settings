@@ -2,22 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IPTComShark.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="IgnoredComIds" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="AutoScroll" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="IgnoreDuplicatedPD" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="IgnoreLoopback" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="IgnoreUnknownData" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ColumnSettings" Type="IPTComShark.Controls.ColumnSettings" Scope="User">
+    <Setting Name="ColumnSettingsJSON" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="RemoteCapIP" Type="System.String" Scope="User">
@@ -38,9 +23,8 @@
     <Setting Name="RemoteCapPrefix" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="IgnoreVariables" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MMI_M_PACKET
-MMI_L_PACKET</Value>
+    <Setting Name="PacketListSettings" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
