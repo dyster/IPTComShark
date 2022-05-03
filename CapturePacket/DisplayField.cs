@@ -1,4 +1,5 @@
 ﻿using sonesson_tools.BitStreamParser;
+using System.Text.Json.Serialization;
 
 namespace IPTComShark
 {
@@ -10,6 +11,7 @@ namespace IPTComShark
         /// <summary>
         /// True to display, false to hide
         /// </summary>
+        [JsonIgnore]
         public bool Display { get; set; }
 
         public DisplayField(string name, object val)
