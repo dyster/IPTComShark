@@ -1,0 +1,4 @@
+get benchmark.net
+fix the multicolourtextrender ip performance
+make "remove blanks" filter
+add remove filters button

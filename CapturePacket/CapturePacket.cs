@@ -8,8 +8,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 
 namespace IPTComShark
-{
-    [Serializable]
+{    
     public class CapturePacket : IComparable
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
