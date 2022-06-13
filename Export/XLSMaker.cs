@@ -1,11 +1,11 @@
 ﻿using IPTComShark.Parsers;
 using OfficeOpenXml;
-using sonesson_tools;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using OxyPlot;
+using IPTComShark.Classes;
 
 namespace IPTComShark.Export
 {
@@ -144,7 +144,7 @@ namespace IPTComShark.Export
                 foreach (var parsedDataSet in parse.ParsedData)
                 {
                     
-                    var clean = Functions.RemoveInvalidXMLChars(parsedDataSet.Name);
+                    var clean = Conversions.RemoveInvalidXMLChars(parsedDataSet.Name);
 
                     var richbit = parseCell.RichText.Add(clean).Bold = true;
                                                             

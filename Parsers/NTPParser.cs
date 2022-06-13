@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using IPTComShark.DataSets;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 
 namespace IPTComShark.Parsers
 {

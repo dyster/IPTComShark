@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 
 namespace IPTComShark.Parsers
 {

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using IPTComShark.DataSets;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataSets;
+using BitDataParser;
 
 namespace IPTComShark.Classes
 {

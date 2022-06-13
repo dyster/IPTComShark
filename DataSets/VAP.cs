@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 
 namespace IPTComShark.DataSets
 {

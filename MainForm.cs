@@ -1,8 +1,7 @@
 ﻿using IPTComShark.Import;
 using IPTComShark.Windows;
 using SharpPcap;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +16,7 @@ using IPTComShark.Export;
 using SharpPcap.Npcap;
 using IPTComShark.Parsers;
 using BustPCap;
+using static IPTComShark.Classes.Conversions;
 
 namespace IPTComShark
 {
@@ -108,7 +108,7 @@ namespace IPTComShark
             else
             {
                 statusRight.Text = text;
-                List<Log> logs = Logger.Instance.GetLog();
+                List<LogRoll> logs = Logger.Instance.GetLog();
                 var lastLogs = logs.Skip(Math.Max(0, logs.Count - 10)).ToList();
                 statusRight.ToolTipText = string.Join(Environment.NewLine, lastLogs);
             }
@@ -252,9 +252,9 @@ namespace IPTComShark
             tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.DiscardedPackets.ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, "discarded packets | GC mem:"));
-            tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(totalMemory)));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, PrettyPrintSize(totalMemory)));
             tuples.Add(new Tuple<Color, string>(Color.Black, "| Proc mem:"));
-            tuples.Add(new Tuple<Color, string>(Color.DarkRed, Functions.PrettyPrintSize(memorySize64)));
+            tuples.Add(new Tuple<Color, string>(Color.DarkRed, PrettyPrintSize(memorySize64)));
             tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
 
 
@@ -303,7 +303,7 @@ namespace IPTComShark
             };
             DialogResult dialogResult = saveFileDialog.ShowDialog();
             if (dialogResult != DialogResult.OK) return;
-            using (var pcapWriter = new sonesson_tools.FileWriters.PCAPWriter(saveFileDialog.FileName))
+            using (var pcapWriter = new BustPCap.PCAPWriter(saveFileDialog.FileName))
             {
                 pcapWriter.LinkLayerType = (uint) layer;
                 pcapWriter.Start();
@@ -718,17 +718,17 @@ namespace IPTComShark
 
             var text = "-------------------------------------" + Environment.NewLine;
             text += DateTime.Now.ToString() + "  " + Application.ProductVersion + Environment.NewLine;
-            text += "GC memory increase = " + Functions.PrettyPrintSize(totalMemory2 - totalMemory) +
+            text += "GC memory increase = " + PrettyPrintSize(totalMemory2 - totalMemory) +
                     Environment.NewLine;
             text += "PrivateMemorySize64 increase = " +
-                    Functions.PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
-            text += "WorkingSet64 increase = " + Functions.PrettyPrintSize(workingSet64_2 - workingSet64) +
+                    PrettyPrintSize(privateMemorySize64_2 - privateMemorySize64) + Environment.NewLine;
+            text += "WorkingSet64 increase = " + PrettyPrintSize(workingSet64_2 - workingSet64) +
                     Environment.NewLine;
             text += "PagedSystemMemorySize64 increase = " +
-                    Functions.PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) +
+                    PrettyPrintSize(pagedSystemMemorySize64_2 - pagedSystemMemorySize64) +
                     Environment.NewLine;
             text += "PagedMemorySize64 increase = " +
-                    Functions.PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
+                    PrettyPrintSize(pagedMemorySize64_2 - pagedMemorySize64) + Environment.NewLine;
 
             text += "UserProcessorTime increase = " + (userProcessorTime_2 - userProcessorTime) + Environment.NewLine;
             text += "PrivilegedProcessorTime increase = " + (privilegedProcessorTime_2 - privilegedProcessorTime) +

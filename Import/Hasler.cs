@@ -1,5 +1,4 @@
-﻿using sonesson_tools;
-using sonesson_tools.DataParsers;
+﻿using IPTComShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +14,7 @@ namespace IPTComShark.Import
 
         public bool CanImport(string path)
         {
-            string text = Functions.GetTextFromFile(path, 10000);
+            string text = FileManager.FileManager.GetTextFromFile(path, 10000);
             return _regex.IsMatch(text);
         }
 

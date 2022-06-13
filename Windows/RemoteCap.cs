@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using IPTComShark.Classes;
 using Renci.SshNet;
-using sonesson_tools;
 
 namespace IPTComShark.Windows
 {
@@ -145,7 +145,7 @@ namespace IPTComShark.Windows
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            labelReadData.Text = "Data Received: " + Functions.PrettyPrintSize(_capturedData);
+            labelReadData.Text = "Data Received: " + Conversions.PrettyPrintSize(_capturedData);
             buttonGO.Enabled = !backgroundWorker1.IsBusy;
             buttonStop.Enabled = backgroundWorker1.IsBusy;
             buttonOpenLastFile.Enabled = (!string.IsNullOrEmpty(_lastFile) && !backgroundWorker1.IsBusy);

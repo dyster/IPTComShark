@@ -1,5 +1,5 @@
+using IPTComShark.Classes;
 using IPTComShark.Parsers;
-using sonesson_tools;
 using Svg;
 using Svg.DataTypes;
 using Svg.Pathing;
@@ -187,7 +187,7 @@ namespace IPTComShark.SeqDiagram
                     };
 
                     string textKey = pair.Key + ": ";
-                    string textValue = Functions.RemoveInvalidXMLChars(pair.Value);
+                    string textValue = Conversions.RemoveInvalidXMLChars(pair.Value);
 
                     int strlen = TextRenderer.MeasureText(textKey + textValue, font).Width;
 

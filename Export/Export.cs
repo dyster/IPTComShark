@@ -1,10 +1,7 @@
 using IPTComShark.Parsers;
 using OfficeOpenXml;
 using PacketDotNet;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataParsers;
-using sonesson_tools.Generic;
+using BitDataParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
