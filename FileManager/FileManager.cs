@@ -1,6 +1,5 @@
 ﻿using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
-using sonesson_tools.FileReaders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,13 +8,12 @@ using System.Threading;
 using System.Windows.Forms;
 using BustPCap;
 using IPTComShark.BackStore;
+using System.Text;
 
 namespace IPTComShark.FileManager
 {
     public class FileManager : IDisposable
-    {
-        private ZipReader zipReader = new ZipReader();
-        
+    {                
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
@@ -292,7 +290,30 @@ namespace IPTComShark.FileManager
         public ProcessingFilter ProcessingFilters { get; set; }
         public DateTime FilterFrom { get; set; }
 
+        /// <summary>
+        /// Peek into text files
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="maxbuffer"></param>
+        /// <returns></returns>
+        public static string GetTextFromFile(string path, int maxbuffer)
+        {
+            byte[] bytes;
+            using (FileStream fileStream = File.OpenRead(path))
+            {
+                int length;
+                if (fileStream.Length > maxbuffer)
+                    length = maxbuffer;
+                else
+                    length = (int)fileStream.Length;
 
+                bytes = new byte[length];
+                fileStream.Read(bytes, 0, length);
+            }
+
+            string text = Encoding.Default.GetString(bytes);
+            return text;
+        }
         private void ReleaseUnmanagedResources()
         {
             _closing = true;
@@ -313,5 +334,19 @@ namespace IPTComShark.FileManager
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+    }
+
+    /// <summary>
+    /// This class is used to avoid the confusion of using Object directly
+    /// </summary>
+    public class FileReadObject
+    {
+        public FileReadObject(object o)
+        {
+            ReadObject = o;
+        }
+
+        public object ReadObject { get; }
+        public object Tag { get; set; }
     }
 }

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using IPTComShark.Classes;
 using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
+
+using BitDataParser;
 
 namespace IPTComShark.Parsers
 {

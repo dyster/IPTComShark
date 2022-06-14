@@ -1,4 +1,4 @@
-﻿using sonesson_tools.BitStreamParser;
+﻿using BitDataParser;
 using System.Text.Json.Serialization;
 
 namespace IPTComShark

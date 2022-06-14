@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using PCAPWriter = sonesson_tools.FileWriters.PCAPWriter;
+using PCAPWriter = BustPCap.PCAPWriter;
 
 namespace IPTComShark.FileManager
 {

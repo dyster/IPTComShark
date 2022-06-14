@@ -1,7 +1,7 @@
 ﻿using IPTComShark.Parsers;
 using PacketDotNet;
-using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataSets;
+using BitDataParser;
+using IPTComShark.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Net;

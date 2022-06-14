@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using sonesson_tools.BitStreamParser;
-using sonesson_tools.DataSets;
+using BitDataParser;
 
 // ReSharper disable InconsistentNaming
 #pragma warning disable 1591

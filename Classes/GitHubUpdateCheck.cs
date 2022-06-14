@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using sonesson_tools;
 
 namespace IPTComShark
 {
@@ -39,6 +38,7 @@ namespace IPTComShark
             }
             catch (Exception e)
             {
+                
                 Logger.Log("Version check failed", Severity.Warning, e);
                 return null;
             }

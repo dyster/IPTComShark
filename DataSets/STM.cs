@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 
 namespace IPTComShark.DataSets
 {
@@ -466,7 +466,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Spare,
                     Length = 6
                 },
-                sonesson_tools.DataSets.VSIS210.MMI_M_XATTRIBUTE,
+                VSIS210.MMI_M_XATTRIBUTE,
                 new BitField
                 {
                     Name = "STM_L_TEXT",

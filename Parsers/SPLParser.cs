@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using IPTComShark.DataSets;
-using sonesson_tools;
-using sonesson_tools.BitStreamParser;
-using sonesson_toolsNETSTANDARD.DataSets;
+using BitDataParser;
+using Functions = BitDataParser.Functions;
 
 namespace IPTComShark.Parsers
 {
@@ -65,7 +64,7 @@ namespace IPTComShark.Parsers
                 position += frameLen * 8;
 
                 // get the SLL header
-                var header = sonesson_toolsNETSTANDARD.DataSets.Subset57.SLLHeader.Parse(splframeArray);
+                var header = Subset57.SLLHeader.Parse(splframeArray);
                 parse.ParsedData.Add(header);
                 var trueCommand = splframeArray[1];
 
@@ -98,7 +97,7 @@ namespace IPTComShark.Parsers
 
                     var checksumBytes = new byte[checksumlength];
                     Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
-                    checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL4Checksum.Parse(checksumBytes);
+                    checksum = Subset57.SL4Checksum.Parse(checksumBytes);
 
                 }
                 else if(trueCommand >= 0x00 && trueCommand <= 0x3F)
@@ -110,7 +109,7 @@ namespace IPTComShark.Parsers
 
                     var checksumBytes = new byte[checksumlength];
                     Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
-                    checksum = sonesson_toolsNETSTANDARD.DataSets.Subset57.SL2Checksum.Parse(checksumBytes);
+                    checksum = Subset57.SL2Checksum.Parse(checksumBytes);
                 }
                 else if(trueCommand >= 0xC0 && trueCommand <= 0xFF)
                 {

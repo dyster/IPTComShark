@@ -1,7 +1,5 @@
 ﻿using IPTComShark.Parsers;
 using OfficeOpenXml;
-using sonesson_toolsNETSTANDARD.DataSets;
-using sonesson_toolsNETSTANDARD.Generic;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,6 +7,7 @@ using System.Linq;
 using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.Legends;
+using IPTComShark.DataSets;
 
 namespace IPTComShark.Export
 {

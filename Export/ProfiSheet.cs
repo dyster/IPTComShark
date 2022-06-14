@@ -1,10 +1,9 @@
 ﻿using IPTComShark.Parsers;
 using OfficeOpenXml;
-using sonesson_toolsNETSTANDARD.DataSets;
-using sonesson_toolsNETSTANDARD.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IPTComShark.DataSets;
 
 namespace IPTComShark.Export
 {

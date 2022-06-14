@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PacketDotNet;
 using PacketDotNet.Utils;
-using sonesson_tools.BitStreamParser;
+using BitDataParser;
 
 namespace IPTComShark.Parsers
 {
