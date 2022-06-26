@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using IPTComShark.DataSets;
 using IPTComShark.Export;
-using SharpPcap.Npcap;
+using SharpPcap.LibPcap;
 using IPTComShark.Parsers;
 using BustPCap;
 using static IPTComShark.Classes.Conversions;
@@ -28,7 +28,7 @@ namespace IPTComShark
 
         private long _capturedData;
 
-        private NpcapDevice _device;
+        private PcapDevice _device;
         
         //private PCAPWriter _pcapWriter;
 
@@ -118,10 +118,11 @@ namespace IPTComShark
         //private delegate void AddToListDelegate(CapturePacket o);
 
 
-        private void device_OnPacketArrival(object sender, CaptureEventArgs e)
+        private void device_OnPacketArrival(object sender, PacketCapture pc)
         {
-            _capturedData += e.Packet.Data.Length;
-            var raw = new Raw(e.Packet.Timeval.Date, e.Packet.Data, (LinkLayerType) e.Packet.LinkLayerType);
+            var packet = pc.GetPacket();
+            _capturedData += packet.Data.Length;
+            var raw = new Raw(packet.Timeval.Date, packet.Data, (LinkLayerType) packet.LinkLayerType);
 
             _backStore.AddAsync(raw);
 
@@ -182,10 +183,11 @@ namespace IPTComShark
                 if (devices.Count < 1)
                     return;
 
-                List<NpcapDevice> captureDevices =
-                    devices.Where(d => d is NpcapDevice).Cast<NpcapDevice>().ToList();
+                List<PcapDevice> captureDevices =
+                    devices.Where(d => d is PcapDevice).Cast<PcapDevice>().ToList();
 
-                captureDevices.RemoveAll(d => d.Loopback || d.Addresses.Count == 0);
+                // TODO try and restore this old behaviour somehow
+                //captureDevices.RemoveAll(d => d.Loopback || d.Addresses.Count == 0);
 
 
                 var interfacePicker = new InterfacePicker(captureDevices);
@@ -211,7 +213,7 @@ namespace IPTComShark
 
             // Open the device for capturing
             var readTimeoutMilliseconds = 1000;
-            _device.Open(DeviceMode.Promiscuous, readTimeoutMilliseconds);
+            _device.Open(DeviceModes.Promiscuous, readTimeoutMilliseconds);
 
 
             // Start the capturing process
