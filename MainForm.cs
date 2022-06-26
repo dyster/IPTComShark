@@ -17,6 +17,7 @@ using SharpPcap.Npcap;
 using IPTComShark.Parsers;
 using BustPCap;
 using static IPTComShark.Classes.Conversions;
+using System.Text.Json;
 
 namespace IPTComShark
 {
@@ -629,6 +630,9 @@ namespace IPTComShark
             {
                 GC.Collect();
 
+                RunBenchmark(@"C:\Users\dyste\OneDrive - Alstom\07_Problems\07_mr9 random crash\1\vap 1820-1830.pcap");
+
+                return;
                 RunBenchmark(@"c:\temp\benchmark1.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
@@ -637,7 +641,7 @@ namespace IPTComShark
                 clearToolStripMenuItem_Click(this, null);
                 RunBenchmark(@"c:\temp\benchmark3.pcap");
 
-                clearToolStripMenuItem_Click(this, null);
+                //clearToolStripMenuItem_Click(this, null);
                 //RunBenchmark(@"c:\temp\benchmark4.pcap");
 
                 clearToolStripMenuItem_Click(this, null);
@@ -664,7 +668,7 @@ namespace IPTComShark
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var list = new List<CapturePacket>();
+            var list = new List<Tuple<CapturePacket, Parse>>();
             var count = 0;
 
             var processor = new BackStore.BackStore(_parserFactory, true);
@@ -675,8 +679,8 @@ namespace IPTComShark
                 var pcapReader = new PCAPFileReader(file);
                 foreach (var block in pcapReader.Enumerate())
                 {
-                    processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network), out var notused);
-                    //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network)));
+                    var packet = processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network), out var notused);
+                    list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
                     count++;
                 }
             }
@@ -687,8 +691,8 @@ namespace IPTComShark
                 {
                     if(block.Header == PCAPNGHeader.EnhancedPacket)
                     {
-                        processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
-                        //list.Add(new CapturePacket(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType)));
+                        var packet = processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
+                        list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
                         count++;
                     }
                     
@@ -741,6 +745,13 @@ namespace IPTComShark
             //MessageBox.Show(text);
 
             File.AppendAllText(file + ".txt", text);
+
+            var options = new JsonSerializerOptions() { 
+                WriteIndented = true, 
+                Converters = { new Classes.IPJsonConverter()}
+            };
+            var json = JsonSerializer.Serialize(list, typeof(List<Tuple<CapturePacket, Parse>>), options);
+            File.WriteAllText(file + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json", json);
         }
 
         private void statusStrip1_DoubleClick(object sender, EventArgs e)
