@@ -1,8 +1,8 @@
 using IPTComShark.Classes;
 using IPTComShark.Parsers;
-using Svg;
+/*using Svg;
 using Svg.DataTypes;
-using Svg.Pathing;
+using Svg.Pathing;*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +17,8 @@ namespace IPTComShark.SeqDiagram
     {
         public static void MakeSVG(List<CapturePacket> packets, string fileName, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
+            MessageBox.Show("DISABLED!");
+            /* DISABLED
             const int baselinestep = 250; // distance between vertical lines
             const int horizontalBase = 130; // upper range for the vertical lines
             const int unitBoxWidth = 120; // width of device box
@@ -274,159 +276,160 @@ namespace IPTComShark.SeqDiagram
             {
                 svg.Write(fileStream);
             }
-        }
-
-        /*
-        /// <summary>
-        ///     Exports into a xml file that can be read by UMLet
-        /// </summary>
-        /// <param name="devicelogs"></param>
-        /// <param name="fileName"></param>
-        public static void MakeUML(List<CapturePacket> packets, string fileName)
-        {
-            const int baselinestep = 250; // distance between vertical lines
-            const int horizontalBase = 130; // upper range for the vertical lines
-            const int unitBoxWidth = 120; // width of device box
-            const int unitBoxHeight = 40; // height of device box
-            const int firstarrowdistance = 50; // vertical distance before the first sequence arrow
-            const int maxboxwidth = 1000; // maximum width of description textboxes
-
-            var font = new Font("Microsoft Sans Serif",
-                11); // the approximate font UMLet is using, for text measurement
-
-            var baselinegen = 0; // iterator for making the vertical lines, the first line does one step from this value
-            int arrowgen = horizontalBase + firstarrowdistance; // iterator for making sequence arrows
-
-            // iterate through the data and gather what we need into a little struct for convenience
-            List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen);
-
-            // after all vertical lines have been placed, make one for the description boxes
-            int descriptionBaseline = baselinegen + 50;
-
-
-            var umlFile = new UMLFile(); // make the xml for UMLet
-
-
-            // make the device boxes
-            foreach (KeyValuePair<string, int> device in devices)
-                umlFile.Elements.Add(UmlGenericElement.Create(
-                    new Coordinates
-                    {
-                        X = device.Value - unitBoxWidth / 2,
-                        Y = horizontalBase - unitBoxHeight,
-                        W = unitBoxWidth,
-                        H = unitBoxHeight
-                    }, device.Key, "orange"));
-
-
-            foreach (Sequence sequence in list)
-            {
-                // get the x axis of the two devices we are relating
-                int one = devices[sequence.From];
-                int two = devices[sequence.To];
-
-                // and determine direction of arrow
-                if (one < two)
-                    umlFile.Elements.Add(RelationElement.CreateRightArrow(new Coordinates
-                    {
-                        X = one,
-                        Y = arrowgen,
-                        W = two - one,
-                        H = 0
-                    }, sequence.Name));
-                else
-                    umlFile.Elements.Add(RelationElement.CreateLeftArrow(new Coordinates
-                    {
-                        X = two,
-                        Y = arrowgen,
-                        W = one - two,
-                        H = 0
-                    }, sequence.Name));
-
-
-                // make key value pairs and squeeze them into the box
-                var strs = new List<string>();
-                foreach (KeyValuePair<string, object> pair in sequence.Dic)
-                    strs.Add($"{pair.Key}: {pair.Value}");
-
-                var desc = "";
-                var curline = "";
-                var lines = 1;
-                foreach (string str in strs)
-                    if (TextRenderer.MeasureText(curline + str, font).Width > maxboxwidth)
-                    {
-                        if (desc.Length == 0)
-                        {
-                            desc = curline;
-                            curline = str;
-                        }
-                        else
-                        {
-                            desc += "\r\n" + curline;
-                            curline = str;
-                            lines++;
-                        }
-                    }
-                    else
-                    {
-                        if (curline.Length > 0)
-                            curline += " " + str;
-                        else
-                            curline = str;
-                    }
-                if (desc.Length == 0)
-                {
-                    desc = curline;
-                }
-                else if (curline.Length > 0)
-                {
-                    desc += "\r\n" + curline;
-                    lines++;
-                }
-
-                // remove any invalid xml chars present
-                desc = Functions.RemoveInvalidXMLChars(desc);
-
-                // draw box width to either text width or max size if one line
-                int strwidth;
-                strwidth = lines == 1 ? TextRenderer.MeasureText(desc, font).Width : maxboxwidth;
-
-                // box height calc, title is 30, c.a 15 pre line, 15 margin bottom. Then have 20 between box bottom and next arrow (at least)
-                int boxheight = 30 + lines * 15 + 15;
-
-                // draw the box
-                umlFile.Elements.Add(UmlFrameElement.Create(
-                    new Coordinates {X = descriptionBaseline, Y = arrowgen - 20, W = strwidth, H = boxheight},
-                    sequence.Time, desc));
-
-                // setup next arrow
-                arrowgen += boxheight + 20;
-            }
-
-
-            // finally, draw the baselines
-            foreach (KeyValuePair<string, int> device in devices)
-                umlFile.Elements.Add(RelationElement.CreateBaselineArrow(
-                    new Coordinates
-                    {
-                        X = device.Value,
-                        Y = horizontalBase,
-                        W = 0,
-                        H = arrowgen - firstarrowdistance - horizontalBase
-                    }
-                ));
-
-            // serialize that mother
-            using (XmlWriter xmlWriter = XmlWriter.Create(File.Create(fileName), new XmlWriterSettings {Indent = true}))
-            {
-                var serializer = new XmlSerializer(typeof(UMLFile));
-                var xmlns = new XmlSerializerNamespaces();
-                xmlns.Add(string.Empty, string.Empty);
-
-                serializer.Serialize(xmlWriter, umlFile, xmlns);
-            }
         }*/
 
+            /*
+            /// <summary>
+            ///     Exports into a xml file that can be read by UMLet
+            /// </summary>
+            /// <param name="devicelogs"></param>
+            /// <param name="fileName"></param>
+            public static void MakeUML(List<CapturePacket> packets, string fileName)
+            {
+                const int baselinestep = 250; // distance between vertical lines
+                const int horizontalBase = 130; // upper range for the vertical lines
+                const int unitBoxWidth = 120; // width of device box
+                const int unitBoxHeight = 40; // height of device box
+                const int firstarrowdistance = 50; // vertical distance before the first sequence arrow
+                const int maxboxwidth = 1000; // maximum width of description textboxes
+
+                var font = new Font("Microsoft Sans Serif",
+                    11); // the approximate font UMLet is using, for text measurement
+
+                var baselinegen = 0; // iterator for making the vertical lines, the first line does one step from this value
+                int arrowgen = horizontalBase + firstarrowdistance; // iterator for making sequence arrows
+
+                // iterate through the data and gather what we need into a little struct for convenience
+                List<Sequence> list = GetSequences(packets, baselinestep, out var devices, ref baselinegen);
+
+                // after all vertical lines have been placed, make one for the description boxes
+                int descriptionBaseline = baselinegen + 50;
+
+
+                var umlFile = new UMLFile(); // make the xml for UMLet
+
+
+                // make the device boxes
+                foreach (KeyValuePair<string, int> device in devices)
+                    umlFile.Elements.Add(UmlGenericElement.Create(
+                        new Coordinates
+                        {
+                            X = device.Value - unitBoxWidth / 2,
+                            Y = horizontalBase - unitBoxHeight,
+                            W = unitBoxWidth,
+                            H = unitBoxHeight
+                        }, device.Key, "orange"));
+
+
+                foreach (Sequence sequence in list)
+                {
+                    // get the x axis of the two devices we are relating
+                    int one = devices[sequence.From];
+                    int two = devices[sequence.To];
+
+                    // and determine direction of arrow
+                    if (one < two)
+                        umlFile.Elements.Add(RelationElement.CreateRightArrow(new Coordinates
+                        {
+                            X = one,
+                            Y = arrowgen,
+                            W = two - one,
+                            H = 0
+                        }, sequence.Name));
+                    else
+                        umlFile.Elements.Add(RelationElement.CreateLeftArrow(new Coordinates
+                        {
+                            X = two,
+                            Y = arrowgen,
+                            W = one - two,
+                            H = 0
+                        }, sequence.Name));
+
+
+                    // make key value pairs and squeeze them into the box
+                    var strs = new List<string>();
+                    foreach (KeyValuePair<string, object> pair in sequence.Dic)
+                        strs.Add($"{pair.Key}: {pair.Value}");
+
+                    var desc = "";
+                    var curline = "";
+                    var lines = 1;
+                    foreach (string str in strs)
+                        if (TextRenderer.MeasureText(curline + str, font).Width > maxboxwidth)
+                        {
+                            if (desc.Length == 0)
+                            {
+                                desc = curline;
+                                curline = str;
+                            }
+                            else
+                            {
+                                desc += "\r\n" + curline;
+                                curline = str;
+                                lines++;
+                            }
+                        }
+                        else
+                        {
+                            if (curline.Length > 0)
+                                curline += " " + str;
+                            else
+                                curline = str;
+                        }
+                    if (desc.Length == 0)
+                    {
+                        desc = curline;
+                    }
+                    else if (curline.Length > 0)
+                    {
+                        desc += "\r\n" + curline;
+                        lines++;
+                    }
+
+                    // remove any invalid xml chars present
+                    desc = Functions.RemoveInvalidXMLChars(desc);
+
+                    // draw box width to either text width or max size if one line
+                    int strwidth;
+                    strwidth = lines == 1 ? TextRenderer.MeasureText(desc, font).Width : maxboxwidth;
+
+                    // box height calc, title is 30, c.a 15 pre line, 15 margin bottom. Then have 20 between box bottom and next arrow (at least)
+                    int boxheight = 30 + lines * 15 + 15;
+
+                    // draw the box
+                    umlFile.Elements.Add(UmlFrameElement.Create(
+                        new Coordinates {X = descriptionBaseline, Y = arrowgen - 20, W = strwidth, H = boxheight},
+                        sequence.Time, desc));
+
+                    // setup next arrow
+                    arrowgen += boxheight + 20;
+                }
+
+
+                // finally, draw the baselines
+                foreach (KeyValuePair<string, int> device in devices)
+                    umlFile.Elements.Add(RelationElement.CreateBaselineArrow(
+                        new Coordinates
+                        {
+                            X = device.Value,
+                            Y = horizontalBase,
+                            W = 0,
+                            H = arrowgen - firstarrowdistance - horizontalBase
+                        }
+                    ));
+
+                // serialize that mother
+                using (XmlWriter xmlWriter = XmlWriter.Create(File.Create(fileName), new XmlWriterSettings {Indent = true}))
+                {
+                    var serializer = new XmlSerializer(typeof(UMLFile));
+                    var xmlns = new XmlSerializerNamespaces();
+                    xmlns.Add(string.Empty, string.Empty);
+
+                    serializer.Serialize(xmlWriter, umlFile, xmlns);
+                }
+            }*/
+
+            /* DISABLED
         private static List<Sequence> GetSequences(List<CapturePacket> packets, int baselinestep,
             out Dictionary<IPAddress, int> devices, ref int baselinegen, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
@@ -497,7 +500,7 @@ namespace IPTComShark.SeqDiagram
                     list.Add(sequence);
             }
 
-            return list;
+            return list;*/
         }
 
         /// <summary>
