@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\BitDataParser\src\BitDataParser\BitDataParser.csproj" />
     <ProjectReference Include="..\..\BustPCap\src\BustPCap.csproj" />
     <ProjectReference Include="..\..\ObjectListView\ObjectListView\ObjectListView2012.csproj" />
+    <ProjectReference Include="..\datashark\datashark.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus">
