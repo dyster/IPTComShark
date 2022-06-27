@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using SharpPcap.Npcap;
+using SharpPcap.LibPcap;
 
 namespace IPTComShark
 {
@@ -15,14 +15,14 @@ namespace IPTComShark
             InitializeComponent();
         }
 
-        public InterfacePicker(List<NpcapDevice> captureDevices)
+        public InterfacePicker(List<PcapDevice> captureDevices)
         {
             InitializeComponent();
             _captureDevices = captureDevices.Select(d => new NetworkCard(d)).ToList();                        
         }
 
         public bool PressedYes { get; set; }
-        public NpcapDevice SelectedDevice { get; set; }
+        public PcapDevice SelectedDevice { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -41,9 +41,9 @@ namespace IPTComShark
 
     public class NetworkCard
     {
-        private readonly NpcapDevice _device;
+        private readonly PcapDevice _device;
 
-        public NetworkCard(NpcapDevice device)
+        public NetworkCard(PcapDevice device)
         {
             this._device = device;
         }
@@ -53,10 +53,11 @@ namespace IPTComShark
 
         public string Name => _device.Name;
 
-        public int Addresses => _device.Addresses.Count;
+        public int Addresses => _device.Interface.Addresses.Count;
 
-        public bool Loopback => _device.Loopback;
+        // TODO restore this? does it exist anymore in sharpcap?
+        //public bool Loopback => _device.Loopback;
 
-        public NpcapDevice NpcapDevice => _device;
+        public PcapDevice NpcapDevice => _device;
     }
 }
