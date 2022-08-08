@@ -6,7 +6,7 @@ namespace IPTComShark.Parsers
 {
     class JRUParser : IParser
     {
-        public Parse Extract(byte[] jruload)
+        public Parse Extract(byte[] jruload, iPacket iPacket)
         {
             var parse = new Parse();
             parse.DisplayFields = new List<DisplayField>();

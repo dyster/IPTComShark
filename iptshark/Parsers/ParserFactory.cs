@@ -13,12 +13,12 @@ namespace IPTComShark.Parsers
             _parsers.Add(parser);
         }
 
-        public Parse DoPacket(ProtocolType protocol, byte[] data)
+        public Parse DoPacket(ProtocolType protocol, byte[] data, iPacket iPacket)
         {
             if (_parsers.Exists(p => p.ProtocolType == protocol))
             {
                 var parser = _parsers.First(p => p.ProtocolType == protocol);
-                return parser.Extract(data);
+                return parser.Extract(data, iPacket);
             }
 
             return new Parse {NoParserInstalled = true};
@@ -27,7 +27,7 @@ namespace IPTComShark.Parsers
 
     public interface IParser
     {
-        Parse Extract(byte[] data);
+        Parse Extract(byte[] data, iPacket iPacket);
 
         ProtocolType ProtocolType { get; }
     }

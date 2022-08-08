@@ -139,10 +139,8 @@ namespace IPTComShark.BackStore
             {
                 return arp.Bytes;
             }
-            else if (actionpacket is BDSPacket bdspacket)
-                return bdspacket.PayloadData;
-            
-            
+            else if (actionpacket is Packet dotnetpacket)
+                return dotnetpacket.PayloadData;
 
             return payloadData;
         }
@@ -317,7 +315,7 @@ namespace IPTComShark.BackStore
 
             // try to parse data if there is any
             var payload = GetPayloadData(capturePacket, topPacket);
-            Parse? extractParsedData = _parserFactory.DoPacket(capturePacket.Protocol, payload);
+            Parse? extractParsedData = _parserFactory.DoPacket(capturePacket.Protocol, payload, capturePacket);
 
             if (extractParsedData.HasValue)
             {

@@ -50,7 +50,7 @@ namespace IPTComShark.Parsers
             _dataStore.RebuildIndex();
         }
 
-        public Parse Extract(byte[] data)
+        public Parse Extract(byte[] data, iPacket iPacket)
         {
             var comid = IPTWPPacket.GetComid(data);
             var type = IPTWPPacket.GetIptType(data);

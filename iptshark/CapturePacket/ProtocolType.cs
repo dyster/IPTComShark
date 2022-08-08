@@ -18,6 +18,7 @@
         NTP,
         Virtual,
         JRUStatus,
-        BDS
+        BDS,
+        Profibus
     }
 }

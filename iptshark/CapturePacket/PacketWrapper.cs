@@ -8,6 +8,12 @@ namespace IPTComShark
         {
             if (raw.LinkLayer == LinkLayerType.BDS)
                 return new BDSPacket(raw.RawData);
+            else if(raw.LinkLayer == LinkLayerType.Profibus)
+            {
+                // todo 
+                return new ProfiPacket(raw.RawData);
+                
+            }
             else
                 return Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
         }
@@ -25,6 +31,8 @@ namespace IPTComShark
             }
             else if (topPacket is BDSPacket bdspacket)
                 actionpacket = bdspacket;
+            else if(topPacket is ProfiPacket profipacket)
+                actionpacket = profipacket;            
 
             return actionpacket;
         }

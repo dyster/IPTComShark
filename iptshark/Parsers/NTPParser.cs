@@ -8,7 +8,7 @@ namespace IPTComShark.Parsers
 {
     public class NTPParser : IParser
     {
-        public Parse Extract(byte[] payload)
+        public Parse Extract(byte[] payload, iPacket iPacket)
         {
             var pars = new Parse();
 

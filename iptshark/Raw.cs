@@ -18,7 +18,7 @@ namespace IPTComShark
     }
 
     [Serializable]
-    public enum LinkLayerType : byte
+    public enum LinkLayerType : ushort
     {
         Null = 0,
         Ethernet = 1,
@@ -44,5 +44,6 @@ namespace IPTComShark
         LinuxSLL = 113, // 0x71
         Ieee80211_Radio = 127, // 0x7F
         PerPacketInformation = 192, // 0xC0
+        Profibus = 257
     }
 }

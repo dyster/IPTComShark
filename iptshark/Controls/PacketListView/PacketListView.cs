@@ -527,7 +527,7 @@ namespace IPTComShark.Controls
             if (o != null)
             {
                 var payload = BackStore.GetPayload(o.No);
-                Parse? parse = ParserFactory.DoPacket(o.Protocol, payload);
+                Parse? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
                 if (parse.HasValue)
                 {
                     var list = new List<DisplayField>();

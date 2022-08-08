@@ -166,7 +166,7 @@ namespace IPTComShark.Export
             foreach (var packet in Selection)
             {
                 var payload = _backStore.GetPayload(packet.No);
-                Parsers.Parse? parse = _parserFactory.DoPacket(packet.Protocol, payload);
+                Parsers.Parse? parse = _parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse.HasValue)
                     xLSMaker2.Push(packet, parse.Value);
                 i++;
