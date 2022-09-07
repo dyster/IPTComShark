@@ -87,6 +87,7 @@ namespace IPTComShark
             parserFactory.AddParser(new SPLParser());
             parserFactory.AddParser(new JRUParser());
             parserFactory.AddParser(new ARPParser());
+            parserFactory.AddParser(new ProfiParser());
 
             parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
 

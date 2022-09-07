@@ -13,7 +13,7 @@ namespace IPTComShark.Parsers
     {
         public ProtocolType ProtocolType => ProtocolType.ARP;
 
-        public Parse Extract(byte[] data)
+        public Parse Extract(byte[] data, iPacket iPacket)
         {
             var parse = new Parse();
             var segment = new ByteArraySegment(data);

@@ -27,9 +27,10 @@ namespace IPTComShark.Parsers
 
             foreach(var file in files)
             {
-
+#if !DEBUG
                 try
                 {
+#endif
                     Logger.Log("Parsing " + file, Severity.Info);
                     watch.Restart();
                     IptConfigReader = new IPTConfigReader(file);
@@ -37,6 +38,7 @@ namespace IPTComShark.Parsers
                     _dataStore.Add(datasets);
                     watch.Stop();
                     Logger.Log(datasets.DataSets.Count + " datasets added in "+watch.ElapsedMilliseconds + "ms", Severity.Info);
+#if !DEBUG
                 }
                 catch(Exception e)
                 {
@@ -44,13 +46,15 @@ namespace IPTComShark.Parsers
                     var window = new TextWindow(text);
                     window.ShowDialog();                    
                 }
+#endif
             }
-                        
-            
+
+
+
             _dataStore.RebuildIndex();
         }
 
-        public Parse Extract(byte[] data)
+        public Parse Extract(byte[] data, iPacket iPacket)
         {
             var comid = IPTWPPacket.GetComid(data);
             var type = IPTWPPacket.GetIptType(data);

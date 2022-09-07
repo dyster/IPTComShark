@@ -74,7 +74,7 @@ namespace IPTComShark.Controls
 
                 
                 
-                Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload);
+                Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
 
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP && actionPacket.PayloadPacket != null)
@@ -98,7 +98,7 @@ namespace IPTComShark.Controls
                         {
                             // if only one set we can do change detection
                             var oldpayload = BackStore.GetPayload(originalpacket.Previous.No);
-                            Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload);
+                            Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload, originalpacket.Previous);
 
                             dataLines.Add(new DataLine(ticker++)
                             { IsCategory = true, Name = parse.Value.ParsedData[0].Name });

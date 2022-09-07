@@ -40,7 +40,7 @@ namespace IPTComShark.Export
                 int topcol = 4;
                 // TODO fix so it uses the whole list
                 var payload = backStore.GetPayload(packets.First.Value.No);
-                Parse? extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload);
+                Parse? extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload, packets.First.Value);
 
                 if (extractParse.HasValue)
                 {
@@ -194,7 +194,7 @@ namespace IPTComShark.Export
                 sb.Append(@" ");
 
                 var payload = backStore.GetPayload(packet.No);
-                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload);
+                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse.HasValue)
                 {
                     var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
@@ -241,7 +241,7 @@ namespace IPTComShark.Export
 
                 csvExport["Name"] = packet.Name;
                 var payload = backStore.GetPayload(packet.No);
-                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload);
+                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse.HasValue)
                 {
                     var displayFields = parse.Value.ParsedData.SelectMany(dataset =>

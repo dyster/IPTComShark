@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IPTComShark
 {
-    internal class BDSPacket : PacketDotNet.Packet
+    internal class BDSPacket : PacketDotNet.Packet, iPacket
     {
         public BDSPacket(byte[] data)
         {
@@ -54,6 +54,8 @@ namespace IPTComShark
         public string ProtocolInfo { get; set; }
 
         public List<DisplayField> DisplayFields { get; set; } = new List<DisplayField>();
+
+        public ProtocolType Protocol { get => ProtocolType.BDS; }
 
         public string ASCII()
         {

@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace IPTComShark
 {    
-    public class CapturePacket : IComparable
+    public class CapturePacket : IComparable, iPacket, iTraveller
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
@@ -90,7 +90,7 @@ namespace IPTComShark
 
             // TODO check payload data for null here? currently sent to parser to fail there
 
-            var parse = parserFactory.DoPacket(packet.Protocol, payloadData);
+            var parse = parserFactory.DoPacket(packet.Protocol, payloadData, packet);
             if (!parse.NoParserInstalled)
             {
                 packet.HasData = true;
@@ -383,15 +383,32 @@ namespace IPTComShark
             {
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
-            } 
-            else if(actionPacket is BDSPacket)
-            {
-                Protocol = ProtocolType.BDS;
-                var bds = (BDSPacket)actionPacket;
-                ProtocolInfo = bds.ProtocolInfo;
-                DisplayFields = bds.DisplayFields;
-                Name = bds.Name;
+            }                        
+            else if(actionPacket is iPacket ipac)
+            {                
+                ProtocolInfo = ipac.ProtocolInfo;
+                Protocol = ipac.Protocol;
+                DisplayFields = ipac.DisplayFields;
+                Name= ipac.Name;
             }
+            else
+            {
+                Protocol = ProtocolType.UNKNOWN;
+                ProtocolInfo = "Type: " + actionPacket.GetType().ToString();
+
+#if DEBUG
+                // if we are in debug, we might want to know what is in the unknown
+                //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
+#endif
+            }
+
+            if (actionPacket is iTraveller traveller)
+            {
+                Source = traveller.Source;
+                Destination = traveller.Destination;
+            }
+
+
             // reading headers might fail so removing
             //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x88 &&
             //         actionPacket.HeaderData[13] == 0xe1)
@@ -411,16 +428,7 @@ namespace IPTComShark
             //    Protocol = ProtocolType.LLDP;
             //    // ignore
             //}
-            else
-            {
-                Protocol = ProtocolType.UNKNOWN;
-                ProtocolInfo = "Type: " + actionPacket.GetType().ToString();                
-                
-#if DEBUG
-                // if we are in debug, we might want to know what is in the unknown
-                //                throw new NotImplementedException("Surprise data! " + BitConverter.ToString(packet.Bytes));
-#endif
-            }
+            
         }
 
         /// <summary>
@@ -456,7 +464,7 @@ namespace IPTComShark
 
         public ProtocolType Protocol { get; }
 
-        [field: JsonIgnore] public string ProtocolInfo { get; private set; }
+        [field: JsonIgnore] public string ProtocolInfo { get; }
 
         public int No { get; set; }
 
