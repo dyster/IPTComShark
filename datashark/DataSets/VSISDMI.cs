@@ -4118,7 +4118,7 @@ namespace IPTComShark.DataSets
                 {
                     Name = "DMI_SYSTEM_STATUS_spare",
                     BitFieldType = BitFieldType.Spare,
-                    Length = 14,
+                    Length = 9,
                     Comment = "Spare for alignment"
                 },
 
@@ -4154,14 +4154,15 @@ namespace IPTComShark.DataSets
                     Comment = "Spare for alignment"
                 },
 
-                new BitField
-                {
-                    Name = "MMI_Q_DISPLAY_CHANGE",
-                    BitFieldType = BitFieldType.UInt8,
-                    Length = 8,
-                    Comment =
-                        "Status of the packet contents of EVC-153. Set corresponding bit to 1 when the content of the variable changes since last message sent."
-                }
+                // MMI_Q_DISPLAY_CHANGE
+                new BitField {Name = "MMI_M_SYMB_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_M_ SYSTEM_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #2, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #3, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_M_ SOUND_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #5, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #6, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #7, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false}
             }
         };
 
@@ -4190,7 +4191,7 @@ namespace IPTComShark.DataSets
                     LookupTable = new Dictionary<string, string>
                     {
                         {"0", "Ceiling speed monitoring (CSM)"},
-                        {"1", "Pre indication monitoring (PMI)"},
+                        {"1", "Pre indication monitoring (PIM)"},
                         {"2", "Target speed monitoring (TSM)"},
                         {"3", "Release speed monitoring (RSM)"}
                     }
@@ -4204,11 +4205,11 @@ namespace IPTComShark.DataSets
                                 "Based on information provided in EVC-1 MMI_M_WARNING",
                     LookupTable = new Dictionary<string, string>
                     {
-                        {"0", "Normal status"},
-                        {"1", "Indication status"},
-                        {"2", "Overspeed status"},
-                        {"3", "Warning status"},
-                        {"4", "Intervention status"}
+                        {"0", "Normal status (NoS)"},
+                        {"1", "Indication status (IndS)"},
+                        {"2", "Overspeed status (OvS)"},
+                        {"3", "Warning status (WaS)"},
+                        {"4", "Intervention status (IntS)"}
                     }
                 },
                 new BitField
