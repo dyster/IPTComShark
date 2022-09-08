@@ -1,4 +1,5 @@
 ﻿using BitDataParser;
+using IPTComShark.Classes;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
@@ -13,8 +15,13 @@ using System.Xml.Serialization;
 
 namespace IPTComShark.XmlFiles
 {
-    public class IPTConfigReader
+    public class IPTConfigReader : makeSerializable
     {
+        private IPTConfigReader()
+        {
+            // to support serialization
+        }
+
         public IPTConfigReader(string path)
         {
             var xmlSerializer = new XmlSerializer(typeof(cpu));
@@ -27,7 +34,14 @@ namespace IPTComShark.XmlFiles
                     var deserialize = (cpu)xmlSerializer.Deserialize(reader);
                     foreach (cpuBusinterfacelist o in deserialize.Items.Where(i => i is cpuBusinterfacelist))
                         foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
-                            Telegrams.AddRange(businterface.Telegram);
+                        {
+                            foreach(var telegram in businterface.Telegram)
+                            {
+                                if (!Telegrams.Contains(telegram))
+                                    Telegrams.Add(telegram);
+                            }
+                            
+                        }
                     foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
                         Datasets.AddRange(cpuDatasetlist.Dataset);
                 }
@@ -263,7 +277,7 @@ namespace IPTComShark.XmlFiles
     [DebuggerStepThrough]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
-    public class Telegram
+    public class Telegram : IEquatable<Telegram>
     {
         /// <remarks />
         [XmlAttribute("size")]
@@ -280,6 +294,11 @@ namespace IPTComShark.XmlFiles
         /// <remarks />
         [XmlAttribute("name")]
         public string Name { get; set; }
+
+        public bool Equals(Telegram other)
+        {
+            return Size.Equals(other.Size) && Datasetid.Equals(other.Datasetid) && Comid.Equals(other.Comid) && Name.Equals(other.Name);
+        }
     }
 
     /// <remarks />

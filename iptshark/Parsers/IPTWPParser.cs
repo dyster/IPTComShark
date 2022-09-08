@@ -27,6 +27,10 @@ namespace IPTComShark.Parsers
 
             foreach(var file in files)
             {
+                if(file.EndsWith("PARSED"))
+                {
+                    continue;
+                }
 #if !DEBUG
                 try
                 {
@@ -38,6 +42,9 @@ namespace IPTComShark.Parsers
                     _dataStore.Add(datasets);
                     watch.Stop();
                     Logger.Log(datasets.DataSets.Count + " datasets added in "+watch.ElapsedMilliseconds + "ms", Severity.Info);
+
+                IptConfigReader.SerializeXml(file + "IN_PARSED");
+                //datasets.SerializeXml(file + "OUT_PARSED");
 #if !DEBUG
                 }
                 catch(Exception e)

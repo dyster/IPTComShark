@@ -48,7 +48,7 @@ namespace IPTComShark
             packetDisplay1.BackStore = _backStore;
             packetDisplay1.ParserFactory = _parserFactory;
 
-            Text = Text += " " + Application.ProductVersion + " Bugsquash Edition";// " codename \"Roger\"";
+            Text = Text += " " + Application.ProductVersion + " Elizabeth Edition";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 

@@ -199,14 +199,13 @@ namespace IPTComShark.Parsers
 
 
             }
-
-            
+                        
 
             // TODO add all the Safe link layer stuff
             if (trueCommand == 0x80 || trueCommand == 0x00 || trueCommand == 0xC0)
             {
                 // Connect Request
-                framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
+                //framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
 
             }
             else if (cmd == 1)
