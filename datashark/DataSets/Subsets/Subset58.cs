@@ -123,7 +123,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "Current STM state",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","NP"},
                         {"1","PO"},
@@ -154,7 +154,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "State order to STM",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","NP"},
                         {"1","PO"},
@@ -185,7 +185,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "Current STM state",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","NP"},
                         {"1","PO"},
@@ -216,7 +216,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "EB Status",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","Fail State"},
                         {"1","EB Applied"},
@@ -230,7 +230,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "SB Status",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","Fail State"},
                         {"1","SB Applied"},
@@ -256,7 +256,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "Traction cut off train interface status",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","Fail Status"},
                         {"1","Traction cut off"},
@@ -270,7 +270,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 3,
                     Comment = "Direction handle train interface status",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","Fail State"},
                         {"1","Forward"},
@@ -288,7 +288,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 3,
                     Comment = "Cab train interface state",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0","Fail State"},
                         {"1","Desk A opened"},

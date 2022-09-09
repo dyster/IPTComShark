@@ -142,7 +142,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_DANGERPOINT",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -167,7 +167,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_ENDTIMER",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -224,7 +224,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_OVERLAP",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -337,7 +337,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_OVERLAP",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -370,7 +370,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_TRACKINIT",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -395,7 +395,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_SECTIONTIMER",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 15}
@@ -528,7 +528,7 @@ namespace IPTComShark.DataSets
             Name = "L_NVKRINT",
             BitFieldType = BitFieldType.UInt16,
             Length = 5,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "0m"},
                 {"1", "25m"},
@@ -626,7 +626,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_LENGTH",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0}, // No train integrity
                     {1, 15}, // Train integrity confirmed by device
@@ -694,7 +694,7 @@ namespace IPTComShark.DataSets
             Name = "M_ERROR",
             BitFieldType = BitFieldType.UInt16,
             Length = 8,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Balise group: linking consistency error (ref. 3.16.2.3)"},
                 {"1", "Linked balise group: message consistency error(ref. 3.16.2.4.1/4)"},
@@ -716,7 +716,7 @@ namespace IPTComShark.DataSets
             Name = "M_LEVEL",
             BitFieldType = BitFieldType.UInt16,
             Length = 3,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "L0"},
                 {"1", "L-NTC"},
@@ -734,7 +734,7 @@ namespace IPTComShark.DataSets
             Name = "M_LEVELTR",
             BitFieldType = BitFieldType.UInt16,
             Length = 3,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Level 0"},
                 {"1", "Level NTC specified by NID_NTC"},
@@ -752,7 +752,7 @@ namespace IPTComShark.DataSets
             Name = "M_LEVELTEXTDISPLAY",
             BitFieldType = BitFieldType.UInt16,
             Length = 3,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Level 0"},
                 {"1", "Level NTC specified by NID_NTC"},
@@ -770,7 +770,7 @@ namespace IPTComShark.DataSets
             Name = "M_LOC",
             BitFieldType = BitFieldType.UInt16,
             Length = 3,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Now (The position report is sent upon receipt of the order)"},
                 {"1", "Every LRBG compliant balise group."},
@@ -788,7 +788,7 @@ namespace IPTComShark.DataSets
             Name = "M_MAMODE",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "On Sight"},
                 {"1", "Shunting"},
@@ -802,7 +802,7 @@ namespace IPTComShark.DataSets
             Name = "M_MODE",
             BitFieldType = BitFieldType.UInt16,
             Length = 4,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Full Supervision"},
                 {"1", "On Sight"},
@@ -828,7 +828,7 @@ namespace IPTComShark.DataSets
             Name = "M_MODETEXTDISPLAY",
             BitFieldType = BitFieldType.UInt16,
             Length = 4,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Full Supervision"},
                 {"1", "On Sight"},
@@ -863,7 +863,7 @@ namespace IPTComShark.DataSets
             Name = "M_NVCONTACT",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Train trip"},
                 {"1", "Apply service brake"},
@@ -877,7 +877,7 @@ namespace IPTComShark.DataSets
             Name = "M_NVDERUN",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No"},
                 {"1", "Yes"}
@@ -889,7 +889,7 @@ namespace IPTComShark.DataSets
             Name = "M_NVEBCL",
             BitFieldType = BitFieldType.UInt16,
             Length = 4,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Confidence level = 50 %"},
                 {"1", "Confidence level = 90 %"},
@@ -936,7 +936,7 @@ namespace IPTComShark.DataSets
             Name = "M_TRACKCOND",
             BitFieldType = BitFieldType.UInt16,
             Length = 4,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Non stopping area. Initial state: stopping permitted"},
                 {"1", "Tunnel stopping area. Initial state: no tunnel stopping area"},
@@ -997,7 +997,7 @@ namespace IPTComShark.DataSets
         {
             Name = "NC_CDDIFF",
             BitFieldType = BitFieldType.UInt16,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Specific SSP applicable to Cant Deficiency 80 mm"},
                 {"1", "Specific SSP applicable to Cant Deficiency 100 mm"},
@@ -1014,7 +1014,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_DIFF",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 4},
                     {1, 0},
@@ -1028,7 +1028,7 @@ namespace IPTComShark.DataSets
         {
             Name = "NC_DIFF",
             BitFieldType = BitFieldType.UInt16,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Specific SSP applicable to Freight train braked in “P” position"},
                 {"1", "Specific SSP applicable to Freight train braked in “G” position"},
@@ -1037,7 +1037,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_DIFF",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 4},
@@ -1193,7 +1193,7 @@ namespace IPTComShark.DataSets
             Name = "Q_ASPECT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Stop if in SH mode"},
                 {"1", "Go if in SH mode"}
@@ -1205,7 +1205,7 @@ namespace IPTComShark.DataSets
             Name = "Q_CONFTEXTDISPLAY",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Driver acknowledgement always ends the text display, regardless of the end condition"},
                 {"1", "Driver acknowledgement is an additional condition to end the display"}
@@ -1224,7 +1224,7 @@ namespace IPTComShark.DataSets
             Name = "Q_DIFF",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Cant Deficiency specific category"},
                 {"1", "Other specific category, replaces the Cant Deficiency SSP"},
@@ -1238,7 +1238,7 @@ namespace IPTComShark.DataSets
             Name = "Q_DIR",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Reverse"},
                 {"1", "Nominal"},
@@ -1252,7 +1252,7 @@ namespace IPTComShark.DataSets
             Name = "Q_DIRLRBG",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Reverse"},
                 {"1", "Nominal"},
@@ -1266,7 +1266,7 @@ namespace IPTComShark.DataSets
             Name = "Q_DIRTRAIN",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Reverse"},
                 {"1", "Nominal"},
@@ -1280,7 +1280,7 @@ namespace IPTComShark.DataSets
             Name = "Q_DLRBG",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Reverse"},
                 {"1", "Nominal"},
@@ -1294,7 +1294,7 @@ namespace IPTComShark.DataSets
             Name = "Q_EMERGENCYSTOP",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Conditional Emergency Stop accepted, with update of EOA (ref 3.10.2.2)"},
                 {"1", "Conditional Emergency Stop accepted, with no update of EOA (ref 3.10.2.2)"},
@@ -1318,7 +1318,7 @@ namespace IPTComShark.DataSets
             Name = "Q_GDIR",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Downhill"},
                 {"1", "Uphill"}
@@ -1330,7 +1330,7 @@ namespace IPTComShark.DataSets
             Name = "Q_FRONT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Train length delay on validity end point of profile element."},
                 {"1", "No train length delay on validity end point of profile element"}
@@ -1342,7 +1342,7 @@ namespace IPTComShark.DataSets
             Name = "Q_INFILL",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Enter"},
                 {"1", "Exist"}
@@ -1354,7 +1354,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LENGTH",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No train integrity information available"},
                 {"1", "Train integrity confirmed by integrity monitoring device"},
@@ -1385,7 +1385,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LINKORIENTATION",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "The balise group is seen by the train in reverse direction"},
                 {"1", "The balise group is seen by the train in nominal direction"}
@@ -1397,7 +1397,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LINKREACTION",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Train trip"},
                 {"1", "Apply service brake"},
@@ -1411,7 +1411,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LOOPDIR",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Opposite"},
                 {"1", "Same"}
@@ -1423,7 +1423,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LGTLOC",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Min safe rear end"},
                 {"1", "Max safe front end"}
@@ -1435,7 +1435,7 @@ namespace IPTComShark.DataSets
             Name = "Q_LSSMA",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Toggle off"},
                 {"1", "Toggle on"}
@@ -1447,7 +1447,7 @@ namespace IPTComShark.DataSets
             Name = "Q_MAMODE",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "as the EOA (keeping the SvL given by the MA)"},
                 {"1", "as both the EOA and SvL (instead of the EOA and SvL given by the MA)"}
@@ -1460,7 +1460,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
             SkipIfValue = (ushort)0,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "TAF up to level 2/3 transition location"}
             }
@@ -1472,7 +1472,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
             SkipIfValue = (ushort)0,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "Track description deleted"}
             }
@@ -1484,7 +1484,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
             SkipIfValue = (ushort)0,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "Time before a section timer/LOA speed timer expires reached"}
             }
@@ -1496,7 +1496,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
             SkipIfValue = (ushort)0,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "Time before reaching pre-indication location for the EOA/LOA reached"}
             }
@@ -1508,7 +1508,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
             SkipIfValue = (ushort)0,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "Start selected by driver"}
             }
@@ -1527,7 +1527,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NEWCOUNTRY",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Same country / railway administration, no NID_C follows"},
                 {"1", "Not the same country / railway administration, NID_C follows"}
@@ -1539,7 +1539,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVDRIVER_ADHES",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Not allowed"},
                 {"1", "Allowed"}
@@ -1551,7 +1551,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVEMRRLS",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Revoke emergency brake command at standstill"},
                 {"1", "Revoke emergency brake command when permitted speed supervision limit is no longer exceeded"}
@@ -1563,7 +1563,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVGUIPERM",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No"},
                 {"1", "Yes"}
@@ -1575,7 +1575,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVINHSMICPERM",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No"},
                 {"1", "Yes"}
@@ -1587,7 +1587,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVKINT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No integrated correction factors follow"},
                 {"1", "Integrated correction factors follow"}
@@ -1599,7 +1599,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVKVINTSET",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Freight trains"},
                 {"1", "Conventional passenger trains"},
@@ -1621,7 +1621,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVSBFBPERM",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No"},
                 {"1", "Yes"}
@@ -1633,7 +1633,7 @@ namespace IPTComShark.DataSets
             Name = "Q_NVSBTSMPERM",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No"},
                 {"1", "Yes"}
@@ -1645,7 +1645,7 @@ namespace IPTComShark.DataSets
             Name = "Q_ORIENTATION",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "The balise group has been passed by the train in reverse direction"},
                 {"1", "The balise group has been passed by the train in nominal direction"}
@@ -1664,7 +1664,7 @@ namespace IPTComShark.DataSets
             Name = "Q_RBC",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Terminate communication session"},
                 {"1", "Establish communication session"}
@@ -1676,7 +1676,7 @@ namespace IPTComShark.DataSets
             Name = "Q_RIU",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Terminate communication session"},
                 {"1", "Establish communication session"}
@@ -1703,7 +1703,7 @@ namespace IPTComShark.DataSets
             Name = "Q_SLEEPSESSION",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Ignore session establishment order"},
                 {"1", "Execute session establishment order"}
@@ -1715,7 +1715,7 @@ namespace IPTComShark.DataSets
             Name = "Q_SRSTOP",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Stop if in SR mode"},
                 {"1", "Go if in SR mode"}
@@ -1734,7 +1734,7 @@ namespace IPTComShark.DataSets
             Name = "Q_STATUS",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Invalid"},
                 {"1", "Valid"},
@@ -1748,7 +1748,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TEXT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "“Level crossing not protected"},
                 {"1", "Acknowledgement"}
@@ -1760,7 +1760,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TEXTCLASS",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Auxiliary Information"},
                 {"1", "Important Information"}
@@ -1772,7 +1772,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TEXTCONFIRM",
             BitFieldType = BitFieldType.UInt16,
             Length = 2,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No confirmation required"},
                 {"1", "Confirmation required"},
@@ -1792,7 +1792,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TEXTDISPLAY",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No, display as soon as / until one of the events is fulfilled"},
                 {"1", "Yes, display as soon as / until all events are fulfilled"}
@@ -1804,7 +1804,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TEXTREPORT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No driver acknowledgement report required"},
                 {"1", "Driver acknowledgement report required"}
@@ -1816,7 +1816,7 @@ namespace IPTComShark.DataSets
             Name = "Q_TRACKINIT",
             BitFieldType = BitFieldType.UInt16,
             Length = 1,
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No initial states to be resumed, profile to follow"},
                 {"1", "Empty profile, initial states to be resumed"}
@@ -1868,7 +1868,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_ENDTIMER",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 10}
@@ -1901,7 +1901,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_OVERLAP",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 10}
@@ -1942,7 +1942,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_SECTIONTIMER",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 10}
@@ -2107,7 +2107,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_DANGERPOINT",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 7}
@@ -2132,7 +2132,7 @@ namespace IPTComShark.DataSets
             VariableLengthSettings = new VariableLengthSettings
             {
                 Name = "Q_OVERLAP",
-                LookUpTable = new Dictionary<int, int>
+                LookUpTable = new IntLookupTable
                 {
                     {0, 0},
                     {1, 7}
@@ -2265,7 +2265,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "Q_NVKINT",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 1}
@@ -2281,7 +2281,7 @@ namespace IPTComShark.DataSets
                                     VariableLengthSettings = new VariableLengthSettings
                                     {
                                         Name = "Q_NVKVINTSET",
-                                        LookUpTable = new Dictionary<int, int>
+                                        LookUpTable = new IntLookupTable
                                         {
                                             {0, 0},
                                             {1, 1},
@@ -2305,7 +2305,7 @@ namespace IPTComShark.DataSets
                                     VariableLengthSettings = new VariableLengthSettings
                                     {
                                         Name = "Q_NVKVINTSET",
-                                        LookUpTable = new Dictionary<int, int>
+                                        LookUpTable = new IntLookupTable
                                         {
                                             {0, 0},
                                             {1, 1},
@@ -2340,7 +2340,7 @@ namespace IPTComShark.DataSets
                                                 VariableLengthSettings = new VariableLengthSettings
                                                 {
                                                     Name = "Q_NVKVINTSET",
-                                                    LookUpTable = new Dictionary<int, int>
+                                                    LookUpTable = new IntLookupTable
                                                     {
                                                         {0, 0},
                                                         {1, 1},
@@ -2377,7 +2377,7 @@ namespace IPTComShark.DataSets
                                                 VariableLengthSettings = new VariableLengthSettings
                                                 {
                                                     Name = "Q_NVKVINTSET",
-                                                    LookUpTable = new Dictionary<int, int>
+                                                    LookUpTable = new IntLookupTable
                                                     {
                                                         {0, 0},
                                                         {1, 1},
@@ -2401,7 +2401,7 @@ namespace IPTComShark.DataSets
                                                 VariableLengthSettings = new VariableLengthSettings
                                                 {
                                                     Name = "Q_NVKVINTSET",
-                                                    LookUpTable = new Dictionary<int, int>
+                                                    LookUpTable = new IntLookupTable
                                                     {
                                                         {0, 0},
                                                         {1, 1},
@@ -2435,7 +2435,7 @@ namespace IPTComShark.DataSets
                                                             VariableLengthSettings = new VariableLengthSettings
                                                             {
                                                                 Name = "Q_NVKVINTSET",
-                                                                LookUpTable = new Dictionary<int, int>
+                                                                LookUpTable = new IntLookupTable
                                                                 {
                                                                     {0, 0},
                                                                     {1, 1},
@@ -2504,7 +2504,7 @@ namespace IPTComShark.DataSets
                     VariableLengthSettings = new VariableLengthSettings
                     {
                         Name = "Q_NEWCOUNTRY",
-                        LookUpTable = new Dictionary<int, int>
+                        LookUpTable = new IntLookupTable
                         {
                             {0, 0},
                             {1, 10}
@@ -2537,7 +2537,7 @@ namespace IPTComShark.DataSets
                                 VariableLengthSettings = new VariableLengthSettings
                                 {
                                     Name = "Q_NEWCOUNTRY",
-                                    LookUpTable = new Dictionary<int, int>
+                                    LookUpTable = new IntLookupTable
                                     {
                                         {0, 0},
                                         {1, 10}
@@ -2836,7 +2836,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "M_LEVELTR",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 1},
@@ -2871,7 +2871,7 @@ namespace IPTComShark.DataSets
                                     VariableLengthSettings = new VariableLengthSettings
                                     {
                                         Name = "M_LEVELTR",
-                                        LookUpTable = new Dictionary<int, int>
+                                        LookUpTable = new IntLookupTable
                                         {
                                             {0, 0},
                                             {1, 1},
@@ -2958,7 +2958,7 @@ namespace IPTComShark.DataSets
                     VariableLengthSettings = new VariableLengthSettings
                     {
                         Name = "M_LEVELTR",
-                        LookUpTable = new Dictionary<int, int>
+                        LookUpTable = new IntLookupTable
                         {
                             {0, 0},
                             {1, 1},
@@ -2992,7 +2992,7 @@ namespace IPTComShark.DataSets
                                 VariableLengthSettings = new VariableLengthSettings
                                 {
                                     Name = "M_LEVELTR",
-                                    LookUpTable = new Dictionary<int, int>
+                                    LookUpTable = new IntLookupTable
                                     {
                                         {0, 0},
                                         {1, 1},
@@ -3150,7 +3150,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "Q_TRACKINIT",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 1}, // if 0, one iteration of dataset, not the total length
                                 {1, 0}
@@ -3233,7 +3233,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "M_LEVELTEXTDISPLAYStart",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 8},
@@ -3257,7 +3257,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "M_LEVELTEXTDISPLAYEnd",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 8},
@@ -3278,7 +3278,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "Q_TEXTCONFIRM",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 1},
@@ -3295,7 +3295,7 @@ namespace IPTComShark.DataSets
                                     Name = "Q_CONFTEXTDISPLAY",
                                     BitFieldType = BitFieldType.UInt16,
                                     Length = 1,
-                                    LookupTable = new Dictionary<string, string>
+                                    LookupTable = new LookupTable
                                     {
                                         {
                                             "0",
@@ -3309,7 +3309,7 @@ namespace IPTComShark.DataSets
                                     Name = "Q_TEXTREPORT",
                                     BitFieldType = BitFieldType.UInt16,
                                     Length = 1,
-                                    LookupTable = new Dictionary<string, string>
+                                    LookupTable = new LookupTable
                                     {
                                         {"0", "No driver acknowledgement report required"},
                                         {"1", "Driver acknowledgement report required"}
@@ -3320,7 +3320,7 @@ namespace IPTComShark.DataSets
                                     VariableLengthSettings = new VariableLengthSettings
                                     {
                                         Name = "Q_TEXTREPORT",
-                                        LookUpTable = new Dictionary<int, int>
+                                        LookUpTable = new IntLookupTable
                                         {
                                             {0, 0},
                                             {1, 1}
@@ -3679,7 +3679,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "M_LEVEL",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 8},
@@ -3724,7 +3724,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "M_LEVEL",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 8},

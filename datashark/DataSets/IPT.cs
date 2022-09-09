@@ -994,7 +994,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment =
                         "Type of request: 1 = Send IPT Info; response: see chapter 4.1 , 2 = Send UIC Info; response: see chapter 4.2",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "INVALID"},
                         {"1", "Send IPT Info"},

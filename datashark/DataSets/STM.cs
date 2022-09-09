@@ -139,7 +139,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Actual STM state",
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0", "Reserved (NP)"},
                         {"1", "PO"},
@@ -212,7 +212,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Functional identity of button from button palette given by NID_STM",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"10", "SPAD Indicator"},
                                     {"11", "OSS Indicator"},
@@ -235,7 +235,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Identity of button icon to be displayed",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"1", "Disabled"},
                                     {"2", "Disabled"},
@@ -360,7 +360,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Functional identity of indicator from indicator palette given by NID_STM",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"10", "AWS Sunflower"},
                                     {"20", "TI/FLT Indicator"},
@@ -380,7 +380,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Identity of icon from palette given by icon palette given by NID_STM",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"7", "Black"},
                                     {"8", "Black/Yellow"},
@@ -674,7 +674,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Functional identity of sound from sound palette given by NID_STM",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "Turn off ongoing sound"},
                                     {"1", "SPAD Alert with Prime tone"},
@@ -692,7 +692,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Continuous/ Not continuous/ Stopped",
-                                LookupTable = new Dictionary<string, string>()
+                                LookupTable = new LookupTable()
                                 {
                                     {"0", "Stop"},
                                     {"1", "One shot"},
@@ -847,7 +847,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Button Event",
-                                LookupTable = new Dictionary<string, string>()
+                                LookupTable = new LookupTable()
                                 {
                                     {"0", "Push"},
                                     {"1", "Release"}
@@ -912,7 +912,7 @@ namespace IPTComShark.DataSets
         };
 
          // checked 01-03-2021
-        public static Dictionary<string, string> NID_STM_LookupTable => new Dictionary<string, string>
+        public static LookupTable NID_STM_LookupTable => new LookupTable
         {
             {"20", "TPWS"},
             {"21", "TPWS Fixed"},
@@ -920,7 +920,7 @@ namespace IPTComShark.DataSets
             {"255", "exit"},
         };
 
-        public static Dictionary<string, string> NID_BUTTON_LookupTable => new Dictionary<string, string>
+        public static LookupTable NID_BUTTON_LookupTable => new LookupTable
         {
             {"10", "SPAD Indicator"},
             {"11", "OSS Indicator"},

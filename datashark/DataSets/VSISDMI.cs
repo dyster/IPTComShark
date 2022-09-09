@@ -102,7 +102,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Type of request",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Version info request"},
                         {"1", "Go to Idle state"},
@@ -143,7 +143,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Slip status",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No axle is slipping"},
                         {"1", "Any axle is slipping"}
@@ -155,7 +155,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Slide status",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No axle is sliding"},
                         {"1", "Any axle is sliding"}
@@ -167,7 +167,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Allow display of full window",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Full Screen windows disabled"},
                         {"1", "Full Screen windows enabled"}
@@ -186,7 +186,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "Warning status",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Normal Status, Ceiling Speed Monitoring"},
                         {"1", "Indication Status, Target Speed Monitoring"},
@@ -219,7 +219,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Current speed of the train",
-                    LookupTable = new Dictionary<string, string> {{"-1", "Speed Unknown"}},
+                    LookupTable = new LookupTable {{"-1", "Speed Unknown"}},
                     Scaling = 0.036,
                     AppendString = " km/h"
                 },
@@ -237,7 +237,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Speed restriction at current target",
-                    LookupTable = new Dictionary<string, string> {{"-1", "No target speed"}},
+                    LookupTable = new LookupTable {{"-1", "No target speed"}},
                     AppendString = " cm/s"
                 },
                 new BitField
@@ -254,7 +254,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Release speed applied at the EOA",
-                    LookupTable = new Dictionary<string, string> {{"-1", "No release speed"}},
+                    LookupTable = new LookupTable {{"-1", "No release speed"}},
                     AppendString = " cm/s"
                 },
                 new BitField
@@ -265,7 +265,7 @@ namespace IPTComShark.DataSets
                     Comment =
                         "This is the position in odometer co-ordinates of the next restrictive discontinuity of the static speed profile or target, which has influence on the braking curve. " +
                         "This position can be adjusted depending on supervision.",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"-1", "No brake target"},
                         {"2147483647", "Infinite distance in Reversing mode"}
@@ -278,7 +278,7 @@ namespace IPTComShark.DataSets
                     Length = 32,
                     Comment =
                         "This is the location in odometer co-ordinates of the indication marker for the next brake target. This position can be adjusted depending on supervision.",
-                    LookupTable = new Dictionary<string, string> {{"-1", "Spare"}}
+                    LookupTable = new LookupTable {{"-1", "Spare"}}
                 },
                 new BitField
                 {
@@ -522,7 +522,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.Int16,
                                 Length = 16,
                                 Comment = "New speed value",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "Display as speed v=0 and use discontinuity symbol PL23 according to [ERA]"},
                                     {"-3", "Display as speed v=0 without any discontinuity symbol"}
@@ -544,7 +544,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Current gradient value",
-                    LookupTable = new Dictionary<string, string> {{"-255", "No current gradient profile"}}
+                    LookupTable = new LookupTable {{"-255", "No current gradient profile"}}
                 },
                 new BitField
                 {
@@ -578,7 +578,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.Int16,
                                 Length = 16,
                                 Comment = "New gradient value",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                     {{"-255", "The gradient profile ends at the defined position"}}
                             },
                             new BitField
@@ -616,7 +616,7 @@ namespace IPTComShark.DataSets
                     Comment =
                         "This is the train’s current geographical position, in absolute co-ordinates as defined by trackside. " +
                         "In case of single balises it indicates the absolute position of the last passed balise",
-                    LookupTable = new Dictionary<string, string> {{"-1", "No more geo position report after this"}}
+                    LookupTable = new LookupTable {{"-1", "No more geo position report after this"}}
                 },
                 new BitField
                 {
@@ -624,7 +624,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Int16,
                     Length = 16,
                     Comment = "Train’s current geographical position given as an offset from last passed balise",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                         {{"-1", "N/A (i.e. MMI shall display _ABSOLUTPOS only)"}}
                 }
             }
@@ -811,7 +811,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "ETCS level",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Level 0"},
                         {"1", "Level NTC"},
@@ -923,7 +923,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Text class",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"False", "Auxiliary Information"},
                         {"True", "Important Information"}
@@ -949,7 +949,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "Tells MMI what to do with text",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Add text/symbol with ack prompt, to be kept after ack"},
                         {"1", "Add text/symbol with ack prompt, to be removed after ack"},
@@ -1619,7 +1619,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
                     Comment = "LSSMA speed indication value",
-                    LookupTable = new Dictionary<string, string> {{"65535", "no LSSMA displayed"}}
+                    LookupTable = new LookupTable {{"65535", "no LSSMA displayed"}}
                 }
             }
         };
@@ -1645,7 +1645,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32,
                     Comment = "Vehicle identity",
-                    LookupTable = new Dictionary<string, string> {{"0", "Unknown"}}
+                    LookupTable = new LookupTable {{"0", "Unknown"}}
                 },
                 new BitField
                 {
@@ -1756,7 +1756,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Current STM state",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "Reserved (mapped to NP for consistency)"},
                                     {"1", "Power On (PO)"},
@@ -1799,7 +1799,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Need for driver intervention or not during Specific STM Data Entry.",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"False", "No driver intervention requested"},
                         {"True", "Driver intervention requested"}
@@ -2459,7 +2459,7 @@ namespace IPTComShark.DataSets
                                 Length = 32,
                                 Comment =
                                     "Track condition announcement. This position can be adjusted depending on supervision.",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                     {{"-2147483647", "No announcement location exists or is already passed"}}
                             },
                             new BitField
@@ -2469,7 +2469,7 @@ namespace IPTComShark.DataSets
                                 Length = 32,
                                 Comment =
                                     "Start location of track condition. This position can be adjusted depending on supervision.",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                     {{"-2147483647", "Start location already passed"}}
                             },
                             new BitField
@@ -2479,7 +2479,7 @@ namespace IPTComShark.DataSets
                                 Length = 32,
                                 Comment =
                                     "End location of track condition. This position can be adjusted depending on supervision.",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                     {{"-2147483647", "End location already passed"}}
                             },
                             MMI_NID_TRACKCOND,
@@ -2491,7 +2491,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 1,
                                 Comment = "Type of action at start location",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "with driver action (manual)"},
                                     {"1", "without driver action (automatic)"}
@@ -2503,7 +2503,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 1,
                                 Comment = "Type of action at end location",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "with driver action (manual)"},
                                     {"1", "without driver action (automatic)"}
@@ -2552,7 +2552,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
                     Comment = "Required driver action",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "with driver action (manual)"},
                         {"1", "without driver action (automatic)"}
@@ -2694,7 +2694,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Status of the Home KMC ID configuration",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Not configured"},
                         {"1", "Stored"},
@@ -2798,7 +2798,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Control variable to display Set Speed information or not",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Do not display"},
                         {"1", "Display"}
@@ -2861,7 +2861,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "This variable indicates the meaning of the MMI_START_ATP packet",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "'MMI is OK"},
                         {"1", "'Error"}
@@ -2892,7 +2892,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Request type, one request at the time",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Spare"},
                         {"1", "Start Shunting"},
@@ -3006,7 +3006,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "Indicates validity of shown \"LX not protected\" text",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "'LX not protected' text has not been requested"},
                         {"1", "'LX not protected' text has been requested and shown properly"},
@@ -3021,7 +3021,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "MMI speed data consistency",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Speed correctly shown"},
                         {"1", "Speed wrongly shown"},
@@ -3034,7 +3034,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     Comment = "Indicates validity of shown mode",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Mode presentation failed"},
                         {"1", "Mode presentation passed"},
@@ -3047,7 +3047,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "The current health status of MMI",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Unknown"},
                         {"1", "Failure"},
@@ -3425,7 +3425,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
                     Comment = "Logical Ack or Nack",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Spare"},
                         {"1", "Acknowledge / YES"},
@@ -3619,7 +3619,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Language code",
-                    LookupTable = new Dictionary<string, string> {{"255", "Language Unknown"}}
+                    LookupTable = new LookupTable {{"255", "Language Unknown"}}
                 }
             }
         };
@@ -3910,7 +3910,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Driver action",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Ack of On Sight mode"},
                         {"1", "Ack of Shunting mode"},
@@ -4188,7 +4188,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Type of the speed and distance monitoring. Based on information provided in EVC-1 MMI_M_WARNING",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Ceiling speed monitoring (CSM)"},
                         {"1", "Pre indication monitoring (PIM)"},
@@ -4203,7 +4203,7 @@ namespace IPTComShark.DataSets
                     Length = 8,
                     Comment = "Supervision status of the speed and distance monitoring. " +
                                 "Based on information provided in EVC-1 MMI_M_WARNING",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Normal status (NoS)"},
                         {"1", "Indication status (IndS)"},
@@ -4219,7 +4219,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "Permitted speed displayed to the driver. " +
                                 "Based on information provided in EVC-1 MMI_V_PERMITTED",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"1023", "None"}
                     },
@@ -4232,7 +4232,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "SBI speed displayed to the driver. " +
                                 "Based on information provided in EVC-1 MMI_V_INTERVENTION",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"1023", "None"}
                     },
@@ -4245,7 +4245,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "Target speed displayed to the driver. " +
                                 "Based on information provided in EVC-1 MMI_V_TARGET",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"1023", "None"}
                     },
@@ -4258,7 +4258,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "Target distance displayed to the driver. " +
                                 "Based on information provided in EVC-1 MMI_O_BRAKETARGET",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"32767", "None"}
                     },
@@ -4271,7 +4271,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "Release speed displayed to the driver. " +
                                 "Based on information provided in EVC-1 MMI_V_RELEASE",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"1023", "None"}
                     },
@@ -4289,7 +4289,7 @@ namespace IPTComShark.DataSets
                         //    BitFieldType = BitFieldType.UInt8,
                         //    Length = 8,
                         //    Comment = "Time to Indication square size on DMI",
-                        //    LookupTable = new Dictionary<string, string>
+                        //    LookupTable = new LookupTable
                         //    {
                         //        {"0", "0 cells"},
                         //        {"1", "5 x 5 cells"},
@@ -4319,7 +4319,7 @@ namespace IPTComShark.DataSets
                     Length = 16,
                     Comment = "LSSMA speed displayed to the driver. " +
                                 "Based on information provided in EVC-23 MMI_V_LSSMA",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"1023", "None"}
                     },
@@ -4405,7 +4405,7 @@ namespace IPTComShark.DataSets
                                 BitFieldType = BitFieldType.UInt8,
                                 Length = 8,
                                 Comment = "Status of Text Message",
-                                LookupTable = new Dictionary<string, string>
+                                LookupTable = new LookupTable
                                 {
                                     {"0", "Start showing Text Message to Driver"},
                                     {"1", "Stop displaying Text Message to Driver"},
@@ -4523,7 +4523,7 @@ namespace IPTComShark.DataSets
                         Name = "Flashing",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Normal"},
                             {"True", "Counter phase"}
@@ -4534,7 +4534,7 @@ namespace IPTComShark.DataSets
                         Name = "Flashing Speed",
                         BitFieldType = BitFieldType.UInt8,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "No Flashing"},
                             {"1", "Slow"},
@@ -4547,7 +4547,7 @@ namespace IPTComShark.DataSets
                         Name = "Text Background Colour",
                         BitFieldType = BitFieldType.UInt8,
                         Length = 3,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Black text background"},
                             {"1", "White text background"},
@@ -4564,7 +4564,7 @@ namespace IPTComShark.DataSets
                         Name = "Text Colour",
                         BitFieldType = BitFieldType.UInt8,
                         Length = 3,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Black"},
                             {"1", "White"},
@@ -4627,7 +4627,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Maximum train length",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}}
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}}
         };
 
         public static BitField MMI_M_ACTIVE_CABIN => new BitField
@@ -4636,7 +4636,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 2,
             Comment = "Defines the identity of the activated cabin",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No cabin is active"},
                 {"1", "Cabin 1 is active"},
@@ -4651,7 +4651,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Train equipped with airtight system",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Not equipped"},
                 {"1", "Equipped"},
@@ -4665,7 +4665,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 2,
             Comment = "Control variable for alternative train data entry method",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {
                     "0",
@@ -4684,7 +4684,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Currently used brake percentage",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"251", "Technical Range Check failed"},
                 {"255", "Original value exceeded (will be displayed as '++++' in grey, Data Field 'Current BP')"}
@@ -4698,7 +4698,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Currently used brake percentage. Bit-inverted value",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"251", "Technical Range Check failed"},
                 {"255", "Original value exceeded (will be displayed as '++++' in grey, Data Field 'Current BP')"}
@@ -4712,7 +4712,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Last measured brake percentage. Range 10...250",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {
                     "255",
@@ -4728,7 +4728,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Last measured brake percentage. Range 10...250. Bit-inverted value.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {
                     "255",
@@ -4762,7 +4762,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Brake percentage",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}},
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}},
             AppendString = " %"
         };
 
@@ -4772,7 +4772,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Identifier of MMI Buttons",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "BTN_MAIN"},
                 {"1", "BTN_OVERRIDE"},
@@ -4965,7 +4965,7 @@ namespace IPTComShark.DataSets
             Length = 1,
             Comment = "EVC-20: Marker to indicate if a level button is enabled or disabled." +
                       "\r\nEVC-121: Marker to indicate if the driver has selected the level.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"True", "Enabled"},
                 {"False", "Disabled"}
@@ -4978,7 +4978,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Level number or NTC ID",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Level 0"},
                 {"1", "Level 1"},
@@ -5004,7 +5004,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt32,
             Length = 32,
             Comment = "Number of pulses per km (Radar 1)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No Radar 1 on board"},
                 {"4294967290", "Technical Range Check failed"},
@@ -5021,7 +5021,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt32,
             Length = 32,
             Comment = "Number of pulses per km (Radar 1). Value is bit-inverted",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No Radar 1 on board"},
                 {"4294967290", "Technical Range Check failed"},
@@ -5038,7 +5038,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt32,
             Length = 32,
             Comment = "Number of pulses per km (Radar 2)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No Radar 2 on board"},
                 {"4294967290", "Technical Range Check failed"},
@@ -5055,7 +5055,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt32,
             Length = 32,
             Comment = "Number of pulses per km (Radar 2). Value is bit-inverted",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "No Radar 2 on board"},
                 {"4294967290", "Technical Range Check failed"},
@@ -5072,7 +5072,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Wheel Diameter (Tacho 1)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"65530", "Technical Range Check failed"},
                 {"65531", "Technical Resolution Check failed"},
@@ -5088,7 +5088,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Wheel Diameter (Tacho 1). Value is bit-inverted.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"65530", "Technical Range Check failed"},
                 {"65531", "Technical Resolution Check failed"},
@@ -5104,7 +5104,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Wheel Diameter (Tacho 2)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"65530", "Technical Range Check failed"},
                 {"65531", "Technical Resolution Check failed"},
@@ -5120,7 +5120,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Wheel Diameter (Tacho 2). Value is bit-inverted",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"65530", "Technical Range Check failed"},
                 {"65531", "Technical Resolution Check failed"},
@@ -5136,7 +5136,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Type of track condition",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Non-Stopping Area"},
                 {"1", "Tunnel Stopping Area"},
@@ -5164,7 +5164,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 4,
             Comment = "ID of preconfigured train data set",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Train data entry method by train data set is not selected --> use 'flexible TDE'"},
                 {"15", "no Train data set specified"}
@@ -5193,7 +5193,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Wheel Size Accuracy (maximum 32)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"250", "Technical Range Check failed"},
                 {"251", "Technical Resolution Check failed"},
@@ -5209,7 +5209,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Wheel Size Accuracy (maximum 32). Value is bit-inverted.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"250", "Technical Range Check failed"},
                 {"251", "Technical Resolution Check failed"},
@@ -5257,7 +5257,7 @@ namespace IPTComShark.DataSets
                 "Nevertheless, the ETC should adapt the order of levels in the list to the order desired by ERA_ERTMS_15560. " +
                 "The sequence of NTC level presentation can be chosen by generic system design. " +
                 "The DMI should use the sequence of NTC levels in MMI_M_LEVEL_NTC_ID (k=x) as input for sequence of display.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
                 {{"0", "Cancel presentation of previous MMI_SELECT_LEVEL (if still shown on the MMI)."}}
         };
 
@@ -5275,7 +5275,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "The identity of a data entry element",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Train running number"},
                 {"1", "ERTMS/ETCS Level"},
@@ -5307,7 +5307,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt32,
             Length = 32,
             Comment = "Home KMC ID number, provided by ETCS Onboard on request of the ETCS-MMI",
-            LookupTable = new Dictionary<string, string> {{"0", "Unknown"}}
+            LookupTable = new LookupTable {{"0", "Unknown"}}
         };
 
         public static BitField MMI_NID_KEY_AXLE_LOAD => new BitField
@@ -5318,7 +5318,7 @@ namespace IPTComShark.DataSets
             Comment =
                 "Axle load category (coded as MMI key according to NID_KEY) of the train. " +
                 "For Axle Load Category the keys number 21 to 33 are applicable. \"No dedicated key\" may be used for \"entry data entry field\".",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}}
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}}
         };
 
         public static BitField MMI_NID_KEY_LOAD_GAUGE => new BitField
@@ -5328,7 +5328,7 @@ namespace IPTComShark.DataSets
             Length = 8,
             Comment =
                 "Loading gauge type of train (coded as MMI key according to NID_KEY) of the train. For Train Category the keys number 34 to 38 are applicable.",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}}
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}}
         };
 
         public static BitField MMI_NID_KEY_TRAIN_CAT => new BitField
@@ -5339,7 +5339,7 @@ namespace IPTComShark.DataSets
             Comment =
                 "Train category (label, coded as MMI_NID_KEY) according to ERA_ERTMS_15560, ch. 11.3.9.9.3. Coded as ERA 'key number' according to NID_KEY. " +
                 "For Train Category the keys number 3 to 20 are applicable. \"No dedicated key\" may be used for \"entry data entry field\".",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}}
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}}
         };
 
         public static BitField MMI_NID_NTC => new BitField
@@ -5392,7 +5392,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Identifier of ETCS windows",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Default"},
                 {"1", "Main"},
@@ -5432,7 +5432,7 @@ namespace IPTComShark.DataSets
             Length = 1,
             Comment =
                 "Button Event (pressed or released)",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Released"},
                 {"1", "Pressed"}
@@ -5448,7 +5448,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Enabling close button in EVC-14, EVC-20 and EVC-22",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Close button disabled"},
                 {"128", "Close button enabled"}
@@ -5463,7 +5463,7 @@ namespace IPTComShark.DataSets
             Comment =
                 "This universal data check result variable provides control information how to display the related train data element in Echo Text/Data Entry Fields." +
                 "\r\nAffected Echo Text/Data Entry Fields are indicated by MMI_NID_DATA.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "All checks have passed"},
                 {"1", "Technical Range Check failed"},
@@ -5480,7 +5480,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 1,
             Comment = "Qualifier for the variable MMI_M_LEVEL_NTC_ID",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "MMI_M_LEVEL_NTC_ID contains an STM ID (0-255)"},
                 {"1", "MMI_M_LEVEL_NTC_ID contains a level number (0-3)"}
@@ -5493,7 +5493,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Indicates the content of the maintenance telegram",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Wheel diameter"},
                 {"1", "Doppler"}
@@ -5506,7 +5506,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Indicates the content of the maintenance telegram. Value is bit-inverted",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Wheel diameter"},
                 {"1", "Doppler"}
@@ -5519,7 +5519,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Predefined text message",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Level crossing not protected"},
                 {"1", "Acknowledgement"},
@@ -5688,7 +5688,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 4,
             Comment = "Variable describing step of the track condition.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Approaching area"},
                 {"1", "Announce Area"},
@@ -5720,7 +5720,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "Identifier of a Specific STM Data to be entered.",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"1", "TPWS Start Test?"},
                 {"4", "TPWS Test in Progress"}
@@ -5733,7 +5733,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.Bool,
             Length = 1,
             Comment = "Indicate following data to be viewed at the same time",
-            LookupTable = new Dictionary<string, string> {{"True", "There is a following request to be managed together with the current one"}},
+            LookupTable = new LookupTable {{"True", "There is a following request to be managed together with the current one"}},
             SkipIfValue = false
         };
 
@@ -5816,7 +5816,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Maximum train speed",
-            LookupTable = new Dictionary<string, string> {{"0", "'No default value' => Data field shall remain empty"}},
+            LookupTable = new LookupTable {{"0", "'No default value' => Data field shall remain empty"}},
             AppendString = " km/h"
         };
 
@@ -5887,7 +5887,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt8,
             Length = 8,
             Comment = "ETCS Mode",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Full Supervision"},
                 {"1", "On Sight"},
@@ -6012,7 +6012,7 @@ namespace IPTComShark.DataSets
         };
 
         // checked 01-03-2021
-        public static Dictionary<string, string> STM_LookupTable => new Dictionary<string, string>
+        public static LookupTable STM_LookupTable => new LookupTable
         {
             {"20", "TPWS"},
             {"21", "TPWS Fixed"},

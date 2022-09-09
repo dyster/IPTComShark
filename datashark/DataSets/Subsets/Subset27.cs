@@ -92,7 +92,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt16,
                     Length = 8,
                     Comment = "Driver’s actions",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Ack of On Sight mode"},
                         {"1", "Ack of Shunting mode"},
@@ -179,7 +179,7 @@ namespace IPTComShark.DataSets
                     Name = "M_COLD_MVT",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No cold movement occurred"},
                         {"1", "Cold movement detected"},
@@ -232,7 +232,7 @@ namespace IPTComShark.DataSets
                     Name = "M_SDMTYPE",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Ceiling speed monitoring (CSM)"},
                         {"1", "Pre indication monitoring (PIM)"},
@@ -245,7 +245,7 @@ namespace IPTComShark.DataSets
                     Name = "M_SDMSUPSTAT",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 3,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Normal Status"},
                         {"1", "Indication Status"},
@@ -579,7 +579,7 @@ namespace IPTComShark.DataSets
                     Name = "Q_RBCENTRY",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Contact last known RBC"},
                         {"1", "Use short number"},
@@ -592,7 +592,7 @@ namespace IPTComShark.DataSets
                     VariableLengthSettings = new VariableLengthSettings
                     {
                         Name = "Q_RBCENTRY",
-                        LookUpTable = new Dictionary<int, int>
+                        LookUpTable = new IntLookupTable
                         {
                             {0, 0},
                             {1, 0},
@@ -633,7 +633,7 @@ namespace IPTComShark.DataSets
                     Name = "SleepingInput",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"False", "Sleeping not requested"},
                         {"True", "Sleeping requested"}
@@ -652,7 +652,7 @@ namespace IPTComShark.DataSets
                     Name = "SleepingInput",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"False", "Passive shunting not permitted"},
                         {"True", "Passive shunting permitted"}
@@ -671,7 +671,7 @@ namespace IPTComShark.DataSets
                     Name = "SleepingInput",
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"False", "Non leading not permitted"},
                         {"True", "Non leading permitted"}
@@ -717,7 +717,7 @@ namespace IPTComShark.DataSets
                     Name = "M_DIRECTION_CONTROLLER",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Neutral"},
                         {"1", "Backward"},
@@ -752,7 +752,7 @@ namespace IPTComShark.DataSets
                     Name = "M_TRAIN_DATA_ENTRY",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Fixed"},
                         {"1", "Flexible"},
@@ -774,7 +774,7 @@ namespace IPTComShark.DataSets
                     Name = "M_NATIONAL_SYSTEM_ISOLATION",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "NTC Isolated"},
                         {"1", "NTC Not Isolated"}
@@ -793,7 +793,7 @@ namespace IPTComShark.DataSets
                     Name = "M_TCO_COMMAND_STATE",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Not Commanded"},
                         {"1", "Commanded"}

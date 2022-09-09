@@ -16,7 +16,7 @@ namespace IPTComShark.DataSets
                         Name = "SubMsgNr",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 8,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"1", "Version"},
                             {"2", "Config"},
@@ -31,7 +31,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "SubMsgNr",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 1},
@@ -57,7 +57,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "SubMsgNr",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 0},
@@ -86,7 +86,7 @@ namespace IPTComShark.DataSets
                         VariableLengthSettings = new VariableLengthSettings
                         {
                             Name = "SubMsgNr",
-                            LookUpTable = new Dictionary<int, int>
+                            LookUpTable = new IntLookupTable
                             {
                                 {0, 0},
                                 {1, 0},
@@ -125,7 +125,7 @@ namespace IPTComShark.DataSets
                     Name = "NID_STMSTATE",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 4,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Reserved (mapped to NP for consistency)"},
                         {"1", "Power On (PO)"},
@@ -153,7 +153,7 @@ namespace IPTComShark.DataSets
                         Name = "Sunflower",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Black"},
                             {"True", "Black/Yellow"}
@@ -164,7 +164,7 @@ namespace IPTComShark.DataSets
                         Name = "AWS Isolation/Fault Indicator",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Off"},
                             {"1", "On"},
@@ -177,7 +177,7 @@ namespace IPTComShark.DataSets
                             "TPWS Temporary Isolation/Fault Indicator (0=Off,1 =On, 2=Flash)",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Off"},
                             {"1", "On"},
@@ -392,7 +392,7 @@ namespace IPTComShark.DataSets
                         Name = "Brake Demand",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Off"},
                             {"1", "SPAD/ TPWS Fault Not Acknowledged"},
@@ -405,7 +405,7 @@ namespace IPTComShark.DataSets
                         Name = "Rx Select Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Standard"},
                             {"True", "Extra"}
@@ -416,7 +416,7 @@ namespace IPTComShark.DataSets
                         Name = "Vehicle Type Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Freight"},
                             {"True", "Passenger"}
@@ -427,7 +427,7 @@ namespace IPTComShark.DataSets
                         Name = "AWS Brake Delay Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "2"},
                             {"True", "2.7"}
@@ -438,7 +438,7 @@ namespace IPTComShark.DataSets
                         Name = "ETCS Isolation Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Off"},
                             {"True", "On"}
@@ -449,7 +449,7 @@ namespace IPTComShark.DataSets
                         Name = "AWS Isolation Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Off"},
                             {"True", "On"}
@@ -460,7 +460,7 @@ namespace IPTComShark.DataSets
                         Name = "TPWS Temporary Isolation Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Off"},
                             {"True", "On"}
@@ -472,7 +472,7 @@ namespace IPTComShark.DataSets
                         Name = "AWS Caution Acknowledgement Device Input",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Off"},
                             {"True", "On"}
@@ -484,7 +484,7 @@ namespace IPTComShark.DataSets
                         Name = "TPWS STM State",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 3,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Configuration (CO)"},
                             {"1", "Data Entry (DE)"},
@@ -553,7 +553,7 @@ namespace IPTComShark.DataSets
                         Name = "Self Test Result",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Fail"},
                             {"1", "Pass"},

@@ -81,7 +81,7 @@ namespace IPTComShark.DataSets
                     Name = "Lifesign_unit",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Error"},
                         {"1", "ETCS Core"},
@@ -93,7 +93,7 @@ namespace IPTComShark.DataSets
                     Name = "Lifesign_status",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Error"},
                         {"1", "Idle"},

@@ -44,7 +44,7 @@ namespace IPTComShark.Parsers
                     Logger.Log(datasets.DataSets.Count + " datasets added in "+watch.ElapsedMilliseconds + "ms", Severity.Info);
 
                 IptConfigReader.SerializeXml(file + "IN_PARSED");
-                //datasets.SerializeXml(file + "OUT_PARSED");
+                datasets.SerializeXml(file + "OUT_PARSED");
 #if !DEBUG
                 }
                 catch(Exception e)
@@ -119,7 +119,7 @@ namespace IPTComShark.Parsers
                     Name = "Ack Code",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 16,
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable
                     {
                         {"0", "OK"},
                         {"1", "NACK, wrong frame check sequence in data part"},

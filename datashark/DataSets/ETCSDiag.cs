@@ -1802,7 +1802,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The current ETCS level (0-4, 255, 5-254 not used)",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Level 0"},
                         {"1", "Level 1"},
@@ -1818,7 +1818,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "The current ETCS mode (0-15, 16-255 = not used)",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Full Supervision"},
                         {"1", "On Sight"},
@@ -2445,7 +2445,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
                     Comment = "Current status of the emergency brake",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Fail state"},
                         {"1", "Applied"},
@@ -3408,7 +3408,7 @@ namespace IPTComShark.DataSets
                     Name = "Brake Test",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Successful"},
                         {"1", "Error"}
@@ -3419,7 +3419,7 @@ namespace IPTComShark.DataSets
                     Name = "Isolation",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Not Isolated"},
                         {"1", "Isolated"}
@@ -3430,7 +3430,7 @@ namespace IPTComShark.DataSets
                     Name = "EB1cutoff",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Cut Off"},
                         {"1", "Not Cut Off"}
@@ -3441,7 +3441,7 @@ namespace IPTComShark.DataSets
                     Name = "EB2cutoff",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Cut Off"},
                         {"1", "Not Cut Off"}
@@ -3479,7 +3479,7 @@ namespace IPTComShark.DataSets
                     Name = "Cab Status",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No Cab Active"},
                         {"1", "Cab 1 Active"},
@@ -3492,7 +3492,7 @@ namespace IPTComShark.DataSets
                     Name = "Direction Controller",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 2,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Neutral"},
                         {"1", "Forward"},
@@ -3573,7 +3573,7 @@ namespace IPTComShark.DataSets
                     Name = "WheelDiameterCompensation",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No"},
                         {"1", "Compensating"}
@@ -3584,7 +3584,7 @@ namespace IPTComShark.DataSets
                     Name = "ColdMovementDetection",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 1,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "No"},
                         {"1", "Detection"}

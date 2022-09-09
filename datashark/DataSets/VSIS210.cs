@@ -238,7 +238,7 @@ namespace IPTComShark.DataSets
                         Name = "Flashing",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"False", "Normal"},
                             {"True", "Counter phase"}
@@ -249,7 +249,7 @@ namespace IPTComShark.DataSets
                         Name = "Flashing Speed",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 2,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "No Flashing"},
                             {"1", "Slow"},
@@ -262,7 +262,7 @@ namespace IPTComShark.DataSets
                         Name = "Background Colour",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 3,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Black text"},
                             {"1", "White text"},
@@ -279,7 +279,7 @@ namespace IPTComShark.DataSets
                         Name = "Text Colour",
                         BitFieldType = BitFieldType.UInt16,
                         Length = 3,
-                        LookupTable = new Dictionary<string, string>
+                        LookupTable = new LookupTable
                         {
                             {"0", "Black"},
                             {"1", "White"},
@@ -302,7 +302,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
             Comment = "Predefined text message",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Level crossing not protected"},
                 {"1", "Acknowledgement"},
@@ -441,7 +441,7 @@ namespace IPTComShark.DataSets
             BitFieldType = BitFieldType.UInt16,
             Length = 8,
             Comment = "ETCS Mode",
-            LookupTable = new Dictionary<string, string>
+            LookupTable = new LookupTable
             {
                 {"0", "Full Supervision"},
                 {"1", "On Sight"},
@@ -686,7 +686,7 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.UInt16,
                     Length = 4,
                     Comment = "Type of train",
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Invalid train data type"},
                         {"1", "Fixed train data entry"},

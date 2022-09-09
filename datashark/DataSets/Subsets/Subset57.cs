@@ -21,7 +21,7 @@ namespace IPTComShark.DataSets
                     Name = "SL",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0", "2"},
                         {"1", "2"},
@@ -43,7 +43,7 @@ namespace IPTComShark.DataSets
                     Name = "Cmd",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 4,
-                    LookupTable = new Dictionary<string, string>()
+                    LookupTable = new LookupTable()
                     {
                         {"0", "Connect Request"},
                         {"1", "Reserved"},
@@ -126,7 +126,7 @@ namespace IPTComShark.DataSets
                     Name = "Disconnect Reason",
                     BitFieldType = BitFieldType.UInt8,
                     Length = 8,
-                    LookupTable = new Dictionary<string, string>
+                    LookupTable = new LookupTable
                     {
                         {"0", "Request from application"},
                         {"1", "Bad version error"},
