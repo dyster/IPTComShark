@@ -71,13 +71,17 @@ namespace IPTComShark.XmlFiles
             return null;
         }
 
-        public DataSetCollection GetDataSetCollection()
+        protected class Datasetholder
         {
-            var c = new DataSetCollection();
+            internal string Serialised;
+            internal Dataset OriginalSet;
+            internal DataSetDefinition ParsedSet;
+            internal List<string> KnownIds;
+        }
 
-
-            var datasetdic = new Dictionary<string, DataSetDefinition>();
-            //var triplets = new Tuple<string, DataSetDefinition, List<int>>();
+        public DataSetCollection GetDataSetCollection()
+        {      
+            var datasetholder = new List<Datasetholder>();
 
             foreach (Dataset dataset in Datasets)
             {
@@ -85,22 +89,28 @@ namespace IPTComShark.XmlFiles
                 var d = new DataSetDefinition();
                 d.BitFields = set;
                 var serial = d.Serialize();
-                if (!datasetdic.ContainsKey(serial))
+                var find = datasetholder.Find(dsh => dsh.Serialised == serial);
+                if (find == null)
                 {
-                    datasetdic.Add(serial, d);
+                    var dsh = new Datasetholder
+                    {
+                        Serialised = serial,
+                        OriginalSet = dataset,
+                        ParsedSet = d,
+                        KnownIds = new List<string> { dataset.Datasetid }
+                    };
+                    datasetholder.Add(dsh);
                 }
+                else
+                    find.KnownIds.Add(dataset.Datasetid);
+                
             }
-
 
             foreach (var t in Telegrams)
             {
                 var comid = t.Comid.ToString();
-                var set = Datasets.First(dataset => dataset.Datasetid == t.Datasetid);
-
-                var dud = new DataSetDefinition() {BitFields = ExtractDataset(set)};
-                var serial = dud.Serialize();
-
-                var datasetdef = datasetdic[serial];
+                                   
+                var datasetdef = datasetholder.Find(dsh => dsh.KnownIds.Contains(t.Datasetid)).ParsedSet;
 
                 //var name = Regex.Replace(t.Name, @"\d+$", "NN");
                 var name = t.Name;
@@ -118,18 +128,10 @@ namespace IPTComShark.XmlFiles
                     datasetdef.Identifiers.Add(comid);
             }
 
-            var outlist = datasetdic.Values.ToList();
+            var outlist = datasetholder.Select(dsh => dsh.ParsedSet).ToList();
             var removed = outlist.RemoveAll(d => d.Identifiers.Count == 0);
 
-            foreach(var dataset in outlist)
-            {
-                c.DataSets.Add(dataset);
-            }
-
-            
-
-
-            return c;
+            return new DataSetCollection() { DataSets = outlist};
         }
 
         private static List<BitField> ExtractDataset(Dataset set)
