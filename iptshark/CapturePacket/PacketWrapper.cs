@@ -6,7 +6,7 @@ namespace IPTComShark
     {
         public static Packet Parse(Raw raw)
         {
-            if (raw.LinkLayer == LinkLayerType.BDS)
+            if (raw.LinkLayer == LinkLayerType.BDS || raw.LinkLayer == LinkLayerType.BDS2)
                 return new BDSPacket(raw.RawData);
             else if(raw.LinkLayer == LinkLayerType.Profibus)
             {

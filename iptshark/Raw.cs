@@ -44,6 +44,7 @@ namespace IPTComShark
         LinuxSLL = 113, // 0x71
         Ieee80211_Radio = 127, // 0x7F
         PerPacketInformation = 192, // 0xC0
-        Profibus = 257
+        Profibus = 257,
+        BDS2 = 321 // EBICAB, not standard
     }
 }
