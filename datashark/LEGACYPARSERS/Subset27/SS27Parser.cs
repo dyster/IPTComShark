@@ -20,7 +20,7 @@ namespace IPTComShark.Parsers
         {
             var parsed = new SS27Packet
             {
-                RawData = data
+                //RawData = data
             };
 
             LastParsedPacket = parsed;

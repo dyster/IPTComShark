@@ -47,7 +47,7 @@ namespace IPTComShark.Parsers
 
         public string Name { get; set; }
 
-        public byte[] RawData { get; set; }
+        //public byte[] RawData { get; set; }
     }
 
     [Serializable]
