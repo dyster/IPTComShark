@@ -45,6 +45,7 @@ namespace IPTComShark
         Ieee80211_Radio = 127, // 0x7F
         PerPacketInformation = 192, // 0xC0
         Profibus = 257,
+        IEEE8023br = 274,
         BDS2 = 321 // EBICAB, not standard
     }
 }

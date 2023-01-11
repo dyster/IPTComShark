@@ -1,4 +1,5 @@
 ﻿using PacketDotNet;
+using System;
 
 namespace IPTComShark
 {
@@ -13,6 +14,14 @@ namespace IPTComShark
                 // todo 
                 return new ProfiPacket(raw.RawData);
                 
+            }
+            else if(raw.LinkLayer == LinkLayerType.IEEE8023br)
+            {
+                // this is not supported by packetdotnet, but since it is just framing a standard ethernet frame in most cases and has a static format
+                // lets just chop it up and send it in as a standard Ethernet frame and hope for the best
+                var buffer = new byte[raw.RawData.Length - 12];
+                Buffer.BlockCopy(raw.RawData, 8, buffer, 0, buffer.Length);
+                return Packet.ParsePacket(LinkLayers.Ethernet, buffer);
             }
             else
                 return Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData);
