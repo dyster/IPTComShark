@@ -1,5 +1,4 @@
 ﻿using BitDataParser;
-using IPTComShark.Classes;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
@@ -85,7 +83,7 @@ namespace IPTComShark.XmlFiles
 
             foreach (Dataset dataset in Datasets)
             {
-                var set = ExtractDataset(dataset);
+                var set = ExtractDataset(dataset, datasetholder);
                 var d = new DataSetDefinition();
                 d.BitFields = set;
                 var serial = d.Serialize();
@@ -134,7 +132,7 @@ namespace IPTComShark.XmlFiles
             return new DataSetCollection() { DataSets = outlist};
         }
 
-        private static List<BitField> ExtractDataset(Dataset set)
+        private static List<BitField> ExtractDataset(Dataset set, List<Datasetholder> datasetholder)
         {
             var list = new List<BitField>();
             foreach (ProcessVariable processVariable in set.Processvariable)
@@ -159,6 +157,17 @@ namespace IPTComShark.XmlFiles
                         BitFieldType = BitFieldType.StringBigEndUtf16,
                         Length = arraysize * 16
                     });
+                }
+                else if(int.TryParse(processVariable.Type, out int result))
+                {
+                    // TODO this is initial add for supporting hierarchical datasets, needs more work
+
+                    //var find = datasetholder.Find(dsh => dsh.KnownIds.Contains(processVariable.Type));
+                    //
+                    //if(find == null)
+                    //{
+                    //
+                    //}
                 }
                 else
                 {

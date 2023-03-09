@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using IPTComShark.DataSets;
+﻿using System.Collections.Generic;
 using BitDataParser;
-using Functions = BitDataParser.Functions;
 
 namespace IPTComShark.Parsers
 {

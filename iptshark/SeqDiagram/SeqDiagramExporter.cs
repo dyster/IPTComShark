@@ -1,13 +1,8 @@
-using IPTComShark.Classes;
 using IPTComShark.Parsers;
 /*using Svg;
 using Svg.DataTypes;
 using Svg.Pathing;*/
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 

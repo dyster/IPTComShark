@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using IPTComShark.Classes;
-using IPTComShark.Windows;
 using IPTComShark.XmlFiles;
 
 using BitDataParser;
