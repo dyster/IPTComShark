@@ -3961,6 +3961,7 @@ namespace IPTComShark.DataSets
         };
 
         // checked RVV 16-11-2021 2.16
+		// updated by PF 09-03-2023 to correct issues
         public static DataSetDefinition EVC_153 => new DataSetDefinition
         {
             Name = "EVC_153 MMI_DISPLAY_STATUS_JRU",
@@ -3978,149 +3979,143 @@ namespace IPTComShark.DataSets
                 MMI_T_DMILM,
 
                 // DMI Symbol Status as per Subset 27
-                new BitField {Name = "LE01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LE15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO16", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                #region MMI_M_SYMB_STATUS_1
                 new BitField {Name = "MO17", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO18", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO19", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO20", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO21", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MO22", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "ST06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC16", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC17", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC18", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC19", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC20", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO16", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LE01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                #endregion
+
+                #region MMI_M_SYMB_STATUS_2
                 new BitField {Name = "TC21", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC22", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC23", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC24", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC25", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC26", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC27", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC28", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC29", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC30", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC31", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC32", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC33", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC34", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC35", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC36", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "TC37", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "DR01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "DR02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "DR03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "DR04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "DR05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "LX01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC20", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC19", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC18", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC17", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC16", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC15", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC14", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC13", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC12", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC11", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC10", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC09", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC08", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC07", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST06", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "ST01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO22", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO21", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO20", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO19", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MO18", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                #endregion
+
+                #region MMI_M_SYMB_STATUS_3
+                // Need 9 bits at the end of MMI_M_SYMB_STATUS_3 as these aren't used.
+                new BitField
+                {
+                    Name = "MMI_M_SYMB_STATUS_3_spare",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 9,
+                    Comment = "Spare for alignment"
+                },
                 new BitField {Name = "LS01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "LX01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "DR05", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "DR04", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "DR03", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "DR02", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "DR01", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC37", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC36", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC35", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC34", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC33", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC32", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC31", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC30", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC29", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC28", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC27", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC26", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC25", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC24", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC23", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "TC22", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                #endregion
 
                 // DMI System Status as per Subset27
-                new BitField
-                    {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField              
-                    {Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-                new BitField
-                    {Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-                new BitField
-                    {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-                new BitField
-                    {Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-                new BitField
-                    {Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-                new BitField
-                    {Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
-
-                new BitField
+                #region MMI_M_SYSTEM_STATUS
+                new BitField 
                 {
                     Name = "DMI_SYSTEM_STATUS_spare",
                     BitFieldType = BitFieldType.Spare,
                     Length = 9,
                     Comment = "Spare for alignment"
                 },
+                new BitField {Name = "Radio network registration failed", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – traction system", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – loading gauge", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "Route unsuitable – axle load category", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "No track description", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "RV distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Emergency stop", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SR stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SH stop order", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SR distance exceeded", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "No MA received at level transition", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "Unauthorized passing of EOA / LOA", BitFieldType = BitFieldType.Bool, Length = 1,SkipIfValue = false},
+                new BitField {Name = "Train is rejected", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Train data changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Trackside not compatible", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SH request failed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "SH refused", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Runaway movement", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Entering OS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Entering FS", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Communication error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Trackside malfunction", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Balise read error", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                #endregion
 
                 new BitField
                 {
@@ -4148,21 +4143,24 @@ namespace IPTComShark.DataSets
 
                 new BitField
                 {
-                    Name = "DMI_SOUND_STATUS_spare",
+                    Name = "MMI_M_SOUND_STATUS_spare",
                     BitFieldType = BitFieldType.Spare,
                     Length = 5,
                     Comment = "Spare for alignment"
                 },
+                new BitField {Name = "Sound S2 Warning", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Sound S1 Over-speed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "Sound Sinfo", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
                 // MMI_Q_DISPLAY_CHANGE
                 new BitField {Name = "MMI_M_SYMB_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_M_ SYSTEM_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #2, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #3, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_M_ SOUND_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #5, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #6, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField {Name = "MMI_Q_DISPLAY_CHANGE bit #7, not used, set to 0", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false}
+                new BitField {Name = "MMI_M_SYSTEM_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "2", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "3", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "MMI_M_SOUND_STATUS changed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "5", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "6", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
+                new BitField {Name = "7", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false}
             }
         };
 

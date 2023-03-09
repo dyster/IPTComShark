@@ -18,6 +18,8 @@ using IPTComShark.Parsers;
 using BustPCap;
 using static IPTComShark.Classes.Conversions;
 using System.Text.Json;
+using System.Numerics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace IPTComShark
 {
@@ -139,6 +141,9 @@ namespace IPTComShark
         {
             fileToolStripMenuItem.Enabled = false;
 
+            startToolStripMenuItem.Enabled = false;
+            stopToolStripMenuItem.Enabled = true;
+
             //_pcapWriter = new PCAPWriter(@"c:\temp", "testfile");
             //_pcapWriter.RotationTime = 30;
             //_pcapWriter.Start();
@@ -158,6 +163,8 @@ namespace IPTComShark
         {
             fileToolStripMenuItem.Enabled = true;
 
+            startToolStripMenuItem.Enabled = true;
+            stopToolStripMenuItem.Enabled = false;
 
             try
             {
@@ -280,6 +287,20 @@ namespace IPTComShark
                 Logger.Log(exception.Message, Severity.Error);
             }
 
+            Properties.Settings.Default.FormState = (int)this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // save location and size if the state is normal
+                Properties.Settings.Default.FormLocation = this.Location;
+                Properties.Settings.Default.FormSize = this.Size;
+            }
+            else
+            {
+                // save the RestoreBounds if the form is minimized or maximized!
+                Properties.Settings.Default.FormLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.FormSize = this.RestoreBounds.Size;
+            }
+
             Properties.Settings.Default.PacketListSettings = packetListView1.Settings.SerialiseToString();
                         
             Properties.Settings.Default.Save();
@@ -392,6 +413,8 @@ namespace IPTComShark
         {
             InitData();
 
+            packetDisplay1.Clear();
+
             // and then go all in on the garbagecollection
             GC.Collect(2, GCCollectionMode.Forced, true, true);
         }
@@ -399,6 +422,22 @@ namespace IPTComShark
         private void MainForm_Load(object sender, EventArgs e)
         {
             //GitHubUpdateCheck.GetLatestVersionAndPromptAsync("dyster", "IPTComShark", Application.ProductVersion);
+
+            if (Properties.Settings.Default.FormSize.Width == 0 || Properties.Settings.Default.FormSize.Height == 0)
+            {
+                // first start
+                // optional: add default values
+            }
+            else
+            {
+                this.WindowState = (FormWindowState)Properties.Settings.Default.FormState;
+
+                // we don't want a minimized window at startup
+                if (this.WindowState == FormWindowState.Minimized) this.WindowState = FormWindowState.Normal;
+
+                this.Location = Properties.Settings.Default.FormLocation;
+                this.Size = Properties.Settings.Default.FormSize;
+            }
 
             timerFlicker.Enabled = true;
         }
@@ -762,6 +801,111 @@ namespace IPTComShark
             var textWindow = new TextWindow(string.Join(Environment.NewLine,
                 Logger.Instance.GetLog().Select(log => log.ToString())));
             textWindow.Show(this);
+        }
+
+        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.TopMost = !this.TopMost;
+            bool topWindow = this.TopMost;
+
+            alwaysOnTopToolStripMenuItem.Checked = topWindow;
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private bool allowedKey;
+
+        private void textBoxIgnoreComid_Validating(object sender, CancelEventArgs e)
+        {
+            string errorMsg = String.Empty;
+
+            if (!String.IsNullOrEmpty(textBoxIgnoreComid.Text))
+            {
+                if (!ValidateComIDs(textBoxIgnoreComid.Text, out errorMsg))
+                {
+                    // Cancel the event and select the text to be corrected by the user.
+                    e.Cancel = true;
+                    textBoxIgnoreComid.Select(0, textBoxIgnoreComid.Text.Length);
+
+                    // Set the ErrorProvider error with the text to display. 
+                    errorProvider1.SetError(textBoxIgnoreComid, errorMsg);
+                }
+                else
+                {
+                    errorProvider1.SetError(textBoxIgnoreComid, "");
+                }
+            }
+            else
+            {
+                errorProvider1.SetError(textBoxIgnoreComid, "");
+            }
+        }
+
+        private void textBoxIgnoreComid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
+            {
+                // Allow digits and separator chars.
+                allowedKey = true;
+            }
+            else
+                allowedKey = false;
+        }
+
+        private void textBoxIgnoreComid_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || (e.KeyChar == ',') || allowedKey)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                // Allow digits and separator chars.
+                e.Handled = true;
+            }
+        }
+
+        private bool ValidateComIDs(string comIDs, out string errorMessage)
+        {
+            char[] separatorChars = { ',' };
+
+            string[] tokens = comIDs.Split(separatorChars);
+
+            // Format of the ComIDs string is numeric tokens (UINT32) separated by commas.
+            // Should be able to use a regular expression to parse the tokens. Alternatively, use Split and TryParse() on the substrings.
+            // Filter out any chars other than digits and comma.
+            foreach (var t in tokens)
+            {
+                if (String.IsNullOrEmpty(t))
+                {
+                    errorMessage = "An empty Com ID is invalid";
+                    return false;
+                }
+                else
+                {
+                    BigInteger tVal;
+                    if (BigInteger.TryParse(t, out tVal))
+                    {
+                        if (tVal > UInt32.MaxValue)
+                        {
+                            errorMessage = "ComID: " + t + " is greater than UInt32.MaxValue";
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        // Parse failed.
+                        errorMessage = "Token: " + t + " is not a valid ComID";
+                        return false;
+                    }
+
+                }
+            }
+            errorMessage = String.Empty;
+            return true;
         }
 
 

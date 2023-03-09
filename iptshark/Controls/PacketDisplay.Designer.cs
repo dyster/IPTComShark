@@ -77,10 +77,8 @@
             this.olvColumnTrueValue,
             this.olvColumnComment});
             this.dataListViewRight.ContextMenuStrip = this.contextMenuStrip1;
-            this.dataListViewRight.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataListViewRight.DataSource = null;
             this.dataListViewRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataListViewRight.HideSelection = false;
             this.dataListViewRight.Location = new System.Drawing.Point(0, 0);
             this.dataListViewRight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dataListViewRight.Name = "dataListViewRight";
@@ -95,19 +93,18 @@
             this.olvColumnNo.AspectName = "No";
             this.olvColumnNo.Name = "olvColumnNo";
             this.olvColumnNo.Text = "No";
-            this.olvColumnNo.Width = 26;
+            this.olvColumnNo.Width = 30;
             // 
             // olvColumnDataLineName
             // 
             this.olvColumnDataLineName.AspectName = "Name";
             this.olvColumnDataLineName.Name = "olvColumnDataLineName";
             this.olvColumnDataLineName.Text = "Name";
-            this.olvColumnDataLineName.Width = 100;
+            this.olvColumnDataLineName.Width = 180;
             // 
             // olvColumnDataLineValue
             // 
             this.olvColumnDataLineValue.AspectName = "Value";
-            this.olvColumnDataLineValue.DisplayIndex = 3;
             this.olvColumnDataLineValue.Name = "olvColumnDataLineValue";
             this.olvColumnDataLineValue.Text = "Value";
             this.olvColumnDataLineValue.Width = 150;
@@ -115,7 +112,7 @@
             // olvColumnDataLineType
             // 
             this.olvColumnDataLineType.AspectName = "Type";
-            this.olvColumnDataLineType.DisplayIndex = 2;
+            this.olvColumnDataLineType.IsVisible = false;
             this.olvColumnDataLineType.Name = "olvColumnDataLineType";
             this.olvColumnDataLineType.Text = "Type";
             this.olvColumnDataLineType.Width = 64;

@@ -392,6 +392,11 @@ namespace IPTComShark.Controls
                 }
             }
         }
+        public void Clear()
+        {
+            var dataLines = new List<DataLine>();
+            dataListViewRight.DataSource = dataLines;
+        }
     }
 
     public class DataLine
