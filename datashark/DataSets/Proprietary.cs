@@ -22,7 +22,8 @@ namespace IPTComShark.DataSets
                             {"2", "Config"},
                             {"3", "NTC_Data"},
                             {"4", "Additional_Data"},
-                            {"5", "ETCS_NTC_Data"}
+                            {"5", "ETCS_NTC_Data"},
+                            {"6", "ABDO Data" }
                         }
                     },
                     // this is a conditional field that will only happen on Version above
@@ -38,7 +39,8 @@ namespace IPTComShark.DataSets
                                 {2, 0},
                                 {3, 0},
                                 {4, 0},
-                                {5, 0}
+                                {5, 0}, 
+                                {6, 0}
                             }
                         },
                         NestedDataSet = new DataSetDefinition
@@ -64,7 +66,8 @@ namespace IPTComShark.DataSets
                                 {2, 1},
                                 {3, 0},
                                 {4, 0},
-                                {5, 0}
+                                {5, 0},
+                                {6, 0}
                             }
                         },
                         NestedDataSet = new DataSetDefinition
@@ -93,7 +96,8 @@ namespace IPTComShark.DataSets
                                 {2, 0},
                                 {3, 1},
                                 {4, 0},
-                                {5, 0}
+                                {5, 0},
+                                {6, 0}
                             }
                         },
                         NestedDataSet = new DataSetDefinition
@@ -105,6 +109,25 @@ namespace IPTComShark.DataSets
                                 new BitField {Name = "NID_PACKET", BitFieldType = BitFieldType.UInt16, Length = 8}
                             }
                         }
+                    },
+                    // this is a conditional field that will only happen on NTC_DATA above
+                    new BitField
+                    {
+                        VariableLengthSettings = new VariableLengthSettings
+                        {
+                            Name = "SubMsgNr",
+                            LookUpTable = new IntLookupTable
+                            {
+                                {0, 0},
+                                {1, 0},
+                                {2, 0},
+                                {3, 0},
+                                {4, 0},
+                                {5, 0},
+                                {6, 1}
+                            }
+                        },
+                        NestedDataSet = ABDO.ABDO_JRU
                     }
                 }
             };

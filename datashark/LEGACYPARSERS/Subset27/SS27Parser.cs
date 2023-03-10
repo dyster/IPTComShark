@@ -326,7 +326,7 @@ namespace IPTComShark.Parsers
 
                     if (subMsgNr != null)
                     {
-                        if ((ushort) subMsgNr.TrueValue == 3)
+                        if ((ushort) subMsgNr.TrueValue == 3) // NTC Data
                         {
                             // NTC_DATA
                             var l_message = (ushort) parsed.SubMessage.GetField("L_MESSAGE").Value;
@@ -364,6 +364,10 @@ namespace IPTComShark.Parsers
                                     pointer += parsed.ExtraMessages.Last().BitsRead;
                                 }
                             }
+                        }
+                        else if ((ushort)subMsgNr.TrueValue == 6) // ABDO
+                        {
+                            parsed.Events.Add(new ETCSEvent("ABDO"));
                         }
                     }
 
