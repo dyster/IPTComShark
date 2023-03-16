@@ -78,9 +78,6 @@ namespace IPTComShark.FileManager
                     fileStream.Read(first4, 0, 4);
                 }
 
-
-
-
                 if (BaseReader.IsPCAP(first4))
                 {
                     ThreadPool.QueueUserWorkItem(x =>
@@ -431,40 +428,7 @@ namespace IPTComShark.FileManager
             {
                 var fileName = dialog.FileName;
 
-                var fileManager = new FileManager();
-                fileManager.FilterFrom = DateTimeFrom;
-                fileManager.FilterTo = DateTimeTo;
-
-                var pcapWriter = new PCAPWriter(fileName);
-                bool started = false;
-                int pos = 0;
-                pcapWriter.Start();
-
-                fileManager.RawParsed += (senderx, raw) =>
-                {
-                    if (!started)
-                    {
-                        pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
-
-                        started = true;
-                    }
-
-                    //var capturePacket = new CapturePacket(raw);
-                    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                    //if (capturePacket.Protocol == ProtocolType.JRU)
-                    //{
-                    //    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                    //}
-                    //else if (capturePacket.Protocol == ProtocolType.IPTWP && capturePacket.IPTWPPacket != null && capturePacket.IPTWPPacket.Comid != 110)
-                    //{
-                    //    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                    //}
-                };
-
-                fileManager.EnumerateFiles(DataSources);
-
-                Thread.Sleep(1000);
-                pcapWriter.Stop();
+                FileManager.SaveToFile(DateTimeFrom, DateTimeTo, fileName, DataSources);
             }
         }
     }

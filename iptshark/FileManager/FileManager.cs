@@ -334,6 +334,71 @@ namespace IPTComShark.FileManager
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public static void SaveToFile(string fileName, List<CapturePacket> packets, BackStore.BackStore backStore)
+        {
+            var pcapWriter = new PCAPWriter(fileName);
+            pcapWriter.Start();
+            bool started = false;
+            int count = 0;
+
+            foreach(CapturePacket packet in packets)
+            {
+                var raw = backStore.GetRaw(packet.No);
+
+                if (!started)
+                {
+                    pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
+
+                    started = true;
+                }
+
+                pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
+                count++;                
+            }
+            Thread.Sleep(1000); // just making sure
+            pcapWriter.Stop();
+
+            MessageBox.Show(count + " packets written to " + fileName);
+        }
+
+        public static void SaveToFile(DateTime DateTimeFrom, DateTime DateTimeTo, string fileName, List<DataSource> DataSources)
+        {
+            var fileManager = new FileManager();
+            fileManager.FilterFrom = DateTimeFrom;
+            fileManager.FilterTo = DateTimeTo;
+
+            var pcapWriter = new PCAPWriter(fileName);
+            bool started = false;
+            int pos = 0;
+            pcapWriter.Start();
+
+            fileManager.RawParsed += (senderx, raw) =>
+            {
+                if (!started)
+                {
+                    pcapWriter.LinkLayerType = (uint)raw.LinkLayer;
+
+                    started = true;
+                }
+
+                //var capturePacket = new CapturePacket(raw);
+                pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
+                //if (capturePacket.Protocol == ProtocolType.JRU)
+                //{
+                //    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
+                //}
+                //else if (capturePacket.Protocol == ProtocolType.IPTWP && capturePacket.IPTWPPacket != null && capturePacket.IPTWPPacket.Comid != 110)
+                //{
+                //    pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
+                //}
+            };
+
+            fileManager.EnumerateFiles(DataSources);
+
+            Thread.Sleep(1000);
+            pcapWriter.Stop();
+        }
     }
 
     /// <summary>

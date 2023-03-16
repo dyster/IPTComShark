@@ -20,6 +20,7 @@ using static IPTComShark.Classes.Conversions;
 using System.Text.Json;
 using System.Numerics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using IPTComShark.FileManager;
 
 namespace IPTComShark
 {
@@ -400,7 +401,16 @@ namespace IPTComShark
 
         private void saveCurrentFilterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var filtered = packetListView1.GetFilteredPackets();
+
+            var dialog = new SaveFileDialog();
+            var result = dialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                var fileName = dialog.FileName;
+
+                FileManager.FileManager.SaveToFile(fileName, filtered, _backStore);
+            }
         }
 
         private void simulateTrafficToolStripMenuItem_Click(object sender, EventArgs e)
