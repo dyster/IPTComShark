@@ -6,6 +6,8 @@ using IPTComShark.Classes;
 using IPTComShark.XmlFiles;
 
 using BitDataParser;
+using System;
+using IPTComShark.Windows;
 
 namespace IPTComShark.Parsers
 {
