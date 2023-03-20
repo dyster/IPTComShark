@@ -17,6 +17,8 @@ namespace IPTComShark.DataSets
             DataSets.Add(com103);
             DataSets.Add(com222);
             DataSets.Add(com223);
+            DataSets.Add(PSCCtrlOp);
+            DataSets.Add(CCUOGlobalA);
         }
 
         public static DataSetDefinition PISRepManMsgLst => new DataSetDefinition
@@ -1044,6 +1046,314 @@ namespace IPTComShark.DataSets
                     BitFieldType = BitFieldType.StringBigEndUtf16,
                     Length = 16 * 16
                 }
+            }
+        };
+
+        public static DataSetDefinition PSCCtrlOp => new DataSetDefinition
+        {
+            Name = "PSCCtrlOp",
+            Identifiers = new List<string>
+            {
+                "251200100"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "Reserved",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "CMessageLength",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "CPrmMessage",
+                    BitFieldType = BitFieldType.StringUtf8,
+                    VariableLengthSettings = new VariableLengthSettings {Name = "CMessageLength", ScalingFactor = 8}
+                }
+            }
+        };
+
+        public static DataSetDefinition CCUOGlobalA => new DataSetDefinition
+        {
+            Name = "CCUOGlobalA",
+            Identifiers = new List<string>
+            {
+                "201100100"
+            },
+            BitFields = new List<BitField>
+            {
+                new BitField
+                {
+                    Name = "ICcuLifeSign",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "Reserved1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "ITrainSpeed",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length= 16
+                },
+                new BitField
+                {
+                    Name = "Reserved2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "ISystemUtcTime",
+                    BitFieldType = BitFieldType.UnixEpochUtc,
+                    Length= 32
+                },
+                new BitField
+                {
+                    Name = "Reserved3",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "IDaylightTime",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "0 : No daylight saving time (Winter time) 1 : Daylight saving time present (Summer time) 255 : Invalid"
+                },
+                new BitField
+                {
+                    Name = "ITimeZone",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "Reserved4",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "IProjectID",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length= 16
+                },
+                new BitField
+                {
+                    Name = "IProjectVariant",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "Reserved5",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "ITrainMode",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    Comment = "0 : Unknown (after power on before any other conditions are met) 1 : In Service (Driver logged in and PIS trip is running) 2 : Parked / Depot (when ITrainLocation = 2 or 3) 3 : Maintenance  (when maintainer is logged in to active cab) 4 : Out of Service (When no PIS trip is running, and ITrainMode not equal to 2 5 ... 255  : Reserved "
+                },
+                new BitField
+                {
+                    Name = "Reserved6",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*3
+                },
+                new BitField
+                {
+                    Name = "IRemSwDownLdMode",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "Reserved7",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*15
+                },
+                new BitField
+                {
+                    Name = "ITempOutside",
+                    BitFieldType = BitFieldType.Int16,
+                    Length= 16
+                },
+                new BitField
+                {
+                    Name = "Reserved8",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*2
+                },
+                new BitField
+                {
+                    Name = "IMissionCode",
+                    BitFieldType = BitFieldType.StringAscii,
+                    Length= 8*4
+                },
+                new BitField
+                {
+                    Name = "IContainer1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*112
+                },
+                new BitField
+                {
+                    Name = "Reserved9",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*4
+                },
+                new BitField
+                {
+                    Name = "IHeading",
+                    BitFieldType = BitFieldType.Float32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "ILongitude",
+                    BitFieldType = BitFieldType.Float32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "ILatitude",
+                    BitFieldType = BitFieldType.Float32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "IAltitude",
+                    BitFieldType = BitFieldType.Float32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "IDistanceTravelled",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "ITrainSpeedStatus",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "ITrainLocation",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "ILineDir",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IGPSRxrOffset",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IGPSPositionFix",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IDoorReleaseStatus",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "ILinePlatformID",
+                    BitFieldType = BitFieldType.StringAscii,
+                    Length= 8*8
+                },
+                new BitField
+                {
+                    Name = "IPrevStationID",
+                    BitFieldType = BitFieldType.StringAscii,
+                    Length= 8*8
+                },
+                new BitField
+                {
+                    Name = "INextStationID",
+                    BitFieldType = BitFieldType.StringAscii,
+                    Length= 8*8
+                },
+                new BitField
+                {
+                    Name = "IDestStationID",
+                    BitFieldType = BitFieldType.StringAscii,
+                    Length= 8*8
+                },
+                new BitField
+                {
+                    Name = "IContainer2",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*85
+                },
+                new BitField
+                {
+                    Name = "Reserved10",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IDrivDeskxOccup",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IDrivDesk1Occup",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "IDrivDesk2Occup",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "Reserved11",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "ITunnelPosition",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "Reserved12",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8*3
+                },
             }
         };
     }

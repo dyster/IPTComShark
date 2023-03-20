@@ -5877,348 +5877,795 @@
       <process-variable name="ITZUTCDSTDiff" type="INT32" array-size="1" offset="320" />
     </data-set>
     <data-set data-set-id="2012001">
-      <process-variable name="ITDRHealthy" type="BOOLEAN8" array-size="1" offset="0" />
-      <process-variable name="IColdMovm" type="BOOLEAN8" array-size="1" offset="8" />
-      <process-variable name="Reserved1" type="UINT8" array-size="2" offset="16" />
-      <process-variable name="IGPSCoordsLat" type="INT32" array-size="1" offset="32" />
-      <process-variable name="IGPSCoordsLong" type="INT32" array-size="1" offset="64" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="96" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="112" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="128" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="144" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="160" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="176" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="192" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="208" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="224" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="240" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="256" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="272" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="288" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="304" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="320" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="336" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="352" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="368" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="384" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="400" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="416" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="432" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="448" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="464" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="480" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="496" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="512" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="528" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="544" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="560" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="576" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="592" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="608" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="624" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="640" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="656" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="672" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="688" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="704" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="720" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="736" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="752" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="768" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="784" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="800" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="816" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="832" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="848" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="864" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="880" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="896" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="912" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="928" />
-      <process-variable name="DoorStatus" type="UINT16" array-size="1" offset="944" />
-      <process-variable name="Reserved2" type="UINT8" array-size="4" offset="960" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="992" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1000" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1008" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1016" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1024" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1032" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1040" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1048" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1056" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1064" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1072" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1080" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1088" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1096" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1104" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1112" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1120" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1128" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1136" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1144" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1152" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1160" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1168" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1176" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1184" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1192" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1200" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1208" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1216" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1224" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1232" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1240" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1248" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1256" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1264" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1272" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1280" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1288" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1296" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1304" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1312" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1320" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1328" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1336" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1344" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1352" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1360" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1368" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1376" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1384" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1392" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1400" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1408" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1416" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1424" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1432" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1440" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1448" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1456" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1464" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1472" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1480" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1488" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1496" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1504" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1512" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1520" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1528" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1536" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1544" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1552" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1560" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1568" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1576" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1584" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1592" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1600" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1608" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1616" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1624" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1632" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1640" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1648" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1656" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1664" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1672" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1680" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1688" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1696" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1704" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1712" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1720" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1728" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1736" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1744" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1752" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1760" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1768" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1776" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1784" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1792" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1800" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1808" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1816" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1824" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1832" />
-      <process-variable name="DoorInh" type="BOOLEAN8" array-size="1" offset="1840" />
-      <process-variable name="DoorInhButtonStatus" type="BOOLEAN8" array-size="1" offset="1848" />
-      <process-variable name="ConsolidatedDrvInhibitStatus" type="BOOLEAN8" array-size="1" offset="1856" />
-      <process-variable name="Reserved3" type="UINT8" array-size="3" offset="1864" />
-      <process-variable name="DoorStatus" type="BOOLEAN8" array-size="1" offset="1888" />
-      <process-variable name="Reserved4" type="UINT8" array-size="1" offset="1896" />
-      <process-variable name="DoorStatus" type="BOOLEAN8" array-size="1" offset="1904" />
-      <process-variable name="Reserved4" type="UINT8" array-size="1" offset="1912" />
-      <process-variable name="DoorStatus" type="BOOLEAN8" array-size="1" offset="1920" />
-      <process-variable name="Reserved5" type="UINT8" array-size="1" offset="1928" />
-      <process-variable name="DoorStatus" type="BOOLEAN8" array-size="1" offset="1936" />
-      <process-variable name="Reserved5" type="UINT8" array-size="1" offset="1944" />
-      <process-variable name="IInhFrontStat" type="BOOLEAN8" array-size="1" offset="1952" />
-      <process-variable name="IInhRearStat" type="BOOLEAN8" array-size="1" offset="1960" />
-      <process-variable name="ITrainClrMdStat" type="BOOLEAN8" array-size="1" offset="1968" />
-      <process-variable name="IADCStatus" type="BOOLEAN8" array-size="1" offset="1976" />
-      <process-variable name="IADOStatus" type="BOOLEAN8" array-size="1" offset="1984" />
-      <process-variable name="ICabToSaloonDoorDMS1Status" type="BOOLEAN8" array-size="1" offset="1992" />
-      <process-variable name="ICabToSaloonDoorDMS2Status" type="BOOLEAN8" array-size="1" offset="2000" />
-      <process-variable name="IDoorCyclePausePBStatus" type="BOOLEAN8" array-size="1" offset="2008" />
-      <process-variable name="IDoorCycleRemaining" type="UINT32" array-size="1" offset="2016" />
-      <process-variable name="ICBTCDoorModeClose" type="BOOLEAN8" array-size="1" offset="2048" />
-      <process-variable name="ICBTCDoorModeRelease" type="BOOLEAN8" array-size="1" offset="2056" />
-      <process-variable name="ICBTCDoorModeInterlock" type="BOOLEAN8" array-size="1" offset="2064" />
-      <process-variable name="ICBTCDoorModeTCMOff" type="BOOLEAN8" array-size="1" offset="2072" />
-      <process-variable name="Reserved6" type="UINT8" array-size="4" offset="2080" />
-      <process-variable name="IActiveCab" type="UINT8" array-size="1" offset="2112" />
-      <process-variable name="IMCSStatus" type="UINT8" array-size="1" offset="2120" />
-      <process-variable name="IActiveCabAlarm" type="BOOLEAN8" array-size="1" offset="2128" />
-      <process-variable name="IInactiveCabAlarm" type="BOOLEAN8" array-size="1" offset="2136" />
-      <process-variable name="Reserved7" type="UINT8" array-size="4" offset="2144" />
-      <process-variable name="CHMISigStateCmdDMS1" type="UINT8" array-size="1" offset="2176" />
-      <process-variable name="CHMISigStateCmdDMS2" type="UINT8" array-size="1" offset="2184" />
-      <process-variable name="CHMITCMSStateCmdDMS1" type="UINT8" array-size="1" offset="2192" />
-      <process-variable name="CHMITCMSStateCmdDMS2" type="UINT8" array-size="1" offset="2200" />
-      <process-variable name="ILineVoltagePMS1" type="INT16" array-size="1" offset="2208" />
-      <process-variable name="IPanStatusPMS1" type="BOOLEAN8" array-size="1" offset="2224" />
-      <process-variable name="ILcbStatusPMS1" type="BOOLEAN8" array-size="1" offset="2232" />
-      <process-variable name="IAddStatusPMS1" type="BOOLEAN8" array-size="1" offset="2240" />
-      <process-variable name="Reserved8" type="UINT8" array-size="3" offset="2248" />
-      <process-variable name="ILineVoltagePMS2" type="INT16" array-size="1" offset="2272" />
-      <process-variable name="IPanStatusPMS2" type="BOOLEAN8" array-size="1" offset="2288" />
-      <process-variable name="ILcbStatusPMS2" type="BOOLEAN8" array-size="1" offset="2296" />
-      <process-variable name="IAddStatusPMS2" type="BOOLEAN8" array-size="1" offset="2304" />
-      <process-variable name="Reserved9" type="UINT8" array-size="3" offset="2312" />
-      <process-variable name="IRegenInhibitStatus" type="BOOLEAN8" array-size="1" offset="2336" />
-      <process-variable name="Reserved10" type="UINT8" array-size="3" offset="2344" />
-      <process-variable name="IWheelDiameterUnit1" type="UINT16" array-size="1" offset="2368" />
-      <process-variable name="IWheelDiameterUnit2" type="UINT16" array-size="1" offset="2384" />
-      <process-variable name="IWheelCalibrationRequested" type="BOOLEAN8" array-size="1" offset="2400" />
-      <process-variable name="Reserved11" type="UINT8" array-size="3" offset="2408" />
-      <process-variable name="IAwsIsolated" type="BOOLEAN8" array-size="1" offset="2432" />
-      <process-variable name="IAwsTpwsIsolated" type="BOOLEAN8" array-size="1" offset="2440" />
-      <process-variable name="IEtcsIsolated" type="BOOLEAN8" array-size="1" offset="2448" />
-      <process-variable name="ICbtcIsolated" type="BOOLEAN8" array-size="1" offset="2456" />
-      <process-variable name="IPeaBrakeIsolated" type="BOOLEAN8" array-size="1" offset="2464" />
-      <process-variable name="IBrakeContinuityIsolated" type="BOOLEAN8" array-size="1" offset="2472" />
-      <process-variable name="IVigilanceDsdIsolated" type="BOOLEAN8" array-size="1" offset="2480" />
-      <process-variable name="IRemoteBrakeRelOperated" type="BOOLEAN8" array-size="1" offset="2488" />
-      <process-variable name="IDoorTractInterlockIsolated" type="BOOLEAN8" array-size="1" offset="2496" />
-      <process-variable name="IDraIsolated" type="BOOLEAN8" array-size="1" offset="2504" />
-      <process-variable name="IFrontBgSuspIsolated" type="BOOLEAN8" array-size="1" offset="2512" />
-      <process-variable name="Reserved12" type="UINT8" array-size="1" offset="2520" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2528" />
-      <process-variable name="Reserved13" type="UINT8" array-size="3" offset="2536" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2560" />
-      <process-variable name="Reserved13" type="UINT8" array-size="3" offset="2568" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2592" />
-      <process-variable name="Reserved13" type="UINT8" array-size="3" offset="2600" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2624" />
-      <process-variable name="Reserved14" type="UINT8" array-size="3" offset="2632" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2656" />
-      <process-variable name="Reserved14" type="UINT8" array-size="3" offset="2664" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2688" />
-      <process-variable name="Reserved14" type="UINT8" array-size="3" offset="2696" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2720" />
-      <process-variable name="Reserved15" type="UINT8" array-size="3" offset="2728" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2752" />
-      <process-variable name="Reserved15" type="UINT8" array-size="3" offset="2760" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2784" />
-      <process-variable name="Reserved15" type="UINT8" array-size="3" offset="2792" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2816" />
-      <process-variable name="Reserved16" type="UINT8" array-size="3" offset="2824" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2848" />
-      <process-variable name="Reserved16" type="UINT8" array-size="3" offset="2856" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2880" />
-      <process-variable name="Reserved16" type="UINT8" array-size="3" offset="2888" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2912" />
-      <process-variable name="Reserved17" type="UINT8" array-size="3" offset="2920" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2944" />
-      <process-variable name="Reserved17" type="UINT8" array-size="3" offset="2952" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="2976" />
-      <process-variable name="Reserved17" type="UINT8" array-size="3" offset="2984" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3008" />
-      <process-variable name="Reserved18" type="UINT8" array-size="3" offset="3016" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3040" />
-      <process-variable name="Reserved18" type="UINT8" array-size="3" offset="3048" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3072" />
-      <process-variable name="Reserved18" type="UINT8" array-size="3" offset="3080" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3104" />
-      <process-variable name="Reserved19" type="UINT8" array-size="3" offset="3112" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3136" />
-      <process-variable name="Reserved19" type="UINT8" array-size="3" offset="3144" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3168" />
-      <process-variable name="Reserved19" type="UINT8" array-size="3" offset="3176" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3200" />
-      <process-variable name="Reserved20" type="UINT8" array-size="3" offset="3208" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3232" />
-      <process-variable name="Reserved20" type="UINT8" array-size="3" offset="3240" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3264" />
-      <process-variable name="Reserved20" type="UINT8" array-size="3" offset="3272" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3296" />
-      <process-variable name="Reserved21" type="UINT8" array-size="3" offset="3304" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3328" />
-      <process-variable name="Reserved21" type="UINT8" array-size="3" offset="3336" />
-      <process-variable name="PeaOperatedStatus" type="BOOLEAN8" array-size="1" offset="3360" />
-      <process-variable name="Reserved21" type="UINT8" array-size="3" offset="3368" />
-      <process-variable name="Reserved22" type="UINT8" array-size="4" offset="3392" />
-      <process-variable name="IRestoreAvailablePB" type="BOOLEAN8" array-size="1" offset="3424" />
-      <process-variable name="IRestrictModePBStatus" type="UINT8" array-size="1" offset="3432" />
-      <process-variable name="IDepotModePBStatus" type="UINT8" array-size="1" offset="3440" />
-      <process-variable name="IWashModePBStatus" type="UINT8" array-size="1" offset="3448" />
-      <process-variable name="ISpeedLimit" type="UINT16" array-size="1" offset="3456" />
-      <process-variable name="ISpeedLimitCtrlActive" type="UINT8" array-size="1" offset="3472" />
-      <process-variable name="Reserved23" type="UINT8" array-size="1" offset="3480" />
-      <process-variable name="IBCPReleased" type="BOOLEAN8" array-size="1" offset="3488" />
-      <process-variable name="Reserved24" type="UINT8" array-size="3" offset="3496" />
-      <process-variable name="GddNmea1Timestamp" type="UINT32" array-size="1" offset="3520" />
-      <process-variable name="GddNmea2Timestamp" type="UINT32" array-size="1" offset="3552" />
-      <process-variable name="DeadReckonTime" type="UINT32" array-size="1" offset="3584" />
-      <process-variable name="SatFixTime" type="UINT32" array-size="1" offset="3616" />
-      <process-variable name="NmeaDataUpdateTime" type="UINT32" array-size="1" offset="3648" />
-      <process-variable name="Dms1McgLifeSign" type="UINT16" array-size="1" offset="3680" />
-      <process-variable name="Dms2McgLifeSign" type="UINT16" array-size="1" offset="3696" />
-      <process-variable name="GddNmea1Checksum" type="UINT8" array-size="1" offset="3712" />
-      <process-variable name="GddNmea2Checksum" type="UINT8" array-size="1" offset="3720" />
-      <process-variable name="GddNmea1PosFixInd" type="UINT8" array-size="1" offset="3728" />
-      <process-variable name="GddNmea2PosFixInd" type="UINT8" array-size="1" offset="3736" />
-      <process-variable name="GddNmea1NumSats" type="UINT8" array-size="1" offset="3744" />
-      <process-variable name="GddNmea2NumSats" type="UINT8" array-size="1" offset="3752" />
-      <process-variable name="GddMinSatsFix" type="UINT8" array-size="1" offset="3760" />
-      <process-variable name="GddNmeaSelected" type="UINT8" array-size="1" offset="3768" />
-      <process-variable name="Reserved25" type="UINT8" array-size="4" offset="3776" />
-      <process-variable name="IWheelDiam1Invalid" type="BOOLEAN8" array-size="1" offset="3808" />
-      <process-variable name="IWheelDiam2Invalid" type="BOOLEAN8" array-size="1" offset="3816" />
-      <process-variable name="Reserved26" type="UINT8" array-size="2" offset="3824" />
-      <process-variable name="INextStationID" type="UINT32" array-size="1" offset="3840" />
-      <process-variable name="ITrainPrepPBStatus" type="BOOLEAN8" array-size="1" offset="3872" />
-      <process-variable name="ITrainPrepAct" type="BOOLEAN8" array-size="1" offset="3880" />
-      <process-variable name="ITrainPrepStep1Cmd" type="BOOLEAN8" array-size="1" offset="3888" />
-      <process-variable name="ITrainPrepStep2Cmd" type="BOOLEAN8" array-size="1" offset="3896" />
-      <process-variable name="ITrainPrepStep3Cmd" type="BOOLEAN8" array-size="1" offset="3904" />
-      <process-variable name="ITrainPrepStep4Cmd" type="BOOLEAN8" array-size="1" offset="3912" />
-      <process-variable name="ITrainPrepStep5Cmd" type="BOOLEAN8" array-size="1" offset="3920" />
-      <process-variable name="ITrainPrepStep6Cmd" type="BOOLEAN8" array-size="1" offset="3928" />
-      <process-variable name="ITrainPrepStep7Cmd" type="BOOLEAN8" array-size="1" offset="3936" />
-      <process-variable name="ITrainPrepStep8Cmd" type="BOOLEAN8" array-size="1" offset="3944" />
-      <process-variable name="ITrainPrepStep9Cmd" type="BOOLEAN8" array-size="1" offset="3952" />
-      <process-variable name="ITrainPrepStep10Cmd" type="BOOLEAN8" array-size="1" offset="3960" />
-      <process-variable name="ITrainPrepResult" type="UINT32" array-size="1" offset="3968" />
-      <process-variable name="ITrainPrepStep1Status" type="UINT8" array-size="1" offset="4000" />
-      <process-variable name="ITrainPrepStep2Status" type="UINT8" array-size="1" offset="4008" />
-      <process-variable name="ITrainPrepStep3Status" type="UINT8" array-size="1" offset="4016" />
-      <process-variable name="ITrainPrepStep4Status" type="UINT8" array-size="1" offset="4024" />
-      <process-variable name="ITrainPrepStep5Status" type="UINT8" array-size="1" offset="4032" />
-      <process-variable name="ITrainPrepStep6Status" type="UINT8" array-size="1" offset="4040" />
-      <process-variable name="ITrainPrepStep7Status" type="UINT8" array-size="1" offset="4048" />
-      <process-variable name="ITrainPrepStep8Status" type="UINT8" array-size="1" offset="4056" />
-      <process-variable name="ITrainPrepStep9Status" type="UINT8" array-size="1" offset="4064" />
-      <process-variable name="ITrainPrepStep10Status" type="UINT8" array-size="1" offset="4072" />
-      <process-variable name="ITrainPrepCertificateSummary" type="BOOLEAN8" array-size="1" offset="4080" />
-      <process-variable name="ITrainPrepCabCtrl" type="UINT8" array-size="1" offset="4088" />
-      <process-variable name="ITrainPrepCertificateExpir" type="UINT32" array-size="1" offset="4096" />
-      <process-variable name="ITrainPrepTestCompleted" type="BOOLEAN8" array-size="1" offset="4128" />
-      <process-variable name="Reserved27" type="UINT8" array-size="3" offset="4136" />
-      <process-variable name="Reserved28" type="UINT8" array-size="12" offset="4160" />
+      <!--CCUOCtrlOp-->
+      <process-variable name="ITDRHealthy" type="BOOLEAN8" offset="0" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[To indicate the Health status of TDR module.]]></comment>
+      </process-variable>
+      <process-variable name="IColdMovm" type="BOOLEAN8" offset="8" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cold movement has been detected whilst the train was in hibernation/stabling.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved1" type="UINT8" offset="16" array-size="2" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IGPSCoordsLat" type="INT32" offset="32" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[GPS Latitude coordinate. The real coord is multiplied by 1,000,000 which gives an accuracy of +/- 1m.]]></comment>
+      </process-variable>
+      <process-variable name="IGPSCoordsLong" type="INT32" offset="64" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[GPS Longtitude coordinate. The real coord is multiplied by 1,000,000 which gives an accuracy of +/- 1m.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr1Sts" type="UINT16" offset="96" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr1Inhd" type="BOOLEAN8" offset="112" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr1InhPrsd" type="BOOLEAN8" offset="120" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr2Sts" type="UINT16" offset="128" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr2Inhd" type="BOOLEAN8" offset="144" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr2InhPrsd" type="BOOLEAN8" offset="152" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr3Sts" type="UINT16" offset="160" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr3Inhd" type="BOOLEAN8" offset="176" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr3InhPrsd" type="BOOLEAN8" offset="184" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr4Sts" type="UINT16" offset="192" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr4Inhd" type="BOOLEAN8" offset="208" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr4InhPrsd" type="BOOLEAN8" offset="216" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr5Sts" type="UINT16" offset="224" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr5Inhd" type="BOOLEAN8" offset="240" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr5InhPrsd" type="BOOLEAN8" offset="248" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr6Sts" type="UINT16" offset="256" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr6Inhd" type="BOOLEAN8" offset="272" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car1Dr6InhPrsd" type="BOOLEAN8" offset="280" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr1Sts" type="UINT16" offset="288" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr1Inhd" type="BOOLEAN8" offset="304" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr1InhPrsd" type="BOOLEAN8" offset="312" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr2Sts" type="UINT16" offset="320" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr2Inhd" type="BOOLEAN8" offset="336" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr2InhPrsd" type="BOOLEAN8" offset="344" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr3Sts" type="UINT16" offset="352" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr3Inhd" type="BOOLEAN8" offset="368" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr3InhPrsd" type="BOOLEAN8" offset="376" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr4Sts" type="UINT16" offset="384" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr4Inhd" type="BOOLEAN8" offset="400" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr4InhPrsd" type="BOOLEAN8" offset="408" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr5Sts" type="UINT16" offset="416" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr5Inhd" type="BOOLEAN8" offset="432" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr5InhPrsd" type="BOOLEAN8" offset="440" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr6Sts" type="UINT16" offset="448" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr6Inhd" type="BOOLEAN8" offset="464" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car2Dr6InhPrsd" type="BOOLEAN8" offset="472" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr1Sts" type="UINT16" offset="480" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr1Inhd" type="BOOLEAN8" offset="496" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr1InhPrsd" type="BOOLEAN8" offset="504" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr2Sts" type="UINT16" offset="512" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr2Inhd" type="BOOLEAN8" offset="528" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr2InhPrsd" type="BOOLEAN8" offset="536" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr3Sts" type="UINT16" offset="544" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr3Inhd" type="BOOLEAN8" offset="560" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr3InhPrsd" type="BOOLEAN8" offset="568" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr4Sts" type="UINT16" offset="576" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr4Inhd" type="BOOLEAN8" offset="592" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr4InhPrsd" type="BOOLEAN8" offset="600" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr5Sts" type="UINT16" offset="608" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr5Inhd" type="BOOLEAN8" offset="624" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr5InhPrsd" type="BOOLEAN8" offset="632" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr6Sts" type="UINT16" offset="640" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr6Inhd" type="BOOLEAN8" offset="656" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car3Dr6InhPrsd" type="BOOLEAN8" offset="664" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr1Sts" type="UINT16" offset="672" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr1Inhd" type="BOOLEAN8" offset="688" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr1InhPrsd" type="BOOLEAN8" offset="696" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr2Sts" type="UINT16" offset="704" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr2Inhd" type="BOOLEAN8" offset="720" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr2InhPrsd" type="BOOLEAN8" offset="728" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr3Sts" type="UINT16" offset="736" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr3Inhd" type="BOOLEAN8" offset="752" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr3InhPrsd" type="BOOLEAN8" offset="760" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr4Sts" type="UINT16" offset="768" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr4Inhd" type="BOOLEAN8" offset="784" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr4InhPrsd" type="BOOLEAN8" offset="792" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr5Sts" type="UINT16" offset="800" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr5Inhd" type="BOOLEAN8" offset="816" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr5InhPrsd" type="BOOLEAN8" offset="824" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr6Sts" type="UINT16" offset="832" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr6Inhd" type="BOOLEAN8" offset="848" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car4Dr6InhPrsd" type="BOOLEAN8" offset="856" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr1Sts" type="UINT16" offset="864" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr1Inhd" type="BOOLEAN8" offset="880" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr1InhPrsd" type="BOOLEAN8" offset="888" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr2Sts" type="UINT16" offset="896" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr2Inhd" type="BOOLEAN8" offset="912" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr2InhPrsd" type="BOOLEAN8" offset="920" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr3Sts" type="UINT16" offset="928" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr3Inhd" type="BOOLEAN8" offset="944" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr3InhPrsd" type="BOOLEAN8" offset="952" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr4Sts" type="UINT16" offset="960" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr4Inhd" type="BOOLEAN8" offset="976" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr4InhPrsd" type="BOOLEAN8" offset="984" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr5Sts" type="UINT16" offset="992" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr5Inhd" type="BOOLEAN8" offset="1008" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr5InhPrsd" type="BOOLEAN8" offset="1016" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr6Sts" type="UINT16" offset="1024" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door status, DCUA
+This is a bitmap and not an enumerated type.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr6Inhd" type="BOOLEAN8" offset="1040" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibited, DCUA ... DCUF.]]></comment>
+      </process-variable>
+      <process-variable name="Car5Dr6InhPrsd" type="BOOLEAN8" offset="1048" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door inhibit button status.]]></comment>
+      </process-variable>
+      <process-variable name="Cab1Dr1Sts" type="BOOLEAN8" offset="1056" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab door status.]]></comment>
+      </process-variable>
+      <process-variable name="Cab1Dr2Sts" type="BOOLEAN8" offset="1064" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab door status.]]></comment>
+      </process-variable>
+      <process-variable name="Cab2Dr1Sts" type="BOOLEAN8" offset="1072" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab door status.]]></comment>
+      </process-variable>
+      <process-variable name="Cab2Dr2Sts" type="BOOLEAN8" offset="1080" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab door status.]]></comment>
+      </process-variable>
+      <process-variable name="IInhFrontStat" type="BOOLEAN8" offset="1088" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Inhibit front button status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="IInhRearStat" type="BOOLEAN8" offset="1096" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Inhibit rear button status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="ITrainClrMdStat" type="BOOLEAN8" offset="1104" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Train clearance mode button status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="IADCStatus" type="BOOLEAN8" offset="1112" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Automatic Door Closing button status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="IADOStatus" type="BOOLEAN8" offset="1120" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Automatic Door Opening button status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="ICabToSlnDr1Sts" type="BOOLEAN8" offset="1128" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab to saloon door 1 status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="ICabToSlnDr2Sts" type="BOOLEAN8" offset="1136" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Cab to saloon door 2 status feedback.]]></comment>
+      </process-variable>
+      <process-variable name="IDrCclPausePBSts" type="BOOLEAN8" offset="1144" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door cycle pause pushbutton status.]]></comment>
+      </process-variable>
+      <process-variable name="DoorIDrCclsRmng" type="UINT32" offset="1152" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Number of remaining door cycles in a cycling test.]]></comment>
+      </process-variable>
+      <process-variable name="ICBTCDrMdCls" type="BOOLEAN8" offset="1184" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door closing condition signal.
+(CBTC not used in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="ICBTCDrMdRls" type="BOOLEAN8" offset="1192" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door release condition signal.
+(CBTC not used in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="ICBTCDrMdIntlk" type="BOOLEAN8" offset="1200" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door interlock condition signal.
+(CBTC not used in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="ICBTCDrMdTCMOff" type="BOOLEAN8" offset="1208" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Door interlock condition signal.
+(CBTC not used in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="ISdoSafTstFltCar1AF" type="BOOLEAN8" offset="1216" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Event - ASDO Safe Test Fault - Car 1 - Doors AF]]></comment>
+      </process-variable>
+      <process-variable name="ISdoRedTstFltCar1AF" type="BOOLEAN8" offset="1224" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Event - ASDO Redundancy Test Fault - Car 1 - Doors AF]]></comment>
+      </process-variable>
+      <process-variable name="ISdoSafTstFltCar3AF" type="BOOLEAN8" offset="1232" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Event - ASDO Safe Test Fault - Car 3 - Doors AF]]></comment>
+      </process-variable>
+      <process-variable name="ISdoRedTstFltCar3AF" type="BOOLEAN8" offset="1240" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Event - ASDO Redundancy Test Fault  - Car 3 - Doors AF]]></comment>
+      </process-variable>
+      <process-variable name="IActiveCab" type="UINT8" offset="1248" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Active cab status.]]></comment>
+      </process-variable>
+      <process-variable name="IMCSStatus" type="UINT8" offset="1256" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Master Control Switch status.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved2" type="UINT8" offset="1264" array-size="6" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="CStateDMI1" type="UINT8" offset="1312" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[State command for DMI1]]></comment>
+      </process-variable>
+      <process-variable name="CStateDMI2" type="UINT8" offset="1320" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[State command for DMI2]]></comment>
+      </process-variable>
+      <process-variable name="CStateHMI1" type="UINT8" offset="1328" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[State command for HMI1]]></comment>
+      </process-variable>
+      <process-variable name="CStateHMI2" type="UINT8" offset="1336" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[State command for HMI2]]></comment>
+      </process-variable>
+      <process-variable name="ILineVoltagePMS" type="INT16" offset="1344" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[PMS AC RMS line voltage.]]></comment>
+      </process-variable>
+      <process-variable name="IPanStatusPMS" type="BOOLEAN8" offset="1360" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[PMS Pantograph status.]]></comment>
+      </process-variable>
+      <process-variable name="ILcbStatusPMS" type="BOOLEAN8" offset="1368" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[PMS Line Circuit Breaker status.]]></comment>
+      </process-variable>
+      <process-variable name="IAddStatusPMS" type="BOOLEAN8" offset="1376" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[PMS Automatic Dropping Device status.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved3" type="UINT8" offset="1384" array-size="3" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IRegenInhibitStatus" type="BOOLEAN8" offset="1408" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Traction Regen Inhibit Status.]]></comment>
+      </process-variable>
+      <process-variable name="CTraFltRstInt" type="BOOLEAN8" offset="1416" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Traction Fault Reset Command Internal]]></comment>
+      </process-variable>
+      <process-variable name="Reserved4" type="UINT8" offset="1424" array-size="2" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IWhlDiam1" type="UINT16" offset="1440" array-size="1" unit="mm" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wheel Diameter reference for half train 1.]]></comment>
+      </process-variable>
+      <process-variable name="IWhlDiam2" type="UINT16" offset="1456" array-size="1" unit="mm" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wheel Diameter reference for half train 2.]]></comment>
+      </process-variable>
+      <process-variable name="IWheelCalRqstd" type="BOOLEAN8" offset="1472" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wheel manually calibration requested.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved5" type="UINT8" offset="1480" array-size="3" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IAwsIsolated" type="BOOLEAN8" offset="1504" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[AWS switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IAwsTpwsIsolated" type="BOOLEAN8" offset="1512" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[AWS/TPWS switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IEtcsIsolated" type="BOOLEAN8" offset="1520" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[ETCS switch in active cab is in "Isolated" position.
+(ETCS only on provision in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="ICbtcIsolated" type="BOOLEAN8" offset="1528" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[CBTC switch in active cab is in "Isolated" position.
+(CBTC not used in LOTrain)]]></comment>
+      </process-variable>
+      <process-variable name="IPeaBrakeIsolated" type="BOOLEAN8" offset="1536" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[PEA brake switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IBrakeCntyIsld" type="BOOLEAN8" offset="1544" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Brake Continuity switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IVglDsdIsltd" type="BOOLEAN8" offset="1552" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Vigilance / DSD switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IRmtBrakeRelOprtd" type="BOOLEAN8" offset="1560" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Remote brake release switch in active cab is in active position.]]></comment>
+      </process-variable>
+      <process-variable name="IDrTrcIntlkIsltd" type="BOOLEAN8" offset="1568" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Traction interlock switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IDraIsolated" type="BOOLEAN8" offset="1576" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[DRA switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IFrontBgSuspIsltd" type="BOOLEAN8" offset="1584" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Front bogie suspension switch in active cab is in "Isolated" position.]]></comment>
+      </process-variable>
+      <process-variable name="IEtcsIsolated_3" type="BOOLEAN8" offset="1592" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[ETCS Switch in cab 2 is active]]></comment>
+      </process-variable>
+      <process-variable name="Car1PEA1Operated" type="BOOLEAN8" offset="1600" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car1PEA2Operated" type="BOOLEAN8" offset="1608" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car1PEA3Operated" type="BOOLEAN8" offset="1616" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car2PEA1Operated" type="BOOLEAN8" offset="1624" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car2PEA2Operated" type="BOOLEAN8" offset="1632" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car2PEA3Operated" type="BOOLEAN8" offset="1640" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car3PEA1Operated" type="BOOLEAN8" offset="1648" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car3PEA2Operated" type="BOOLEAN8" offset="1656" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car3PEA3Operated" type="BOOLEAN8" offset="1664" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car4PEA1Operated" type="BOOLEAN8" offset="1672" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car4PEA2Operated" type="BOOLEAN8" offset="1680" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car4PEA3Operated" type="BOOLEAN8" offset="1688" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car5PEA1Operated" type="BOOLEAN8" offset="1696" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car5PEA2Operated" type="BOOLEAN8" offset="1704" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Car5PEA3Operated" type="BOOLEAN8" offset="1712" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status Passenger Emergency Alarm operated.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved6" type="UINT8" offset="1720" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IRstrAvlPB" type="BOOLEAN8" offset="1728" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Restore Available PB command for Low Speed Control.]]></comment>
+      </process-variable>
+      <process-variable name="IRestrictMdPBSts" type="UINT8" offset="1736" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Restrict mode pushbutton status.]]></comment>
+      </process-variable>
+      <process-variable name="IDepotMdPBSts" type="UINT8" offset="1744" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Depot mode pushbutton status.]]></comment>
+      </process-variable>
+      <process-variable name="IWashMdPBSts" type="UINT8" offset="1752" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wash mode pushbutton status.]]></comment>
+      </process-variable>
+      <process-variable name="ISpeedLimit" type="UINT16" offset="1760" array-size="1" unit="Km/h" scale="0.01" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Speed limit.]]></comment>
+      </process-variable>
+      <process-variable name="ISpdLmtCtrlActv" type="UINT8" offset="1776" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Speed limit control active.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved7" type="UINT8" offset="1784" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IBCPReleased" type="BOOLEAN8" offset="1792" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Brake cylinder pressure on all bogies are reported as released (pressure below 0.15 bar).]]></comment>
+      </process-variable>
+      <process-variable name="Reserved8" type="UINT8" offset="1800" array-size="3" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea1Tm" type="UINT32" offset="1824" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[UTC Timestamp for DMS(1) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea2Tm" type="UINT32" offset="1856" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[UTC Timestamp for DMS(2) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="DeadReckonTm" type="UINT32" offset="1888" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Time to indicate dead reckoning in use for. Time in milliseconds.]]></comment>
+      </process-variable>
+      <process-variable name="SatFixTime" type="UINT32" offset="1920" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Duration of GPS Satellite Fix. Time in milliseconds.]]></comment>
+      </process-variable>
+      <process-variable name="NmeaDataUpdateTm" type="UINT32" offset="1952" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Update time before NMEA GGA timestamp and checksum are frozen. Time in milliseconds.]]></comment>
+      </process-variable>
+      <process-variable name="Dms1McgLifeSign" type="UINT16" offset="1984" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[DMS1 MCG lifesign.]]></comment>
+      </process-variable>
+      <process-variable name="Dms2McgLifeSign" type="UINT16" offset="2000" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[DMS2 MCG lifesign.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea1Checksum" type="UINT8" offset="2016" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Checksum for DMS(1) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea2Checksum" type="UINT8" offset="2024" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Checksum for DMS(2) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea1PosFixInd" type="UINT8" offset="2032" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Position Fix Indicator for DMS(1) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea2PosFixInd" type="UINT8" offset="2040" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Position Fix Indicator for DMS(2) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea1NumSats" type="UINT8" offset="2048" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[No of satellites acquired by DMS(1) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmea2NumSats" type="UINT8" offset="2056" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[No of satellites acquired by DMS(2) MCG GGA.]]></comment>
+      </process-variable>
+      <process-variable name="GddMinSatsFix" type="UINT8" offset="2064" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Minimum number of satellites required.]]></comment>
+      </process-variable>
+      <process-variable name="GddNmeaSelected" type="UINT8" offset="2072" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[GDD NMEA selected.]]></comment>
+      </process-variable>
+      <process-variable name="Reserved9" type="UINT8" offset="2080" array-size="4" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="IWheelDiam1Invalid" type="BOOLEAN8" offset="2112" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wheel Diameter reference for half train 1 is invalid (DMS1).]]></comment>
+      </process-variable>
+      <process-variable name="IWheelDiam2Invalid" type="BOOLEAN8" offset="2120" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Wheel Diameter reference for half train 2 is invalid (DMS2).]]></comment>
+      </process-variable>
+      <process-variable name="Reserved10" type="UINT8" offset="2128" array-size="2" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Reserved]]></comment>
+      </process-variable>
+      <process-variable name="INextStationID" type="UINT32" offset="2144" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[ID of the next station.]]></comment>
+      </process-variable>
+      <process-variable name="ICatA2OrBUnAckEvt" type="BOOLEAN8" offset="2176" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Any unacknowledge event of category A or B in consist]]></comment>
+      </process-variable>
+      <process-variable name="IDrTrcIntlk12" type="BOOLEAN8" offset="2184" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status of Door Traction Interlock 1 & 2]]></comment>
+      </process-variable>
+      <process-variable name="IRemStartAct" type="BOOLEAN8" offset="2192" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Remote start active TCMS]]></comment>
+      </process-variable>
+      <process-variable name="IHVPwrDwnWrn" type="BOOLEAN8" offset="2200" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[HV power down warning]]></comment>
+      </process-variable>
+      <process-variable name="IRollbackDet" type="BOOLEAN8" offset="2208" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status: Rollback detected]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_11" type="BOOLEAN8" offset="2216" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 1 in car 1 (physical order)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_12" type="BOOLEAN8" offset="2224" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 2 in car 1 (LC01)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_13" type="BOOLEAN8" offset="2232" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 3 in car 1 (LC01)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_14" type="BOOLEAN8" offset="2240" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 4 in car 1 (LC01)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_15" type="BOOLEAN8" offset="2248" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 5 in car 1 (LC01)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_41" type="BOOLEAN8" offset="2256" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 1 in car 4 (LC04)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_42" type="BOOLEAN8" offset="2264" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 2 in car 4 (LC04)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_43" type="BOOLEAN8" offset="2272" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 3 in car 4 (LC04)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_51" type="BOOLEAN8" offset="2280" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 1 in car 2 (LC02)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_52" type="BOOLEAN8" offset="2288" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 2 in car 2 (LC02)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_53" type="BOOLEAN8" offset="2296" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 3 in car 2 (LC02)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_61" type="BOOLEAN8" offset="2304" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 1 in car 5 (LC05)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_62" type="BOOLEAN8" offset="2312" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 2 in car 5 (LC05)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_63" type="BOOLEAN8" offset="2320" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 3 in car 5 (LC05)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_91" type="BOOLEAN8" offset="2328" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 1 in car 3 (LC03)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_92" type="BOOLEAN8" offset="2336" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 2 in car 3 (LC03)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_93" type="BOOLEAN8" offset="2344" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 3 in car 3 (LC03)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_94" type="BOOLEAN8" offset="2352" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 4 in car 3 (LC03)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_95" type="BOOLEAN8" offset="2360" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/Fire in detector 5 in car 3 (LC03)
+]]></comment>
+      </process-variable>
+      <process-variable name="ITermStnActAlm_2" type="BOOLEAN8" offset="2368" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Terminal Station Active Alarm from Cab 2]]></comment>
+      </process-variable>
+      <process-variable name="IEtcsIsolated_1" type="BOOLEAN8" offset="2376" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[ETCS Switch in cab 1 is active]]></comment>
+      </process-variable>
+      <process-variable name="IValid" type="UINT8" offset="2384" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Control signal for validity (used by HMI): 90-valid]]></comment>
+      </process-variable>
+      <process-variable name="ICsdeWrgSide" type="BOOLEAN8" offset="2392" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[CSDE Wrong Side Alarm]]></comment>
+      </process-variable>
+      <process-variable name="ISalCrwPnlAct_1" type="BOOLEAN8" offset="2400" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Guard panel active in car 1 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ISalCrwPnlAct_2" type="BOOLEAN8" offset="2408" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Guard panel active in car 2 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_44" type="BOOLEAN8" offset="2416" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 4 in car 4 (LC04)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_45" type="BOOLEAN8" offset="2424" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 5 in car 4 (LC04)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_54" type="BOOLEAN8" offset="2432" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 4 in car 2 (LC02)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_55" type="BOOLEAN8" offset="2440" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 5 in car 2 (LC02)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_64" type="BOOLEAN8" offset="2448" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 4 in car 5 (LC05)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_65" type="BOOLEAN8" offset="2456" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 5 in car 5 (LC05)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_96" type="BOOLEAN8" offset="2464" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 6 in car 3 (LC03)]]></comment>
+      </process-variable>
+      <process-variable name="ISmokeFireDetected_56" type="BOOLEAN8" offset="2472" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Smoke/fire detector 6 in car 2 (LC02)
+]]></comment>
+      </process-variable>
+      <process-variable name="ISalCrwPnlAct_3" type="BOOLEAN8" offset="2480" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Guard panel active in car 3 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ISalCrwPnlAct_4" type="BOOLEAN8" offset="2488" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Guard panel active in car 4 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ISalCrwPnlAct_5" type="BOOLEAN8" offset="2496" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Guard panel active in car 5 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ICrwPnlAct_1" type="BOOLEAN8" offset="2504" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Crew  panel active in car 1 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ICrwPnlAct_3" type="BOOLEAN8" offset="2512" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Crew  panel active in car 3 in this consist (logical car);]]></comment>
+      </process-variable>
+      <process-variable name="ITermStnActAlm_1" type="BOOLEAN8" offset="2520" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Terminal Station Active Alarm from Cab 1]]></comment>
+      </process-variable>
+      <process-variable name="IDrCclsRmng" type="UINT32" offset="2528" array-size="1" unit="Undefined" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Number of remaining door cycles in a cycling test.]]></comment>
+      </process-variable>
+      <process-variable name="IDrCclStp" type="BOOLEAN8" offset="2560" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Command to stop the door cycling]]></comment>
+      </process-variable>
+      <process-variable name="IDrgDetNotActFlt_1" type="BOOLEAN8" offset="2568" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status of drag detection not active output fault Car1]]></comment>
+      </process-variable>
+      <process-variable name="IDrgDetNotActFlt_3" type="BOOLEAN8" offset="2576" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Status of drag detection not active output fault Car3]]></comment>
+      </process-variable>
+      <process-variable name="IUtcOffset" type="INT8" offset="2584" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Values: -48..48 = "Time Offset in 15min Steps, i.e. Time Zone + DST."
+Other Values = "Invalid"
+Value: 0 = "GMT Reference, i.e. Time Zone '48'."]]></comment>
+      </process-variable>
+      <process-variable name="INxtStnIdInt" type="UINT32" offset="2592" array-size="1" unit="Undefined" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Next Station Identifier Internal]]></comment>
+      </process-variable>
+      <process-variable name="CEtcsBrTstCmd" type="BOOLEAN8" offset="2624" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Brake Test Command to ETCS]]></comment>
+      </process-variable>
+      <process-variable name="IEtcsBrTstPssb" type="BOOLEAN8" offset="2632" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Brake Test Possible Status to ETCS]]></comment>
+      </process-variable>
+      <process-variable name="IDispEDBrIslFb" type="BOOLEAN8" offset="2640" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
+        <comment><![CDATA[Display ED Isolation Feedback (to CCU-S)]]></comment>
+      </process-variable>      
     </data-set>
     <data-set data-set-id="2012003">
       <process-variable name="HmiState" type="UINT16" array-size="1" offset="0" />
