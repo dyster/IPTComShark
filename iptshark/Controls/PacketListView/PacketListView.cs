@@ -320,6 +320,26 @@ namespace IPTComShark.Controls
 
         public void UpdateFilter()
         {
+            var ignoreComids = new List<uint>();
+            if (!string.IsNullOrEmpty(Settings.IgnoreComid))
+            {
+                List<string> strings = Settings.IgnoreComid.Split(',').ToList();
+                
+                foreach (string s in strings.Distinct())
+                {
+                    if(uint.TryParse(s.Trim(), out uint u))
+                    {
+                        ignoreComids.Add(u);
+                    }                    
+                }                
+            }
+
+            Regex searchRegex = null;
+            if (!string.IsNullOrEmpty(_searchString))
+            {
+                searchRegex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
+            }
+
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
@@ -340,16 +360,11 @@ namespace IPTComShark.Controls
                         return false;
                 }
 
-                if (!string.IsNullOrEmpty(Settings.IgnoreComid))
+                foreach(var comid in ignoreComids)
                 {
-                    string[] strings = Settings.IgnoreComid.Split(',');
-                    foreach (string s in strings)
-                    {
-                        uint u = uint.Parse(s.Trim());
-                        if (capturePacket.Comid == u)
-                            return false;
-                    }
-                }                
+                    if (capturePacket.Comid == comid)
+                        return false;
+                }                        
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
@@ -372,20 +387,17 @@ namespace IPTComShark.Controls
 
                 }
 
-                if (!string.IsNullOrEmpty(_searchString))
-                {
-                    var regex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
-                    if (capturePacket.Name != null && regex.IsMatch(capturePacket.Name))
+                if (searchRegex != null)
+                {                    
+                    if (capturePacket.Name != null && searchRegex.IsMatch(capturePacket.Name))
                         return true;
-                    if (capturePacket.DisplayFields.Exists(t => regex.IsMatch(t.Name)))
+                    if (capturePacket.DisplayFields.Exists(t => searchRegex.IsMatch(t.Name)))
                         return true;
 
                     // TODO we still need to be able to filter on the whole dataset somehow, either generate some massive database or maybe use the dataset definitions instead of the parsed result
 
                     return false;
                 }
-
-
 
                 return true;
             });            
@@ -574,17 +586,30 @@ namespace IPTComShark.Controls
 
         private void addToIgnoredComIDsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
-            if (o?.Protocol == ProtocolType.IPTWP)
-            {
-                var s = o.Comid.ToString();
-                if (string.IsNullOrEmpty(Settings.IgnoreComid))
-                    Settings.IgnoreComid = s;
-                else
-                    Settings.IgnoreComid += "," + s;
+            var ignoreComids = new List<uint>();
+            List<string> strings = new List<string>();
 
-                UpdateFilter();
+            if (!string.IsNullOrEmpty(Settings.IgnoreComid))
+            {
+                strings.AddRange(Settings.IgnoreComid.Split(','));                
             }
+
+            foreach (CapturePacket o in fastObjectListView1.SelectedObjects)
+            {
+                strings.Add(o.Comid.ToString());                
+            }
+
+            foreach (string s in strings.Distinct())
+            {
+                if (uint.TryParse(s.Trim(), out uint u))
+                {
+                    ignoreComids.Add(u);
+                }
+            }
+
+            Settings.IgnoreComid = string.Join(",", ignoreComids);
+
+            UpdateFilter();
         }
 
         private void ContextMenuMouse_Opening(object sender, System.ComponentModel.CancelEventArgs e)
