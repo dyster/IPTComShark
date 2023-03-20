@@ -20,7 +20,7 @@ namespace IPTComShark.Controls
 
             dataListViewRight.RowFormatter += item =>
             {
-                DataLine line = (DataLine) item.RowObject;
+                DataLine line = (DataLine)item.RowObject;
                 if (line.Changed)
                     item.BackColor = Color.LightSeaGreen;
                 if (line.IsCategory)
@@ -72,8 +72,8 @@ namespace IPTComShark.Controls
                     }
                 }
 
-                
-                
+
+
                 Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
 
 
@@ -83,7 +83,7 @@ namespace IPTComShark.Controls
                     var iptPacket = IPTWPPacket.Extract(udp.PayloadData);
 
                     if (iptPacket != null)
-                    { 
+                    {
 
                         var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                         var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
@@ -123,36 +123,31 @@ namespace IPTComShark.Controls
                         }
                         else if (parse.HasValue && !parse.Value.NoParserInstalled)
                         {
-                            foreach (var parsedDataSet in parse.Value.ParsedData)
-                            {
-                                dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
-                                foreach (var field in parsedDataSet.ParsedFields)
-                                {
-                                    dataLines.Add(new DataLine(field, ticker++));
-                                }
-                            }
+                            ticker = ParseToDataLines(ticker, dataLines, parse);
                         }
                         else
                         {
                             // where does that leave us?
                         }
                     }
+                    else
+                    {
+                        textBoxComid.Text = "IPTWP Parser failed, see bottom window";
+
+                        if (parse.HasValue && !parse.Value.NoParserInstalled)
+                        {
+                            ticker = ParseToDataLines(ticker, dataLines, parse);
+                        }
+                    }
                 }
                 else if (parse.HasValue && !parse.Value.NoParserInstalled)
                 {
-                    foreach (var parsedDataSet in parse.Value.ParsedData)
-                    {
-                        dataLines.Add(new DataLine(ticker++) {IsCategory = true, Name = parsedDataSet.Name});
-                        foreach (var field in parsedDataSet.ParsedFields)
-                        {
-                            dataLines.Add(new DataLine(field, ticker++));
-                        }
-                    }
+                    ticker = ParseToDataLines(ticker, dataLines, parse);
                 }
             }
             catch (Exception e)
             {
-                dataLines.Add(new DataLine(ticker++) {Name = "Error", Value = e.ToString()});
+                dataLines.Add(new DataLine(ticker++) { Name = "Error", Value = e.ToString() });
             }
 
             try
@@ -191,13 +186,13 @@ namespace IPTComShark.Controls
 
                     string str1 = "";
                     string str2 = "";
-                    text.AppendLine("IPT:  ******* Raw Hex Output - length=" + (object) bytes.Length + " bytes");
+                    text.AppendLine("IPT:  ******* Raw Hex Output - length=" + (object)bytes.Length + " bytes");
                     text.AppendLine("IPT: Segment:                   Bytes:                              Ascii:");
                     text.AppendLine("IPT: --------------------------------------------------------------------------");
                     for (int index = 1; index <= bytes.Length; ++index)
                     {
                         str1 = str1 + bytes[index - 1].ToString("x").PadLeft(2, '0') + " ";
-                        if (bytes[index - 1] < (byte) 33 || bytes[index - 1] > (byte) 126)
+                        if (bytes[index - 1] < (byte)33 || bytes[index - 1] > (byte)126)
                             str2 += ".";
                         else
                             str2 += Encoding.ASCII.GetString(new byte[1]
@@ -212,14 +207,16 @@ namespace IPTComShark.Controls
 
                         if (index % 16 == 0)
                         {
-                            string str3 = ((index - 16) / 16 * 10).ToString().PadLeft(4, '0');
+                            //string str3 = ((index - 16) / 16 * 10).ToString().PadLeft(4, '0');
+                            string str3 = (index - 16).ToString().PadLeft(5, '0');
                             text.AppendLine("IPT: " + str3 + "  " + str1 + "  " + str2);
                             str1 = "";
                             str2 = "";
                         }
                         else if (index == bytes.Length)
                         {
-                            string str3 = (((index - 16) / 16 + 1) * 10).ToString().PadLeft(4, '0');
+                            //string str3 = (((index - 16) / 16 + 1) * 10).ToString().PadLeft(4, '0');
+                            string str3 = (index - 16).ToString().PadLeft(5, '0');
                             text.AppendLine("IPT: " + str3.ToString().PadLeft(4, '0') + "  " + str1.PadRight(49, ' ') +
                                             "  " + str2);
                         }
@@ -234,6 +231,20 @@ namespace IPTComShark.Controls
             }
 
             dataListViewRight.DataSource = dataLines;
+        }
+
+        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, Parse? parse)
+        {
+            foreach (var parsedDataSet in parse.Value.ParsedData)
+            {
+                dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+                foreach (var field in parsedDataSet.ParsedFields)
+                {
+                    dataLines.Add(new DataLine(field, ticker++));
+                }
+            }
+
+            return ticker;
         }
 
         // TODO this is not needed anymore I believe
@@ -382,7 +393,7 @@ namespace IPTComShark.Controls
         {
             if (dataListViewRight.SelectedObject != null)
             {
-                var dataline = (DataLine) dataListViewRight.SelectedObject;
+                var dataline = (DataLine)dataListViewRight.SelectedObject;
 
                 var parsedField = dataline.GetField();
                 if (parsedField != null)

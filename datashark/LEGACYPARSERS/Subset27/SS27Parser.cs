@@ -371,7 +371,7 @@ namespace IPTComShark.Parsers
                         }
                     }
 
-
+                    // TODO fix this, it is in extramessages now
                     if (parsed.SubMessage.GetField("AWS South Pole Detection") != null)
                     {
                         var awsstring = new List<string>();
