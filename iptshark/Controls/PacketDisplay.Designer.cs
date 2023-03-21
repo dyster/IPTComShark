@@ -40,6 +40,8 @@
             this.olvColumnIsCategory = new BrightIdeasSoftware.OLVColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.analyzeValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyAllValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxComid = new System.Windows.Forms.TextBox();
             this.textBoxSize = new System.Windows.Forms.TextBox();
             this.textBoxType = new System.Windows.Forms.TextBox();
@@ -151,7 +153,7 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.analyzeValueToolStripMenuItem});
+            this.analyzeValueToolStripMenuItem, this.copyValueToolStripMenuItem, this.copyAllValuesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(147, 26);
             // 
@@ -161,6 +163,20 @@
             this.analyzeValueToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.analyzeValueToolStripMenuItem.Text = "Analyze value";
             this.analyzeValueToolStripMenuItem.Click += new System.EventHandler(this.analyzeValueToolStripMenuItem_Click);
+            // 
+            // copyValueToolStripMenuItem
+            // 
+            this.copyValueToolStripMenuItem.Name = "copyValueToolStripMenuItem";
+            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.copyValueToolStripMenuItem.Text = "Copy value";
+            this.copyValueToolStripMenuItem.Click += new System.EventHandler(this.copyValueToolStripMenuItem_Click);
+            // 
+            // copyAllValuesToolStripMenuItem
+            // 
+            this.copyAllValuesToolStripMenuItem.Name = "copyAllValuesToolStripMenuItem";
+            this.copyAllValuesToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.copyAllValuesToolStripMenuItem.Text = "Copy whole line";
+            this.copyAllValuesToolStripMenuItem.Click += new System.EventHandler(this.copyAllValuesToolStripMenuItem_Click);
             // 
             // textBoxComid
             // 
@@ -323,6 +339,8 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem analyzeValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyAllValuesToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvColumnNo;
         private BrightIdeasSoftware.OLVColumn olvColumnTrueValue;
         private BrightIdeasSoftware.OLVColumn olvColumnIsCategory;

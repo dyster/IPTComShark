@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using IPTComShark.Windows;
 using IPTComShark.Parsers;
+using System.Text.Json;
 
 namespace IPTComShark.Controls
 {
@@ -391,9 +392,9 @@ namespace IPTComShark.Controls
 
         private void analyzeValueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataListViewRight.SelectedObject != null)
+            if (dataListViewRight.MouseMoveHitTest.RowObject != null)
             {
-                var dataline = (DataLine)dataListViewRight.SelectedObject;
+                var dataline = (DataLine)dataListViewRight.MouseMoveHitTest.RowObject;
 
                 var parsedField = dataline.GetField();
                 if (parsedField != null)
@@ -407,6 +408,24 @@ namespace IPTComShark.Controls
         {
             var dataLines = new List<DataLine>();
             dataListViewRight.DataSource = dataLines;
+        }
+
+        private void copyValueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataListViewRight.MouseMoveHitTest.RowObject != null)
+            {
+                var dataline = (DataLine)dataListViewRight.MouseMoveHitTest.RowObject;
+                Clipboard.SetText(dataline.Value);                
+            }
+        }
+
+        private void copyAllValuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataListViewRight.MouseMoveHitTest.RowObject != null)
+            {
+                var dataline = (DataLine)dataListViewRight.MouseMoveHitTest.RowObject;
+                Clipboard.SetText(dataline.ToString());
+            }
         }
     }
 
@@ -444,6 +463,11 @@ namespace IPTComShark.Controls
         public string Comment { get; set; }
         public bool Changed { get; set; }
         public bool IsCategory { get; set; }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
 
         public ParsedField GetField()
         {
