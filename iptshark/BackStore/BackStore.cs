@@ -175,6 +175,7 @@ namespace IPTComShark.BackStore
                 if (!_addBuffer.IsEmpty)
                 {
                     Working = true;
+                    uint count = 0;
 
 
                     while (!_addBuffer.IsEmpty)
@@ -187,11 +188,14 @@ namespace IPTComShark.BackStore
 
                             // this list is only to hold updates, the Parse function adds them to the main store
                             list.Add(capturePacket);
+                            count++;
                         }
                     }
 
 
                     updatePending = true;
+                    if (FinishedProcessing != null)
+                        FinishedProcessing.Invoke(this, count);
                     Working = false;
                 }
 
@@ -207,6 +211,11 @@ namespace IPTComShark.BackStore
                 Thread.Sleep(100);
             }
         }
+
+        /// <summary>
+        /// Fires when the add buffer has been processed down to zero, and reports the number of packets processed
+        /// </summary>
+        public event EventHandler<uint> FinishedProcessing;
 
         public void AddAsync(Raw raw)
         {

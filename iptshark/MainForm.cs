@@ -32,8 +32,8 @@ namespace IPTComShark
         private long _capturedData;
 
         private PcapDevice _device;
-        
-        //private PCAPWriter _pcapWriter;
+
+        private DateTime _loadStarted = default;
 
         public MainForm()
         {
@@ -45,6 +45,7 @@ namespace IPTComShark
             _parserFactory = GenerateParserFactory();
 
             _backStore = new BackStore.BackStore(_parserFactory);
+            _backStore.FinishedProcessing += _backStore_FinishedProcessing;
 
             packetListView1.BackStore = _backStore;
             packetListView1.ParserFactory = _parserFactory;
@@ -82,7 +83,7 @@ namespace IPTComShark
             stopwatch.Stop();
             Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
         }
-
+        
         public static ParserFactory GenerateParserFactory()
         {
             var parserFactory = new ParserFactory();
@@ -386,17 +387,30 @@ namespace IPTComShark
                 Invoke(new OpenPathDelegate(OpenPath), paths);
             else
             {
-                {
-                    var fileManager = new FileManager.FileManager();
-                    fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
+                var fileManager = new FileManager.FileManager();
+                fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
+                fileManager.FinishedLoading += FileManager_FinishedLoading;
 
-                    fileManager.OpenFilesAsync(paths);
-                    _backStore.ProcessingFilters = fileManager.ProcessingFilters;
-                    //fileManager.OpenFilesAsyncFinished.WaitOne();
-                }
+                fileManager.OpenFilesAsync(paths);                
+                _backStore.ProcessingFilters = fileManager.ProcessingFilters;
+                _loadStarted = DateTime.Now;
 
                 GC.Collect();
             }
+        }
+
+        private void FileManager_FinishedLoading(object sender, FinishedEventArgs e)
+        {
+            foreach(var ds in e.DataSources.Where(ds => ds.Use))
+            {
+                Logger.Log("Opened " + ds.FileInfo.FullName, Severity.Info);
+            }
+            Logger.Log(e.ToString(), Severity.Info);
+        }
+
+        private void _backStore_FinishedProcessing(object sender, uint e)
+        {
+            Logger.Log($"Backstore finished processing {e} packets in {DateTime.Now - _loadStarted}", Severity.Info);
         }
 
         private void saveCurrentFilterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -682,7 +696,7 @@ namespace IPTComShark
             {
                 GC.Collect();
 
-                RunBenchmark(@"C:\Users\dyste\OneDrive - Alstom\07_Problems\07_mr9 random crash\1\vap 1820-1830.pcap");
+                RunBenchmark(@"E:\OneDrive - Alstom\07_Problems\07_mr9 random crash\1\vap 1820-1830.pcap");
 
                 return;
                 RunBenchmark(@"c:\temp\benchmark1.pcap");

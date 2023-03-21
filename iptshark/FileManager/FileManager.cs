@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using BustPCap;
 using IPTComShark.BackStore;
 using System.Text;
+using System.Diagnostics;
 
 namespace IPTComShark.FileManager
 {
@@ -103,13 +104,8 @@ namespace IPTComShark.FileManager
         {
             _popup.Show();
 
-            _popup.Text = "Starting the parse";
-
-
-            var dic = new Dictionary<string, Func<string, List<FileReadObject>>>();
-
-            //SevenZipExtractor.SetLibraryPath(Application.ExecutablePath + @"\7z.dll");
-
+            _popup.Text = "Starting the parse";            
+            
             int i = 1;
             foreach (var source in dataSources)
             {
@@ -259,7 +255,7 @@ namespace IPTComShark.FileManager
         }
 
         /// <summary>
-        /// Starts opening data async, returns them by RawParsed event, and triggers reset event when finished
+        /// Starts opening data async, returns them by RawParsed event, and triggers event when finished
         /// </summary>
         /// <param name="inputs"></param>
         public async void OpenFilesAsync(string[] inputs)
@@ -272,19 +268,25 @@ namespace IPTComShark.FileManager
                 FilterTo = fo.DateTimeTo;
                 ProcessingFilters = fo.ProcessingFilters;
 
+                var start = DateTime.Now;
+                var count = 0;
+
                 Thread thread = new Thread((object o)=> {
                     foreach(var raw in EnumerateFiles(fo.DataSources))
                     {
                         // Enu merate good times come on                        
+                        count++;
                     }
-                    OpenFilesAsyncFinished.Set();
+
+                    if (FinishedLoading != null)
+                        FinishedLoading.Invoke(this, new FinishedEventArgs(start, DateTime.Now, count, fo.DataSources));
                 });
 
                 thread.Start();
             }
         }
 
-        public AutoResetEvent OpenFilesAsyncFinished = new AutoResetEvent(false);
+        public event EventHandler<FinishedEventArgs> FinishedLoading;
 
         public DateTime FilterTo { get; set; }
         public ProcessingFilter ProcessingFilters { get; set; }
