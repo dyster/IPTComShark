@@ -71,9 +71,9 @@ namespace IPTComShark
                 DataSourceUpdateMode.OnPropertyChanged);
             textBoxIgnoreComid.DataBindings.Add("Text", packetSettings, "IgnoreComid", true,
                 DataSourceUpdateMode.OnValidation);
-            textBoxIgnoreVars.DataBindings.Add("Lines", packetSettings, "IgnoreVariables", true, 
+            textBoxIgnoreVars.DataBindings.Add("Lines", packetSettings, "IgnoreVariables", true,
                 DataSourceUpdateMode.OnValidation);
-            
+
             packetListView1.Settings = packetSettings;
 
             InitData();
@@ -83,7 +83,7 @@ namespace IPTComShark
             stopwatch.Stop();
             Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
         }
-        
+
         public static ParserFactory GenerateParserFactory()
         {
             var parserFactory = new ParserFactory();
@@ -104,7 +104,7 @@ namespace IPTComShark
             _backStore.Clear();
 
 
-            _capturedData = 0;            
+            _capturedData = 0;
         }
 
         private void UpdateStatus(string text)
@@ -127,7 +127,7 @@ namespace IPTComShark
         {
             var packet = pc.GetPacket();
             _capturedData += packet.Data.Length;
-            var raw = new Raw(packet.Timeval.Date, packet.Data, (LinkLayerType) packet.LinkLayerType);
+            var raw = new Raw(packet.Timeval.Date, packet.Data, (LinkLayerType)packet.LinkLayerType);
 
             _backStore.AddAsync(raw);
 
@@ -256,7 +256,7 @@ namespace IPTComShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
-            
+
 
             var tuples = new List<Tuple<Color, string>>();
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.CapturedPackets.ToString()));
@@ -304,7 +304,7 @@ namespace IPTComShark
             }
 
             Properties.Settings.Default.PacketListSettings = packetListView1.Settings.SerialiseToString();
-                        
+
             Properties.Settings.Default.Save();
 
             _backStore.Close();
@@ -332,7 +332,7 @@ namespace IPTComShark
             if (dialogResult != DialogResult.OK) return;
             using (var pcapWriter = new BustPCap.PCAPWriter(saveFileDialog.FileName))
             {
-                pcapWriter.LinkLayerType = (uint) layer;
+                pcapWriter.LinkLayerType = (uint)layer;
                 pcapWriter.Start();
                 foreach (Raw raw in allRawCaptures)
                 {
@@ -391,7 +391,7 @@ namespace IPTComShark
                 fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
                 fileManager.FinishedLoading += FileManager_FinishedLoading;
 
-                fileManager.OpenFilesAsync(paths);                
+                fileManager.OpenFilesAsync(paths);
                 _backStore.ProcessingFilters = fileManager.ProcessingFilters;
                 _loadStarted = DateTime.Now;
 
@@ -401,7 +401,7 @@ namespace IPTComShark
 
         private void FileManager_FinishedLoading(object sender, FinishedEventArgs e)
         {
-            foreach(var ds in e.DataSources.Where(ds => ds.Use))
+            foreach (var ds in e.DataSources.Where(ds => ds.Use))
             {
                 Logger.Log("Opened " + ds.FileInfo.FullName, Severity.Info);
             }
@@ -483,11 +483,11 @@ namespace IPTComShark
 
         private void exportXLSXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            
-                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
-                var showDialog = exporterer.ShowDialog(this);
-            
+
+
+            var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
+            var showDialog = exporterer.ShowDialog(this);
+
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -496,7 +496,7 @@ namespace IPTComShark
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                OpenPath(new[] {folderBrowserDialog.SelectedPath});
+                OpenPath(new[] { folderBrowserDialog.SelectedPath });
             }
         }
 
@@ -543,7 +543,7 @@ namespace IPTComShark
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] data = (string[]) e.Data.GetData(DataFormats.FileDrop);
+                string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
                 OpenPath(data);
             }
         }
@@ -564,7 +564,7 @@ namespace IPTComShark
             int totalwidth = 0;
             foreach (var pair in texts)
             {
-                totalwidth += (int) gx.MeasureString(pair.Item2, font).Width;
+                totalwidth += (int)gx.MeasureString(pair.Item2, font).Width;
             }
 
 
@@ -581,7 +581,7 @@ namespace IPTComShark
                 var piecebrush = new SolidBrush(pair.Item1);
                 gx.DrawString(pair.Item2, font, piecebrush, renderbar, 0);
 
-                renderbar += (int) piecewidth;
+                renderbar += (int)piecewidth;
             }
 
             return img;
@@ -656,7 +656,7 @@ namespace IPTComShark
                                 bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
                             }
 
-                            var V_NOM = BitConverter.ToInt16(new byte[] {bytes[13], bytes[12]}, 0);
+                            var V_NOM = BitConverter.ToInt16(new byte[] { bytes[13], bytes[12] }, 0);
 
                             var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
                             var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
@@ -750,21 +750,21 @@ namespace IPTComShark
                     count++;
                 }
             }
-            else if(format == Format.PCAPNG)
+            else if (format == Format.PCAPNG)
             {
                 var pcapReader = new PCAPNGFileReader(file);
                 foreach (var block in pcapReader.Enumerate())
                 {
-                    if(block.Header == PCAPNGHeader.EnhancedPacket)
+                    if (block.Header == PCAPNGHeader.EnhancedPacket)
                     {
                         var packet = processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
                         list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
                         count++;
                     }
-                    
+
                 }
             }
-                       
+
 
             stopwatch.Stop();
 
@@ -812,9 +812,10 @@ namespace IPTComShark
 
             File.AppendAllText(file + ".txt", text);
 
-            var options = new JsonSerializerOptions() { 
-                WriteIndented = true, 
-                Converters = { new Classes.IPJsonConverter()}
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Converters = { new Classes.IPJsonConverter() }
             };
             var json = JsonSerializer.Serialize(list, typeof(List<Tuple<CapturePacket, Parse>>), options);
             File.WriteAllText(file + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json", json);
@@ -930,6 +931,12 @@ namespace IPTComShark
             }
             errorMessage = String.Empty;
             return true;
+        }
+
+        private void toolStripSplitButtonCopyLog_ButtonClick(object sender, EventArgs e)
+        {
+            Clipboard.SetText(string.Join(Environment.NewLine,
+                Logger.Instance.GetLog().Select(log => log.ToString())));
         }
 
 

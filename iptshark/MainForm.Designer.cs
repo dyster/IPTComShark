@@ -30,604 +30,599 @@ namespace IPTComShark
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            IPTComShark.Controls.PacketListSettings packetListSettings1 = new IPTComShark.Controls.PacketListSettings();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.timerFlicker = new System.Windows.Forms.Timer(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.packetListView1 = new IPTComShark.Controls.PacketListView();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.packetDisplay1 = new IPTComShark.Controls.PacketDisplay();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.textBoxSearch = new IPTComShark.Controls.TypeDelayTextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxParserOnly = new System.Windows.Forms.CheckBox();
-            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
-            this.checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
-            this.checkBoxHideDupes = new System.Windows.Forms.CheckBox();
-            this.textBoxIgnoreComid = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxIgnoreVars = new IPTComShark.Controls.TypeDelayTextBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveCurrentFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.simulateTrafficToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.remoteCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.SuspendLayout();
+            PacketListSettings packetListSettings1 = new PacketListSettings();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            timerFlicker = new System.Windows.Forms.Timer(components);
+            statusStrip1 = new System.Windows.Forms.StatusStrip();
+            statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
+            statusRight = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripSplitButtonOpenLog = new System.Windows.Forms.ToolStripSplitButton();
+            toolStripSplitButtonCopyLog = new System.Windows.Forms.ToolStripSplitButton();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            packetListView1 = new PacketListView();
+            tabControl1 = new System.Windows.Forms.TabControl();
+            tabPage1 = new System.Windows.Forms.TabPage();
+            packetDisplay1 = new PacketDisplay();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            textBoxSearch = new TypeDelayTextBox();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            checkBoxParserOnly = new System.Windows.Forms.CheckBox();
+            checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
+            checkBoxIgnoreLoopback = new System.Windows.Forms.CheckBox();
+            checkBoxHideDupes = new System.Windows.Forms.CheckBox();
+            textBoxIgnoreComid = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            textBoxIgnoreVars = new TypeDelayTextBox();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveCurrentFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            simulateTrafficToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportSVGSequenceDiagramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportXLSXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            remoteCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            captureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            clearToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
+            errorProvider1 = new System.Windows.Forms.ErrorProvider(components);
+            toolStripStatusLabelSeparator1 = new System.Windows.Forms.ToolStripStatusLabel();
+            statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            SuspendLayout();
             // 
             // backgroundWorker1
             // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
             // 
             // timerFlicker
             // 
-            this.timerFlicker.Interval = 500;
-            this.timerFlicker.Tick += new System.EventHandler(this.timerFlicker_Tick);
+            timerFlicker.Interval = 500;
+            timerFlicker.Tick += timerFlicker_Tick;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLeft,
-            this.statusRight});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 667);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.ShowItemToolTips = true;
-            this.statusStrip1.Size = new System.Drawing.Size(1672, 22);
-            this.statusStrip1.TabIndex = 4;
-            this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.DoubleClick += new System.EventHandler(this.statusStrip1_DoubleClick);
+            statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { statusLeft, statusRight, toolStripStatusLabelSeparator1, toolStripSplitButtonOpenLog, toolStripSplitButtonCopyLog });
+            statusStrip1.Location = new System.Drawing.Point(0, 667);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            statusStrip1.ShowItemToolTips = true;
+            statusStrip1.Size = new System.Drawing.Size(1672, 22);
+            statusStrip1.TabIndex = 4;
+            statusStrip1.Text = "statusStrip1";
+            statusStrip1.DoubleClick += statusStrip1_DoubleClick;
             // 
             // statusLeft
             // 
-            this.statusLeft.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.statusLeft.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.statusLeft.Name = "statusLeft";
-            this.statusLeft.Size = new System.Drawing.Size(0, 17);
-            this.statusLeft.Text = "toolStripStatusLabel1";
+            statusLeft.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            statusLeft.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            statusLeft.Name = "statusLeft";
+            statusLeft.Size = new System.Drawing.Size(0, 17);
+            statusLeft.Text = "toolStripStatusLabel1";
             // 
             // statusRight
             // 
-            this.statusRight.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.statusRight.Name = "statusRight";
-            this.statusRight.Size = new System.Drawing.Size(118, 17);
-            this.statusRight.Text = "toolStripStatusLabel1";
+            statusRight.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            statusRight.Name = "statusRight";
+            statusRight.Size = new System.Drawing.Size(118, 17);
+            statusRight.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripSplitButtonOpenLog
+            // 
+            toolStripSplitButtonOpenLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            toolStripSplitButtonOpenLog.DropDownButtonWidth = 0;
+            toolStripSplitButtonOpenLog.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButtonOpenLog.Image");
+            toolStripSplitButtonOpenLog.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripSplitButtonOpenLog.Name = "toolStripSplitButtonOpenLog";
+            toolStripSplitButtonOpenLog.Size = new System.Drawing.Size(64, 20);
+            toolStripSplitButtonOpenLog.Text = "Open Log";
+            toolStripSplitButtonOpenLog.ButtonClick += statusStrip1_DoubleClick;
+            // 
+            // toolStripSplitButtonCopyLog
+            // 
+            toolStripSplitButtonCopyLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            toolStripSplitButtonCopyLog.DropDownButtonWidth = 0;
+            toolStripSplitButtonCopyLog.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButtonCopyLog.Image");
+            toolStripSplitButtonCopyLog.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripSplitButtonCopyLog.Name = "toolStripSplitButtonCopyLog";
+            toolStripSplitButtonCopyLog.Size = new System.Drawing.Size(63, 20);
+            toolStripSplitButtonCopyLog.Text = "Copy Log";
+            toolStripSplitButtonCopyLog.ButtonClick += toolStripSplitButtonCopyLog_ButtonClick;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            splitContainer1.Location = new System.Drawing.Point(0, 31);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.packetListView1);
+            splitContainer1.Panel1.Controls.Add(packetListView1);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1672, 629);
-            this.splitContainer1.SplitterDistance = 1200;
-            this.splitContainer1.SplitterWidth = 5;
-            this.splitContainer1.TabIndex = 7;
+            splitContainer1.Panel2.Controls.Add(tabControl1);
+            splitContainer1.Size = new System.Drawing.Size(1672, 629);
+            splitContainer1.SplitterDistance = 1200;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 7;
             // 
             // packetListView1
             // 
-            this.packetListView1.AllowDrop = true;
-            this.packetListView1.AutoScroll = true;
-            this.packetListView1.BackStore = null;
-            this.packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetListView1.Location = new System.Drawing.Point(0, 0);
-            this.packetListView1.Margin = new System.Windows.Forms.Padding(5);
-            this.packetListView1.Name = "packetListView1";
-            this.packetListView1.ParserFactory = null;
-            this.packetListView1.SearchString = null;
+            packetListView1.AllowDrop = true;
+            packetListView1.AutoScroll = true;
+            packetListView1.BackStore = null;
+            packetListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            packetListView1.Location = new System.Drawing.Point(0, 0);
+            packetListView1.Margin = new System.Windows.Forms.Padding(5);
+            packetListView1.Name = "packetListView1";
+            packetListView1.ParserFactory = null;
+            packetListView1.SearchString = null;
             packetListSettings1.AutoScroll = false;
             packetListSettings1.ColumnInfos = null;
             packetListSettings1.IgnoreComid = "";
             packetListSettings1.IgnoreDuplicatedPD = false;
             packetListSettings1.IgnoreLoopback = false;
             packetListSettings1.IgnoreUnknownData = false;
-            packetListSettings1.IgnoreVariables = new string[] {
-        "MMI_M_PACKET",
-        "MMI_L_PACKET"};
-            this.packetListView1.Settings = packetListSettings1;
-            this.packetListView1.Size = new System.Drawing.Size(1200, 629);
-            this.packetListView1.TabIndex = 0;
-            this.packetListView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragDrop);
-            this.packetListView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.packetListView1_DragEnter);
+            packetListSettings1.IgnoreVariables = (new string[] { "MMI_M_PACKET", "MMI_L_PACKET" });
+            packetListView1.Settings = packetListSettings1;
+            packetListView1.Size = new System.Drawing.Size(1200, 629);
+            packetListView1.TabIndex = 0;
+            packetListView1.DragDrop += packetListView1_DragDrop;
+            packetListView1.DragEnter += packetListView1_DragEnter;
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(467, 629);
-            this.tabControl1.TabIndex = 14;
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControl1.Location = new System.Drawing.Point(0, 0);
+            tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new System.Drawing.Size(467, 629);
+            tabControl1.TabIndex = 14;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.packetDisplay1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Size = new System.Drawing.Size(459, 601);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Data";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Controls.Add(packetDisplay1);
+            tabPage1.Location = new System.Drawing.Point(4, 24);
+            tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage1.Size = new System.Drawing.Size(459, 601);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Data";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // packetDisplay1
             // 
-            this.packetDisplay1.BackStore = null;
-            this.packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetDisplay1.Location = new System.Drawing.Point(4, 3);
-            this.packetDisplay1.Margin = new System.Windows.Forms.Padding(5);
-            this.packetDisplay1.Name = "packetDisplay1";
-            this.packetDisplay1.ParserFactory = null;
-            this.packetDisplay1.Size = new System.Drawing.Size(451, 595);
-            this.packetDisplay1.TabIndex = 0;
+            packetDisplay1.BackStore = null;
+            packetDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            packetDisplay1.Location = new System.Drawing.Point(4, 3);
+            packetDisplay1.Margin = new System.Windows.Forms.Padding(5);
+            packetDisplay1.Name = "packetDisplay1";
+            packetDisplay1.ParserFactory = null;
+            packetDisplay1.Size = new System.Drawing.Size(451, 595);
+            packetDisplay1.TabIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.textBoxSearch);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.flowLayoutPanel1);
-            this.tabPage2.Controls.Add(this.textBoxIgnoreComid);
-            this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.textBoxIgnoreVars);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage2.Size = new System.Drawing.Size(459, 601);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Filters";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Controls.Add(textBoxSearch);
+            tabPage2.Controls.Add(label3);
+            tabPage2.Controls.Add(label2);
+            tabPage2.Controls.Add(flowLayoutPanel1);
+            tabPage2.Controls.Add(textBoxIgnoreComid);
+            tabPage2.Controls.Add(label1);
+            tabPage2.Controls.Add(textBoxIgnoreVars);
+            tabPage2.Location = new System.Drawing.Point(4, 24);
+            tabPage2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabPage2.Size = new System.Drawing.Size(459, 601);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Filters";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // textBoxSearch
             // 
-            this.textBoxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 393);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(457, 23);
-            this.textBoxSearch.TabIndex = 19;
-            this.textBoxSearch.TypingFinished += new System.EventHandler(this.typeDelayTextBox1_TypingFinished);
+            textBoxSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxSearch.Location = new System.Drawing.Point(0, 393);
+            textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new System.Drawing.Size(457, 23);
+            textBoxSearch.TabIndex = 19;
+            textBoxSearch.TypingFinished += typeDelayTextBox1_TypingFinished;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 375);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 15);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Search";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(7, 375);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(42, 15);
+            label3.TabIndex = 18;
+            label3.Text = "Search";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 183);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 15);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Ignore Variables (separate by newline)";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(4, 183);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(205, 15);
+            label2.TabIndex = 15;
+            label2.Text = "Ignore Variables (separate by newline)";
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxParserOnly);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxAutoScroll);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxIgnoreLoopback);
-            this.flowLayoutPanel1.Controls.Add(this.checkBoxHideDupes);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 3);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(451, 132);
-            this.flowLayoutPanel1.TabIndex = 14;
+            flowLayoutPanel1.Controls.Add(checkBoxParserOnly);
+            flowLayoutPanel1.Controls.Add(checkBoxAutoScroll);
+            flowLayoutPanel1.Controls.Add(checkBoxIgnoreLoopback);
+            flowLayoutPanel1.Controls.Add(checkBoxHideDupes);
+            flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new System.Drawing.Point(4, 3);
+            flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new System.Drawing.Size(451, 132);
+            flowLayoutPanel1.TabIndex = 14;
             // 
             // checkBoxParserOnly
             // 
-            this.checkBoxParserOnly.AutoSize = true;
-            this.checkBoxParserOnly.Checked = true;
-            this.checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxParserOnly.Location = new System.Drawing.Point(4, 3);
-            this.checkBoxParserOnly.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxParserOnly.Name = "checkBoxParserOnly";
-            this.checkBoxParserOnly.Size = new System.Drawing.Size(146, 19);
-            this.checkBoxParserOnly.TabIndex = 8;
-            this.checkBoxParserOnly.Text = "Show only known data";
-            this.checkBoxParserOnly.UseVisualStyleBackColor = true;
+            checkBoxParserOnly.AutoSize = true;
+            checkBoxParserOnly.Checked = true;
+            checkBoxParserOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxParserOnly.Location = new System.Drawing.Point(4, 3);
+            checkBoxParserOnly.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBoxParserOnly.Name = "checkBoxParserOnly";
+            checkBoxParserOnly.Size = new System.Drawing.Size(146, 19);
+            checkBoxParserOnly.TabIndex = 8;
+            checkBoxParserOnly.Text = "Show only known data";
+            checkBoxParserOnly.UseVisualStyleBackColor = true;
             // 
             // checkBoxAutoScroll
             // 
-            this.checkBoxAutoScroll.AutoSize = true;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(4, 28);
-            this.checkBoxAutoScroll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
-            this.checkBoxAutoScroll.Size = new System.Drawing.Size(81, 19);
-            this.checkBoxAutoScroll.TabIndex = 10;
-            this.checkBoxAutoScroll.Text = "AutoScroll";
-            this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
+            checkBoxAutoScroll.AutoSize = true;
+            checkBoxAutoScroll.Location = new System.Drawing.Point(4, 28);
+            checkBoxAutoScroll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBoxAutoScroll.Name = "checkBoxAutoScroll";
+            checkBoxAutoScroll.Size = new System.Drawing.Size(81, 19);
+            checkBoxAutoScroll.TabIndex = 10;
+            checkBoxAutoScroll.Text = "AutoScroll";
+            checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
             // checkBoxIgnoreLoopback
             // 
-            this.checkBoxIgnoreLoopback.AutoSize = true;
-            this.checkBoxIgnoreLoopback.Location = new System.Drawing.Point(4, 53);
-            this.checkBoxIgnoreLoopback.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
-            this.checkBoxIgnoreLoopback.Size = new System.Drawing.Size(115, 19);
-            this.checkBoxIgnoreLoopback.TabIndex = 11;
-            this.checkBoxIgnoreLoopback.Text = "Ignore Loopback";
-            this.checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
+            checkBoxIgnoreLoopback.AutoSize = true;
+            checkBoxIgnoreLoopback.Location = new System.Drawing.Point(4, 53);
+            checkBoxIgnoreLoopback.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBoxIgnoreLoopback.Name = "checkBoxIgnoreLoopback";
+            checkBoxIgnoreLoopback.Size = new System.Drawing.Size(115, 19);
+            checkBoxIgnoreLoopback.TabIndex = 11;
+            checkBoxIgnoreLoopback.Text = "Ignore Loopback";
+            checkBoxIgnoreLoopback.UseVisualStyleBackColor = true;
             // 
             // checkBoxHideDupes
             // 
-            this.checkBoxHideDupes.AutoSize = true;
-            this.checkBoxHideDupes.Checked = true;
-            this.checkBoxHideDupes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHideDupes.Location = new System.Drawing.Point(4, 78);
-            this.checkBoxHideDupes.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxHideDupes.Name = "checkBoxHideDupes";
-            this.checkBoxHideDupes.Size = new System.Drawing.Size(187, 19);
-            this.checkBoxHideDupes.TabIndex = 9;
-            this.checkBoxHideDupes.Text = "Ignore Duplicated ProcessData";
-            this.checkBoxHideDupes.UseVisualStyleBackColor = true;
+            checkBoxHideDupes.AutoSize = true;
+            checkBoxHideDupes.Checked = true;
+            checkBoxHideDupes.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBoxHideDupes.Location = new System.Drawing.Point(4, 78);
+            checkBoxHideDupes.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            checkBoxHideDupes.Name = "checkBoxHideDupes";
+            checkBoxHideDupes.Size = new System.Drawing.Size(187, 19);
+            checkBoxHideDupes.TabIndex = 9;
+            checkBoxHideDupes.Text = "Ignore Duplicated ProcessData";
+            checkBoxHideDupes.UseVisualStyleBackColor = true;
             // 
             // textBoxIgnoreComid
             // 
-            this.textBoxIgnoreComid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreComid.Location = new System.Drawing.Point(0, 157);
-            this.textBoxIgnoreComid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxIgnoreComid.Name = "textBoxIgnoreComid";
-            this.textBoxIgnoreComid.ShortcutsEnabled = false;
-            this.textBoxIgnoreComid.Size = new System.Drawing.Size(436, 23);
-            this.textBoxIgnoreComid.TabIndex = 12;
-            this.textBoxIgnoreComid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxIgnoreComid_KeyDown);
-            this.textBoxIgnoreComid.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxIgnoreComid_KeyPress);
-            this.textBoxIgnoreComid.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxIgnoreComid_Validating);
+            textBoxIgnoreComid.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxIgnoreComid.Location = new System.Drawing.Point(0, 157);
+            textBoxIgnoreComid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBoxIgnoreComid.Name = "textBoxIgnoreComid";
+            textBoxIgnoreComid.ShortcutsEnabled = false;
+            textBoxIgnoreComid.Size = new System.Drawing.Size(436, 23);
+            textBoxIgnoreComid.TabIndex = 12;
+            textBoxIgnoreComid.KeyDown += textBoxIgnoreComid_KeyDown;
+            textBoxIgnoreComid.KeyPress += textBoxIgnoreComid_KeyPress;
+            textBoxIgnoreComid.Validating += textBoxIgnoreComid_Validating;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 138);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(195, 15);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Ignore Comid (separate by comma)";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(4, 138);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(195, 15);
+            label1.TabIndex = 13;
+            label1.Text = "Ignore Comid (separate by comma)";
             // 
             // textBoxIgnoreVars
             // 
-            this.textBoxIgnoreVars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxIgnoreVars.Location = new System.Drawing.Point(0, 202);
-            this.textBoxIgnoreVars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxIgnoreVars.Multiline = true;
-            this.textBoxIgnoreVars.Name = "textBoxIgnoreVars";
-            this.textBoxIgnoreVars.Size = new System.Drawing.Size(457, 169);
-            this.textBoxIgnoreVars.TabIndex = 17;
-            this.textBoxIgnoreVars.Text = "MMI_M_PACKET\r\nMMI_L_PACKET";
-            this.textBoxIgnoreVars.TypingFinished += new System.EventHandler(this.textBoxIgnoreVars_TypingFinished);
+            textBoxIgnoreVars.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxIgnoreVars.Location = new System.Drawing.Point(0, 202);
+            textBoxIgnoreVars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            textBoxIgnoreVars.Multiline = true;
+            textBoxIgnoreVars.Name = "textBoxIgnoreVars";
+            textBoxIgnoreVars.Size = new System.Drawing.Size(457, 169);
+            textBoxIgnoreVars.TabIndex = 17;
+            textBoxIgnoreVars.Text = "MMI_M_PACKET\r\nMMI_L_PACKET";
+            textBoxIgnoreVars.TypingFinished += textBoxIgnoreVars_TypingFinished;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.captureToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.windowToolStripMenuItem,
-            this.reportAnIssueToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1672, 24);
-            this.menuStrip1.TabIndex = 15;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, captureToolStripMenuItem, toolStripMenuItem1, windowToolStripMenuItem, reportAnIssueToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            menuStrip1.Size = new System.Drawing.Size(1672, 24);
+            menuStrip1.TabIndex = 15;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openFilesToolStripMenuItem,
-            this.openFolderToolStripMenuItem,
-            this.saveAllToolStripMenuItem,
-            this.saveCurrentFilterToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.quitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openFilesToolStripMenuItem, openFolderToolStripMenuItem, saveAllToolStripMenuItem, saveCurrentFilterToolStripMenuItem, toolStripSeparator2, quitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
             // 
             // openFilesToolStripMenuItem
             // 
-            this.openFilesToolStripMenuItem.Name = "openFilesToolStripMenuItem";
-            this.openFilesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.openFilesToolStripMenuItem.Text = "Open Files";
-            this.openFilesToolStripMenuItem.Click += new System.EventHandler(this.openFilesToolStripMenuItem_Click);
+            openFilesToolStripMenuItem.Name = "openFilesToolStripMenuItem";
+            openFilesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            openFilesToolStripMenuItem.Text = "Open Files";
+            openFilesToolStripMenuItem.Click += openFilesToolStripMenuItem_Click;
             // 
             // openFolderToolStripMenuItem
             // 
-            this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.openFolderToolStripMenuItem.Text = "Open Folder";
-            this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
+            openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
+            openFolderToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            openFolderToolStripMenuItem.Text = "Open Folder";
+            openFolderToolStripMenuItem.Click += openFolderToolStripMenuItem_Click;
             // 
             // saveAllToolStripMenuItem
             // 
-            this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.saveAllToolStripMenuItem.Text = "Save All";
-            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.buttonSaveAll_Click);
+            saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
+            saveAllToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            saveAllToolStripMenuItem.Text = "Save All";
+            saveAllToolStripMenuItem.Click += buttonSaveAll_Click;
             // 
             // saveCurrentFilterToolStripMenuItem
             // 
-            this.saveCurrentFilterToolStripMenuItem.Name = "saveCurrentFilterToolStripMenuItem";
-            this.saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.saveCurrentFilterToolStripMenuItem.Text = "Save Current Filter";
-            this.saveCurrentFilterToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentFilterToolStripMenuItem_Click);
+            saveCurrentFilterToolStripMenuItem.Name = "saveCurrentFilterToolStripMenuItem";
+            saveCurrentFilterToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            saveCurrentFilterToolStripMenuItem.Text = "Save Current Filter";
+            saveCurrentFilterToolStripMenuItem.Click += saveCurrentFilterToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(167, 6);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(167, 6);
             // 
             // quitToolStripMenuItem
             // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            quitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            quitToolStripMenuItem.Text = "Quit";
+            quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
             // toolsToolStripMenuItem
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.simulateTrafficToolStripMenuItem,
-            this.exportSVGSequenceDiagramToolStripMenuItem,
-            this.exportXLSXToolStripMenuItem,
-            this.exportCSVToolStripMenuItem,
-            this.remoteCaptureToolStripMenuItem,
-            this.testToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { simulateTrafficToolStripMenuItem, exportSVGSequenceDiagramToolStripMenuItem, exportXLSXToolStripMenuItem, exportCSVToolStripMenuItem, remoteCaptureToolStripMenuItem, testToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            toolsToolStripMenuItem.Text = "Tools";
             // 
             // simulateTrafficToolStripMenuItem
             // 
-            this.simulateTrafficToolStripMenuItem.Name = "simulateTrafficToolStripMenuItem";
-            this.simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
-            this.simulateTrafficToolStripMenuItem.Click += new System.EventHandler(this.simulateTrafficToolStripMenuItem_Click);
+            simulateTrafficToolStripMenuItem.Name = "simulateTrafficToolStripMenuItem";
+            simulateTrafficToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            simulateTrafficToolStripMenuItem.Text = "Simulate Traffic";
+            simulateTrafficToolStripMenuItem.Click += simulateTrafficToolStripMenuItem_Click;
             // 
             // exportSVGSequenceDiagramToolStripMenuItem
             // 
-            this.exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
-            this.exportSVGSequenceDiagramToolStripMenuItem.Click += new System.EventHandler(this.exportSVGSequenceDiagramToolStripMenuItem_Click);
+            exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
+            exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";
+            exportSVGSequenceDiagramToolStripMenuItem.Click += exportSVGSequenceDiagramToolStripMenuItem_Click;
             // 
             // exportXLSXToolStripMenuItem
             // 
-            this.exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
-            this.exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.exportXLSXToolStripMenuItem.Text = "Export XLSX";
-            this.exportXLSXToolStripMenuItem.Click += new System.EventHandler(this.exportXLSXToolStripMenuItem_Click);
+            exportXLSXToolStripMenuItem.Name = "exportXLSXToolStripMenuItem";
+            exportXLSXToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            exportXLSXToolStripMenuItem.Text = "Export XLSX";
+            exportXLSXToolStripMenuItem.Click += exportXLSXToolStripMenuItem_Click;
             // 
             // exportCSVToolStripMenuItem
             // 
-            this.exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
-            this.exportCSVToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.exportCSVToolStripMenuItem.Text = "Export CSV";
+            exportCSVToolStripMenuItem.Name = "exportCSVToolStripMenuItem";
+            exportCSVToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            exportCSVToolStripMenuItem.Text = "Export CSV";
             // 
             // remoteCaptureToolStripMenuItem
             // 
-            this.remoteCaptureToolStripMenuItem.Name = "remoteCaptureToolStripMenuItem";
-            this.remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.remoteCaptureToolStripMenuItem.Text = "Remote Capture";
-            this.remoteCaptureToolStripMenuItem.Click += new System.EventHandler(this.RemoteCaptureToolStripMenuItem_Click);
+            remoteCaptureToolStripMenuItem.Name = "remoteCaptureToolStripMenuItem";
+            remoteCaptureToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            remoteCaptureToolStripMenuItem.Text = "Remote Capture";
+            remoteCaptureToolStripMenuItem.Click += RemoteCaptureToolStripMenuItem_Click;
             // 
             // testToolStripMenuItem
             // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            testToolStripMenuItem.Name = "testToolStripMenuItem";
+            testToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            testToolStripMenuItem.Text = "Test";
+            testToolStripMenuItem.Click += testToolStripMenuItem_Click;
             // 
             // captureToolStripMenuItem
             // 
-            this.captureToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem,
-            this.stopToolStripMenuItem,
-            this.restartToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.clearToolStripMenuItem1});
-            this.captureToolStripMenuItem.Name = "captureToolStripMenuItem";
-            this.captureToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.captureToolStripMenuItem.Text = "Capture";
+            captureToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { startToolStripMenuItem, stopToolStripMenuItem, restartToolStripMenuItem, toolStripSeparator1, clearToolStripMenuItem1 });
+            captureToolStripMenuItem.Name = "captureToolStripMenuItem";
+            captureToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            captureToolStripMenuItem.Text = "Capture";
             // 
             // startToolStripMenuItem
             // 
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.startToolStripMenuItem.Text = "Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.buttonStart_Click);
+            startToolStripMenuItem.Name = "startToolStripMenuItem";
+            startToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            startToolStripMenuItem.Text = "Start";
+            startToolStripMenuItem.Click += buttonStart_Click;
             // 
             // stopToolStripMenuItem
             // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.stopToolStripMenuItem.Text = "Stop";
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.buttonStop_Click);
+            stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            stopToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            stopToolStripMenuItem.Text = "Stop";
+            stopToolStripMenuItem.Click += buttonStop_Click;
             // 
             // restartToolStripMenuItem
             // 
-            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this.restartToolStripMenuItem.Text = "Restart";
-            this.restartToolStripMenuItem.Click += new System.EventHandler(this.buttonRestart_Click);
+            restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            restartToolStripMenuItem.Text = "Restart";
+            restartToolStripMenuItem.Click += buttonRestart_Click;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
             // 
             // clearToolStripMenuItem1
             // 
-            this.clearToolStripMenuItem1.Name = "clearToolStripMenuItem1";
-            this.clearToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
-            this.clearToolStripMenuItem1.Text = "Clear";
-            this.clearToolStripMenuItem1.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            clearToolStripMenuItem1.Name = "clearToolStripMenuItem1";
+            clearToolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
+            clearToolStripMenuItem1.Text = "Clear";
+            clearToolStripMenuItem1.Click += clearToolStripMenuItem_Click;
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.eVA2XMLExportToolStripMenuItem,
-            this.bDSToolStripMenuItem});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
-            this.toolStripMenuItem1.Text = "Import";
+            toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { eVA2XMLExportToolStripMenuItem, bDSToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
+            toolStripMenuItem1.Text = "Import";
             // 
             // eVA2XMLExportToolStripMenuItem
             // 
-            this.eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            this.eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
-            this.eVA2XMLExportToolStripMenuItem.Click += new System.EventHandler(this.eVA2XMLExportToolStripMenuItem_Click);
+            eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
+            eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
+            eVA2XMLExportToolStripMenuItem.Click += eVA2XMLExportToolStripMenuItem_Click;
             // 
             // bDSToolStripMenuItem
             // 
-            this.bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            this.bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.bDSToolStripMenuItem.Text = "BDS";
-            this.bDSToolStripMenuItem.Click += new System.EventHandler(this.bDSToolStripMenuItem_Click);
+            bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
+            bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            bDSToolStripMenuItem.Text = "BDS";
+            bDSToolStripMenuItem.Click += bDSToolStripMenuItem_Click;
             // 
             // windowToolStripMenuItem
             // 
-            this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.alwaysOnTopToolStripMenuItem});
-            this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
-            this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.windowToolStripMenuItem.Text = "Window";
+            windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { alwaysOnTopToolStripMenuItem });
+            windowToolStripMenuItem.Name = "windowToolStripMenuItem";
+            windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            windowToolStripMenuItem.Text = "Window";
             // 
             // alwaysOnTopToolStripMenuItem
             // 
-            this.alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
-            this.alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.alwaysOnTopToolStripMenuItem.Text = "Always on top";
-            this.alwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.alwaysOnTopToolStripMenuItem_Click);
+            alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
+            alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            alwaysOnTopToolStripMenuItem.Text = "Always on top";
+            alwaysOnTopToolStripMenuItem.Click += alwaysOnTopToolStripMenuItem_Click;
             // 
             // reportAnIssueToolStripMenuItem
             // 
-            this.reportAnIssueToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.reportAnIssueToolStripMenuItem.Name = "reportAnIssueToolStripMenuItem";
-            this.reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
-            this.reportAnIssueToolStripMenuItem.Text = "Report An Issue";
-            this.reportAnIssueToolStripMenuItem.Click += new System.EventHandler(this.reportAnIssueToolStripMenuItem_Click);
+            reportAnIssueToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(255, 128, 0);
+            reportAnIssueToolStripMenuItem.Name = "reportAnIssueToolStripMenuItem";
+            reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            reportAnIssueToolStripMenuItem.Text = "Report An Issue";
+            reportAnIssueToolStripMenuItem.Click += reportAnIssueToolStripMenuItem_Click;
             // 
             // openCapturesDialog
             // 
-            this.openCapturesDialog.FileName = "openFileDialog1";
-            this.openCapturesDialog.Multiselect = true;
+            openCapturesDialog.FileName = "openFileDialog1";
+            openCapturesDialog.Multiselect = true;
             // 
             // errorProvider1
             // 
-            this.errorProvider1.ContainerControl = this;
+            errorProvider1.ContainerControl = this;
+            // 
+            // toolStripStatusLabelSeparator1
+            // 
+            toolStripStatusLabelSeparator1.Name = "toolStripStatusLabelSeparator1";
+            toolStripStatusLabelSeparator1.Size = new System.Drawing.Size(10, 17);
+            toolStripStatusLabelSeparator1.Text = "|";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1672, 689);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.DoubleBuffered = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.KeyPreview = true;
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "MainForm";
-            this.Text = "IPTComShark";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1672, 689);
+            Controls.Add(splitContainer1);
+            Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
+            DoubleBuffered = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
+            MainMenuStrip = menuStrip1;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "MainForm";
+            Text = "IPTComShark";
+            FormClosing += Form1_FormClosing;
+            Load += MainForm_Load;
+            KeyUp += MainForm_KeyUp;
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -682,6 +677,9 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonOpenLog;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonCopyLog;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSeparator1;
     }
 }
 
