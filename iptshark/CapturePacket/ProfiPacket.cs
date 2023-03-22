@@ -9,7 +9,7 @@ namespace IPTComShark
     internal class ProfiPacket : PacketDotNet.Packet, iPacket, iTraveller
     {
         public ProfiPacket(byte[] data)
-        {            
+        {
             ProtocolInfo = "profibuz"; // will be overwritten
             this.Header = new ByteArraySegment(data, 0, 7);
 
@@ -26,11 +26,11 @@ namespace IPTComShark
                 {
                     // fark!
                 }
-                if(length < 4)
+                if (length < 4)
                 {
                     // fark!
                 }
-                if(0x68 != data[pos++])
+                if (0x68 != data[pos++])
                 {
                     // fark!
                 }
@@ -47,11 +47,11 @@ namespace IPTComShark
                 this.Destination = new byte[4];
                 this.Source[0] = SAaddress;
                 this.Destination[0] = DAaddress;
-                
+
 
                 var FC = new BitSet(data[pos++]);
                 var fcRes = FC[0].Value;
-                if(fcRes != false)
+                if (fcRes != false)
                 {
                     // fark!
                 }
@@ -65,12 +65,12 @@ namespace IPTComShark
 
                 // temp check to make sure functions align
                 var temp = Functions.FieldGetter(data, 6 * 8 + 5, 4);
-                if(temp != fcFunc)
+                if (temp != fcFunc)
                 {
                     throw new Exception("Code breakdown!");
                 }
 
-                
+
                 if (fcFrameType)
                 {
                     var functionCode = "UNKNOWN";
@@ -96,7 +96,7 @@ namespace IPTComShark
                             break;
                         case 6:
                             functionCode = "send data no ack high";
-                            break;                        
+                            break;
                         case 9:
                             functionCode = "Request FDL status with reply";
                             break;
@@ -120,13 +120,13 @@ namespace IPTComShark
                 {
                     DisplayFields.Add(new DisplayField("type", "ack"));
                     ProtocolInfo = "Ack=" + fcFunc;
-                    
+
                 }
-                
+
 
                 // to keep track of how much of the data length the extension octets occupy
                 var extensionLength = 0;
-                if(DAextension)
+                if (DAextension)
                 {
                     var ext1 = new BitSet(data[pos++]);
                     extensionLength++;
@@ -163,13 +163,13 @@ namespace IPTComShark
                     }
                 }
 
-                
+
 
                 // advertised length, minus DA,SA and FC octets, and whatever extension addresses were read
                 var remain = length - 3 - extensionLength;
                 var datablock = new byte[remain];
 
-                for(int i = 0; i < remain; i++)
+                for (int i = 0; i < remain; i++)
                 {
                     datablock[i] = data[pos++];
                 }
@@ -177,7 +177,7 @@ namespace IPTComShark
                 //DisplayFields.Add(new DisplayField("data", BitConverter.ToString(datablock)));
 
                 this.PayloadData = datablock;
-                
+
 
                 if (length - pos == -4)
                 {
@@ -189,15 +189,15 @@ namespace IPTComShark
 
 
 
-            
-
-            
 
 
 
-            
+
+
+
+
         }
-                
+
 
         public string Name { get; set; }
 

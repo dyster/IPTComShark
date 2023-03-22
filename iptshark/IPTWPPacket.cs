@@ -44,7 +44,7 @@ namespace IPTComShark
             {0x4D41, IPTTypes.MA},
             {0x4D61, IPTTypes.Ma},
             {0x4D52, IPTTypes.MR}
-        };                       
+        };
 
         public uint IPTWPSize { get; set; }
         //public byte[] IPTWPPayload { get; set; }
@@ -78,14 +78,14 @@ namespace IPTComShark
 
             var header = ExtractHeader(payload);
 
-            ushort datasetlength = (ushort) header["DatasetLength"];
+            ushort datasetlength = (ushort)header["DatasetLength"];
 
 
             // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
-            int totalsize = ((ushort) header["HeaderLength"]) + 4 + datasetlength;
+            int totalsize = ((ushort)header["HeaderLength"]) + 4 + datasetlength;
 
             // calculate the number of datasets and add the number of framechecks we should have
-            int datasets = (int) Math.Floor((double) (datasetlength / 256)) + 1;
+            int datasets = (int)Math.Floor((double)(datasetlength / 256)) + 1;
             totalsize += datasets * 4;
 
             // calculate if there should be padding
@@ -97,12 +97,12 @@ namespace IPTComShark
 
             if (totalsize != payload.Length)
                 return null;
-            if (!MessageTypes.ContainsKey((ushort) header["Type"]))
+            if (!MessageTypes.ContainsKey((ushort)header["Type"]))
                 return null;
 
             // we have valid IPTCom!
-                        
-            iptPacket.IPTWPSize = datasetlength;            
+
+            iptPacket.IPTWPSize = datasetlength;
 
             return iptPacket;
         }
@@ -110,7 +110,7 @@ namespace IPTComShark
         public static uint GetComid(byte[] payload)
         {
             return BitConverter.ToUInt32(
-                new[] {payload[15], payload[14], payload[13], payload[12]}, 0);
+                new[] { payload[15], payload[14], payload[13], payload[12] }, 0);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace IPTComShark
         /// <returns></returns>
         public static UInt16 GetType(byte[] payload)
         {
-            return BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+            return BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
         }
 
         /// <summary>
@@ -130,28 +130,28 @@ namespace IPTComShark
         /// <returns></returns>
         public static IPTTypes GetIptType(byte[] payload)
         {
-            var type = BitConverter.ToUInt16(new[] {payload[17], payload[16]}, 0);
+            var type = BitConverter.ToUInt16(new[] { payload[17], payload[16] }, 0);
             return MessageTypes[type];
         }
 
         public static ushort GetDatasetLength(byte[] payload)
         {
-            return BitConverter.ToUInt16(new[] {payload[19], payload[18]}, 0);
+            return BitConverter.ToUInt16(new[] { payload[19], payload[18] }, 0);
         }
 
         public static ushort GetHeaderLength(byte[] payload)
         {
-            return BitConverter.ToUInt16(new[] {payload[23], payload[22]}, 0);
+            return BitConverter.ToUInt16(new[] { payload[23], payload[22] }, 0);
         }
 
         public static Dictionary<string, object> ExtractHeader(byte[] payload)
         {
             var dic = new Dictionary<string, object>();
-            dic.Add("TimeStamp", BitConverter.ToUInt32(new[] {payload[3], payload[2], payload[1], payload[0]},
+            dic.Add("TimeStamp", BitConverter.ToUInt32(new[] { payload[3], payload[2], payload[1], payload[0] },
                 0));
-            dic.Add("ProtocolVersion", BitConverter.ToUInt32(new[] {payload[7], payload[6], payload[5], payload[4]},
+            dic.Add("ProtocolVersion", BitConverter.ToUInt32(new[] { payload[7], payload[6], payload[5], payload[4] },
                 0));
-            dic.Add("TopoCount", BitConverter.ToUInt32(new[] {payload[11], payload[10], payload[9], payload[8]},
+            dic.Add("TopoCount", BitConverter.ToUInt32(new[] { payload[11], payload[10], payload[9], payload[8] },
                 0));
             dic.Add("ComID", GetComid(payload));
             var type = GetType(payload);
@@ -160,7 +160,7 @@ namespace IPTComShark
 
             if (type != 0x5044)
             {
-                dic.Add("UserStatus", BitConverter.ToUInt16(new[] {payload[21], payload[20]},
+                dic.Add("UserStatus", BitConverter.ToUInt16(new[] { payload[21], payload[20] },
                     0));
             }
 
@@ -172,20 +172,20 @@ namespace IPTComShark
             {
                 dic.Add("SrcURILen", payload[24]);
                 dic.Add("DestURILen", payload[25]);
-                dic.Add("Index", BitConverter.ToInt16(new[] {payload[27], payload[26]}, 0));
-                dic.Add("SequenceNumber", BitConverter.ToUInt16(new[] {payload[29], payload[28]},
+                dic.Add("Index", BitConverter.ToInt16(new[] { payload[27], payload[26] }, 0));
+                dic.Add("SequenceNumber", BitConverter.ToUInt16(new[] { payload[29], payload[28] },
                     0));
-                dic.Add("MSGLength", BitConverter.ToUInt16(new[] {payload[31], payload[30]},
+                dic.Add("MSGLength", BitConverter.ToUInt16(new[] { payload[31], payload[30] },
                     0));
                 dic.Add("SessionId", BitConverter.ToUInt32(
-                    new[] {payload[35], payload[34], payload[33], payload[32]}, 0));
+                    new[] { payload[35], payload[34], payload[33], payload[32] }, 0));
 
                 int pos = 36;
                 dic.Add("SourceURI", "");
                 for (int i = 0; i < Convert.ToUInt16(dic["SrcURILen"]) * 4; i++)
                 {
                     if (payload[pos] != 0)
-                        dic["SourceURI"] += Encoding.ASCII.GetString(new[] {payload[pos]});
+                        dic["SourceURI"] += Encoding.ASCII.GetString(new[] { payload[pos] });
                     pos++;
                 }
 
@@ -193,22 +193,22 @@ namespace IPTComShark
                 for (int i = 0; i < Convert.ToUInt16(dic["DestURILen"]) * 4; i++)
                 {
                     if (payload[pos] != 0)
-                        dic["DestinationURI"] += Encoding.ASCII.GetString(new[] {payload[pos]});
+                        dic["DestinationURI"] += Encoding.ASCII.GetString(new[] { payload[pos] });
                     pos++;
                 }
 
                 dic.Add("ResponseTimeout", BitConverter.ToUInt32(
-                    new[] {payload[pos + 3], payload[pos + 2], payload[pos + 1], payload[pos]}, 0));
+                    new[] { payload[pos + 3], payload[pos + 2], payload[pos + 1], payload[pos] }, 0));
                 pos += 4;
 
-                var ip = new IPAddress(new[] {payload[pos], payload[pos + 1], payload[pos + 2], payload[pos + 3]});
+                var ip = new IPAddress(new[] { payload[pos], payload[pos + 1], payload[pos + 2], payload[pos + 3] });
                 pos += 4;
 
                 dic.Add("DestIPaddress", ip.ToString());
             }
 
             dic.Add("FrameCheckSequence", BitConverter.ToUInt32(
-                new[] {payload[headLen + 3], payload[headLen + 2], payload[headLen + 1], payload[headLen]}, 0));
+                new[] { payload[headLen + 3], payload[headLen + 2], payload[headLen + 1], payload[headLen] }, 0));
 
 
             return dic;

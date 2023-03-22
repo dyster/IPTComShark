@@ -62,7 +62,7 @@ namespace IPTComShark.Windows
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                var data = (string[]) e.Data.GetData(DataFormats.FileDrop);
+                var data = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 var filterPaths = FilterPaths(data);
 

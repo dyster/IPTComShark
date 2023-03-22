@@ -9,7 +9,7 @@ namespace IPTComShark.Controls
     {
         private uint _min = default;
         private uint _max = default;
-        private Dictionary<uint,uint> _list = new Dictionary<uint, uint>();
+        private Dictionary<uint, uint> _list = new Dictionary<uint, uint>();
         private DateTime _epoch = new DateTime(2000, 1, 1);
         public HeatBar()
         {
@@ -21,8 +21,8 @@ namespace IPTComShark.Controls
             formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, 200, 300));
             myBrush.Dispose();
             formGraphics.Dispose();
-            
-            
+
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -49,7 +49,7 @@ namespace IPTComShark.Controls
 
 
         }
-        
+
         private uint DateToEpoch(DateTime dateTime)
         {
             TimeSpan timeSpan = dateTime - _epoch;
@@ -71,21 +71,21 @@ namespace IPTComShark.Controls
 
             }
 
-            
 
-            if(_max == default)
+
+            if (_max == default)
             {
                 _min = time;
                 _max = time;
                 return;
             }
 
-            if(time < _min)
+            if (time < _min)
             {
                 _min = time;
                 ReBar();
-            } 
-            else if(time > _max)
+            }
+            else if (time > _max)
             {
                 _max = time;
                 ReBar();
@@ -98,7 +98,7 @@ namespace IPTComShark.Controls
 
         private void HeatBar_Load(object sender, EventArgs e)
         {
-            
+
         }
     }
 

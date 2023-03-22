@@ -18,7 +18,7 @@ namespace IPTComShark.Controls
                                     TextFormatFlags.EndEllipsis |
                                     TextFormatFlags.PreserveGraphicsTranslateTransform |
                                     CellVerticalAlignmentAsTextFormatFlag;
-                        
+
             if (RowObject is not CapturePacket cpac)
             {
                 return;
@@ -35,7 +35,7 @@ namespace IPTComShark.Controls
             var foregroundColor = GetForegroundColor();
             //var brush = new SolidBrush(foregroundColor);
 
-            foreach(var field in cpac.DisplayFields.Where(df => df.Display))
+            foreach (var field in cpac.DisplayFields.Where(df => df.Display))
             {
                 string text = field.Name + ": ";
 
@@ -57,7 +57,7 @@ namespace IPTComShark.Controls
 
                 r = new Rectangle(r.Right, r.Y, width, r.Height);
                 TextRenderer.DrawText(g, text, font2, r, foregroundColor, backColor, flags);
-            }            
+            }
         }
     }
 }

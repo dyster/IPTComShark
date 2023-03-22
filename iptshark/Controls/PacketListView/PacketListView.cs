@@ -1,5 +1,6 @@
 ﻿using BrightIdeasSoftware;
-
+using IPTComShark.Export;
+using IPTComShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,8 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using IPTComShark.Export;
-using IPTComShark.Parsers;
 
 namespace IPTComShark.Controls
 {
@@ -281,7 +280,7 @@ namespace IPTComShark.Controls
 
         private void FastObjectListView1_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            if(_loaded)
+            if (_loaded)
                 SaveColumns();
         }
 
@@ -324,14 +323,14 @@ namespace IPTComShark.Controls
             if (!string.IsNullOrEmpty(Settings.IgnoreComid))
             {
                 List<string> strings = Settings.IgnoreComid.Split(',').ToList();
-                
+
                 foreach (string s in strings.Distinct())
                 {
-                    if(uint.TryParse(s.Trim(), out uint u))
+                    if (uint.TryParse(s.Trim(), out uint u))
                     {
                         ignoreComids.Add(u);
-                    }                    
-                }                
+                    }
+                }
             }
 
             Regex searchRegex = null;
@@ -343,7 +342,7 @@ namespace IPTComShark.Controls
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
-                                
+
 
                 if (Settings.IgnoreLoopback && capturePacket.Source != null && capturePacket.Destination != null &&
                     Equals(new IPAddress(capturePacket.Source), localhost) &&
@@ -360,11 +359,11 @@ namespace IPTComShark.Controls
                         return false;
                 }
 
-                foreach(var comid in ignoreComids)
+                foreach (var comid in ignoreComids)
                 {
                     if (capturePacket.Comid == comid)
                         return false;
-                }                        
+                }
 
                 if (Settings.IgnoreDuplicatedPD)
                 {
@@ -388,7 +387,7 @@ namespace IPTComShark.Controls
                 }
 
                 if (searchRegex != null)
-                {                    
+                {
                     if (capturePacket.Name != null && searchRegex.IsMatch(capturePacket.Name))
                         return true;
                     if (capturePacket.DisplayFields.Exists(t => searchRegex.IsMatch(t.Name)))
@@ -400,7 +399,7 @@ namespace IPTComShark.Controls
                 }
 
                 return true;
-            });            
+            });
         }
 
         public PacketListSettings Settings
@@ -427,7 +426,7 @@ namespace IPTComShark.Controls
         }
 
         private void _settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {            
+        {
             UpdateFilter();
         }
 
@@ -591,12 +590,12 @@ namespace IPTComShark.Controls
 
             if (!string.IsNullOrEmpty(Settings.IgnoreComid))
             {
-                strings.AddRange(Settings.IgnoreComid.Split(','));                
+                strings.AddRange(Settings.IgnoreComid.Split(','));
             }
 
             foreach (CapturePacket o in fastObjectListView1.SelectedObjects)
             {
-                strings.Add(o.Comid.ToString());                
+                strings.Add(o.Comid.ToString());
             }
 
             foreach (string s in strings.Distinct())
@@ -623,7 +622,7 @@ namespace IPTComShark.Controls
 
         private void timerFlicker_Tick(object sender, EventArgs e)
         {
-            if(BackStore != null)
+            if (BackStore != null)
             {
                 var backStoreStatus = BackStore.Status;
                 if (backStoreStatus != _lastBackStoreStatus)
@@ -669,7 +668,7 @@ namespace IPTComShark.Controls
         public ClusterGetterDelegate ClusterGetter { get; set; }
 
         public delegate List<ICluster> ClusterGetterDelegate(IEnumerable<CapturePacket> packets);
-    }    
+    }
 
     public class ColumnInfo
     {

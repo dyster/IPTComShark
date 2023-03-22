@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SharpPcap.LibPcap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using SharpPcap.LibPcap;
 
 namespace IPTComShark
 {
@@ -18,7 +18,7 @@ namespace IPTComShark
         public InterfacePicker(List<PcapDevice> captureDevices)
         {
             InitializeComponent();
-            _captureDevices = captureDevices.Select(d => new NetworkCard(d)).ToList();                        
+            _captureDevices = captureDevices.Select(d => new NetworkCard(d)).ToList();
         }
 
         public bool PressedYes { get; set; }

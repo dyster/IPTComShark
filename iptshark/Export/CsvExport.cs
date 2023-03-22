@@ -109,12 +109,12 @@ namespace IPTComShark.Export
         public static string MakeValueCsvFriendly(object value, string columnSeparator = ",")
         {
             if (value == null) return "";
-            if (value is INullable && ((INullable) value).IsNull) return "";
+            if (value is INullable && ((INullable)value).IsNull) return "";
             if (value is DateTime)
             {
-                if (((DateTime) value).TimeOfDay.TotalSeconds == 0)
-                    return ((DateTime) value).ToString("yyyy-MM-dd");
-                return ((DateTime) value).ToString("yyyy-MM-dd HH:mm:ss");
+                if (((DateTime)value).TimeOfDay.TotalSeconds == 0)
+                    return ((DateTime)value).ToString("yyyy-MM-dd");
+                return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss");
             }
 
             string output = value.ToString().Trim();

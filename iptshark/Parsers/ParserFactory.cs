@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using BitDataParser;
+using System.Collections.Generic;
 using System.Linq;
-using BitDataParser;
 
 namespace IPTComShark.Parsers
 {
     public class ParserFactory
     {
         public List<IParser> Parsers { get; private set; } = new List<IParser>();
-        
+
         public void AddParser(IParser parser)
         {
             Parsers.Add(parser);
@@ -21,7 +21,7 @@ namespace IPTComShark.Parsers
                 return parser.Extract(data, iPacket);
             }
 
-            return new Parse {NoParserInstalled = true};
+            return new Parse { NoParserInstalled = true };
         }
     }
 

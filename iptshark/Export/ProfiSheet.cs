@@ -1,9 +1,9 @@
-﻿using IPTComShark.Parsers;
+﻿using IPTComShark.DataSets;
+using IPTComShark.Parsers;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using IPTComShark.DataSets;
 
 namespace IPTComShark.Export
 {
@@ -26,7 +26,7 @@ namespace IPTComShark.Export
 
             foreach (var col in profiRow.Items)
                 worksheet.Cells[1, colindex++].Value = col.Name;
-                     
+
 
             using (ExcelRange range = worksheet.Cells[1, 1, 1, colindex - 1])
             {
@@ -64,7 +64,7 @@ namespace IPTComShark.Export
                 };
             }
 
-            public List<ProfiCol> Items { get; set; } 
+            public List<ProfiCol> Items { get; set; }
         }
 
         private class ProfiCol
@@ -82,9 +82,9 @@ namespace IPTComShark.Export
         }
 
         public int Push(CapturePacket packet, Parse parse)
-        {        
-            
-            
+        {
+
+
             var addRows = new List<ProfiRow>();
 
             if (packet.Protocol == ProtocolType.UDP_SPL)
@@ -107,12 +107,12 @@ namespace IPTComShark.Export
 
                     if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
                     {
-                        
+
                         sndaddr = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value); // sndaddr
                         dsap = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value); // dsap
 
                         // SPL header means new profibus packet        
-                        ProfiRow profiRow = new ProfiRow();                       
+                        ProfiRow profiRow = new ProfiRow();
 
                         profiRow.Items[0].Value = packet.No;
                         profiRow.Items[1].Value = packet.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -124,10 +124,10 @@ namespace IPTComShark.Export
                         profiRow.Items[7].Value = parsedDataSet.ParsedFields[5].Value; // fdl mode
 
                         addRows.Add(profiRow);
-                        
-                        
-                        
-                        
+
+
+
+
 
 
 
@@ -148,13 +148,13 @@ namespace IPTComShark.Export
                         addRows.Last().Items[8].Value = parsedDataSet.ParsedFields[0].Value;
                         addRows.Last().Items[9].Value = parsedDataSet.ParsedFields[1].Value;
                         addRows.Last().Items[10].Value = parsedDataSet.ParsedFields[2].Value;
-                        
+
                     }
                     else if (parsedDataSet.Definition.Name == Subset57.SLLTimestamp.Name)
                     {
                         var refTime = Convert.ToUInt32(parsedDataSet.ParsedFields[0].Value);
                         addRows.Last().Items[11].Value = refTime;
-                        
+
                         if (firstDate == default)
                         {
                             firstDate = packet.Date;
@@ -164,7 +164,7 @@ namespace IPTComShark.Export
                         {
                             var dateDelta = (packet.Date - firstDate).TotalMilliseconds;
                             var refOffset = (refTime - firstRefTime);
-                            
+
                             addRows.Last().Items[18].Value = dateDelta - refOffset;
                         }
 
@@ -175,7 +175,7 @@ namespace IPTComShark.Export
                         {
                             var beforetime = idlereftimes[sndaddr, dsap];
                             var span = refTime - beforetime;
-                                                        
+
                             addRows.Last().Items[19].Value = span;
                         }
 
@@ -186,11 +186,11 @@ namespace IPTComShark.Export
                     else if (parsedDataSet.Definition.Name == Subset57.Cmd0ConnectRequest.Name)
                     {
                         if (parsedDataSet.ParsedFields.Count == 1)
-                        {                            
+                        {
                             addRows.Last().Items[12].Value = "PARSE ERROR";
                         }
                         else
-                        {                            
+                        {
                             addRows.Last().Items[12].Value = parsedDataSet.ParsedFields[0].Value;
                             addRows.Last().Items[13].Value = parsedDataSet.ParsedFields[1].Value;
                         }
@@ -218,15 +218,15 @@ namespace IPTComShark.Export
 
             }
             int news = 0;
-            foreach(var addrow in addRows)
+            foreach (var addrow in addRows)
             {
-                
+
 
 
 
                 rowindex++;
                 worksheet.Cells[rowindex, 2].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
-                for(int i = 0; i < addrow.Items.Count; i++)
+                for (int i = 0; i < addrow.Items.Count; i++)
                 {
                     worksheet.Cells[rowindex, i + 1].Value = addrow.Items[i].Value;
                 }

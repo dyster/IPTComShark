@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BitDataParser;
+using IPTComShark.DataSets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using IPTComShark.DataSets;
-using BitDataParser;
 
 namespace IPTComShark.Parsers
 {
@@ -16,24 +16,24 @@ namespace IPTComShark.Parsers
 
             pars.DisplayFields = new List<DisplayField>();
 
-            var refTime = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Integer")
+            var refTime = (UInt32)data.ParsedFields.First(f => f.Name == "Ref Timestamp Integer")
                 .Value;
-            var refFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Ref Timestamp Fraction")
-                .Value;
-
-            var OrgTime = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Integer")
-                .Value;
-            var OrgFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Origin Timestamp Fraction")
+            var refFrac = (UInt32)data.ParsedFields.First(f => f.Name == "Ref Timestamp Fraction")
                 .Value;
 
-            var RecTime = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Integer")
+            var OrgTime = (UInt32)data.ParsedFields.First(f => f.Name == "Origin Timestamp Integer")
                 .Value;
-            var RecFrac = (UInt32) data.ParsedFields.First(f => f.Name == "Receive Timestamp Fraction")
+            var OrgFrac = (UInt32)data.ParsedFields.First(f => f.Name == "Origin Timestamp Fraction")
                 .Value;
 
-            var transmitTime = (UInt32) data.ParsedFields
+            var RecTime = (UInt32)data.ParsedFields.First(f => f.Name == "Receive Timestamp Integer")
+                .Value;
+            var RecFrac = (UInt32)data.ParsedFields.First(f => f.Name == "Receive Timestamp Fraction")
+                .Value;
+
+            var transmitTime = (UInt32)data.ParsedFields
                 .First(f => f.Name == "Transmit Timestamp Integer").Value;
-            var transmitFrac = (UInt32) data.ParsedFields
+            var transmitFrac = (UInt32)data.ParsedFields
                 .First(f => f.Name == "Transmit Timestamp Fraction").Value;
 
             var list = new List<ParsedField>();
@@ -63,7 +63,7 @@ namespace IPTComShark.Parsers
                 pars.DisplayFields.Add(new DisplayField(parsedField.Name, parsedField.Value));
             }
 
-            pars.ParsedData = new List<ParsedDataSet> {data};
+            pars.ParsedData = new List<ParsedDataSet> { data };
 
             return pars;
         }
@@ -74,7 +74,7 @@ namespace IPTComShark.Parsers
         private static DateTime ParseNTPDate(uint integer, uint fraction)
         {
             var epoc = new DateTime(1900, 1, 1, 0, 0, 0);
-            var ms = (Int32) (((Double) fraction / UInt32.MaxValue) * 1000);
+            var ms = (Int32)(((Double)fraction / UInt32.MaxValue) * 1000);
             return epoc.AddSeconds(integer).AddMilliseconds(ms);
         }
     }

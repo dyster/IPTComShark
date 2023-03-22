@@ -8,7 +8,7 @@ namespace IPTComShark
         public ProtocolType Protocol { get; }
         public List<DisplayField> DisplayFields { get; set; }
         public string Name { get; set; }
-        
+
     }
 
     /// <summary>
@@ -19,5 +19,5 @@ namespace IPTComShark
         public byte[] Source { get; set; }
 
         public byte[] Destination { get; set; }
-    }    
+    }
 }

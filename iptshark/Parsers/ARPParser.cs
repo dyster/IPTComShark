@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BitDataParser;
 using PacketDotNet.Utils;
-using BitDataParser;
+using System.Collections.Generic;
 
 namespace IPTComShark.Parsers
 {
@@ -30,7 +30,7 @@ namespace IPTComShark.Parsers
             dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.SenderProtocolAddress), arp.SenderProtocolAddress));
             dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.TargetHardwareAddress), arp.TargetHardwareAddress));
             dataset.ParsedFields.Add(ParsedField.Create(nameof(arp.TargetProtocolAddress), arp.TargetProtocolAddress));
-            
+
             parse.ParsedData.Add(dataset);
 
             return parse;

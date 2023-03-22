@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BitDataParser;
+﻿using BitDataParser;
+using System.Collections.Generic;
 
 namespace IPTComShark.Parsers
 {

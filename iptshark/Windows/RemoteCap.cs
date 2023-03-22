@@ -1,10 +1,10 @@
-﻿using System;
+﻿using IPTComShark.Classes;
+using Renci.SshNet;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using IPTComShark.Classes;
-using Renci.SshNet;
 
 namespace IPTComShark.Windows
 {
@@ -90,7 +90,7 @@ namespace IPTComShark.Windows
                     }
                     else
                     {
-                        fileStream.WriteByte((byte) readByte);
+                        fileStream.WriteByte((byte)readByte);
                         _capturedData++;
                         wait = 0;
                     }
@@ -160,7 +160,7 @@ namespace IPTComShark.Windows
         {
             if (!string.IsNullOrEmpty(_lastFile) && !backgroundWorker1.IsBusy)
             {
-                _mainForm.OpenPath(new[] {_lastFile});
+                _mainForm.OpenPath(new[] { _lastFile });
             }
         }
     }

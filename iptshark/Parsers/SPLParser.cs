@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BitDataParser;
+using IPTComShark.DataSets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using IPTComShark.DataSets;
-using BitDataParser;
 using Functions = BitDataParser.Functions;
 
 namespace IPTComShark.Parsers
@@ -59,7 +59,7 @@ namespace IPTComShark.Parsers
                 var SAP = Convert.ToInt32(sapField.TrueValue);
 
                 // get the length of the frame and the data inside the frame
-                var frameLen = (ushort) spl.GetField("SPLFrameLen").Value;
+                var frameLen = (ushort)spl.GetField("SPLFrameLen").Value;
                 var splframeArray = Functions.SubArrayGetterX(payload, position, frameLen * 8);
                 // forward the position for the next iteration
                 position += frameLen * 8;
@@ -199,7 +199,7 @@ namespace IPTComShark.Parsers
 
 
             }
-                        
+
 
             // TODO add all the Safe link layer stuff
             if (trueCommand == 0x80 || trueCommand == 0x00 || trueCommand == 0xC0)

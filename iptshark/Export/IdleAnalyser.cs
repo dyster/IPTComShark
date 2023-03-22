@@ -1,13 +1,13 @@
-﻿using IPTComShark.Parsers;
+﻿using IPTComShark.DataSets;
+using IPTComShark.Parsers;
 using OfficeOpenXml;
+using OxyPlot;
+using OxyPlot.Legends;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OxyPlot;
-using OxyPlot.Series;
-using OxyPlot.Legends;
-using IPTComShark.DataSets;
 
 namespace IPTComShark.Export
 {
@@ -19,7 +19,7 @@ namespace IPTComShark.Export
 
         private MultiArray<ushort, ushort, List<double>> idleTimes = new MultiArray<ushort, ushort, List<double>>();
         private MultiArray<ushort, ushort, DateTime> lastReceivedMsg = new MultiArray<ushort, ushort, DateTime>();
-        
+
         private DateTime firstDate = default;
         private uint firstRefTime = 0;
 
@@ -27,7 +27,7 @@ namespace IPTComShark.Export
         {
             worksheet = ws;
 
-            
+
         }
 
         public PlotModel Finalize()
@@ -147,7 +147,7 @@ namespace IPTComShark.Export
             }
 
             return plotModel;
-            
+
         }
 
         public void Push(CapturePacket packet, Parse parse)
@@ -168,7 +168,7 @@ namespace IPTComShark.Export
             foreach (var parsedDataSet in parse.ParsedData)
             {
                 if (parsedDataSet.Definition == null)
-                {                    
+                {
                     continue;
                 }
 
@@ -181,7 +181,7 @@ namespace IPTComShark.Export
                     dsap = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value); // dsap
 
                     // SPL header means new profibus packet        
-                   
+
                     if (lastReceivedMsg.ContainsKey(sndaddr, dsap))
                     {
                         var beforetime = lastReceivedMsg[sndaddr, dsap];

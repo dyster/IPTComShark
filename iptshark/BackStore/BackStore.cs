@@ -1,13 +1,13 @@
-﻿using System;
+﻿using IPTComShark.Parsers;
+using PacketDotNet;
+using PacketDotNet.Utils;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using IPTComShark.Parsers;
-using PacketDotNet;
-using PacketDotNet.Utils;
 
 namespace IPTComShark.BackStore
 {
@@ -73,14 +73,14 @@ namespace IPTComShark.BackStore
             {
                 var raw = GetRaw(number);
                 return PacketWrapper.Parse(raw);
-                
+
             }
         }
 
         public Raw GetRaw(int number)
         {
             return _rawStore[number];
-        }       
+        }
 
         public byte[] GetPayload(int number)
         {
@@ -94,7 +94,7 @@ namespace IPTComShark.BackStore
                 return null;
 
             var actionpacket = PacketWrapper.GetActionPacket(topPacket);
-             
+
             byte[] payloadData = null;
 
             if (actionpacket is IPv4Packet ipv4)
@@ -234,12 +234,12 @@ namespace IPTComShark.BackStore
             parse = new Parse();
 
             Packet topPacket = PacketWrapper.Parse(raw);
-                       
+
 
             try
             {
                 // re-assemble fragments
-                if (topPacket.HasPayloadPacket && topPacket.PayloadPacket is IPv4Packet )
+                if (topPacket.HasPayloadPacket && topPacket.PayloadPacket is IPv4Packet)
                 {
                     var ipv4 = (IPv4Packet)topPacket.PayloadPacket;
 
@@ -329,7 +329,7 @@ namespace IPTComShark.BackStore
             if (extractParsedData.HasValue)
             {
                 parse = extractParsedData.Value;
-                
+
                 // add all available displayfields for now
                 if (parse.DisplayFields != null) capturePacket.DisplayFields.AddRange(parse.DisplayFields);
                 if (!string.IsNullOrEmpty(parse.Name))
@@ -389,12 +389,12 @@ namespace IPTComShark.BackStore
                 // what?
             }
 
-            if(!processingOnly)
+            if (!processingOnly)
             {
                 _rawStore.Add(capturePacket.No, raw);
                 _packetStore.Add(capturePacket.No, capturePacket);
             }
-            
+
             //_binaryFormatter.Serialize(fileStream, raw);
             //OnNewCapturePacket(capturePacket);
             return capturePacket;

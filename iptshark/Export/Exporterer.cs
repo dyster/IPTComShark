@@ -24,7 +24,7 @@ namespace IPTComShark.Export
             _backStore = backStore;
             _parserFactory = parserFactory;
             InitializeComponent();
-            
+
             radioButtonSelectAll.Text = $"All packets ({getAllPackets.Count:n0})";
             radioButtonSelectFilter.Text = $"Filtered packets ({getFilteredPackets.Count:n0})";
             radioButtonSelectSelected.Text = $"Selected packets ({getSelectedPackets.Count:n0})";
@@ -55,7 +55,7 @@ namespace IPTComShark.Export
             }
 
 
-                var saveFileDialog = new SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 AddExtension = true,
                 DefaultExt = "xlsx",
@@ -70,7 +70,7 @@ namespace IPTComShark.Export
             _worker = new BackgroundWorker();
             _worker.DoWork += (object sender, DoWorkEventArgs e) => { DOIT(saveFileDialog.FileName, sourceFiles); };
             _worker.RunWorkerCompleted += (object sender, RunWorkerCompletedEventArgs e) => { ExportFinished(); };
-            
+
             buttonOK.Enabled = false;
             progressBar1.Value = 0;
 
@@ -95,7 +95,7 @@ namespace IPTComShark.Export
 
         private void ProgressUpdate(int progress)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
                 this.Invoke(new ProgressDelegate(ProgressUpdate), progress);
             else
             {
@@ -110,7 +110,7 @@ namespace IPTComShark.Export
             ExportProfibus = checkBoxProfibus.Checked;
             ExportSAPIdleAnalysis = checkBoxSAPIdle.Checked;
 
-            
+
 
             if (radioButtonSelectAll.Checked)
                 Selection = _getAllPackets;
@@ -120,9 +120,9 @@ namespace IPTComShark.Export
                 Selection = _getSelectedPackets;
             else if (radioButtonSelectFile.Checked)
             {
-                
+
                 if (sourceFiles != null)
-                {                    
+                {
                     var opener = new FileManager.FileOpener(sourceFiles);
                     var dialogresult = opener.ShowDialog();
 
@@ -179,7 +179,7 @@ namespace IPTComShark.Export
         private void DoProgress(int i, int total)
         {
             var perc = i * 100 / total;
-            if(perc != lastProgress)
+            if (perc != lastProgress)
             {
                 ProgressUpdate(perc);
                 lastProgress = perc;

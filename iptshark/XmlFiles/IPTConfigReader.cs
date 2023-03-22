@@ -33,12 +33,12 @@ namespace IPTComShark.XmlFiles
                     foreach (cpuBusinterfacelist o in deserialize.Items.Where(i => i is cpuBusinterfacelist))
                         foreach (cpuBusinterfacelistBusinterface businterface in o.Businterface)
                         {
-                            foreach(var telegram in businterface.Telegram)
+                            foreach (var telegram in businterface.Telegram)
                             {
                                 if (!Telegrams.Contains(telegram))
                                     Telegrams.Add(telegram);
                             }
-                            
+
                         }
                     foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
                         Datasets.AddRange(cpuDatasetlist.Dataset);
@@ -78,7 +78,7 @@ namespace IPTComShark.XmlFiles
         }
 
         public DataSetCollection GetDataSetCollection()
-        {      
+        {
             var datasetholder = new List<Datasetholder>();
 
             foreach (Dataset dataset in Datasets)
@@ -101,24 +101,24 @@ namespace IPTComShark.XmlFiles
                 }
                 else
                     find.KnownIds.Add(dataset.Datasetid);
-                
+
             }
 
             foreach (var t in Telegrams)
             {
                 var comid = t.Comid.ToString();
-                                   
+
                 var datasetdef = datasetholder.Find(dsh => dsh.KnownIds.Contains(t.Datasetid)).ParsedSet;
 
                 //var name = Regex.Replace(t.Name, @"\d+$", "NN");
                 var name = t.Name;
-                if(Regex.IsMatch(name, @"^[io][A-Z]"))
+                if (Regex.IsMatch(name, @"^[io][A-Z]"))
                 {
                     name = Regex.Replace(name, @"^[io]", "");
                 }
 
                 if (string.IsNullOrEmpty(datasetdef.Name))
-                    datasetdef.Name = name;               
+                    datasetdef.Name = name;
                 else if (!datasetdef.Name.Contains(name))
                     datasetdef.Name += "," + name;
 
@@ -129,7 +129,7 @@ namespace IPTComShark.XmlFiles
             var outlist = datasetholder.Select(dsh => dsh.ParsedSet).ToList();
             var removed = outlist.RemoveAll(d => d.Identifiers.Count == 0);
 
-            return new DataSetCollection() { DataSets = outlist};
+            return new DataSetCollection() { DataSets = outlist };
         }
 
         private static List<BitField> ExtractDataset(Dataset set, List<Datasetholder> datasetholder)
@@ -158,7 +158,7 @@ namespace IPTComShark.XmlFiles
                         Length = arraysize * 16
                     });
                 }
-                else if(int.TryParse(processVariable.Type, out int result))
+                else if (int.TryParse(processVariable.Type, out int result))
                 {
                     // TODO this is initial add for supporting hierarchical datasets, needs more work
 

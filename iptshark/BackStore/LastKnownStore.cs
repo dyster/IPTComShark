@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using BitDataParser;
 
 namespace IPTComShark.BackStore
 {

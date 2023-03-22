@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using PCAPWriter = BustPCap.PCAPWriter;
 
 namespace IPTComShark.FileManager
 {
@@ -141,7 +140,7 @@ namespace IPTComShark.FileManager
 
                     continue;
 
-                    
+
 
                 }
 
@@ -171,7 +170,7 @@ namespace IPTComShark.FileManager
                     continue;
                 }
 
-                                
+
                 ThreadPool.QueueUserWorkItem(x =>
                 {
                     Interlocked.Increment(ref threadCount);
@@ -180,13 +179,13 @@ namespace IPTComShark.FileManager
 
                     Interlocked.Decrement(ref threadCount);
                 });
-               
+
             }
 
             // Give all threads a chance to start
             Thread.Sleep(100);
-                        
-            while(threadCount > 0)
+
+            while (threadCount > 0)
             {
                 UpdateList("Processing threads: " + threadCount.ToString());
                 Thread.Sleep(1000);

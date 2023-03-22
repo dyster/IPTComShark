@@ -1,11 +1,11 @@
-﻿using IPTComShark.Parsers;
+﻿using IPTComShark.Classes;
+using IPTComShark.Parsers;
 using OfficeOpenXml;
+using OxyPlot;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using OxyPlot;
-using IPTComShark.Classes;
 
 namespace IPTComShark.Export
 {
@@ -45,16 +45,16 @@ namespace IPTComShark.Export
             {
                 worksheet = _package.Workbook.Worksheets.Add("Packets");
                 PrepEverythingSheet(worksheet);
-                
+
             }
 
             if (ExportProfibus)
             {
                 _profiSheet = new ProfiSheet(_package.Workbook.Worksheets.Add("Profibus"));
-                
+
             }
 
-            if(ExportSAPIdleAnalysis)
+            if (ExportSAPIdleAnalysis)
             {
                 _idleAnalyser = new IdleAnalyser(_package.Workbook.Worksheets.Add("Idle Analysis"));
             }
@@ -135,7 +135,7 @@ namespace IPTComShark.Export
 
             parseCell.IsRichText = true;
             parseCell.Style.WrapText = true;
-            if(parse.NoParserInstalled)
+            if (parse.NoParserInstalled)
             {
                 parseCell.Value = "No parser installed";
             }
@@ -143,18 +143,18 @@ namespace IPTComShark.Export
             {
                 foreach (var parsedDataSet in parse.ParsedData)
                 {
-                    
+
                     var clean = Conversions.RemoveInvalidXMLChars(parsedDataSet.Name);
 
                     var richbit = parseCell.RichText.Add(clean).Bold = true;
-                                                            
+
                     parseCell.RichText.Add(" - ").Bold = false;
 
                     var s = string.Join(" | ", parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
                     parseCell.RichText.Add(s + "\n");
                 }
             }
-            
+
 
 
             //if (parse.HasValue)
@@ -222,12 +222,12 @@ namespace IPTComShark.Export
             if (_finalized)
                 return;
 
-            if(ExportProfibus)
+            if (ExportProfibus)
             {
-                
+
             }
 
-            if(ExportSAPIdleAnalysis)
+            if (ExportSAPIdleAnalysis)
             {
                 var plotModel = _idleAnalyser.Finalize();
 

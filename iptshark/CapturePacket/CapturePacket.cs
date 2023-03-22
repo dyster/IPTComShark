@@ -1,19 +1,19 @@
-﻿using IPTComShark.Parsers;
-using PacketDotNet;
-using BitDataParser;
+﻿using BitDataParser;
 using IPTComShark.DataSets;
+using IPTComShark.Parsers;
+using PacketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
 
 namespace IPTComShark
-{    
+{
     public class CapturePacket : IComparable, iPacket, iTraveller
     {
         private static readonly IPAddress VapAddress = IPAddress.Parse("192.168.1.12");
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
-        
+
         private string _customName = null;
 
 
@@ -68,7 +68,7 @@ namespace IPTComShark
                 }
 
                 payloadData = udp.PayloadData;
-                
+
             }
             else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
             {
@@ -85,7 +85,7 @@ namespace IPTComShark
                     return null;
                 }
 
-                payloadData = tcp.PayloadData;                
+                payloadData = tcp.PayloadData;
             }
 
             // TODO check payload data for null here? currently sent to parser to fail there
@@ -100,7 +100,7 @@ namespace IPTComShark
             return null;
         }
 
-        public CapturePacket(Raw raw) : this(raw, Packet.ParsePacket((LinkLayers) raw.LinkLayer, raw.RawData))
+        public CapturePacket(Raw raw) : this(raw, Packet.ParsePacket((LinkLayers)raw.LinkLayer, raw.RawData))
         {
             // TODO obsolete this constructor
         }
@@ -126,14 +126,14 @@ namespace IPTComShark
             }
 
             Packet actionPacket = PacketWrapper.GetActionPacket(originalPacket);
-            
-            if(actionPacket == null)
+
+            if (actionPacket == null)
             {
                 this.Protocol = ProtocolType.UNKNOWN;
                 this.ProtocolInfo = "No payload";
             }
             else if (actionPacket is IPv4Packet ipv4)
-            {               
+            {
 
                 if (ipv4.SourceAddress != null) Source = ipv4.SourceAddress.GetAddressBytes();
                 if (ipv4.DestinationAddress != null) Destination = ipv4.DestinationAddress.GetAddressBytes();
@@ -148,7 +148,7 @@ namespace IPTComShark
                 switch (ipv4.Protocol)
                 {
                     case PacketDotNet.ProtocolType.Tcp:
-                        var tcpPacket = (TcpPacket) ipv4.PayloadPacket;
+                        var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
 
 
@@ -179,7 +179,7 @@ namespace IPTComShark
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
-                                ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+                                ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 var parsedDataSet = VSIS210.JRU_STATUS.Parse(buffer);
@@ -203,7 +203,7 @@ namespace IPTComShark
                     case PacketDotNet.ProtocolType.Udp:
 
                         Protocol = ProtocolType.UDP;
-                        var udp = (UdpPacket) ipv4.PayloadPacket;
+                        var udp = (UdpPacket)ipv4.PayloadPacket;
 
                         if (udp == null)
                         {
@@ -367,15 +367,15 @@ namespace IPTComShark
                         // dunno
                         break;
 
-                    default:                        
+                    default:
                         Protocol = ProtocolType.UNKNOWN;
                         //throw new ArgumentOutOfRangeException(); 
                         break;
-                        
+
                 }
             }
             else if (actionPacket is ArpPacket arpPacket)
-            {                
+            {
                 Protocol = ProtocolType.ARP;
                 ProtocolInfo = arpPacket.Operation.ToString();
             }
@@ -383,13 +383,13 @@ namespace IPTComShark
             {
                 Protocol = ProtocolType.IPv6;
                 // ignore, for now
-            }                        
-            else if(actionPacket is iPacket ipac)
-            {                
+            }
+            else if (actionPacket is iPacket ipac)
+            {
                 ProtocolInfo = ipac.ProtocolInfo;
                 Protocol = ipac.Protocol;
                 DisplayFields = ipac.DisplayFields;
-                Name= ipac.Name;
+                Name = ipac.Name;
             }
             else
             {
@@ -428,7 +428,7 @@ namespace IPTComShark
             //    Protocol = ProtocolType.LLDP;
             //    // ignore
             //}
-            
+
         }
 
         /// <summary>
@@ -551,7 +551,7 @@ namespace IPTComShark
 
         public int CompareTo(object obj)
         {
-            var packet = (CapturePacket) obj;
+            var packet = (CapturePacket)obj;
             return this.Date.CompareTo(packet.Date);
         }
     }

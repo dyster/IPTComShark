@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BitDataParser;
 using IPTComShark.DataSets;
-using BitDataParser;
+using System.Collections.Generic;
 
 namespace IPTComShark.Classes
 {
@@ -35,7 +35,7 @@ namespace IPTComShark.Classes
                     {
                         var i = uint.Parse(identifier);
                         if (_comidIndex.ContainsKey(i))
-                        { 
+                        {
                             //Logger.Log("Conflicting identifier " + identifier, Severity.Warning); 
                         }
                         else

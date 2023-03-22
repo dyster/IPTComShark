@@ -1,7 +1,13 @@
-﻿using IPTComShark.Import;
+﻿using BitDataParser;
+using BustPCap;
+using IPTComShark.DataSets;
+using IPTComShark.Export;
+using IPTComShark.FileManager;
+using IPTComShark.Import;
+using IPTComShark.Parsers;
 using IPTComShark.Windows;
 using SharpPcap;
-using BitDataParser;
+using SharpPcap.LibPcap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,18 +15,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using IPTComShark.DataSets;
-using IPTComShark.Export;
-using SharpPcap.LibPcap;
-using IPTComShark.Parsers;
-using BustPCap;
 using static IPTComShark.Classes.Conversions;
-using System.Text.Json;
-using System.Numerics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using IPTComShark.FileManager;
 
 namespace IPTComShark
 {
@@ -52,7 +51,7 @@ namespace IPTComShark
             packetDisplay1.BackStore = _backStore;
             packetDisplay1.ParserFactory = _parserFactory;
 
-            Text = Text += " " + Application.ProductVersion + " Cliff's Conundrum";
+            Text = Text += " " + Application.ProductVersion + " Roginator 3: Rise of the VCU's";
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
@@ -409,7 +408,7 @@ namespace IPTComShark
         }
 
         private void _backStore_FinishedProcessing(object sender, uint e)
-        {            
+        {
             Logger.Log("--------- Performance info of particular datasets used while parsing IPTCom (Top 20) -----------", Severity.Info);
 
             var iptparser = (IPTWPParser)_parserFactory.Parsers.First(p => p is IPTWPParser);

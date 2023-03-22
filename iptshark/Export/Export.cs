@@ -1,7 +1,7 @@
+using BitDataParser;
 using IPTComShark.Parsers;
 using OfficeOpenXml;
 using PacketDotNet;
-using BitDataParser;
 using System;
 using System.Collections.Generic;
 using System.IO;

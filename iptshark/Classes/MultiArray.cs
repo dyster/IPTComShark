@@ -2,7 +2,7 @@
 
 namespace IPTComShark
 {
-    public class MultiArray<T1,T2,Tdata> 
+    public class MultiArray<T1, T2, Tdata>
     {
         private Dictionary<T1, Dictionary<T2, Tdata>> _upperDic = new Dictionary<T1, Dictionary<T2, Tdata>>();
         public MultiArray()
@@ -12,10 +12,10 @@ namespace IPTComShark
 
         public IEnumerable<T1> GetKeys()
         {
-            foreach(var pair in _upperDic)
+            foreach (var pair in _upperDic)
             {
                 yield return pair.Key;
-            }            
+            }
         }
 
         public IEnumerable<T2> GetSecondKeys(T1 rootKey)
@@ -35,16 +35,16 @@ namespace IPTComShark
                     _upperDic.Add(k1, new Dictionary<T2, Tdata>());
                 }
                 return _upperDic[k1][k2];
-                
+
             }
             set
             {
                 if (!_upperDic.ContainsKey(k1))
                 {
                     _upperDic.Add(k1, new Dictionary<T2, Tdata>());
-                    
+
                 }
-                
+
                 if (_upperDic[k1].ContainsKey(k2))
                 {
                     _upperDic[k1][k2] = value;
@@ -53,7 +53,7 @@ namespace IPTComShark
                 {
                     _upperDic[k1].Add(k2, value);
                 }
-                
+
             }
         }
 

@@ -9,13 +9,13 @@ namespace IPTComShark
         {
             if (raw.LinkLayer == LinkLayerType.BDS || raw.LinkLayer == LinkLayerType.BDS2)
                 return new BDSPacket(raw.RawData);
-            else if(raw.LinkLayer == LinkLayerType.Profibus)
+            else if (raw.LinkLayer == LinkLayerType.Profibus)
             {
                 // todo 
                 return new ProfiPacket(raw.RawData);
-                
+
             }
-            else if(raw.LinkLayer == LinkLayerType.IEEE8023br)
+            else if (raw.LinkLayer == LinkLayerType.IEEE8023br)
             {
                 // this is not supported by packetdotnet, but since it is just framing a standard ethernet frame in most cases and has a static format
                 // lets just chop it up and send it in as a standard Ethernet frame and hope for the best
@@ -40,8 +40,8 @@ namespace IPTComShark
             }
             else if (topPacket is BDSPacket bdspacket)
                 actionpacket = bdspacket;
-            else if(topPacket is ProfiPacket profipacket)
-                actionpacket = profipacket;            
+            else if (topPacket is ProfiPacket profipacket)
+                actionpacket = profipacket;
 
             return actionpacket;
         }

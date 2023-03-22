@@ -224,7 +224,7 @@ namespace IPTComShark
                 var filename = $"{_logPathPrefix}_{DateTime.Now:yyyy-MM-dd HHmmss fff}.xml";
 
                 using (XmlWriter xmlWriter =
-                    XmlWriter.Create(filename, new XmlWriterSettings {Indent = true}))
+                    XmlWriter.Create(filename, new XmlWriterSettings { Indent = true }))
                 {
                     serializer.WriteObject(xmlWriter, list);
                 }
@@ -250,7 +250,7 @@ namespace IPTComShark
                             List<LogRoll> tempList;
                             using (var filestream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
                             {
-                                tempList = (List<LogRoll>) serializer.ReadObject(filestream);
+                                tempList = (List<LogRoll>)serializer.ReadObject(filestream);
                             }
 
                             // swaparoo
@@ -259,7 +259,7 @@ namespace IPTComShark
                         }
 
                         using (XmlWriter xmlWriter =
-                            XmlWriter.Create(filename, new XmlWriterSettings {Indent = true}))
+                            XmlWriter.Create(filename, new XmlWriterSettings { Indent = true }))
                         {
                             serializer.WriteObject(xmlWriter, list);
                         }

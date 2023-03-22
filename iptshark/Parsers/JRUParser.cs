@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
-using BitDataParser;
 
 namespace IPTComShark.Parsers
 {
@@ -13,10 +13,10 @@ namespace IPTComShark.Parsers
             parse.ParsedData = new List<ParsedDataSet>();
             var ss27Parser = new SS27Parser();
 
-            ushort jrulen = BitConverter.ToUInt16(new byte[] {jruload[1], jruload[0]}, 0);
+            ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
             var buffer = new byte[jrulen];
             Array.Copy(jruload, 2, buffer, 0, jrulen);
-            var ss27 = (SS27Packet) ss27Parser.ParseData(buffer);
+            var ss27 = (SS27Packet)ss27Parser.ParseData(buffer);
 
             parse.Name = ss27.MsgType.ToString();
 

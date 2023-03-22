@@ -10,7 +10,7 @@ namespace IPTComShark.FileManager
             Start = start;
             Now = now;
             Count = count;
-            DataSources = dataSources;            
+            DataSources = dataSources;
         }
 
         public DateTime Start { get; }

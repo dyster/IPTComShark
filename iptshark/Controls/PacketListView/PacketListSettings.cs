@@ -87,7 +87,7 @@ namespace IPTComShark.Controls
             set
             {
                 _columnSettings = value;
-                
+
                 // does not need as only read on startup
                 //OnPropertyChanged();
             }
@@ -123,9 +123,9 @@ namespace IPTComShark.Controls
             }
         }
 
-        public static PacketListSettings DeserializeString(string str)            
+        public static PacketListSettings DeserializeString(string str)
         {
-            if(string.IsNullOrWhiteSpace(str))
+            if (string.IsNullOrWhiteSpace(str))
                 return new PacketListSettings();
             return JsonSerializer.Deserialize<PacketListSettings>(str);
         }

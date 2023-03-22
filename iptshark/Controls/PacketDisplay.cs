@@ -1,14 +1,14 @@
-﻿using PacketDotNet;
-using BitDataParser;
+﻿using BitDataParser;
+using IPTComShark.Parsers;
+using IPTComShark.Windows;
+using PacketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using IPTComShark.Windows;
-using IPTComShark.Parsers;
 using System.Text.Json;
+using System.Windows.Forms;
 
 namespace IPTComShark.Controls
 {
@@ -415,7 +415,7 @@ namespace IPTComShark.Controls
             if (dataListViewRight.MouseMoveHitTest.RowObject != null)
             {
                 var dataline = (DataLine)dataListViewRight.MouseMoveHitTest.RowObject;
-                Clipboard.SetText(dataline.Value);                
+                Clipboard.SetText(dataline.Value);
             }
         }
 

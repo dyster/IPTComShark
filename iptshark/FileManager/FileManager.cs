@@ -1,20 +1,19 @@
-﻿using SharpCompress.Archives.SevenZip;
+﻿using BustPCap;
+using IPTComShark.BackStore;
+using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using BustPCap;
-using IPTComShark.BackStore;
-using System.Text;
-using System.Diagnostics;
 
 namespace IPTComShark.FileManager
 {
     public class FileManager : IDisposable
-    {                
+    {
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
@@ -22,7 +21,7 @@ namespace IPTComShark.FileManager
 
         public FileManager()
         {
-            
+
 
             //pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
 
@@ -41,7 +40,7 @@ namespace IPTComShark.FileManager
         {
             PacketCounter++;
             UpdateProgress((PacketCounter * 100) / PacketTotal);
-            
+
             var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                 (LinkLayerType)pcapBlock.Header.network);
             if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
@@ -64,7 +63,7 @@ namespace IPTComShark.FileManager
                 OnRawParsed(raw);
                 return raw;
             }
-            return null;            
+            return null;
         }
 
         private delegate void ProgressDelegate(int i);
@@ -104,8 +103,8 @@ namespace IPTComShark.FileManager
         {
             _popup.Show();
 
-            _popup.Text = "Starting the parse";            
-            
+            _popup.Text = "Starting the parse";
+
             int i = 1;
             foreach (var source in dataSources)
             {
@@ -122,7 +121,7 @@ namespace IPTComShark.FileManager
                         foreach (var pcapBlock in pcapFileReader.Enumerate())
                         {
                             Raw raw = ChunkRead(pcapBlock);
-                            if(raw != null)
+                            if (raw != null)
                                 yield return raw;
                         }
                     }
@@ -137,7 +136,7 @@ namespace IPTComShark.FileManager
                             if (raw != null)
                                 yield return raw;
                         }
-                    }                    
+                    }
                 }
                 else if (source.SourceType == SourceType.Zip)
                 {
@@ -147,7 +146,7 @@ namespace IPTComShark.FileManager
                         {
                             using (var reader = sevenZipArchive.ExtractAllEntries())
                             {
-                                foreach(var raw in ZipReader(reader, source))
+                                foreach (var raw in ZipReader(reader, source))
                                 {
                                     yield return raw;
                                 }
@@ -158,20 +157,20 @@ namespace IPTComShark.FileManager
                     }
                     else
                     {
-                        
-                        
-                            using (var filestream = File.OpenRead(source.FileInfo.FullName))
+
+
+                        using (var filestream = File.OpenRead(source.FileInfo.FullName))
+                        {
+                            using (var reader = ReaderFactory.Open(filestream))
                             {
-                                using (var reader = ReaderFactory.Open(filestream))
+                                foreach (var raw in ZipReader(reader, source))
                                 {
-                                    foreach (var raw in ZipReader(reader, source))
-                                    {
-                                        yield return raw;
-                                    }
+                                    yield return raw;
                                 }
                             }
-                        
-                        
+                        }
+
+
 
                         GC.Collect();
                     }
@@ -212,7 +211,7 @@ namespace IPTComShark.FileManager
                         if (dataSource.ArchiveSourceType == SourceType.PCAPNG)
                         {
                             var pcapngReader = new PCAPNGStreamReader(memstream);
-                            foreach(var block in pcapngReader.Enumerate())
+                            foreach (var block in pcapngReader.Enumerate())
                             {
                                 Raw raw = ChunkRead(block);
                                 if (raw != null)
@@ -243,15 +242,15 @@ namespace IPTComShark.FileManager
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
                 ProcessingFilters = fo.ProcessingFilters;
-                               
 
-                foreach(var raw in EnumerateFiles(fo.DataSources))
+
+                foreach (var raw in EnumerateFiles(fo.DataSources))
                 {
                     yield return raw;
                 }
 
-                
-            }            
+
+            }
         }
 
         /// <summary>
@@ -271,8 +270,9 @@ namespace IPTComShark.FileManager
                 var start = DateTime.Now;
                 var count = 0;
 
-                Thread thread = new Thread((object o)=> {
-                    foreach(var raw in EnumerateFiles(fo.DataSources))
+                Thread thread = new Thread((object o) =>
+                {
+                    foreach (var raw in EnumerateFiles(fo.DataSources))
                     {
                         // Enu merate good times come on                        
                         count++;
@@ -344,7 +344,7 @@ namespace IPTComShark.FileManager
             bool started = false;
             int count = 0;
 
-            foreach(CapturePacket packet in packets)
+            foreach (CapturePacket packet in packets)
             {
                 var raw = backStore.GetRaw(packet.No);
 
@@ -356,7 +356,7 @@ namespace IPTComShark.FileManager
                 }
 
                 pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                count++;                
+                count++;
             }
             Thread.Sleep(1000); // just making sure
             pcapWriter.Stop();

@@ -19,7 +19,7 @@ namespace IPTComShark
             this.PayloadData = payload;
             this.Header = new ByteArraySegment(header, 0, headerlength);
 
-            switch(header[0])
+            switch (header[0])
             {
                 case 0x8A:
                     Name = "BDS_BIN";
@@ -34,13 +34,13 @@ namespace IPTComShark
                     DisplayFields.Add(new DisplayField("txt", ASCIIEncoding.ASCII.GetString(payload)));
                     break;
                 default:
-                    Name = header[0]+"_???";
+                    Name = header[0] + "_???";
                     break;
             }
             var bdsheader = new BDSHeader(header);
             BDSHeader = bdsheader;
 
-            
+
 
             ProtocolInfo = bdsheader.ToString();
         }
@@ -66,7 +66,7 @@ namespace IPTComShark
     {
         public BDSHeader(byte[] data)
         {
-            
+
             length = BitConverter.ToUInt16(new byte[] { data[2], data[1] }, 0);
             n_ver = (ushort)data[3];
             device = (ushort)data[4];
