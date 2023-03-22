@@ -6,18 +6,18 @@ namespace IPTComShark.Parsers
 {
     public class ParserFactory
     {
-        private List<IParser> _parsers = new List<IParser>();
+        public List<IParser> Parsers { get; private set; } = new List<IParser>();
         
         public void AddParser(IParser parser)
         {
-            _parsers.Add(parser);
+            Parsers.Add(parser);
         }
 
         public Parse DoPacket(ProtocolType protocol, byte[] data, iPacket iPacket)
         {
-            if (_parsers.Exists(p => p.ProtocolType == protocol))
+            if (Parsers.Exists(p => p.ProtocolType == protocol))
             {
-                var parser = _parsers.First(p => p.ProtocolType == protocol);
+                var parser = Parsers.First(p => p.ProtocolType == protocol);
                 return parser.Extract(data, iPacket);
             }
 

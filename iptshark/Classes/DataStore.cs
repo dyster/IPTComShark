@@ -6,7 +6,7 @@ namespace IPTComShark.Classes
 {
     public class DataStore
     {
-        private List<DataSetCollection> DataCollections = new List<DataSetCollection>();
+        public List<DataSetCollection> DataCollections { get; set; } = new List<DataSetCollection>();
         private Dictionary<uint, DataSetDefinition> _comidIndex = new Dictionary<uint, DataSetDefinition>();
 
         public DataStore()

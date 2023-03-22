@@ -14,12 +14,12 @@ namespace IPTComShark.Parsers
     class IPTWPParser : IParser
     {
         private const string Iptfile = @"ECN1_ipt_config.xml";
-        private DataStore _dataStore;
+        
         private IPTConfigReader IptConfigReader;
 
         public IPTWPParser(string folder)
         {
-            _dataStore = new DataStore();
+            DataStore = new DataStore();
 
             var files = Directory.GetFiles(folder);
 
@@ -39,7 +39,7 @@ namespace IPTComShark.Parsers
                     watch.Restart();
                     IptConfigReader = new IPTConfigReader(file);
                     var datasets = IptConfigReader.GetDataSetCollection();
-                    _dataStore.Add(datasets);
+                    DataStore.Add(datasets);
                     watch.Stop();
                     Logger.Log(datasets.DataSets.Count + " datasets added in "+watch.ElapsedMilliseconds + "ms", Severity.Info);
 
@@ -58,7 +58,7 @@ namespace IPTComShark.Parsers
 
 
 
-            _dataStore.RebuildIndex();
+            DataStore.RebuildIndex();
         }
 
         public Parse Extract(byte[] data, iPacket iPacket)
@@ -84,7 +84,7 @@ namespace IPTComShark.Parsers
             }
             else
             {
-                var dataSetDefinition = _dataStore.GetByComid(comid);
+                var dataSetDefinition = DataStore.GetByComid(comid);
                 if (dataSetDefinition != null)
                 {
                     var parsedDataSet = dataSetDefinition.Parse(iptPayload);
@@ -108,6 +108,8 @@ namespace IPTComShark.Parsers
         }
 
         public ProtocolType ProtocolType => ProtocolType.IPTWP;
+
+        public DataStore DataStore { get; set; }
 
         private DataSetDefinition MA = new DataSetDefinition()
         {

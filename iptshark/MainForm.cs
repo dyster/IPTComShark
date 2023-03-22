@@ -409,8 +409,18 @@ namespace IPTComShark
         }
 
         private void _backStore_FinishedProcessing(object sender, uint e)
-        {
+        {            
+            Logger.Log("--------- Performance info of particular datasets used while parsing IPTCom (Top 20) -----------", Severity.Info);
+
+            var iptparser = (IPTWPParser)_parserFactory.Parsers.First(p => p is IPTWPParser);
+            var datasets = iptparser.DataStore.DataCollections.SelectMany(dc => dc.DataSets);
+            var lines = datasets.Where(ds => ds.PerformanceInfo.DataSetsCreated > 0).OrderByDescending(ds => ds.PerformanceInfo.TimeSpent).Take(20).Select(ds => $"{ds.Name} > {ds.PerformanceInfo}");
+            foreach (var line in lines)
+                Logger.Log(line, Severity.Info);
+
+            Logger.Log("--------- Performance info of particular datasets used while parsing IPTCom (Top 20) -----------", Severity.Info);
             Logger.Log($"Backstore finished processing {e} packets in {DateTime.Now - _loadStarted}", Severity.Info);
+
         }
 
         private void saveCurrentFilterToolStripMenuItem_Click(object sender, EventArgs e)
