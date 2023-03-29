@@ -10,8 +10,8 @@ namespace IPTComShark.DataSets
     {
         public VSISDMI()
         {
-            this.Name = "VSIS 2.16";
-            this.Description = "EVC Telegrams based on the VSIS v2.16";
+            this.Name = "VSIS 2.18";
+            this.Description = "EVC Telegrams based on the VSIS v2.18";
 
             DataSets.Add(EVC_0);
             DataSets.Add(EVC_1);
@@ -3943,9 +3943,9 @@ namespace IPTComShark.DataSets
                         {"28", "Ack of SN mode"},
                         {"29", "Selection of Language"},
                         {"30", "Request to show geographical position"},
-                        {"31", "Request to hide geographical position"},
-                        {"32", "Slippery rail selected"},
-                        {"33", "Non-slippery rail selected"},
+                        {"31", "spare"},
+                        {"32", "spare"},
+                        {"33", "Request to hide geographical position"},
                         {"34", "Level 0 selected"},
                         {"35", "Level 1 selected"},
                         {"36", "Level 2 selected"},
@@ -4132,14 +4132,6 @@ namespace IPTComShark.DataSets
                     Length = 8,
                     Comment = "Spare for alignment"
                 },
-
-                // DMI SOUND STATUS as per Subset27
-                new BitField
-                    {Name = "Sound Sinfo", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Sound S1 Over-speed", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
-                new BitField
-                    {Name = "Sound S2 Warning", BitFieldType = BitFieldType.Bool, Length = 1, SkipIfValue = false},
 
                 new BitField
                 {
@@ -5535,7 +5527,7 @@ namespace IPTComShark.DataSets
                 {"267", "Balise read error"},
                 {"268", "Communication error"},
                 {"269", "Runaway movement"},
-                {"270", "Spare"},
+                {"270", "TIMS brake pressure low"},
                 {"271", "Spare"},
                 {"272", "Spare"},
                 {"273", "Unauthorized passing of EOA / LOA"},
@@ -5581,7 +5573,14 @@ namespace IPTComShark.DataSets
                 {"319", "Spare"},
                 {"320", "RV distance exceeded"},
                 {"321", "ETCS Isolated"},
-                //322...513 = Spare
+                {"325", "ADR self-test successful"},
+                {"326", "ADR self-test failure - ABDO disabled"},
+                {"327", "ADR self-test time out - ABDO Disabled"},
+                //328...335 = Spare
+                {"336", "Radar Sensor failure"},
+                {"337", "Radar Sensor maintenance required in #1 hours."},
+                {"338", "Radar Sensor maintenance required now!"},
+                //339..513 = "Spare"
                 {"514", "Perform Brake Test!"},
                 {"515", "Unable to start Brake Test"},
                 {"516", "Brake Test in Progress"},
@@ -5609,6 +5608,7 @@ namespace IPTComShark.DataSets
                 {"554", "Reactivate the Cabin!"},
                 {"555", "#3 MO20 (Ack SN Mode)"},
                 {"560", "Trackside malfunction"},
+                {"561", "Trackside level is inhibited"},
                 {"563", "Trackside Level(s) not supported Onboard"},
                 {"564", "Confirm change of inhibit Level #1"},
                 {"565", "Confirm change of inhibit STM #2"},
