@@ -2606,7 +2606,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 14-11-2019 2.11
+        // updated PNF 25-04-2023 2.18
         public static DataSetDefinition EVC_40 => new DataSetDefinition
         {
             Name = "EVC_40 MMI_CURRENT_MAINTENANCE_DATA",
@@ -2623,16 +2623,24 @@ namespace IPTComShark.DataSets
             {
                 MMI_M_PACKET,
                 MMI_L_PACKET,
-                MMI_M_PULSE_PER_KM_1,
-                MMI_M_PULSE_PER_KM_2,
-                MMI_M_SDU_WHEEL_SIZE_1,
-                MMI_M_SDU_WHEEL_SIZE_2,
                 MMI_Q_MD_DATASET,
-                MMI_M_WHEEL_SIZE_ERR
+                new BitField
+                {
+                    Name = "evc40_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "Spare"
+                },
+                MMI_M_WHEEL_SIZE_1,
+                MMI_M_WHEEL_SIZE_2,
+                MMI_M_WHEEL_SIZE_ERR,
+                MMI_M_WHEEL_SIZE_ERR_1,
+                MMI_M_WHEEL_SIZE_ERR_2,
+                MMI_M_PULSE_PER_KM_1
             }
         };
 
-        // checked RVV 17-11-2019 2.11
+        // updated PNF 25-04-2023 2.18
         public static DataSetDefinition EVC_41 => new DataSetDefinition
         {
             Name = "EVC_41 MMI_ECHOED_MAINTENANCE_DATA",
@@ -2658,12 +2666,20 @@ namespace IPTComShark.DataSets
                         InvertBits = true,
                         BitFields = new List<BitField>
                         {
-                            MMI_M_PULSE_PER_KM_2_,
-                            MMI_M_PULSE_PER_KM_1_,
-                            MMI_M_SDU_WHEEL_SIZE_2_,
-                            MMI_M_SDU_WHEEL_SIZE_1_,
+                            new BitField
+                            {
+                                Name = "evc41_spare1",
+                                BitFieldType = BitFieldType.Spare,
+                                Length = 8,
+                                Comment = "Spare"
+                            },
                             MMI_Q_MD_DATASET_,
-                            MMI_M_WHEEL_SIZE_ERR_
+                            MMI_M_WHEEL_SIZE_2_,
+                            MMI_M_WHEEL_SIZE_1_,
+                            MMI_M_WHEEL_SIZE_ERR_2_,
+                            MMI_M_PULSE_PER_KM_1_,
+                            MMI_M_WHEEL_SIZE_ERR_,
+                            MMI_M_WHEEL_SIZE_ERR_1_
                         }
                     }
                 }
@@ -3748,7 +3764,7 @@ namespace IPTComShark.DataSets
             }
         };
 
-        // checked RVV 05-12-2019 2.13
+        // updated PNF 25-04-2023 2.18
         public static DataSetDefinition EVC_140 => new DataSetDefinition
         {
             Name = "EVC_140 MMI_NEW_MAINTENANCE_DATA",
@@ -3764,16 +3780,24 @@ namespace IPTComShark.DataSets
             {
                 MMI_M_PACKET,
                 MMI_L_PACKET,
-                MMI_M_SDU_WHEEL_SIZE_1,
-                MMI_M_SDU_WHEEL_SIZE_2,
                 MMI_M_PULSE_PER_KM_1,
-                MMI_M_PULSE_PER_KM_2,
+                MMI_M_WHEEL_SIZE_ERR_2,
+                MMI_M_WHEEL_SIZE_ERR_1,
+                MMI_M_WHEEL_SIZE_ERR,
+                MMI_M_WHEEL_SIZE_2,
+                MMI_M_WHEEL_SIZE_1,
                 MMI_Q_MD_DATASET,
-                MMI_M_WHEEL_SIZE_ERR
+                new BitField
+                {
+                    Name = "evc140_spare1",
+                    BitFieldType = BitFieldType.Spare,
+                    Length = 8,
+                    Comment = "Spare"
+                }
             }
         };
 
-        // checked RVV 05-12-2019 2.13
+        // updated PNF 25-04-2023 2.18
         public static DataSetDefinition EVC_141 => new DataSetDefinition
         {
             Name = "EVC_141 MMI_CONFIRMED_MAINTENANCE_DATA",
@@ -3799,11 +3823,19 @@ namespace IPTComShark.DataSets
                         InvertBits = true,
                         BitFields = new List<BitField>
                         {
-                            MMI_M_PULSE_PER_KM_2_,
+                            MMI_M_WHEEL_SIZE_ERR_1_,
+                            MMI_M_WHEEL_SIZE_ERR_2_,
                             MMI_M_PULSE_PER_KM_1_,
-                            MMI_M_SDU_WHEEL_SIZE_2_,
-                            MMI_M_SDU_WHEEL_SIZE_1_,
+                            MMI_M_WHEEL_SIZE_1_,
                             MMI_M_WHEEL_SIZE_ERR_,
+                            MMI_M_WHEEL_SIZE_2_,
+                            new BitField
+                            {
+                                Name = "evc141_spare1",
+                                BitFieldType = BitFieldType.Spare,
+                                Length = 8,
+                                Comment = "Spare"
+                            },
                             MMI_Q_MD_DATASET_
                         }
                     }
@@ -5022,102 +5054,36 @@ namespace IPTComShark.DataSets
             }
         };
 
-        public static BitField MMI_M_PULSE_PER_KM_2 => new BitField
+        public static BitField MMI_M_WHEEL_SIZE_1 => new BitField
         {
-            Name = "MMI_M_PULSE_PER_KM_2",
-            BitFieldType = BitFieldType.UInt32,
-            Length = 32,
-            Comment = "Number of pulses per km (Radar 2)",
-            LookupTable = new LookupTable
-            {
-                {"0", "No Radar 2 on board"},
-                {"4294967290", "Technical Range Check failed"},
-                {"4294967291", "Technical Resolution Check failed"},
-                {"4294967292", "Technical Cross Check failed"},
-                {"4294967293", "Operational Range Check failed"},
-                {"4294967294", "Operational Cross Check failed"}
-            }
-        };
-
-        public static BitField MMI_M_PULSE_PER_KM_2_ => new BitField
-        {
-            Name = "MMI_M_PULSE_PER_KM_2_",
-            BitFieldType = BitFieldType.UInt32,
-            Length = 32,
-            Comment = "Number of pulses per km (Radar 2). Value is bit-inverted",
-            LookupTable = new LookupTable
-            {
-                {"0", "No Radar 2 on board"},
-                {"4294967290", "Technical Range Check failed"},
-                {"4294967291", "Technical Resolution Check failed"},
-                {"4294967292", "Technical Cross Check failed"},
-                {"4294967293", "Operational Range Check failed"},
-                {"4294967294", "Operational Cross Check failed"}
-            }
-        };
-
-        public static BitField MMI_M_SDU_WHEEL_SIZE_1 => new BitField
-        {
-            Name = "MMI_M_SDU_WHEEL_SIZE_1",
+            Name = "MMI_M_WHEEL_SIZE_1",
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
-            Comment = "Wheel Diameter (Tacho 1)",
-            LookupTable = new LookupTable
-            {
-                {"65530", "Technical Range Check failed"},
-                {"65531", "Technical Resolution Check failed"},
-                {"65532", "Technical Cross Check failed"},
-                {"65533", "Operational Range Check failed"},
-                {"65534", "Operational Cross Check failed"}
-            }
+            Comment = "Wheel Diameter (Tacho 1)"
         };
 
-        public static BitField MMI_M_SDU_WHEEL_SIZE_1_ => new BitField
+        public static BitField MMI_M_WHEEL_SIZE_1_ => new BitField
         {
-            Name = "MMI_M_SDU_WHEEL_SIZE_1_",
+            Name = "MMI_M_WHEEL_SIZE_1_",
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
-            Comment = "Wheel Diameter (Tacho 1). Value is bit-inverted.",
-            LookupTable = new LookupTable
-            {
-                {"65530", "Technical Range Check failed"},
-                {"65531", "Technical Resolution Check failed"},
-                {"65532", "Technical Cross Check failed"},
-                {"65533", "Operational Range Check failed"},
-                {"65534", "Operational Cross Check failed"}
-            }
+            Comment = "Wheel Diameter (Tacho 1). Value is bit-inverted."
         };
 
-        public static BitField MMI_M_SDU_WHEEL_SIZE_2 => new BitField
+        public static BitField MMI_M_WHEEL_SIZE_2 => new BitField
         {
-            Name = "MMI_M_SDU_WHEEL_SIZE_2",
+            Name = "MMI_M_WHEEL_SIZE_2",
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
-            Comment = "Wheel Diameter (Tacho 2)",
-            LookupTable = new LookupTable
-            {
-                {"65530", "Technical Range Check failed"},
-                {"65531", "Technical Resolution Check failed"},
-                {"65532", "Technical Cross Check failed"},
-                {"65533", "Operational Range Check failed"},
-                {"65534", "Operational Cross Check failed"}
-            }
+            Comment = "Wheel Diameter (Tacho 2)."
         };
 
-        public static BitField MMI_M_SDU_WHEEL_SIZE_2_ => new BitField
+        public static BitField MMI_M_WHEEL_SIZE_2_ => new BitField
         {
-            Name = "MMI_M_SDU_WHEEL_SIZE_2_",
+            Name = "MMI_M_WHEEL_SIZE_2_",
             BitFieldType = BitFieldType.UInt16,
             Length = 16,
-            Comment = "Wheel Diameter (Tacho 2). Value is bit-inverted",
-            LookupTable = new LookupTable
-            {
-                {"65530", "Technical Range Check failed"},
-                {"65531", "Technical Resolution Check failed"},
-                {"65532", "Technical Cross Check failed"},
-                {"65533", "Operational Range Check failed"},
-                {"65534", "Operational Cross Check failed"}
-            }
+            Comment = "Wheel Diameter (Tacho 2). Value is bit-inverted."
         };
 
         public static BitField MMI_M_TRACKCOND_TYPE => new BitField
@@ -5180,34 +5146,99 @@ namespace IPTComShark.DataSets
         public static BitField MMI_M_WHEEL_SIZE_ERR => new BitField
         {
             Name = "MMI_M_WHEEL_SIZE_ERR",
-            BitFieldType = BitFieldType.UInt8,
-            Length = 8,
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
             Comment = "Wheel Size Accuracy (maximum 32)",
             LookupTable = new LookupTable
             {
-                {"250", "Technical Range Check failed"},
-                {"251", "Technical Resolution Check failed"},
-                {"252", "Technical Cross Check failed"},
-                {"253", "Operational Range Check failed"},
-                {"254", "Operational Cross Check failed"}
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
             }
         };
-
         public static BitField MMI_M_WHEEL_SIZE_ERR_ => new BitField
         {
             Name = "MMI_M_WHEEL_SIZE_ERR_",
-            BitFieldType = BitFieldType.UInt8,
-            Length = 8,
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
             Comment = "Wheel Size Accuracy (maximum 32). Value is bit-inverted.",
             LookupTable = new LookupTable
             {
-                {"250", "Technical Range Check failed"},
-                {"251", "Technical Resolution Check failed"},
-                {"252", "Technical Cross Check failed"},
-                {"253", "Operational Range Check failed"},
-                {"254", "Operational Cross Check failed"}
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
             }
         };
+
+        public static BitField MMI_M_WHEEL_SIZE_ERR_1 => new BitField
+        {
+            Name = "MMI_M_WHEEL_SIZE_ERR_1",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Wheel Size Accuracy (maximum 32)",
+            LookupTable = new LookupTable
+            {
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
+            }
+        };
+
+        public static BitField MMI_M_WHEEL_SIZE_ERR_1_ => new BitField
+        {
+            Name = "MMI_M_WHEEL_SIZE_ERR_1_",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Wheel Size Accuracy (maximum 32). Value is bit-inverted.",
+            LookupTable = new LookupTable
+            {
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
+            }
+        };
+
+        public static BitField MMI_M_WHEEL_SIZE_ERR_2 => new BitField
+        {
+            Name = "MMI_M_WHEEL_SIZE_ERR_2",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Wheel Size Accuracy (maximum 32)",
+            LookupTable = new LookupTable
+            {
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
+            }
+        };
+
+        public static BitField MMI_M_WHEEL_SIZE_ERR_2_ => new BitField
+        {
+            Name = "MMI_M_WHEEL_SIZE_ERR_2_",
+            BitFieldType = BitFieldType.UInt16,
+            Length = 16,
+            Comment = "Wheel Size Accuracy (maximum 32). Value is bit-inverted.",
+            LookupTable = new LookupTable
+            {
+                {"65530", "Technical Range Check failed"},
+                {"65531", "Technical Resolution Check failed"},
+                {"65532", "Technical Cross Check failed"},
+                {"65533", "Operational Range Check failed"},
+                {"65534", "Operational Cross Check failed"}
+            }
+        };
+
+
 
         public static BitField MMI_N_CAPTION_NETWORK => new BitField
         {
