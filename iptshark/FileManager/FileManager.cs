@@ -13,16 +13,14 @@ using System.Windows.Forms;
 namespace IPTComShark.FileManager
 {
     public class FileManager : IDisposable
-    {
+    {                
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
         private int _lastProgress = 0;
-
+        
         public FileManager()
         {
-
-
             //pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
 
             //pcapngReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
@@ -40,7 +38,7 @@ namespace IPTComShark.FileManager
         {
             PacketCounter++;
             UpdateProgress((PacketCounter * 100) / PacketTotal);
-
+            
             var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                 (LinkLayerType)pcapBlock.Header.network);
             if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
@@ -63,7 +61,7 @@ namespace IPTComShark.FileManager
                 OnRawParsed(raw);
                 return raw;
             }
-            return null;
+            return null;            
         }
 
         private delegate void ProgressDelegate(int i);
@@ -136,7 +134,7 @@ namespace IPTComShark.FileManager
                             if (raw != null)
                                 yield return raw;
                         }
-                    }
+                    }                    
                 }
                 else if (source.SourceType == SourceType.Zip)
                 {
@@ -157,20 +155,20 @@ namespace IPTComShark.FileManager
                     }
                     else
                     {
-
-
-                        using (var filestream = File.OpenRead(source.FileInfo.FullName))
-                        {
-                            using (var reader = ReaderFactory.Open(filestream))
+                        
+                        
+                            using (var filestream = File.OpenRead(source.FileInfo.FullName))
                             {
-                                foreach (var raw in ZipReader(reader, source))
+                                using (var reader = ReaderFactory.Open(filestream))
                                 {
-                                    yield return raw;
+                                    foreach (var raw in ZipReader(reader, source))
+                                    {
+                                        yield return raw;
+                                    }
                                 }
                             }
-                        }
-
-
+                        
+                        
 
                         GC.Collect();
                     }
@@ -242,15 +240,15 @@ namespace IPTComShark.FileManager
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
                 ProcessingFilters = fo.ProcessingFilters;
-
+                               
 
                 foreach (var raw in EnumerateFiles(fo.DataSources))
                 {
                     yield return raw;
                 }
 
-
-            }
+                
+            }            
         }
 
         /// <summary>
@@ -271,7 +269,7 @@ namespace IPTComShark.FileManager
                 var count = 0;
 
                 Thread thread = new Thread((object o) =>
-                {
+                    {
                     foreach (var raw in EnumerateFiles(fo.DataSources))
                     {
                         // Enu merate good times come on                        
@@ -279,7 +277,7 @@ namespace IPTComShark.FileManager
                     }
 
                     if (FinishedLoading != null)
-                        FinishedLoading.Invoke(this, new FinishedEventArgs(start, DateTime.Now, count, fo.DataSources));
+                        FinishedLoading.Invoke(this, new FinishedEventArgs(start, DateTime.Now, count, fo.DataSources, inputs));                    
                 });
 
                 thread.Start();
@@ -356,7 +354,7 @@ namespace IPTComShark.FileManager
                 }
 
                 pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                count++;
+                count++;                
             }
             Thread.Sleep(1000); // just making sure
             pcapWriter.Stop();
