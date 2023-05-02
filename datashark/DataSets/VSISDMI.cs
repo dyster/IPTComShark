@@ -2887,6 +2887,7 @@ namespace IPTComShark.DataSets
         };
 
         // checked RVV 21-11-2019 2.11
+		// 2023-05-02 edits for VSIS 2.16 and 2.18 by Peter F
         public static DataSetDefinition EVC_101 => new DataSetDefinition
         {
             Name = "EVC_101 MMI_DRIVER_REQUEST",
@@ -2925,7 +2926,7 @@ namespace IPTComShark.DataSets
                         {"12", "Exit Change SR rules"},
                         {"13", "Change SR rules"},
                         {"14", "Continue shunting on desk closure"},
-                        {"15", "Spare"},
+                        {"15", "Exit Train Data Validation"},
                         {"16", "Spare"},
                         {"17", "Spare"},
                         {"18", "Spare"},
@@ -2946,8 +2947,8 @@ namespace IPTComShark.DataSets
                         {"33", "Exit RBC Data Entry"},
                         {"34", "Exit Driver Data Entry"},
                         {"35", "Spare"},
-                        {"36", "Spare"},
-                        {"37", "Spare"},
+                        {"36", "Exit Set VBC Validation"},
+                        {"37", "Exit Remove VBC Validation"},
                         {"38", "Start procedure 'Train Integrity'"},
                         {"39", "Exit RBC contact"},
                         {"40", "Level entered"},
