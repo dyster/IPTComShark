@@ -8,7 +8,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>IPTComShark</RootNamespace>
     <AssemblyName>IPTComShark</AssemblyName>
-    <Version>1.9.8.1</Version>
+    <Version>1.9.8.2</Version>
     <AssemblyVersion>1.9.8.1</AssemblyVersion>
     <FileVersion>1.9.8.1</FileVersion>
     <PackageIcon>shark-icon-24347.jpg</PackageIcon>

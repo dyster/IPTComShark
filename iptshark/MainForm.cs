@@ -168,7 +168,7 @@ namespace IPTComShark
         public void SetApplicationTitle(string[] fileNames = null)
         {
             Text = Application.ProductName;
-            Text += " " + Application.ProductVersion + " Peter's Porcupine";
+            Text += " " + Application.ProductVersion + " Test Release";
             if (fileNames != null && fileNames.Length == 1)
             {
                 Text += " - " + fileNames[0];
