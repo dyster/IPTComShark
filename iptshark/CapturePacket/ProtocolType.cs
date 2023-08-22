@@ -19,6 +19,8 @@
         Virtual,
         JRUStatus,
         BDS,
-        Profibus
+        Profibus,
+        CIP,
+        CIPIO
     }
 }

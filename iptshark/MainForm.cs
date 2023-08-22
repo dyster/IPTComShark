@@ -31,7 +31,7 @@ namespace IPTComShark
         private long _capturedData;
 
         private PcapDevice _device;
-        
+
         private DateTime _loadStarted = default;
 
         public MainForm(string[] args)
@@ -70,9 +70,9 @@ namespace IPTComShark
                 DataSourceUpdateMode.OnPropertyChanged);
             textBoxIgnoreComid.DataBindings.Add("Text", packetSettings, "IgnoreComid", true,
                 DataSourceUpdateMode.OnValidation);
-            textBoxIgnoreVars.DataBindings.Add("Lines", packetSettings, "IgnoreVariables", true, 
+            textBoxIgnoreVars.DataBindings.Add("Lines", packetSettings, "IgnoreVariables", true,
                 DataSourceUpdateMode.OnValidation);
-            
+
             packetListView1.Settings = packetSettings;
 
             InitData();
@@ -97,6 +97,8 @@ namespace IPTComShark
             parserFactory.AddParser(new JRUParser());
             parserFactory.AddParser(new ARPParser());
             parserFactory.AddParser(new ProfiParser());
+            parserFactory.AddParser(new CIPParser());
+            parserFactory.AddParser(new CIPIOParser());
 
             parserFactory.AddParser(new IPTWPParser(Path.Combine(Environment.CurrentDirectory, "IPTXMLFiles")));
 
@@ -128,7 +130,7 @@ namespace IPTComShark
             _backStore.Clear();
 
 
-            _capturedData = 0;            
+            _capturedData = 0;
         }
 
         private void UpdateStatus(string text)
@@ -292,7 +294,7 @@ namespace IPTComShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
-            
+
 
             var tuples = new List<Tuple<Color, string>>();
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.CapturedPackets.ToString()));
@@ -340,7 +342,7 @@ namespace IPTComShark
             }
 
             Properties.Settings.Default.PacketListSettings = packetListView1.Settings.SerialiseToString();
-                        
+
             Properties.Settings.Default.Save();
 
             _backStore.Close();
@@ -425,11 +427,11 @@ namespace IPTComShark
             else
             {
                 var fileManager = new FileManager.FileManager();
-                    fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
+                fileManager.RawParsed += (sender, raw) => _backStore.AddAsync(raw);
                 fileManager.FinishedLoading += FileManager_FinishedLoading;
 
-                    fileManager.OpenFilesAsync(paths);
-                    _backStore.ProcessingFilters = fileManager.ProcessingFilters;
+                fileManager.OpenFilesAsync(paths);
+                _backStore.ProcessingFilters = fileManager.ProcessingFilters;
                 _loadStarted = DateTime.Now;
 
                 GC.Collect();
@@ -444,13 +446,14 @@ namespace IPTComShark
             }
             Logger.Log(e.ToString(), Severity.Info);
 
-            if(e.Inputs != null)
+            if (e.Inputs != null)
             {
-                Invoke((MethodInvoker)delegate {
+                Invoke((MethodInvoker)delegate
+                {
                     SetApplicationTitle(e.Inputs);
                 });
             }
-            
+
         }
 
         private void _backStore_FinishedProcessing(object sender, uint e)
@@ -540,11 +543,11 @@ namespace IPTComShark
 
         private void exportXLSXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            
-                var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
-                var showDialog = exporterer.ShowDialog(this);
-            
+
+
+            var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
+            var showDialog = exporterer.ShowDialog(this);
+
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -559,14 +562,26 @@ namespace IPTComShark
 
         private void eVA2XMLExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var importer = new Hasler();
+            Import(importer);
+        }
+
+        private void canapeJRUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var importer = new Canape();
+            Import(importer);
+        }
+
+        private void Import(IImporter importer)
+        {
             var openFileDialog = new OpenFileDialog();
             var dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var hasler = new Hasler();
-                if (hasler.CanImport(openFileDialog.FileName))
+                
+                if (importer.CanImport(openFileDialog.FileName))
                 {
-                    foreach (var capturePacket in hasler.Import(openFileDialog.FileName))
+                    foreach (var capturePacket in importer.Import(openFileDialog.FileName))
                     {
                         packetListView1.Add(capturePacket);
                     }
@@ -818,10 +833,10 @@ namespace IPTComShark
                         list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
                         count++;
                     }
-                    
+
                 }
             }
-                       
+
 
             stopwatch.Stop();
 
@@ -871,7 +886,7 @@ namespace IPTComShark
 
             var options = new JsonSerializerOptions()
             {
-                WriteIndented = true, 
+                WriteIndented = true,
                 Converters = { new Classes.IPJsonConverter() }
             };
             var json = JsonSerializer.Serialize(list, typeof(List<Tuple<CapturePacket, Parse>>), options);
@@ -995,6 +1010,8 @@ namespace IPTComShark
             Clipboard.SetText(string.Join(Environment.NewLine,
                 Logger.Instance.GetLog().Select(log => log.ToString())));
         }
+
+        
 
 
         //public enum Protocol

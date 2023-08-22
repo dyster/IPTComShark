@@ -64,6 +64,15 @@ namespace IPTComShark.Classes
         {
             return InvalidXMLChars.IsMatch(text);
         }
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            int NumberChars = hex.Length;
+            var bytes = new byte[NumberChars / 2];
+            for (var i = 0; i < NumberChars; i += 2)
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            return bytes;
+        }
     }
 
     public class IPJsonConverter : JsonConverter<IPAddress>

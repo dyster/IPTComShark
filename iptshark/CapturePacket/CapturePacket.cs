@@ -197,6 +197,11 @@ namespace IPTComShark
                                 Error = e.Message;
                             }
                         }
+                        else if (tcpPacket.DestinationPort == 44818 || tcpPacket.SourcePort == 44818)
+                        {
+                            Protocol = ProtocolType.CIP;
+                        }
+                        
 
                         break;
 
@@ -244,6 +249,10 @@ namespace IPTComShark
                             {
                                 Error = e.Message;
                             }
+                        }
+                        else if (udp.DestinationPort == 2222 || udp.SourcePort == 2222)
+                        {
+                            Protocol = ProtocolType.CIPIO;
                         }
                         else if (Equals(ipv4.SourceAddress, OpcAddress))
                         {

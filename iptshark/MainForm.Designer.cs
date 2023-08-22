@@ -38,6 +38,7 @@ namespace IPTComShark
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             statusRight = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripStatusLabelSeparator1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripSplitButtonOpenLog = new System.Windows.Forms.ToolStripSplitButton();
             toolStripSplitButtonCopyLog = new System.Windows.Forms.ToolStripSplitButton();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -86,7 +87,7 @@ namespace IPTComShark
             reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
             errorProvider1 = new System.Windows.Forms.ErrorProvider(components);
-            toolStripStatusLabelSeparator1 = new System.Windows.Forms.ToolStripStatusLabel();
+            canapeJRUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -138,6 +139,12 @@ namespace IPTComShark
             statusRight.Name = "statusRight";
             statusRight.Size = new System.Drawing.Size(118, 17);
             statusRight.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripStatusLabelSeparator1
+            // 
+            toolStripStatusLabelSeparator1.Name = "toolStripStatusLabelSeparator1";
+            toolStripStatusLabelSeparator1.Size = new System.Drawing.Size(10, 17);
+            toolStripStatusLabelSeparator1.Text = "|";
             // 
             // toolStripSplitButtonOpenLog
             // 
@@ -197,7 +204,7 @@ namespace IPTComShark
             packetListSettings1.IgnoreDuplicatedPD = false;
             packetListSettings1.IgnoreLoopback = false;
             packetListSettings1.IgnoreUnknownData = false;
-            packetListSettings1.IgnoreVariables = (new string[] { "MMI_M_PACKET", "MMI_L_PACKET" });
+            packetListSettings1.IgnoreVariables = new string[] { "MMI_M_PACKET", "MMI_L_PACKET" };
             packetListView1.Settings = packetListSettings1;
             packetListView1.Size = new System.Drawing.Size(1200, 629);
             packetListView1.TabIndex = 0;
@@ -532,7 +539,7 @@ namespace IPTComShark
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { eVA2XMLExportToolStripMenuItem, bDSToolStripMenuItem });
+            toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { eVA2XMLExportToolStripMenuItem, bDSToolStripMenuItem, canapeJRUToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
             toolStripMenuItem1.Text = "Import";
@@ -540,14 +547,14 @@ namespace IPTComShark
             // eVA2XMLExportToolStripMenuItem
             // 
             eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
             eVA2XMLExportToolStripMenuItem.Click += eVA2XMLExportToolStripMenuItem_Click;
             // 
             // bDSToolStripMenuItem
             // 
             bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            bDSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             bDSToolStripMenuItem.Text = "BDS";
             bDSToolStripMenuItem.Click += bDSToolStripMenuItem_Click;
             // 
@@ -582,11 +589,12 @@ namespace IPTComShark
             // 
             errorProvider1.ContainerControl = this;
             // 
-            // toolStripStatusLabelSeparator1
+            // canapeJRUToolStripMenuItem
             // 
-            toolStripStatusLabelSeparator1.Name = "toolStripStatusLabelSeparator1";
-            toolStripStatusLabelSeparator1.Size = new System.Drawing.Size(10, 17);
-            toolStripStatusLabelSeparator1.Text = "|";
+            canapeJRUToolStripMenuItem.Name = "canapeJRUToolStripMenuItem";
+            canapeJRUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            canapeJRUToolStripMenuItem.Text = "Canape JRU";
+            canapeJRUToolStripMenuItem.Click += canapeJRUToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -680,6 +688,7 @@ namespace IPTComShark
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonOpenLog;
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonCopyLog;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem canapeJRUToolStripMenuItem;
     }
 }
 
