@@ -1,4 +1,5 @@
-﻿using IPTComShark.Parsers;
+﻿using IPTComShark.Classes;
+using IPTComShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace IPTComShark.Import
 {
-    class Hasler
+    class Hasler : IImporter
     {
         private readonly Regex _regex = new Regex(@"<binary length=""464"">(?<hex>[\w ]*)</binary>",
             RegexOptions.Singleline);
@@ -28,12 +29,10 @@ namespace IPTComShark.Import
             return outBytes;
         }
 
-        public List<CapturePacket> Import(string path)
-        {
-            var list = new List<CapturePacket>();
+        public IEnumerable<CapturePacket> Import(string path)
+        {            
             string text = File.ReadAllText(path);
-
-            CapturePacket prev = null;
+                        
             int sortIndex = 1;
 
             var ss27Parser = new SS27Parser();
@@ -42,7 +41,7 @@ namespace IPTComShark.Import
             {
                 string value = match.Groups["hex"].Value;
                 string hexstring = value.Replace(" ", "");
-                byte[] bytearray = StringToByteArray(hexstring);
+                byte[] bytearray = Conversions.StringToByteArray(hexstring);
 
 
                 var ss27 = (SS27Packet)ss27Parser.ParseData(bytearray);
@@ -58,21 +57,12 @@ namespace IPTComShark.Import
                 //prev = deviceLog;
 
 
-                list.Add(capturePacket);
-            }
-
-            return list;
+                yield return capturePacket;
+            }            
         }
 
         public event EventHandler<int> ProgressUpdated;
 
-        private static byte[] StringToByteArray(String hex)
-        {
-            int NumberChars = hex.Length;
-            var bytes = new byte[NumberChars / 2];
-            for (var i = 0; i < NumberChars; i += 2)
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-            return bytes;
-        }
+        
     }
 }
