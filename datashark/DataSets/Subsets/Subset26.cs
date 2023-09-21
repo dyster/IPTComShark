@@ -973,14 +973,14 @@ namespace IPTComShark.DataSets
         public static BitField N_ITER = new BitField
         {
             Name = "N_ITER",
-            BitFieldType = BitFieldType.UInt16,
+            BitFieldType = BitFieldType.UInt8,
             Length = 5
         };
 
         public static BitField N_PIG = new BitField
         {
             Name = "N_PIG",
-            BitFieldType = BitFieldType.UInt16,
+            BitFieldType = BitFieldType.UInt8,
             Length = 3,
             Comment = "Position in the group"
         };
