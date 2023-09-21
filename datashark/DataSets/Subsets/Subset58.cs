@@ -9,11 +9,20 @@ namespace IPTComShark.DataSets
         {
             DataSets.Add(STM_1);
             DataSets.Add(STM_4);
+            DataSets.Add(STM_5);
             DataSets.Add(STM_13);
             DataSets.Add(STM_14);
             DataSets.Add(STM_15);
+            DataSets.Add(STM_32);
+            DataSets.Add(STM_35);
+            DataSets.Add(STM_77);
             DataSets.Add(STM_136);
             DataSets.Add(STM_139);
+            DataSets.Add(STM_161);
+            DataSets.Add(STM_175);
+            DataSets.Add(STM_176);
+            DataSets.Add(STM_177);
+            DataSets.Add(STM_178);
             DataSets.Add(STM_179);
             DataSets.Add(STM_181);
         }
@@ -32,6 +41,24 @@ namespace IPTComShark.DataSets
             Comment = "Packet Length",
             BitFieldType = BitFieldType.UInt16,
             Length = 13
+        };
+
+        public static BitField L_CAPTION = new BitField()
+        {
+            Name = "L_CAPTION",            
+            BitFieldType = BitFieldType.UInt8,
+            Length = 5
+        };
+
+        public static BitField X_CAPTION = new BitField
+        {
+            Name = "X_CAPTION",
+            BitFieldType = BitFieldType.StringLatin,
+            VariableLengthSettings = new VariableLengthSettings
+            {
+                Name = "L_CAPTION",
+                ScalingFactor = 8
+            }
         };
 
         public static DataSetDefinition FFFISHeader => new DataSetDefinition()
@@ -105,6 +132,35 @@ namespace IPTComShark.DataSets
                         ScalingFactor = 8
                     }
                 }
+            }
+        };
+
+        public static DataSetDefinition STM_5 => new DataSetDefinition()
+        {
+            Name = "ETCS status data",
+            Comment = "This packet contains the ETCS On-board current status (ETCS technical mode\r\nand ETCS level of operation) for the STM",
+            Identifiers = new List<string> { "5" },
+            BitFields = new List<BitField>
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.M_LEVEL,
+                new BitField()
+                {
+                    Name = "NID_STM",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8,
+                    VariableLengthSettings = new VariableLengthSettings()
+                    {
+                        Name = "M_LEVEL",
+                        LookUpTable = new IntLookupTable
+                        {
+                            {0,0 }, {1,8}, {2,0}, {3,0}, {4,0}
+                        }
+                    }
+                },
+                Subset26.M_MODE
+                              
             }
         };
 
@@ -196,6 +252,165 @@ namespace IPTComShark.DataSets
                         {"6","HS"},
                         {"7","DA"},
                         {"8","FA"}
+                    }
+                }
+            }
+        };
+
+        public static DataSetDefinition STM_32 => new DataSetDefinition()
+        {
+            Name = "Button Request",
+            Comment = "Create or update the visual states of buttons by STM. Only referenced buttons are updated",
+            Identifiers = new List<string>(new[] { "32" }),
+            BitFields = new List<BitField>()
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.N_ITER,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "NID_STM",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "NID_BUTTON",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "NID_BUTPOS",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 4
+                            },
+                            new BitField
+                            {
+                                Name = "NID_ICON",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "M_BUT_ATTRIB",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 10
+                            },
+                            L_CAPTION,
+                            X_CAPTION
+                        }
+                    }
+
+
+                },
+            }
+        };
+
+        public static DataSetDefinition STM_35 => new DataSetDefinition()
+        {
+            Name = "Indicator Request",
+            Comment = "Create or update the visual states of indicators by STM.\r\nOnly referenced indicators are updated",
+            Identifiers = new List<string>(new[] { "35" }),
+            BitFields = new List<BitField>()
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.N_ITER,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "NID_STM",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "NID_INDICATOR",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "NID_INDPOS",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 5
+                            },
+                            new BitField
+                            {
+                                Name = "NID_ICON",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            },
+                            new BitField
+                            {
+                                Name = "M_IND_ATTRIB",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 10
+                            },
+                            L_CAPTION,
+                            X_CAPTION
+                        }
+                    }
+
+
+                },
+            }
+        };
+
+        public static DataSetDefinition STM_77 => new DataSetDefinition()
+        {
+            Name = "Diagnostic Message",
+            Comment = "Packet which delivers diagnostic message.",
+            Identifiers = new List<string> { "77" },
+            BitFields = new List<BitField>
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.L_TEXT,
+                Subset26.X_TEXT,
+                new BitField
+                {
+                    Name = "N_L_ITER",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8                    
+                },
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_L_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "M_DATA",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            }
+                        }
                     }
                 }
             }
@@ -300,6 +515,295 @@ namespace IPTComShark.DataSets
                         {"7","Status not available"}
                     }
                 }
+            }
+        };
+
+        public static DataSetDefinition STM_161 => new DataSetDefinition()
+        {
+            Name = "STM information to JRU",
+            Comment = "National STM data transmitted to the JRU. (Structure of the data internal to each company)",
+            Identifiers = new List<string> { "161" },
+            BitFields = new List<BitField>
+            {
+                NID_PACKET,
+                L_PACKET,
+                new BitField
+                {
+                    Name = "T_JRU",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32
+                },
+                new BitField
+                {
+                    Name = "N_L_ITER",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_L_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "M_DATA",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        public static DataSetDefinition STM_175 => new DataSetDefinition()
+        {
+            Name = "Train Data",
+            Comment = "Validated train data",
+            Identifiers = new List<string>(new[] { "175" }),
+            BitFields = new List<BitField>()
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.NID_OPERATIONAL,                
+                new BitField
+                {
+                    Name = "NC_TRAIN",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 15
+                },
+                new BitField
+                {
+                    Name = "L_TRAIN",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 12
+                },                
+                Subset26.V_MAXTRAIN,
+                new BitField
+                {
+                    Name = "M_LOADINGGAUGE",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField
+                {
+                    Name = "M_AXLELOAD",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 7
+                },
+                new BitField
+                {
+                    Name = "M_AIRTIGHT",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 2
+                },
+                Subset26.N_ITER,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_ITER"
+                    },
+                    Name = "M_TRACTION",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+            }
+        };
+
+        public static DataSetDefinition STM_176 => new DataSetDefinition()
+        {
+            Name = "Train Data additional brake characteristic to STM",
+            Comment = "Validated train data additional braking characteristic",
+            Identifiers = new List<string>(new[] { "176" }),
+            BitFields = new List<BitField>()
+            {
+                NID_PACKET,
+                L_PACKET,               
+                new BitField
+                {
+                    Name = "T_BEGIN_SB_EF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "T_FULL_SB_EF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                Subset26.N_ITER,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "V_SB_CHAR",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 10
+                            },
+                            new BitField
+                            {
+                                Name = "A_SB_CHAR",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            }
+                        }
+                    }
+                    
+                    
+                },
+                new BitField
+                {
+                    Name = "T_BEGIN_EB_EF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField
+                {
+                    Name = "T_FULL_EB_EF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                Subset26.N_ITER,
+                new BitField
+                {
+                    VariableLengthSettings = new VariableLengthSettings
+                    {
+                        Name = "N_ITER"
+                    },
+                    NestedDataSet = new DataSetDefinition
+                    {
+                        BitFields = new List<BitField>
+                        {
+                            new BitField
+                            {
+                                Name = "V_EB_CHAR",
+                                BitFieldType = BitFieldType.UInt16,
+                                Length = 10
+                            },
+                            new BitField
+                            {
+                                Name = "A_EB_CHAR",
+                                BitFieldType = BitFieldType.UInt8,
+                                Length = 8
+                            }
+                        }
+                    }
+
+
+                },
+                new BitField
+                {
+                    Name = "T_TRACTION_CUT_OFF",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                 new BitField
+                {
+                    Name = "A_MAX",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+            }
+        };
+
+        public static DataSetDefinition STM_177 => new DataSetDefinition()
+        {
+            Name = "Additional Data Values and date/time to STM",
+            Identifiers = new List<string> { "177" },
+            BitFields = new List<BitField>
+            {
+                NID_PACKET,
+                L_PACKET,
+                new BitField()
+                {
+                    Name = "NID_DRIVER",
+                    BitFieldType = BitFieldType.UInt32,
+                    Length = 32,
+                },
+                Subset26.NID_ENGINE,
+                Subset26.M_ADHESION,                
+                new BitField()
+                {
+                    Name = "T_YEAR",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 7,
+                },
+                new BitField()
+                {
+                    Name = "T_MONTH",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 4,
+                },
+                new BitField()
+                {
+                    Name = "T_DAY",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 5,
+                },
+                new BitField()
+                {
+                    Name = "T_HOUR",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 5,
+                },
+                new BitField()
+                {
+                    Name = "T_MINUTES",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 6,
+                },
+                new BitField()
+                {
+                    Name = "T_SECONDS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 6,
+                },
+                new BitField()
+                {
+                    Name = "T_TTS",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 5,
+                },
+            }
+        };
+
+        public static DataSetDefinition STM_178 => new DataSetDefinition()
+        {
+            Name = "National values to STM",
+            Comment = "Downloads a set of National Values",
+            Identifiers = new List<string>(new[] { "178" }),
+            BitFields = new List<BitField>()
+            {
+                NID_PACKET,
+                L_PACKET,
+                Subset26.Q_SCALE,
+                Subset26.V_NVSHUNT,
+                Subset26.V_NVSTFF,
+                Subset26.V_NVONSIGHT,
+                Subset26.V_NVUNFIT,
+                Subset26.V_NVREL,
+                Subset26.D_NVROLL,
+                Subset26.V_NVALLOWOVTRP,
+                Subset26.V_NVSUPOVTRP,
+                Subset26.D_NVOVTRP,
+                Subset26.T_NVOVTRP,
+                Subset26.D_NVPOTRP,
+                Subset26.D_NVSTFF,
+                Subset26.Q_NVDRIVER_ADHES
             }
         };
 
