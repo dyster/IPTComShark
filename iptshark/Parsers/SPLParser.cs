@@ -359,7 +359,7 @@ namespace IPTComShark.Parsers
                 return;
 
             var padding = framePayload.Length * 8 - framePosition;
-            if (padding > 0)
+            if (padding > 7)
                 parse.DisplayFields.Add(new DisplayField("Padding", padding));
 
             // wait til end to add checksum
