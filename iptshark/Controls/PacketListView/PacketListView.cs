@@ -3,6 +3,7 @@ using IPTComShark.Export;
 using IPTComShark.Parsers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -319,6 +320,8 @@ namespace IPTComShark.Controls
 
         public void UpdateFilter()
         {
+            var watch = new Stopwatch();
+
             var ignoreComids = new List<uint>();
             if (!string.IsNullOrEmpty(Settings.IgnoreComid))
             {
@@ -339,7 +342,7 @@ namespace IPTComShark.Controls
                 searchRegex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
             }
 
-            fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
+            fastObjectListView1.AdditionalFilter = new StopwatchModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
 
@@ -390,7 +393,7 @@ namespace IPTComShark.Controls
                 {
                     if (capturePacket.Name != null && searchRegex.IsMatch(capturePacket.Name))
                         return true;
-                    if (capturePacket.DisplayFields.Exists(t => searchRegex.IsMatch(t.Name)))
+                    if (capturePacket.DisplayFields.Exists(t => searchRegex.IsMatch(t.Name) || searchRegex.IsMatch(t.Val.ToString())))
                         return true;
 
                     // TODO we still need to be able to filter on the whole dataset somehow, either generate some massive database or maybe use the dataset definitions instead of the parsed result
@@ -541,18 +544,22 @@ namespace IPTComShark.Controls
                 Parse? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
                 if (parse.HasValue)
                 {
-                    var list = new List<DisplayField>();
-                    foreach (var parsedDataSet in parse.Value.ParsedData)
+
+                    if (parse.Value.ParsedData != null)
                     {
-                        list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                        var list = new List<DisplayField>();
+                        foreach (var parsedDataSet in parse.Value.ParsedData)
+                        {
+                            list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
+                        }
+
+                        var s = string.Join(" ", list);
+                        Clipboard.SetText(s, TextDataFormat.Text);
+                        Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
                     }
 
-                    var s = string.Join(" ", list);
-                    Clipboard.SetText(s, TextDataFormat.Text);
                 }
             }
-
-            Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
         }
 
         private void analyzeChainToolStripMenuItem_Click(object sender, EventArgs e)
@@ -660,6 +667,20 @@ namespace IPTComShark.Controls
                 exporterer.ShowDialog(this);
             }
 
+        }
+
+        private void copyDisplayedTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
+            if (o != null)
+            {
+                if(o.DisplayFields != null)
+                {
+                    var s = string.Join(" ", o.DisplayFields);
+                    Clipboard.SetText(s, TextDataFormat.Text);
+                    Logger.Log("Displayed data copied to ClipBoard", Severity.Info);
+                }                
+            }
         }
     }
 
