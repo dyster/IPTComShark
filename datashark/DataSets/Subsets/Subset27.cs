@@ -715,7 +715,7 @@ namespace IPTComShark.DataSets
                 new BitField
                 {
                     Name = "M_DIRECTION_CONTROLLER",
-                    BitFieldType = BitFieldType.UInt16,
+                    BitFieldType = BitFieldType.UInt8,
                     Length = 2,
                     LookupTable = new LookupTable
                     {
