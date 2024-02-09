@@ -207,6 +207,8 @@ namespace IPTComShark
         public ProtocolType Protocol { get => ProtocolType.Profibus; }
         public byte[] Source { get; set; }
         public byte[] Destination { get; set; }
+        public ushort SourcePort { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ushort DestinationPort { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string ASCII()
         {

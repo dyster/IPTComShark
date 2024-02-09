@@ -57,6 +57,7 @@ namespace IPTComShark
                 var udp = (UdpPacket)ipv4.PayloadPacket;
                 if (udp == null)
                     return null;
+
                 // protect against corrupted data with a try read
                 try
                 {
@@ -137,7 +138,7 @@ namespace IPTComShark
 
                 if (ipv4.SourceAddress != null) Source = ipv4.SourceAddress.GetAddressBytes();
                 if (ipv4.DestinationAddress != null) Destination = ipv4.DestinationAddress.GetAddressBytes();
-
+                
                 if ((ipv4.FragmentFlags & 0x01) == 0x01)
                 {
                     // fragments are rebuilt in the backstore
@@ -151,6 +152,8 @@ namespace IPTComShark
                         var tcpPacket = (TcpPacket)ipv4.PayloadPacket;
                         Protocol = ProtocolType.TCP;
 
+                        this.SourcePort = tcpPacket.SourcePort;
+                        this.DestinationPort = tcpPacket.DestinationPort;
 
                         // catch a semi-rare error in PacketDotNet that cannot be checked against
                         try
@@ -217,12 +220,15 @@ namespace IPTComShark
                             return;
                         }
 
+                        this.SourcePort = udp.SourcePort;
+                        this.DestinationPort = udp.DestinationPort;
+
                         ProtocolInfo = $"{udp.SourcePort}->{udp.DestinationPort} Len={udp.Length}";
 
                         // protect against corrupted data with a try read
                         try
                         {
-                            var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
+                            var throwaway = udp.Length + udp.Checksum;
                         }
                         catch (Exception e)
                         {
@@ -367,7 +373,7 @@ namespace IPTComShark
 
                     case PacketDotNet.ProtocolType.Icmp:
                         Protocol = ProtocolType.ICMP;
-                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();
+                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();                        
                         // dunno
                         break;
 
@@ -468,6 +474,9 @@ namespace IPTComShark
 
         public byte[] Destination { get; set; }
 
+        public ushort SourcePort { get; set; }
+        public ushort DestinationPort { get; set; }
+
         public uint Comid { get; set; }
         public IPTTypes? IPTWPType { get; set; }
 
@@ -501,6 +510,8 @@ namespace IPTComShark
             }
             set { _customName = value; }
         }
+
+        
 
         /// <summary>
         /// If this packet is part of a chain, get only the ParsedData that has changed

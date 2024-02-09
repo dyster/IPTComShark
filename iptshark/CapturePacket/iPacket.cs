@@ -19,5 +19,7 @@ namespace IPTComShark
         public byte[] Source { get; set; }
 
         public byte[] Destination { get; set; }
+        public ushort SourcePort {get;set;}
+        public ushort DestinationPort { get;set;}
     }
 }
