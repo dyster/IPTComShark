@@ -29,7 +29,7 @@ namespace IPTComShark.Parsers
 
             var parsedHeader = Subset27.Header.Parse(data);
 
-            var NID_MESSAGE = (uint) parsedHeader.GetField("NID_MESSAGE").Value;
+            var NID_MESSAGE = (byte) parsedHeader.GetField("NID_MESSAGE").Value;
 
             parsed.Name = "JRU-" + NID_MESSAGE;
 
