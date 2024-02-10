@@ -232,7 +232,6 @@ namespace IPTComShark.BackStore
         {
             var seed = ++_seed;
             parse = new Parse();
-
             Packet topPacket = PacketWrapper.Parse(raw);
 
 
@@ -324,12 +323,11 @@ namespace IPTComShark.BackStore
 
             // try to parse data if there is any
             var payload = GetPayloadData(capturePacket, topPacket);
-            Parse? extractParsedData = _parserFactory.DoPacket(capturePacket.Protocol, payload, capturePacket);
+            var tryparse = _parserFactory.DoPacket(capturePacket.Protocol, payload, capturePacket);
 
-            if (extractParsedData.HasValue)
+            if (tryparse != null)
             {
-                parse = extractParsedData.Value;
-
+                parse = tryparse;
                 // add all available displayfields for now
                 if (parse.DisplayFields != null) capturePacket.DisplayFields.AddRange(parse.DisplayFields);
                 if (!string.IsNullOrEmpty(parse.Name))

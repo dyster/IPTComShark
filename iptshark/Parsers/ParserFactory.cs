@@ -32,7 +32,7 @@ namespace IPTComShark.Parsers
         ProtocolType ProtocolType { get; }
     }
 
-    public struct Parse
+    public class Parse
     {
         /// <summary>
         /// True if no parser was found

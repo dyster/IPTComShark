@@ -103,7 +103,7 @@ namespace IPTComShark.Controls
                         prop.Size = iptPacket.IPTWPSize;
                         prop.Type = originalpacket.IPTWPType.ToString();
 
-                        if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
+                        if (parse != null && !parse.NoParserInstalled && parse.ParsedData.Count == 1 &&
                             originalpacket.Previous != null)
                         {
                             // if only one set we can do change detection
@@ -111,15 +111,15 @@ namespace IPTComShark.Controls
                             Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload, originalpacket.Previous);
 
                             dataLines.Add(new DataLine(ticker++)
-                            { IsCategory = true, Name = parse.Value.ParsedData[0].Name });
-                            for (var index = 0; index < parse.Value.ParsedData[0].ParsedFields.Count; index++)
+                            { IsCategory = true, Name = parse.ParsedData[0].Name });
+                            for (var index = 0; index < parse.ParsedData[0].ParsedFields.Count; index++)
                             {
-                                var field = parse.Value.ParsedData[0].ParsedFields[index];
+                                var field = parse.ParsedData[0].ParsedFields[index];
                                 bool changed = false;
 
-                                if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
+                                if (oldparse != null && oldparse.ParsedData[0].ParsedFields.Count > index)
                                 {
-                                    var parsedField = oldparse.Value.ParsedData[0][index];
+                                    var parsedField = oldparse.ParsedData[0][index];
                                     changed = !parsedField.Value.Equals(field.Value);
                                 }
 
@@ -129,7 +129,7 @@ namespace IPTComShark.Controls
                                 });
                             }
                         }
-                        else if (parse.HasValue && !parse.Value.NoParserInstalled)
+                        else if (parse != null && !parse.NoParserInstalled)
                         {
                             ticker = ParseToDataLines(ticker, dataLines, parse);
                         }
@@ -142,13 +142,13 @@ namespace IPTComShark.Controls
                     {
                         prop.Type = "IPTWP Parser failed, see bottom window";
 
-                        if (parse.HasValue && !parse.Value.NoParserInstalled)
+                        if (parse != null && !parse.NoParserInstalled)
                         {
                             ticker = ParseToDataLines(ticker, dataLines, parse);
                         }
                     }
                 }
-                else if (parse.HasValue && !parse.Value.NoParserInstalled)
+                else if (parse != null && !parse.NoParserInstalled)
                 {
                     ticker = ParseToDataLines(ticker, dataLines, parse);
                 }
@@ -243,7 +243,7 @@ namespace IPTComShark.Controls
 
         private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, Parse? parse)
         {
-            foreach (var parsedDataSet in parse.Value.ParsedData)
+            foreach (var parsedDataSet in parse.ParsedData)
             {
                 dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
                 foreach (var field in parsedDataSet.ParsedFields)

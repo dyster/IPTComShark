@@ -40,11 +40,11 @@ namespace IPTComShark.Export
                 int topcol = 4;
                 // TODO fix so it uses the whole list
                 var payload = backStore.GetPayload(packets.First.Value.No);
-                Parse? extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload, packets.First.Value);
+                Parse extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload, packets.First.Value);
 
-                if (extractParse.HasValue)
+                if (extractParse != null)
                 {
-                    foreach (ParsedField field in extractParse.Value.ParsedData[0].ParsedFields)
+                    foreach (ParsedField field in extractParse.ParsedData[0].ParsedFields)
                     {
                         worksheet.Cells[3, topcol++].Value = field.Name;
                     }
@@ -195,9 +195,9 @@ namespace IPTComShark.Export
 
                 var payload = backStore.GetPayload(packet.No);
                 Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
-                if (parse.HasValue)
+                if (parse != null)
                 {
-                    var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
+                    var displayFields = parse.ParsedData.SelectMany(dataset =>
                         dataset.ParsedFields.Select(f => new DisplayField(f)));
                     foreach (var pair in displayFields)
                     {
@@ -242,9 +242,9 @@ namespace IPTComShark.Export
                 csvExport["Name"] = packet.Name;
                 var payload = backStore.GetPayload(packet.No);
                 Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
-                if (parse.HasValue)
+                if (parse != null)
                 {
-                    var displayFields = parse.Value.ParsedData.SelectMany(dataset =>
+                    var displayFields = parse.ParsedData.SelectMany(dataset =>
                         dataset.ParsedFields.Select(f => new DisplayField(f)));
                     csvExport["Data"] = string.Join(" ", displayFields);
                 }

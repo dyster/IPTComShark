@@ -542,13 +542,13 @@ namespace IPTComShark.Controls
             {
                 var payload = BackStore.GetPayload(o.No);
                 Parse? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
-                if (parse.HasValue)
+                if (parse != null)
                 {
 
-                    if (parse.Value.ParsedData != null)
+                    if (parse.ParsedData != null)
                     {
                         var list = new List<DisplayField>();
-                        foreach (var parsedDataSet in parse.Value.ParsedData)
+                        foreach (var parsedDataSet in parse.ParsedData)
                         {
                             list.AddRange(parsedDataSet.ParsedFields.Select(f => new DisplayField(f)));
                         }
