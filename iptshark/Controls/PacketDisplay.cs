@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace IPTComShark.Controls
 {
+    
     public partial class PacketDisplay : UserControl
     {
         public PacketDisplay()
@@ -26,7 +27,7 @@ namespace IPTComShark.Controls
                     item.BackColor = Color.LightSeaGreen;
                 if (line.IsCategory)
                     item.Font = new Font(item.Font, FontStyle.Bold);
-            };
+            };  
         }
 
         public BackStore.BackStore BackStore { get; set; }
@@ -36,10 +37,8 @@ namespace IPTComShark.Controls
         {
             uint ticker = 0;
 
-            textBoxComid.Text = string.Empty;
-            textBoxRAW.Text = string.Empty;
-            textBoxSize.Text = string.Empty;
-            textBoxType.Text = string.Empty;
+            var prop = new PropObject();
+            propertyGrid1.SelectedObject = prop;
 
             var dataLines = new List<DataLine>();
 
@@ -56,6 +55,8 @@ namespace IPTComShark.Controls
                 dataListViewRight.DataSource = dataLines;
                 return;
             }
+
+            
 
             try
             {
@@ -89,10 +90,10 @@ namespace IPTComShark.Controls
                         var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                         var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
-                        textBoxComid.Text = originalpacket.Comid.ToString();
+                        prop.ComID = originalpacket.Comid;
 
-                        textBoxSize.Text = iptPacket.IPTWPSize.ToString();
-                        textBoxType.Text = originalpacket.IPTWPType.ToString();
+                        prop.Size = iptPacket.IPTWPSize;
+                        prop.Type = originalpacket.IPTWPType.ToString();
 
                         if (parse.HasValue && !parse.Value.NoParserInstalled && parse.Value.ParsedData.Count == 1 &&
                             originalpacket.Previous != null)
@@ -133,7 +134,7 @@ namespace IPTComShark.Controls
                     }
                     else
                     {
-                        textBoxComid.Text = "IPTWP Parser failed, see bottom window";
+                        prop.Type = "IPTWP Parser failed, see bottom window";
 
                         if (parse.HasValue && !parse.Value.NoParserInstalled)
                         {
@@ -183,7 +184,7 @@ namespace IPTComShark.Controls
 
                     text.AppendLine("");
 
-                    textBoxRAW.Text = BitConverter.ToString(bytes);
+                    prop.RAW = BitConverter.ToString(bytes);
 
                     string str1 = "";
                     string str2 = "";
@@ -427,6 +428,15 @@ namespace IPTComShark.Controls
                 Clipboard.SetText(dataline.ToString());
             }
         }
+    }
+
+    public class PropObject
+    {
+        public uint ComID { get; set; }
+        public string RAW { get; set; }
+        public uint Size { get; set; }
+        public string Type { get; set; }
+        public int PktsInSequence { get; set; }
     }
 
     public class DataLine
