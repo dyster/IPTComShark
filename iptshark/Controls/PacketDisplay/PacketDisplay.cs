@@ -1,5 +1,4 @@
-﻿using BitDataParser;
-using IPTComShark.Parsers;
+﻿using IPTComShark.Parsers;
 using IPTComShark.Windows;
 using PacketDotNet;
 using System;
@@ -7,18 +6,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Windows.Forms;
 
 namespace IPTComShark.Controls
 {
-    
     public partial class PacketDisplay : UserControl
     {
         public PacketDisplay()
         {
             InitializeComponent();
-
 
             dataListViewRight.RowFormatter += item =>
             {
@@ -27,7 +23,7 @@ namespace IPTComShark.Controls
                     item.BackColor = Color.LightSeaGreen;
                 if (line.IsCategory)
                     item.Font = new Font(item.Font, FontStyle.Bold);
-            };  
+            };
         }
 
         public BackStore.BackStore BackStore { get; set; }
@@ -56,8 +52,6 @@ namespace IPTComShark.Controls
                 return;
             }
 
-            
-
             try
             {
                 var payload = BackStore.GetPayload(originalpacket.No);
@@ -74,10 +68,7 @@ namespace IPTComShark.Controls
                     }
                 }
 
-
-
                 Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
-
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP && actionPacket.PayloadPacket != null)
                 {
@@ -86,7 +77,6 @@ namespace IPTComShark.Controls
 
                     if (iptPacket != null)
                     {
-
                         var iptPayload = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                         var iptHeader = IPTWPPacket.ExtractHeader(udp.PayloadData);
 
@@ -109,13 +99,11 @@ namespace IPTComShark.Controls
                                 var field = parse.Value.ParsedData[0].ParsedFields[index];
                                 bool changed = false;
 
-
                                 if (oldparse.HasValue && oldparse.Value.ParsedData[0].ParsedFields.Count > index)
                                 {
                                     var parsedField = oldparse.Value.ParsedData[0][index];
                                     changed = !parsedField.Value.Equals(field.Value);
                                 }
-
 
                                 dataLines.Add(new DataLine(field, ticker++)
                                 {
@@ -268,7 +256,6 @@ namespace IPTComShark.Controls
                     else
                         dataLine.Type = processVariable.Type;
 
-
                     switch (processVariable.Type)
                     {
                         case "BOOLEAN8":
@@ -279,18 +266,21 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", bools);
                             pointer += arraysize;
                             break;
+
                         case "UINT8":
                             var uints = new uint[arraysize];
                             Array.Copy(packet.IPTWPPayload, pointer, uints, 0, arraysize);
                             dataLine.Value = string.Join(",", uints);
                             pointer += arraysize;
                             break;
+
                         case "INT8":
                             var ints = new int[arraysize];
                             Array.Copy(packet.IPTWPPayload, pointer, ints, 0, arraysize);
                             dataLine.Value = string.Join(",", ints);
                             pointer += arraysize;
                             break;
+
                         case "UINT16":
                             var uint16s = new ushort[arraysize];
                             for (var i = 0; i < arraysize; i++)
@@ -304,6 +294,7 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", uint16s);
                             pointer += arraysize * 2;
                             break;
+
                         case "INT16":
                             var int16s = new short[arraysize];
                             for (var i = 0; i < arraysize; i++)
@@ -316,6 +307,7 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", int16s);
                             pointer += arraysize * 2;
                             break;
+
                         case "UINT32":
                             var uint32s = new uint[arraysize];
                             for (var i = 0; i < arraysize; i++)
@@ -331,6 +323,7 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", uint32s);
                             pointer += arraysize * 4;
                             break;
+
                         case "INT32":
                             var int32s = new int[arraysize];
                             for (var i = 0; i < arraysize; i++)
@@ -345,6 +338,7 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", int32s);
                             pointer += arraysize * 4;
                             break;
+
                         case "REAL32":
                             var floats = new float[arraysize];
                             for (var i = 0; i < arraysize; i++)
@@ -359,6 +353,7 @@ namespace IPTComShark.Controls
                             dataLine.Value = string.Join(",", floats);
                             pointer += arraysize * 4;
                             break;
+
                         case "CHAR8":
                             var chars = new byte[arraysize];
                             Array.Copy(packet.IPTWPPayload, pointer, chars, 0, arraysize);
@@ -366,6 +361,7 @@ namespace IPTComShark.Controls
                                              " Bytes: " + BitConverter.ToString(chars);
                             pointer += arraysize;
                             break;
+
                         default:
                             dataLine.Value = "UNKNOWN TYPE";
                             pointer += arraysize;
@@ -405,6 +401,7 @@ namespace IPTComShark.Controls
                 }
             }
         }
+
         public void Clear()
         {
             var dataLines = new List<DataLine>();
@@ -427,61 +424,6 @@ namespace IPTComShark.Controls
                 var dataline = (DataLine)dataListViewRight.MouseMoveHitTest.RowObject;
                 Clipboard.SetText(dataline.ToString());
             }
-        }
-    }
-
-    public class PropObject
-    {
-        public uint ComID { get; set; }
-        public string RAW { get; set; }
-        public uint Size { get; set; }
-        public string Type { get; set; }
-        public int PktsInSequence { get; set; }
-    }
-
-    public class DataLine
-    {
-        private readonly ParsedField _field;
-
-        public DataLine(uint tick)
-        {
-            No = tick;
-        }
-
-        public DataLine(ParsedField field, uint tick)
-        {
-            No = tick;
-
-            _field = field;
-            //string typestring = field.Value.GetType().ToString();
-
-            Name = field.Name;
-            Value = field.Value.ToString();
-            TrueValue = field.TrueValue;
-            //Type = typestring.Substring(typestring.LastIndexOf(".") + 1);
-            Comment = field.Comment;
-        }
-
-        public uint No { get; set; }
-
-        public string Name { get; set; }
-
-        public string Type => _field?.UsedBitField.BitFieldType.ToString();
-
-        public string Value { get; set; }
-        public object TrueValue { get; set; }
-        public string Comment { get; set; }
-        public bool Changed { get; set; }
-        public bool IsCategory { get; set; }
-
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        public ParsedField GetField()
-        {
-            return _field;
         }
     }
 }
