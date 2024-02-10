@@ -52,6 +52,24 @@ namespace IPTComShark.Controls
                 return;
             }
 
+            var previous = originalpacket.Previous;
+            var next = originalpacket.Next;
+            var prevcount = 0;
+            var nextcount = 0;
+            while(previous != null )
+            {
+                prevcount++;
+                previous = previous.Previous;
+            }
+
+            while(next != null)
+            {
+                nextcount++;
+                next = next.Next;
+            }
+
+            prop.PktsInSequence = prevcount + nextcount + 1;
+
             try
             {
                 var payload = BackStore.GetPayload(originalpacket.No);
