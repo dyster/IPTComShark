@@ -86,7 +86,16 @@ namespace IPTComShark.Controls
                     }
                 }
 
-                Parse? parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
+                Parse parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
+                byte[] oldpayload;
+                Parse oldparse;
+                if (originalpacket.Previous != null)
+                {
+                    oldpayload = BackStore.GetPayload(originalpacket.Previous.No);
+                    oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload, originalpacket.Previous);
+                }
+                else
+                    oldparse = null;
 
                 if (originalpacket.Protocol == ProtocolType.IPTWP && actionPacket.PayloadPacket != null)
                 {
@@ -106,9 +115,7 @@ namespace IPTComShark.Controls
                         if (parse != null && !parse.NoParserInstalled && parse.ParsedData.Count == 1 &&
                             originalpacket.Previous != null)
                         {
-                            // if only one set we can do change detection
-                            var oldpayload = BackStore.GetPayload(originalpacket.Previous.No);
-                            Parse? oldparse = ParserFactory.DoPacket(originalpacket.Previous.Protocol, oldpayload, originalpacket.Previous);
+                            // if only one set we can do change detection                          
 
                             dataLines.Add(new DataLine(ticker++)
                             { IsCategory = true, Name = parse.ParsedData[0].Name });
@@ -131,7 +138,7 @@ namespace IPTComShark.Controls
                         }
                         else if (parse != null && !parse.NoParserInstalled)
                         {
-                            ticker = ParseToDataLines(ticker, dataLines, parse);
+                            ticker = ParseToDataLines(ticker, dataLines, parse, oldparse);
                         }
                         else
                         {
@@ -144,13 +151,13 @@ namespace IPTComShark.Controls
 
                         if (parse != null && !parse.NoParserInstalled)
                         {
-                            ticker = ParseToDataLines(ticker, dataLines, parse);
+                            ticker = ParseToDataLines(ticker, dataLines, parse, oldparse);
                         }
                     }
                 }
                 else if (parse != null && !parse.NoParserInstalled)
                 {
-                    ticker = ParseToDataLines(ticker, dataLines, parse);
+                    ticker = ParseToDataLines(ticker, dataLines, parse, oldparse);
                 }
             }
             catch (Exception e)
@@ -241,15 +248,29 @@ namespace IPTComShark.Controls
             dataListViewRight.DataSource = dataLines;
         }
 
-        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, Parse? parse)
+        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, Parse? parse, Parse oldparse)
         {
+            var dataSetCount = 0;
             foreach (var parsedDataSet in parse.ParsedData)
             {
                 dataLines.Add(new DataLine(ticker++) { IsCategory = true, Name = parsedDataSet.Name });
+
+                var parsedFieldCount = 0;
                 foreach (var field in parsedDataSet.ParsedFields)
                 {
-                    dataLines.Add(new DataLine(field, ticker++));
+                    if(oldparse != null && oldparse.ParsedData.Count > dataSetCount && oldparse.ParsedData[dataSetCount].ParsedFields.Count > parsedFieldCount)
+                    {
+                        var mikeOldField = oldparse.ParsedData[dataSetCount].ParsedFields[parsedFieldCount];
+                        var changed = !mikeOldField.Value.Equals(field.Value);
+                        dataLines.Add(new DataLine(field, ticker++) { Changed = changed});
+                    }
+                    else
+                        dataLines.Add(new DataLine(field, ticker++));
+
+                    parsedFieldCount++;
                 }
+
+                dataSetCount++;
             }
 
             return ticker;
