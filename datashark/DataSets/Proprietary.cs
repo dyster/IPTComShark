@@ -39,7 +39,7 @@ namespace IPTComShark.DataSets
                                 {2, 0},
                                 {3, 0},
                                 {4, 0},
-                                {5, 0}, 
+                                {5, 0},
                                 {6, 0}
                             }
                         },
@@ -164,7 +164,6 @@ namespace IPTComShark.DataSets
             }
         };
 
-
         public static DataSetDefinition MSUK =
             new DataSetDefinition
             {
@@ -211,204 +210,175 @@ namespace IPTComShark.DataSets
                     {
                         Name = "SPAD Brake Demand Button Request",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "OVERSPEED Brake Demand Button Request",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "AWS Brake Demand Button Request",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "Train Stop Override Button Request",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "Brake Release Button Request",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "SPAD Brake Demand Button Event",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "OVERSPEED Brake Demand Button Event",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "AWS Brake Demand Button Event",
                         BitFieldType = BitFieldType.Bool,
-                        Length = 1,
-                        SkipIfValue = false
+                        Length = 1
                     },
                     new BitField
                     {
                         Name = "Train Stop Override Button Event",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Brake Release Button Event",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Brake Release Button Event",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "SPAD Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "SPAD Reduced Level Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "OVERSPEED Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "OVERSPEED Reduced Level Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Test Completed Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Clear Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Warning Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "Silence Audio Command",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "SPAD Brake Application Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "OVERSPEED Brake Application Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Brake Application Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "TPWS TEMPORARY ISOLATION Active Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS / TPWS Fault Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "TRAIN STOP OVERRIDE Active Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "BRAKE RELEASE Active Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Isolated Text Message",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Clear Contact",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
                         Name = "AWS Warning Contact",
                         BitFieldType = BitFieldType.Bool,
                         Length = 1,
-                        SkipIfValue = false
                     },
                     new BitField
                     {
@@ -488,7 +458,6 @@ namespace IPTComShark.DataSets
                             {"False", "Off"},
                             {"True", "On"}
                         },
-                        SkipIfValue = false
                     },
                     new BitField
                     {
@@ -500,7 +469,6 @@ namespace IPTComShark.DataSets
                             {"False", "Off"},
                             {"True", "On"}
                         },
-                        SkipIfValue = false
                     },
                     new BitField
                     {
