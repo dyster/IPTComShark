@@ -54,10 +54,6 @@ namespace TrainShark.Controls
         {
             InitializeComponent();
 
-
-
-
-
             olvColumnNo.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket)rowObject;
@@ -67,15 +63,8 @@ namespace TrainShark.Controls
             olvColumnDate.AspectGetter += rowObject =>
             {
                 var packet = (CapturePacket)rowObject;
-                return packet?.Date.ToString();
-            };
-
-            olvColumnMS.AspectGetter += rowObject =>
-            {
-                var packet = (CapturePacket)rowObject;
-                //return packet.Date.ToString(CultureInfo.InvariantCulture) + ":" + packet.Date.Millisecond;
-                return packet?.Date.Millisecond;
-            };
+                return packet?.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            };            
 
             olvColumnFrom.AspectGetter += rowObject =>
             {

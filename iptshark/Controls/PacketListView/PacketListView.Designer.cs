@@ -32,7 +32,6 @@
             fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
             olvColumnNo = new MyOLVColumn();
             olvColumnDate = new MyOLVColumn();
-            olvColumnMS = new MyOLVColumn();
             olvColumnFrom = new MyOLVColumn();
             olvColumnTo = new MyOLVColumn();
             olvColumnProtocol = new MyOLVColumn();
@@ -44,13 +43,13 @@
             olvColumnError = new BrightIdeasSoftware.OLVColumn();
             contextMenuMouse = new System.Windows.Forms.ContextMenuStrip(components);
             copyRawByteshexStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            copyDisplayedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             copyParsedDatatextStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             analyzeChainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             addToIgnoredComIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             sPREADSHEETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             timerAddBuffer = new System.Windows.Forms.Timer(components);
             timerFlicker = new System.Windows.Forms.Timer(components);
-            copyDisplayedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)fastObjectListView1).BeginInit();
             contextMenuMouse.SuspendLayout();
             SuspendLayout();
@@ -59,7 +58,6 @@
             // 
             fastObjectListView1.AllColumns.Add(olvColumnNo);
             fastObjectListView1.AllColumns.Add(olvColumnDate);
-            fastObjectListView1.AllColumns.Add(olvColumnMS);
             fastObjectListView1.AllColumns.Add(olvColumnFrom);
             fastObjectListView1.AllColumns.Add(olvColumnTo);
             fastObjectListView1.AllColumns.Add(olvColumnProtocol);
@@ -71,7 +69,7 @@
             fastObjectListView1.AllColumns.Add(olvColumnError);
             fastObjectListView1.AllowColumnReorder = true;
             fastObjectListView1.CellEditUseWholeCell = false;
-            fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumnNo, olvColumnDate, olvColumnMS, olvColumnFrom, olvColumnTo, olvColumnProtocol, olvColumnProtocolInfo, olvColumnName, olvColumnDictionary, olvColumnIPTWPType, olvColumnComId, olvColumnError });
+            fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { olvColumnNo, olvColumnDate, olvColumnFrom, olvColumnTo, olvColumnProtocol, olvColumnProtocolInfo, olvColumnName, olvColumnDictionary, olvColumnIPTWPType, olvColumnComId, olvColumnError });
             fastObjectListView1.ContextMenuStrip = contextMenuMouse;
             fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             fastObjectListView1.EmptyListMsg = "No files loaded, use File->Open or Drag&Drop";
@@ -106,14 +104,7 @@
             olvColumnDate.ClusterGetter = null;
             olvColumnDate.Text = "Date";
             olvColumnDate.UseFiltering = false;
-            olvColumnDate.Width = 130;
-            // 
-            // olvColumnMS
-            // 
-            olvColumnMS.ClusterGetter = null;
-            olvColumnMS.Text = "ms";
-            olvColumnMS.UseFiltering = false;
-            olvColumnMS.Width = 40;
+            olvColumnDate.Width = 140;
             // 
             // olvColumnFrom
             // 
@@ -177,7 +168,7 @@
             // 
             contextMenuMouse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { copyRawByteshexStringToolStripMenuItem, copyDisplayedTextToolStripMenuItem, copyParsedDatatextStringToolStripMenuItem, analyzeChainToolStripMenuItem, addToIgnoredComIDsToolStripMenuItem, sPREADSHEETToolStripMenuItem });
             contextMenuMouse.Name = "contextMenuMouse";
-            contextMenuMouse.Size = new System.Drawing.Size(246, 158);
+            contextMenuMouse.Size = new System.Drawing.Size(246, 136);
             contextMenuMouse.Opening += ContextMenuMouse_Opening;
             // 
             // copyRawByteshexStringToolStripMenuItem
@@ -186,6 +177,13 @@
             copyRawByteshexStringToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
             copyRawByteshexStringToolStripMenuItem.Text = "Copy raw bytes (hex string)";
             copyRawByteshexStringToolStripMenuItem.Click += copyRawByteshexStringToolStripMenuItem_Click;
+            // 
+            // copyDisplayedTextToolStripMenuItem
+            // 
+            copyDisplayedTextToolStripMenuItem.Name = "copyDisplayedTextToolStripMenuItem";
+            copyDisplayedTextToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
+            copyDisplayedTextToolStripMenuItem.Text = "Copy displayed text";
+            copyDisplayedTextToolStripMenuItem.Click += copyDisplayedTextToolStripMenuItem_Click;
             // 
             // copyParsedDatatextStringToolStripMenuItem
             // 
@@ -226,13 +224,6 @@
             timerFlicker.Interval = 500;
             timerFlicker.Tick += timerFlicker_Tick;
             // 
-            // copyDisplayedTextToolStripMenuItem
-            // 
-            copyDisplayedTextToolStripMenuItem.Name = "copyDisplayedTextToolStripMenuItem";
-            copyDisplayedTextToolStripMenuItem.Size = new System.Drawing.Size(245, 22);
-            copyDisplayedTextToolStripMenuItem.Text = "Copy displayed text";
-            copyDisplayedTextToolStripMenuItem.Click += copyDisplayedTextToolStripMenuItem_Click;
-            // 
             // PacketListView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -267,7 +258,6 @@
         private System.Windows.Forms.ToolStripMenuItem copyParsedDatatextStringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem analyzeChainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToIgnoredComIDsToolStripMenuItem;
-        private MyOLVColumn olvColumnMS;
         private BrightIdeasSoftware.OLVColumn olvColumnError;
         private System.Windows.Forms.Timer timerFlicker;
         private System.Windows.Forms.ToolStripMenuItem sPREADSHEETToolStripMenuItem;
