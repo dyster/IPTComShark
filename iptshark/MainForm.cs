@@ -1,11 +1,11 @@
 ﻿using BitDataParser;
 using BustPCap;
-using IPTComShark.DataSets;
-using IPTComShark.Export;
-using IPTComShark.FileManager;
-using IPTComShark.Import;
-using IPTComShark.Parsers;
-using IPTComShark.Windows;
+using TrainShark.DataSets;
+using TrainShark.Export;
+using TrainShark.FileManager;
+using TrainShark.Import;
+using TrainShark.Parsers;
+using TrainShark.Windows;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using System;
@@ -19,9 +19,9 @@ using System.Numerics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static IPTComShark.Classes.Conversions;
+using static TrainShark.Classes.Conversions;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public partial class MainForm : Form
     {
@@ -43,6 +43,11 @@ namespace IPTComShark
 
             _parserFactory = GenerateParserFactory();
 
+            //var ipt = new IPT();
+            //ipt.SerializeDataContract(@"d:\temp\iptdc.xml");
+            //ipt.SerializeXml(@"d:\temp\ipt.xml");
+            //ipt.SerializeJson(@"d:\temp\iptdc.xml");
+
             _backStore = new BackStore.BackStore(_parserFactory);
             _backStore.FinishedProcessing += _backStore_FinishedProcessing;
 
@@ -58,7 +63,7 @@ namespace IPTComShark
 
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
-            var packetSettings = IPTComShark.Controls.PacketListSettings.DeserializeString(Properties.Settings.Default.PacketListSettings);
+            var packetSettings = TrainShark.Controls.PacketListSettings.DeserializeString(Properties.Settings.Default.PacketListSettings);
 
             checkBoxAutoScroll.DataBindings.Add("Checked", packetSettings, "AutoScroll", true,
                 DataSourceUpdateMode.OnPropertyChanged);
@@ -80,7 +85,7 @@ namespace IPTComShark
             _backStore.NewCapturePacket += (sender, packet) => packetListView1.AddRange(packet);
 
             stopwatch.Stop();
-            Logger.Log("IPTComShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
+            Logger.Log("TrainShark started in " + stopwatch.ElapsedMilliseconds + "ms", Severity.Info);
 
             if (ValidateArgs(args))
             {
@@ -594,8 +599,8 @@ namespace IPTComShark
         }
 
         private void reportAnIssueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/dyster/IPTComShark/issues");
+        {            
+            Process.Start(new ProcessStartInfo("https://gitlab.bt.bombardier.net/jsonesso/IPTComShark/-/issues") { UseShellExecute = true });
         }
 
         private void packetListView1_DragEnter(object sender, DragEventArgs e)
