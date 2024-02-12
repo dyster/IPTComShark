@@ -1,14 +1,14 @@
 ﻿using BitDataParser;
-using IPTComShark.Classes;
-using IPTComShark.Windows;
-using IPTComShark.XmlFiles;
+using TrainShark.Classes;
+using TrainShark.Windows;
+using TrainShark.XmlFiles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     class IPTWPParser : IParser
     {

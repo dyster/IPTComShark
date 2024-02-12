@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using BitDataParser;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     [Serializable]
     [DataContract]

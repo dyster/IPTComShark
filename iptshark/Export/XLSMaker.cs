@@ -1,5 +1,5 @@
-﻿using IPTComShark.Classes;
-using IPTComShark.Parsers;
+﻿using TrainShark.Classes;
+using TrainShark.Parsers;
 using OfficeOpenXml;
 using OxyPlot;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace IPTComShark.Export
+namespace TrainShark.Export
 {
     public class XLSMaker
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public sealed class Logger
     {

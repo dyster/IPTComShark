@@ -1,5 +1,5 @@
-﻿using IPTComShark.Classes;
-using IPTComShark.Parsers;
+﻿using TrainShark.Classes;
+using TrainShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace IPTComShark.Import
+namespace TrainShark.Import
 {
     internal class Canape : IImporter
     {

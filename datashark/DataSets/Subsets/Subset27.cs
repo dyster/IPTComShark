@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using BitDataParser;
 
-namespace IPTComShark.DataSets
+namespace TrainShark.DataSets
 {
     public static class Subset27
     {

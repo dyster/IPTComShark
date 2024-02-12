@@ -5,10 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using BitDataParser;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using static BitDataParser.Functions;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     public class SS27Parser //: IDataParser
     {

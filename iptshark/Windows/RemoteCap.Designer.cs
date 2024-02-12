@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Windows
+﻿namespace TrainShark.Windows
 {
     partial class RemoteCap
     {
@@ -157,57 +157,57 @@
             // 
             // textBoxPrefix
             // 
-            this.textBoxPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapPrefix", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapPrefix", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxPrefix.Location = new System.Drawing.Point(362, 64);
             this.textBoxPrefix.Name = "textBoxPrefix";
             this.textBoxPrefix.Size = new System.Drawing.Size(355, 20);
             this.textBoxPrefix.TabIndex = 15;
-            this.textBoxPrefix.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapPrefix;
+            this.textBoxPrefix.Text = global::TrainShark.Properties.Settings.Default.RemoteCapPrefix;
             // 
             // textBoxFolder
             // 
-            this.textBoxFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapFolder", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapFolder", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxFolder.Location = new System.Drawing.Point(362, 38);
             this.textBoxFolder.Name = "textBoxFolder";
             this.textBoxFolder.Size = new System.Drawing.Size(355, 20);
             this.textBoxFolder.TabIndex = 12;
-            this.textBoxFolder.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapFolder;
+            this.textBoxFolder.Text = global::TrainShark.Properties.Settings.Default.RemoteCapFolder;
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapPassword", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxPassword.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapPassword", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxPassword.Location = new System.Drawing.Point(90, 90);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(100, 20);
             this.textBoxPassword.TabIndex = 8;
-            this.textBoxPassword.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapPassword;
+            this.textBoxPassword.Text = global::TrainShark.Properties.Settings.Default.RemoteCapPassword;
             // 
             // textBoxUsername
             // 
-            this.textBoxUsername.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapUsername", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxUsername.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapUsername", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxUsername.Location = new System.Drawing.Point(90, 64);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(100, 20);
             this.textBoxUsername.TabIndex = 5;
-            this.textBoxUsername.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapUsername;
+            this.textBoxUsername.Text = global::TrainShark.Properties.Settings.Default.RemoteCapUsername;
             // 
             // textBoxPort
             // 
-            this.textBoxPort.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxPort.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxPort.Location = new System.Drawing.Point(90, 38);
             this.textBoxPort.Name = "textBoxPort";
             this.textBoxPort.Size = new System.Drawing.Size(100, 20);
             this.textBoxPort.TabIndex = 4;
-            this.textBoxPort.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapPort;
+            this.textBoxPort.Text = global::TrainShark.Properties.Settings.Default.RemoteCapPort;
             // 
             // textBoxIP
             // 
-            this.textBoxIP.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::IPTComShark.Properties.Settings.Default, "RemoteCapIP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBoxIP.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::TrainShark.Properties.Settings.Default, "RemoteCapIP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxIP.Location = new System.Drawing.Point(90, 12);
             this.textBoxIP.Name = "textBoxIP";
             this.textBoxIP.Size = new System.Drawing.Size(100, 20);
             this.textBoxIP.TabIndex = 1;
-            this.textBoxIP.Text = global::IPTComShark.Properties.Settings.Default.RemoteCapIP;
+            this.textBoxIP.Text = global::TrainShark.Properties.Settings.Default.RemoteCapIP;
             // 
             // label7
             // 

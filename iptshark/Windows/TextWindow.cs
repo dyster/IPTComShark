@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace IPTComShark.Windows
+namespace TrainShark.Windows
 {
     public partial class TextWindow : Form
     {

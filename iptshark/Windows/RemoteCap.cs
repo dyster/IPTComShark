@@ -1,4 +1,4 @@
-﻿using IPTComShark.Classes;
+﻿using TrainShark.Classes;
 using Renci.SshNet;
 using System;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace IPTComShark.Windows
+namespace TrainShark.Windows
 {
     public partial class RemoteCap : Form
     {

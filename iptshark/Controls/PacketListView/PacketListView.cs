@@ -1,6 +1,6 @@
 ﻿using BrightIdeasSoftware;
-using IPTComShark.Export;
-using IPTComShark.Parsers;
+using TrainShark.Export;
+using TrainShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public partial class PacketListView : UserControl
     {

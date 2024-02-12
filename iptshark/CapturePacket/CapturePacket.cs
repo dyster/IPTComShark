@@ -1,13 +1,13 @@
 ﻿using BitDataParser;
-using IPTComShark.DataSets;
-using IPTComShark.Parsers;
+using TrainShark.DataSets;
+using TrainShark.Parsers;
 using PacketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public class CapturePacket : IComparable, iPacket, iTraveller
     {

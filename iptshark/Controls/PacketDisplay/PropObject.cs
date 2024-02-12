@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Controls
+﻿namespace TrainShark.Controls
 {
     public class PropObject
     {

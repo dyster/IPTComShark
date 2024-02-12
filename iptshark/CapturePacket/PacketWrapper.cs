@@ -1,7 +1,7 @@
 ﻿using PacketDotNet;
 using System;
 
-namespace IPTComShark
+namespace TrainShark
 {
     internal class PacketWrapper
     {

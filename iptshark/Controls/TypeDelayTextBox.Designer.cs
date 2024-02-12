@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Controls
+﻿namespace TrainShark.Controls
 {
     partial class TypeDelayTextBox
     {

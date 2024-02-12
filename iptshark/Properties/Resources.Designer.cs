@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IPTComShark.Properties {
+namespace TrainShark.Properties {
     using System;
     
     

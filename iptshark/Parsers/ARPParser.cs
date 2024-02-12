@@ -2,7 +2,7 @@
 using PacketDotNet.Utils;
 using System.Collections.Generic;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     public class ARPParser : IParser
     {

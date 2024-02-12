@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public interface iPacket
     {

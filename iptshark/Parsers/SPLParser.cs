@@ -1,11 +1,11 @@
 ﻿using BitDataParser;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Functions = BitDataParser.Functions;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     class SPLParser : IParser
     {

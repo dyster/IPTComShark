@@ -1,11 +1,11 @@
-﻿using IPTComShark.Parsers;
+﻿using TrainShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace IPTComShark.Export
+namespace TrainShark.Export
 {
     public partial class Exporterer : Form
     {

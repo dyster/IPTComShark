@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public static class GitHubUpdateCheck
     {

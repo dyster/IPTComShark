@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Properties
+﻿namespace TrainShark.Properties
 {
 
 

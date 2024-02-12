@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Windows
+﻿namespace TrainShark.Windows
 {
     partial class TextWindow
     {

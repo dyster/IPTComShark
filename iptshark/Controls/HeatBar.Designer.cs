@@ -1,5 +1,5 @@
 ﻿
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     partial class HeatBar
     {

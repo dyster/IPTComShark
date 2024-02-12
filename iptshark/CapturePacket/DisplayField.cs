@@ -1,7 +1,7 @@
 ﻿using BitDataParser;
 using System.Text.Json.Serialization;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public class DisplayField
     {

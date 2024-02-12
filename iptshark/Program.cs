@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace IPTComShark
+namespace TrainShark
 {
     internal static class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Export
+﻿namespace TrainShark.Export
 {
     partial class Exporterer
     {

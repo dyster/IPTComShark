@@ -1,11 +1,11 @@
-﻿using IPTComShark.Classes;
-using IPTComShark.Parsers;
+﻿using TrainShark.Classes;
+using TrainShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace IPTComShark.Import
+namespace TrainShark.Import
 {
     class Hasler : IImporter
     {

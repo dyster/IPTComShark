@@ -1,4 +1,4 @@
-﻿namespace IPTComShark
+﻿namespace TrainShark
 {
     partial class InterfacePicker
     {

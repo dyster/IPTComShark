@@ -11,7 +11,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace IPTComShark.XmlFiles
+namespace TrainShark.XmlFiles
 {
     public class IPTConfigReader : makeSerializable
     {

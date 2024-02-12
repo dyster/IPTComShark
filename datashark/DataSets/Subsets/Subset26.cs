@@ -7,7 +7,7 @@ using BitDataParser;
 // ReSharper disable InconsistentNaming
 #pragma warning disable 1591
 
-namespace IPTComShark.DataSets
+namespace TrainShark.DataSets
 {
     /// <summary>
     /// This includes both chapter 7 and chapter 8.

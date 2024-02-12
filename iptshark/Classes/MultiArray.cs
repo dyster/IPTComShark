@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IPTComShark
+namespace TrainShark
 {
     public class MultiArray<T1, T2, Tdata>
     {

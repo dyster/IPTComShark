@@ -1,4 +1,4 @@
-using IPTComShark.Parsers;
+using TrainShark.Parsers;
 /*using Svg;
 using Svg.DataTypes;
 using Svg.Pathing;*/
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Windows.Forms;
 
-namespace IPTComShark.SeqDiagram
+namespace TrainShark.SeqDiagram
 {
     public class SeqDiagramExporter
     {

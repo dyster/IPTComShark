@@ -1,7 +1,7 @@
 ﻿using BitDataParser;
 using System.Collections.Generic;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     internal class ProfiParser : IParser
     {

@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.Parsers
+﻿namespace TrainShark.Parsers
 {
     public enum SS26RadioMessageType
     {

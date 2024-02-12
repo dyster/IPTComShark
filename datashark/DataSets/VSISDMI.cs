@@ -4,7 +4,7 @@ using BitDataParser;
 // ReSharper disable InconsistentNaming
 #pragma warning disable 1591
 
-namespace IPTComShark.DataSets
+namespace TrainShark.DataSets
 {
     public class VSISDMI : DataSetCollection
     {

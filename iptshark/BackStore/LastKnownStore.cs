@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace IPTComShark.BackStore
+namespace TrainShark.BackStore
 {
     public class LastKnownStore
     {

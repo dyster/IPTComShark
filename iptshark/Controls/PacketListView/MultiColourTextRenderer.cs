@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public class MultiColourTextRenderer : BaseRenderer
     {

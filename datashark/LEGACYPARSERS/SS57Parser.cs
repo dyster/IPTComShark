@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using BitDataParser;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using static BitDataParser.Functions;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     // TODO why isn't this used?
     public static class SS57Parser

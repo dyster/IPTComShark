@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IPTComShark
+namespace TrainShark
 {
     [Serializable]
     public class Raw

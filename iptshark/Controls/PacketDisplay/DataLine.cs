@@ -1,7 +1,7 @@
 ﻿using BitDataParser;
 using System.Text.Json;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public class DataLine
     {

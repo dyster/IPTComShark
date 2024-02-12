@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.FileManager
+﻿namespace TrainShark.FileManager
 {
     partial class FileOpener
     {
@@ -40,7 +40,7 @@
             this.olvColumnArchiveKey = new BrightIdeasSoftware.OLVColumn();
             this.olvColumnUse = new BrightIdeasSoftware.OLVColumn();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.datePicker1 = new IPTComShark.FileManager.DatePicker();
+            this.datePicker1 = new TrainShark.FileManager.DatePicker();
             this.buttonGO = new System.Windows.Forms.Button();
             this.buttonMerge = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();

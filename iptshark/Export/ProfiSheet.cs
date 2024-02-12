@@ -1,11 +1,11 @@
-﻿using IPTComShark.DataSets;
-using IPTComShark.Parsers;
+﻿using TrainShark.DataSets;
+using TrainShark.Parsers;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IPTComShark.Export
+namespace TrainShark.Export
 {
     public class ProfiSheet
     {

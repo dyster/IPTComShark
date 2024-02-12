@@ -1,8 +1,8 @@
 ﻿using BitDataParser;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using System.Collections.Generic;
 
-namespace IPTComShark.Classes
+namespace TrainShark.Classes
 {
     public class DataStore
     {

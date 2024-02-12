@@ -1,4 +1,4 @@
-﻿using IPTComShark.Parsers;
+﻿using TrainShark.Parsers;
 using PacketDotNet;
 using PacketDotNet.Utils;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace IPTComShark.BackStore
+namespace TrainShark.BackStore
 {
     public class BackStore
     {

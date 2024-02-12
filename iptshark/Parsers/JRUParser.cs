@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     class JRUParser : IParser
     {

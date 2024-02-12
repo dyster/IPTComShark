@@ -1,5 +1,5 @@
 using BitDataParser;
-using IPTComShark.Parsers;
+using TrainShark.Parsers;
 using OfficeOpenXml;
 using PacketDotNet;
 using System;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace IPTComShark.Export
+namespace TrainShark.Export
 {
     internal static class Export
     {

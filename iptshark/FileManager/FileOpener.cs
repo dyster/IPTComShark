@@ -1,5 +1,5 @@
 ﻿using BustPCap;
-using IPTComShark.BackStore;
+using TrainShark.BackStore;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using System;
@@ -11,7 +11,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace IPTComShark.FileManager
+namespace TrainShark.FileManager
 {
     public partial class FileOpener : Form
     {

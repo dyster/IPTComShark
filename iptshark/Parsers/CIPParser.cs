@@ -1,6 +1,6 @@
 ﻿using BitDataParser;
 using datashark.DataSets;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static BitDataParser.Crackers;
-using static IPTComShark.Parsers.CIPCommon;
-using static IPTComShark.Parsers.CIPParser;
+using static TrainShark.Parsers.CIPCommon;
+using static TrainShark.Parsers.CIPParser;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     public static class CIPCommon
     {

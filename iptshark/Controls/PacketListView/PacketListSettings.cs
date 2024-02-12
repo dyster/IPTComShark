@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public class PacketListSettings : INotifyPropertyChanged
     {

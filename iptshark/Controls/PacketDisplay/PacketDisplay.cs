@@ -1,5 +1,5 @@
-﻿using IPTComShark.Parsers;
-using IPTComShark.Windows;
+﻿using TrainShark.Parsers;
+using TrainShark.Windows;
 using PacketDotNet;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public partial class PacketDisplay : UserControl
     {

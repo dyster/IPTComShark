@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace IPTComShark.Windows
+namespace TrainShark.Windows
 {
     public partial class TrafficSim : Form
     {

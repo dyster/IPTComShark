@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public partial class HeatBar : UserControl
     {

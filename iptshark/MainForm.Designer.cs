@@ -1,6 +1,6 @@
-﻿using IPTComShark.Controls;
+﻿using TrainShark.Controls;
 
-namespace IPTComShark
+namespace TrainShark
 {
     partial class MainForm
     {
@@ -82,12 +82,12 @@ namespace IPTComShark
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             eVA2XMLExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             bDSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            canapeJRUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             reportAnIssueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             openCapturesDialog = new System.Windows.Forms.OpenFileDialog();
             errorProvider1 = new System.Windows.Forms.ErrorProvider(components);
-            canapeJRUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -204,7 +204,11 @@ namespace IPTComShark
             packetListSettings1.IgnoreDuplicatedPD = false;
             packetListSettings1.IgnoreLoopback = false;
             packetListSettings1.IgnoreUnknownData = false;
-            packetListSettings1.IgnoreVariables = new string[] { "MMI_M_PACKET", "MMI_L_PACKET" };
+            packetListSettings1.IgnoreVariables = new string[]
+    {
+    "MMI_M_PACKET",
+    "MMI_L_PACKET"
+    };
             packetListView1.Settings = packetListSettings1;
             packetListView1.Size = new System.Drawing.Size(1200, 629);
             packetListView1.TabIndex = 0;
@@ -547,16 +551,23 @@ namespace IPTComShark
             // eVA2XMLExportToolStripMenuItem
             // 
             eVA2XMLExportToolStripMenuItem.Name = "eVA2XMLExportToolStripMenuItem";
-            eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            eVA2XMLExportToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             eVA2XMLExportToolStripMenuItem.Text = "EVA2 XML Export";
             eVA2XMLExportToolStripMenuItem.Click += eVA2XMLExportToolStripMenuItem_Click;
             // 
             // bDSToolStripMenuItem
             // 
             bDSToolStripMenuItem.Name = "bDSToolStripMenuItem";
-            bDSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            bDSToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             bDSToolStripMenuItem.Text = "BDS";
             bDSToolStripMenuItem.Click += bDSToolStripMenuItem_Click;
+            // 
+            // canapeJRUToolStripMenuItem
+            // 
+            canapeJRUToolStripMenuItem.Name = "canapeJRUToolStripMenuItem";
+            canapeJRUToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            canapeJRUToolStripMenuItem.Text = "Canape JRU";
+            canapeJRUToolStripMenuItem.Click += canapeJRUToolStripMenuItem_Click;
             // 
             // windowToolStripMenuItem
             // 
@@ -576,8 +587,8 @@ namespace IPTComShark
             // 
             reportAnIssueToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(255, 128, 0);
             reportAnIssueToolStripMenuItem.Name = "reportAnIssueToolStripMenuItem";
-            reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
-            reportAnIssueToolStripMenuItem.Text = "Report An Issue";
+            reportAnIssueToolStripMenuItem.Size = new System.Drawing.Size(196, 20);
+            reportAnIssueToolStripMenuItem.Text = "Report An Issue / Request Feature";
             reportAnIssueToolStripMenuItem.Click += reportAnIssueToolStripMenuItem_Click;
             // 
             // openCapturesDialog
@@ -588,13 +599,6 @@ namespace IPTComShark
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
-            // 
-            // canapeJRUToolStripMenuItem
-            // 
-            canapeJRUToolStripMenuItem.Name = "canapeJRUToolStripMenuItem";
-            canapeJRUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            canapeJRUToolStripMenuItem.Text = "Canape JRU";
-            canapeJRUToolStripMenuItem.Click += canapeJRUToolStripMenuItem_Click;
             // 
             // MainForm
             // 

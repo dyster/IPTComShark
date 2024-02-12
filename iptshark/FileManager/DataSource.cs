@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace IPTComShark.FileManager
+namespace TrainShark.FileManager
 {
     public class DataSource
     {

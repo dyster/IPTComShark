@@ -1,8 +1,8 @@
-﻿using IPTComShark.Properties;
+﻿using TrainShark.Properties;
 using System;
 using System.Windows.Forms;
 
-namespace IPTComShark.Controls
+namespace TrainShark.Controls
 {
     public partial class TypeDelayTextBox : TextBox
     {

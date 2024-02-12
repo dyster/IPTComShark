@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IPTComShark.FileManager
+namespace TrainShark.FileManager
 {
     public class FinishedEventArgs
     {

@@ -1,10 +1,10 @@
 ﻿using BitDataParser;
-using IPTComShark.DataSets;
+using TrainShark.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IPTComShark.Parsers
+namespace TrainShark.Parsers
 {
     public class NTPParser : IParser
     {

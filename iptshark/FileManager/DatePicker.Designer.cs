@@ -1,4 +1,4 @@
-﻿namespace IPTComShark.FileManager
+﻿namespace TrainShark.FileManager
 {
     partial class DatePicker
     {

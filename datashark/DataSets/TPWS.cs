@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BitDataParser;
 
-namespace IPTComShark.DataSets
+namespace TrainShark.DataSets
 {
     public class TPWS : DataSetCollection
     {

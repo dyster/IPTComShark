@@ -1,5 +1,5 @@
-﻿using IPTComShark.DataSets;
-using IPTComShark.Parsers;
+﻿using TrainShark.DataSets;
+using TrainShark.Parsers;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Legends;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace IPTComShark.Export
+namespace TrainShark.Export
 {
     public class IdleAnalyser
     {
