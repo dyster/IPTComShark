@@ -59,5 +59,28 @@ namespace datashark.DataSets
                 new BitField{Name = "DMI_ACK_REPORT", BitFieldType = BitFieldType.Bool, Length = 1},
             }
         };
+
+        public static DataSetDefinition GWtoDMI = new DataSetDefinition
+        {
+            Name = "GW to DMI",
+            BitFields = new List<BitField>
+            {
+                new BitField{Name = "PD_MASTER_ATP_GTW", BitFieldType = BitFieldType.UInt8, Length = 8},
+                new BitField{Name = "TRINT_IsAlive_EIP", BitFieldType = BitFieldType.UInt8, Length = 8},
+                new BitField{Name = "TRINT_EVC_Isolation_NO", BitFieldType = BitFieldType.Bool, Length = 1},
+                new BitField{Name = "TRINT_EVC_Isolation_NC", BitFieldType = BitFieldType.Bool, Length = 1},
+                new BitField{Name = "Spare1", BitFieldType = BitFieldType.Spare, Length = 1},
+                new BitField{Name = "Spare2", BitFieldType = BitFieldType.Spare, Length = 1},
+                new BitField{Name = "TRINT_Current_Cab_EIP", BitFieldType = BitFieldType.UInt8, Length = 4, LookupTable = new LookupTable{ { "0","No Cab"},{ "1","Cab A"},{"2","Cab B" },{"3", "Both Cabs" } } },
+                new BitField{Name = "TRINT_ATP_NID", BitFieldType = BitFieldType.Int8, Length = 8},
+                new BitField{Name = "TRINT_Time_Offset", BitFieldType = BitFieldType.Int8, Length = 8},
+                new BitField{Name = "Spare3", BitFieldType = BitFieldType.Spare, Length = 8},
+                new BitField{Name = "TRINT_Set_Speed", BitFieldType = BitFieldType.UInt16, Length = 16},
+                new BitField{Name = "Spare4", BitFieldType = BitFieldType.Spare, Length = 32},
+                new BitField{Name = "TRINT_Time", BitFieldType = BitFieldType.UnixEpochUtc, Length = 48},
+                new BitField{Name = "Spare5", BitFieldType = BitFieldType.Spare, Length = 1904}
+                
+            }
+        };
     }
 }
