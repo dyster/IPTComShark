@@ -8,7 +8,7 @@
     <UseWindowsForms>true</UseWindowsForms>
 	<RootNamespace>TrainShark</RootNamespace>
     <AssemblyName>TrainShark</AssemblyName>
-    <Version>0.1</Version>
+    <Version>0.1.1</Version>
     <AssemblyVersion>0.1</AssemblyVersion>
     <FileVersion>0.1</FileVersion>
     <PackageIcon>shark-icon-24347.jpg</PackageIcon>
