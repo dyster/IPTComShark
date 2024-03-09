@@ -331,7 +331,7 @@ namespace TrainShark.Controls
                 searchRegex = new Regex(Regex.Escape(_searchString), RegexOptions.IgnoreCase);
             }
 
-            fastObjectListView1.AdditionalFilter = new StopwatchModelFilter(model =>
+            fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
 
