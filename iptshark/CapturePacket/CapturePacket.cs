@@ -474,7 +474,9 @@ namespace TrainShark
 
         public byte[] Destination { get; set; }
 
+        [JsonIgnore]
         public ushort SourcePort { get; set; }
+        [JsonIgnore]
         public ushort DestinationPort { get; set; }
 
         public uint Comid { get; set; }

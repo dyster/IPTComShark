@@ -13,7 +13,7 @@ namespace Tests
 
     public class MainFormTests
     {
-        private string _temp = @"E:\SynologyDrive\Repos\IPTSharkTests\TestFiles\";
+        private string _temp = @"D:\OneDrive - Alstom\09_GIT\TrainSharkTestFiles\";
 
         [Theory()]
         [InlineData("validate1.zip", true, "5B-EB-69-CA-93-71-F9-F1-AF-F4-67-D3-FB-57-4E-AA")]
@@ -95,6 +95,7 @@ namespace Tests
             }
             var options = new JsonSerializerOptions();
             options.WriteIndented = true;
+            options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
             options.Converters.Add(new IPAddressConverter());
 
 

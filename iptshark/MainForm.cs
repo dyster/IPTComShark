@@ -772,23 +772,24 @@ namespace TrainShark
             if (e.Shift && e.Control && e.KeyCode == Keys.B)
             {
                 GC.Collect();
+                var prepath = @"D:\OneDrive - Alstom\09_GIT\TrainSharkTestFiles";
 
-                RunBenchmark(@"E:\OneDrive - Alstom\07_Problems\07_mr9 random crash\1\vap 1820-1830.pcap");
+                //RunBenchmark(@"E:\OneDrive - Alstom\07_Problems\07_mr9 random crash\1\vap 1820-1830.pcap");
 
-                return;
-                RunBenchmark(@"c:\temp\benchmark1.pcap");
-
-                clearToolStripMenuItem_Click(this, null);
-                RunBenchmark(@"c:\temp\benchmark2.pcapng");
+                //return;
+                RunBenchmark(Path.Combine(prepath, "benchmark1.pcap"));
 
                 clearToolStripMenuItem_Click(this, null);
-                RunBenchmark(@"c:\temp\benchmark3.pcap");
+                RunBenchmark(Path.Combine(prepath, "benchmark2.pcapng"));
+
+                clearToolStripMenuItem_Click(this, null);
+                RunBenchmark(Path.Combine(prepath, "benchmark3.pcap"));
 
                 //clearToolStripMenuItem_Click(this, null);
-                //RunBenchmark(@"c:\temp\benchmark4.pcap");
+                //RunBenchmark(Path.Combine(prepath, "benchmark4.pcap"));
 
                 clearToolStripMenuItem_Click(this, null);
-                RunBenchmark(@"c:\temp\benchmark5.pcap");
+                RunBenchmark(Path.Combine(prepath, "benchmark5.pcap"));
             }
         }
 
