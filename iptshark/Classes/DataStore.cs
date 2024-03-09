@@ -31,15 +31,15 @@ namespace TrainShark.Classes
             {
                 foreach (var dataSetDefinition in dataSetCollection.DataSets)
                 {
-                    foreach (var identifier in dataSetDefinition.Identifiers)
-                    {
-                        var i = uint.Parse(identifier);
-                        if (_comidIndex.ContainsKey(i))
+                    foreach (var i in dataSetDefinition.Identifiers.Numeric)
+                    {                        
+                        //TODO this currently uses numeric identifier only because it is only used by iptcom... should make generic
+                        if (_comidIndex.ContainsKey((uint)i))
                         {
                             //Logger.Log("Conflicting identifier " + identifier, Severity.Warning); 
                         }
                         else
-                            _comidIndex.Add(i, dataSetDefinition);
+                            _comidIndex.Add((uint)i, dataSetDefinition);
                     }
                 }
             }

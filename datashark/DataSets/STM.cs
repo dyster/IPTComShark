@@ -29,12 +29,7 @@ namespace TrainShark.DataSets
             Name = "STM-1 Version",
             Comment =
                 "This packet contains implicitly the connection request from the STM or the connection confirm from the ETCS On-board Function and provides version number and compatibility number for check.\r\nDirection of information:\r\nFrom STM to ETCS On-board function\r\nFrom ETCS On-board function to STM",
-            Identifiers = new List<string>()
-            {
-                "230532000",
-                "230537000",
-                "230533007",
-                "230538007"
+            Identifiers = new Identifiers { Numeric = { 230532000,230537000, 230533007, 230538007 }         
             },
             BitFields = new List<BitField>
             {
@@ -118,10 +113,7 @@ namespace TrainShark.DataSets
             Name = "STM-15 State Report",
             Comment =
                 "Indicates to the ERTMS/ETCS the STM state",
-            Identifiers = new List<string>()
-            {
-                "230532010",
-                "230537010"
+            Identifiers = new Identifiers { Numeric = { 230532010, 230537010 }
             },
             BitFields = new List<BitField>
             {
@@ -168,10 +160,7 @@ namespace TrainShark.DataSets
             Name = "STM-32 Button Request",
             Comment =
                 "Create or update the visual states of buttons by STM.\r\nOnly referenced buttons are updated.",
-            Identifiers = new List<string>()
-            {
-                "230532020",
-                "230537020"
+            Identifiers = new Identifiers { Numeric = { 230532020, 230537020 }
             },
             BitFields = new List<BitField>
             {
@@ -316,10 +305,7 @@ namespace TrainShark.DataSets
             Name = "STM-35 Indicator Request",
             Comment =
                 "Create or update the visual states of indicators by STM.\r\nOnly referenced indicators are updated.",
-            Identifiers = new List<string>()
-            {
-                "230532030",
-                "230537030"
+            Identifiers = new Identifiers { Numeric = { 230532030, 230537030 }
             },
             BitFields = new List<BitField>
             {
@@ -431,10 +417,7 @@ namespace TrainShark.DataSets
             Name = "STM-38 Text Msg",
             Comment =
                 "Text messages for the DMI, with or without acknowledgement. From STM to ETCS On-board function",
-            Identifiers = new List<string>()
-            {
-                "230532040",
-                "230537040"
+            Identifiers = new Identifiers { Numeric = { 230532040, 230537040 }
             },
             BitFields = new List<BitField>
             {
@@ -491,10 +474,7 @@ namespace TrainShark.DataSets
             Name = "STM-39 Delete Text Msg",
             Comment =
                 "STM commands the deletion of text message. \r\nApplies also if driver has not given acknowledgement.",
-            Identifiers = new List<string>()
-            {
-                "230532050",
-                "230537050"
+            Identifiers = new Identifiers { Numeric = { 230532050, 230537050 }
             },
             BitFields = new List<BitField>
             {
@@ -529,10 +509,7 @@ namespace TrainShark.DataSets
             Name = "STM-43 STM_NATIONAL_ETCS_DMI",
             Comment =
                 "Data for displaying on ETCS DMI while in National mode",
-            Identifiers = new List<string>()
-            {
-                "230532060",
-                "230537060"
+            Identifiers = new Identifiers { Numeric = { 230532060, 230537060 }
             },
             BitFields = new List<BitField>
             {
@@ -626,10 +603,7 @@ namespace TrainShark.DataSets
         {
             Name = "STM-46 Sound Command",
             Comment = "Command sound",
-            Identifiers = new List<string>()
-            {
-                "230532070",
-                "230537070"
+            Identifiers = new Identifiers { Numeric = { 230532070, 230537070 }
             },
             BitFields = new List<BitField>
             {
@@ -760,10 +734,7 @@ namespace TrainShark.DataSets
             Name = "STM-30 DRIVER_LANGUAGE_TRANSMISSION",
             Comment =
                 "Driver language selection.",
-            Identifiers = new List<string>()
-            {
-                "230533000",
-                "230538000"
+            Identifiers = new Identifiers { Numeric = { 230533000, 230538000 }
             },
             BitFields = new List<BitField>
             {
@@ -791,10 +762,7 @@ namespace TrainShark.DataSets
             Name = "STM-34 Button Event",
             Comment =
                 "Report the button events.",
-            Identifiers = new List<string>()
-            {
-                "230533010",
-                "230538010"
+            Identifiers = new Identifiers { Numeric = { 230533010, 230538010 }
             },
             BitFields = new List<BitField>
             {
@@ -879,10 +847,7 @@ namespace TrainShark.DataSets
             Name = "STM-40 Text Ack Reply",
             Comment =
                 "Report from ETCS on acknowledgement of text message",
-            Identifiers = new List<string>()
-            {
-                "230533020",
-                "230538020"
+            Identifiers = new Identifiers { Numeric = { 230533020, 230538020 }
             },
             BitFields = new List<BitField>
             {

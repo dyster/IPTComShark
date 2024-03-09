@@ -7,7 +7,7 @@ namespace TrainShark.DataSets
     {
         public VSIS210()
         {
-            var dictionary = new Dictionary<uint, DataSetDefinition>
+            var dictionary = new Dictionary<int, DataSetDefinition>
             {
                 {230503000, TR_1}, // cab 1
                 {230503100, TR_2},
@@ -177,11 +177,13 @@ namespace TrainShark.DataSets
             {
                 if (DataSets.Exists(d => d.Name == pair.Value.Name))
                 {
-                    DataSets.Find(d => d.Name == pair.Value.Name).Identifiers.Add(pair.Key.ToString());
+                    DataSets.Find(d => d.Name == pair.Value.Name).Identifiers.Numeric.Add(pair.Key);
                 }
                 else
                 {
-                    pair.Value.Identifiers.Add(pair.Key.ToString());
+                    if(pair.Value.Identifiers == null)
+                        pair.Value.Identifiers = new Identifiers();
+                    pair.Value.Identifiers.Numeric.Add(pair.Key);
                     DataSets.Add(pair.Value);
                 }
                 

@@ -25,7 +25,7 @@ namespace TrainShark.DataSets
         {
             Name = "PISRepManMsgLst",
             Comment = "Request PIS Manual Message List",
-            Identifiers = new List<string> { "1055910100" },
+            Identifiers = new Identifiers { Numeric = { 1055910100 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -102,10 +102,7 @@ namespace TrainShark.DataSets
             Name = "IPTDir Process Data",
             Comment =
                 "The IPTDir process data shall inform all end devices about the current inauguration status and changes in the train’s topology.",
-            Identifiers = new List<string>
-            {
-                "100"
-            },
+            Identifiers = new Identifiers { Numeric = { 100 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -526,10 +523,7 @@ namespace TrainShark.DataSets
             Name = "IPTDir Message Data",
             Comment =
                 "The IPTDir Server distributes one or both of the message data types presented in this chapter whenever the topology or the dynamic data changes. This is indicated by a change of one of the TopoCounters or the DynCounter contained in the IPTDir Process Data.",
-            Identifiers = new List<string>
-            {
-                "101"
-            },
+            Identifiers = new Identifiers { Numeric = { 101 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -850,10 +844,7 @@ namespace TrainShark.DataSets
         {
             Name = "UIC Info",
             Comment = "",
-            Identifiers = new List<string>
-            {
-                "102"
-            },
+            Identifiers = new Identifiers { Numeric = { 102 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -975,10 +966,7 @@ namespace TrainShark.DataSets
             Name = "IPTDir Request",
             Comment =
                 "If a device misses the transmission of one of the message data it may explicitly request it by sending the following message data to the IPTDir server. The response will be the re-quested message data as described in the previous chapters.",
-            Identifiers = new List<string>
-            {
-                "103"
-            },
+            Identifiers = new Identifiers { Numeric = { 103 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -1016,10 +1004,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition com222 => new DataSetDefinition
         {
             Name = "Vehicle Name Output",
-            Identifiers = new List<string>
-            {
-                "222"
-            },
+            Identifiers = new Identifiers { Numeric = { 222 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -1034,10 +1019,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition com223 => new DataSetDefinition
         {
             Name = "Vehicle Name Input",
-            Identifiers = new List<string>
-            {
-                "223"
-            },
+            Identifiers = new Identifiers { Numeric = { 223 } },
             BitFields = new List<BitField>
             {
                 new BitField
@@ -1052,9 +1034,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition PSCCtrlOp => new DataSetDefinition
         {
             Name = "PSCCtrlOp",
-            Identifiers = new List<string>
-            {
-                "251200100"
+            Identifiers = new Identifiers { Numeric = { 251200100 } 
             },
             BitFields = new List<BitField>
             {
@@ -1082,9 +1062,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition CCUOGlobalA => new DataSetDefinition
         {
             Name = "CCUOGlobalA",
-            Identifiers = new List<string>
-            {
-                "201100100"
+            Identifiers = new Identifiers { Numeric = { 201100100 } 
             },
             BitFields = new List<BitField>
             {

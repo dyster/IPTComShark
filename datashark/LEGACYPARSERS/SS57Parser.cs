@@ -167,8 +167,8 @@ namespace TrainShark.Parsers
                     int middlepos = 1;
                     do
                     {
-                        var ident = FieldGetter(middle, middlepos, 8);
-                        var definition = ss58.FindByIdentifier(ident.ToString());
+                        var ident = (int)FieldGetter(middle, middlepos, 8);
+                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = {ident}});
 
                         if (definition == null)
                         {

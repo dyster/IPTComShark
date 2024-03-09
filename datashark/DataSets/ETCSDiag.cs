@@ -38,9 +38,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_1 JRU_Status",
             Comment = "Dataset definition of JRU status - event part",
-            Identifiers = new List<string>
-            {
-                "230510450"
+            Identifiers = new Identifiers { Numeric = { 230510450 } 
             },
             BitFields = new List<BitField>
             {
@@ -198,10 +196,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_130 ETC_Events",
             Comment = "Dataset definition of ETC Events",
-            Identifiers = new List<string>
-            {
-                "230510020",
-                "230511020"
+            Identifiers = new Identifiers { Numeric = { 230510020, 230511020 }
             },
             BitFields = new List<BitField>
             {
@@ -1739,10 +1734,7 @@ namespace TrainShark.DataSets
             Name = "DIA_131 ETC_Environment",
             Comment = "Dataset definition of ETC Environment" +
                       "\r\nNote: Module specific application area starts at bit position 128 (byte 16). Data that are not used are set to 0",
-            Identifiers = new List<string>
-            {
-                "230510030",
-                "230511030"
+            Identifiers = new Identifiers { Numeric = { 230510030, 230511030 }
             },
             BitFields = new List<BitField>
             {
@@ -1976,10 +1968,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_148 JRU_Events",
             Comment = "Dataset definition of JRU Events",
-            Identifiers = new List<string>
-            {
-                "230510190",
-                "230511190"
+            Identifiers = new Identifiers { Numeric = { 230510190, 230511190 }
             },
             BitFields = new List<BitField>
             {
@@ -2115,10 +2104,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_149 JRU_Environment",
             Comment = "Dataset definition of JRU Environment",
-            Identifiers = new List<string>
-            {
-                "230510200",
-                "230511200"
+            Identifiers = new Identifiers { Numeric = { 230510200, 230511200 }
             },
             BitFields = new List<BitField>
             {
@@ -2233,10 +2219,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_150 TPWS_EVENTS",
             Comment = "The relative base failure code for this subsystem: BASE_CODE_TPWS = '8040' and the range is 32.",
-            Identifiers = new List<string>
-            {
-                "230510210",
-                "230511210"
+            Identifiers = new Identifiers { Numeric = { 230510210, 230511210 }
             },
             BitFields = new List<BitField>
             {
@@ -2390,10 +2373,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_151 TPWS_ENVIRONMENT",
             Comment = "Dataset definition (container for the specific environment data to the according event).",
-            Identifiers = new List<string>
-            {
-                "230510220",
-                "230511220"
+            Identifiers = new Identifiers { Numeric = { 230510220, 230511220 }
             },
             BitFields = new List<BitField>
             {
@@ -2497,10 +2477,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_152 DMI1_Events",
             Comment = "Dataset definition of DMI1 Events",
-            Identifiers = new List<string>
-            {
-                "230510230",
-                "230511230"
+            Identifiers = new Identifiers { Numeric = { 230510230, 230511230 }
             },
             BitFields = new List<BitField>
             {
@@ -2703,10 +2680,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_158 COD_Events",
             Comment = "Dataset definition of COD Events",
-            Identifiers = new List<string>
-            {
-                "230510290",
-                "230511290"
+            Identifiers = new Identifiers { Numeric = { 230510290, 230511290 }
             },
             BitFields = new List<BitField>
             {
@@ -3220,10 +3194,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_200 GLOBAL_ENVIRONMENT_DATA_1",
             Comment = "Dataset definition of part 1 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510310",
-                "230511310"
+            Identifiers = new Identifiers { Numeric = { 230510310, 230511310 }
             },
             BitFields = new List<BitField>
             {
@@ -3319,10 +3290,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_201 GLOBAL_ENVIRONMENT_DATA_2",
             Comment = "Dataset definition of part 2 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510320",
-                "230511320"
+            Identifiers = new Identifiers { Numeric = { 230510320, 230511320 }
             },
             BitFields = new List<BitField>
             {
@@ -3617,10 +3585,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_202 GLOBAL_ENVIRONMENT_DATA_3",
             Comment = "Dataset definition of part 3 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510330",
-                "230511330"
+            Identifiers = new Identifiers { Numeric = { 230510330, 230511330 }
             },
             BitFields = new List<BitField>
             {
@@ -3711,10 +3676,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_203 GLOBAL_ENVIRONMENT_DATA_4",
             Comment = "Dataset definition of part 4 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510340",
-                "230511340"
+            Identifiers = new Identifiers { Numeric = { 230510340, 230511340 }
             },
             BitFields = new List<BitField>
             {
@@ -3811,10 +3773,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_204 GLOBAL_ENVIRONMENT_DATA_5",
             Comment = "Dataset definition of part 5 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510350",
-                "230511350"
+            Identifiers = new Identifiers { Numeric = { 230510350, 230511350 }
             },
             BitFields = new List<BitField>
             {
@@ -3981,10 +3940,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_205 GLOBAL_ENVIRONMENT_DATA_6",
             Comment = "Dataset definition of part 6 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510360",
-                "230511360"
+            Identifiers = new Identifiers { Numeric = { 230510360, 230511360 }
             },
             BitFields = new List<BitField>
             {
@@ -4060,10 +4016,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_206 GLOBAL_ENVIRONMENT_DATA_7",
             Comment = "Dataset definition of part 7 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510370",
-                "230511370"
+            Identifiers = new Identifiers { Numeric = { 230510370, 230511370 }
             },
             BitFields = new List<BitField>
             {
@@ -4131,10 +4084,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_207 GLOBAL_ENVIRONMENT_DATA_8",
             Comment = "Dataset definition of part 8 of global environment data.",
-            Identifiers = new List<string>
-            {
-                "230510380",
-                "230511380"
+            Identifiers = new Identifiers { Numeric = { 230510380, 230511380 }
             },
             BitFields = new List<BitField>
             {
@@ -4270,10 +4220,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_209 LRU_DIAG_ENVIRONMENT",
             Comment = "Dataset definition (container for the specific environment data to the according event).",
-            Identifiers = new List<string>
-            {
-                "230510400",
-                "230511400"
+            Identifiers = new Identifiers { Numeric = { 230510400, 230511400 }
             },
             BitFields = new List<BitField>
             {
@@ -4313,9 +4260,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_212 VERSION_DATA",
             Comment = "Sent when all versions from the subsystems are sent to the DIA subsystem.",
-            Identifiers = new List<string>
-            {
-                "230510430", "230511430"
+            Identifiers = new Identifiers { Numeric = { 230511430, 230510430 } 
             },
             BitFields = new List<BitField>
             {
@@ -4378,9 +4323,7 @@ namespace TrainShark.DataSets
             Name = "DIA_214 DIAG_WAYSIDE_EVENT",
             Comment = "The Wayside diagnostic packet (including the environment data set DIA_215) contains data " +
                       "delivered from the Balise transmission sub-system collected within the ETC software.",
-            Identifiers = new List<string>
-            {
-                "230510440", "230511440"
+            Identifiers = new Identifiers { Numeric = { 230510440,  230511440 } 
             },
 
             BitFields = new List<BitField>

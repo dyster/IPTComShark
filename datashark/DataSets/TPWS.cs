@@ -7,7 +7,7 @@ namespace TrainShark.DataSets
     {
         public DataSetDefinition JRUData = new DataSetDefinition
         {
-            Identifiers = new List<string> {"230504300"},
+            Identifiers = new Identifiers { Numeric = { 230504300 } },
             BitFields = new List<BitField>
             {
                 new BitField {NestedDataSet = Subset27.Header, Length = 1},

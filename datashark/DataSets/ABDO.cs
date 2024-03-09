@@ -26,11 +26,7 @@ namespace TrainShark.DataSets
         {
             Name = "Tr_7 Station Info",
             Comment = "Several station information",
-            Identifiers = new List<string>
-            {
-                "230503600",
-                "230503601"
-            },
+            Identifiers = new Identifiers { Numeric = { 230503600, 230503601 } },            
             BitFields = new List<BitField>
             {
                 new BitField
@@ -69,11 +65,7 @@ namespace TrainShark.DataSets
         {
             Name = "Tr_8 SW Feedback",
             Comment = "Door release SW Feedback",
-            Identifiers = new List<string>
-            {
-                "230503602",
-                "230503603"
-            },
+            Identifiers = new Identifiers { Numeric = { 230503602, 230503603 } },            
             BitFields = new List<BitField>
             {
                 new BitField
@@ -148,11 +140,7 @@ namespace TrainShark.DataSets
         {
             Name = "Tr9 EB Feedback",
             Comment = "",
-            Identifiers = new List<string>
-            {
-                "230503604",
-                "230503605"
-            },
+            Identifiers = new Identifiers { Numeric = { 230503604, 230503605 } },            
             BitFields = new List<BitField>
             {
                 new BitField
@@ -302,10 +290,8 @@ namespace TrainShark.DataSets
         {
             Name = "Obu26 Doors Release Command",
             Comment = "",
-            Identifiers = new List<string>
-            {
-                "230503992",
-                "230503993"
+            
+            Identifiers = new Identifiers { Numeric = { 230503992, 230503993 }
             },
             BitFields = new List<BitField>
             {
@@ -490,10 +476,7 @@ namespace TrainShark.DataSets
         {
             Name = "Obu27",
             Comment = "Contains the brake effort value.",
-            Identifiers = new List<string>
-            {
-                "230503996",
-                "230503997"
+            Identifiers = new Identifiers { Numeric = { 230503996, 230503997 }
             },
             BitFields = new List<BitField>()
             {
@@ -538,10 +521,7 @@ namespace TrainShark.DataSets
         {
             Name = "Obu28",
             Comment = "Station list request",
-            Identifiers = new List<string>
-            {
-                "230503998",
-                "230503999"
+            Identifiers = new Identifiers { Numeric = { 230503998, 230503999 }
             },
             BitFields = new List<BitField>()
             {
@@ -559,10 +539,7 @@ namespace TrainShark.DataSets
         {
             Name = "Ato1",
             Comment = "",
-            Identifiers = new List<string>
-            {
-                "230560010",
-                "230560011"
+            Identifiers = new Identifiers { Numeric = { 230560010, 230560011 }
             },
             BitFields = new List<BitField>()
             {
@@ -644,10 +621,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_166",
             Comment = "ATO Event data",
-            Identifiers = new List<string>
-            {
-                "230510307",
-                "230511307"
+            Identifiers = new Identifiers { Numeric = { 230510307, 230511307 }
             },
             BitFields = new List<BitField>
             {
@@ -684,10 +658,7 @@ namespace TrainShark.DataSets
         {
             Name = "DIA_167",
             Comment = "ATO Environment data",
-            Identifiers = new List<string>
-            {
-                "230510308",
-                "230511308"
+            Identifiers = new Identifiers { Numeric = { 230510308, 230511308 }
             },
             BitFields = new List<BitField>
             {

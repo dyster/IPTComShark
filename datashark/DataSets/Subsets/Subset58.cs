@@ -87,7 +87,7 @@ namespace TrainShark.DataSets
         {
             Name = "STM/ETCS function version number",
             Comment = "This packet contains implicitly the connection request from the STM or the connection confirmation from the ERTMS/ETCS on-board function and provide also FFFIS STM version number for check.",
-            Identifiers = new List<string>{"1"},
+            Identifiers = new Identifiers { Numeric = { 1 }},
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -105,7 +105,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition STM_4 => new DataSetDefinition()
         {
             Name = "STM parameters data and product identity",
-            Identifiers = new List<string> { "4" },
+            Identifiers = new Identifiers { Numeric = { 4 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -139,7 +139,7 @@ namespace TrainShark.DataSets
         {
             Name = "ETCS status data",
             Comment = "This packet contains the ETCS On-board current status (ETCS technical mode\r\nand ETCS level of operation) for the STM",
-            Identifiers = new List<string> { "5" },
+            Identifiers = new Identifiers { Numeric = { 5 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -168,7 +168,7 @@ namespace TrainShark.DataSets
         {
             Name = "State request from STM",
             Comment = "Reports a request for a state change from the STM to the ETCS On-board\r\nSTM Control Function.",
-            Identifiers = new List<string>(new[] { "13" }),
+            Identifiers = new Identifiers { Numeric = { 13 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -199,7 +199,7 @@ namespace TrainShark.DataSets
         {
             Name = "State order to STM",
             Comment = "State order to STM",
-            Identifiers = new List<string>(new[] { "14" }),
+            Identifiers = new Identifiers { Numeric = { 14 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -230,7 +230,7 @@ namespace TrainShark.DataSets
         {
             Name = "State report from STM",
             Comment = "Indicates to the ERTMS/ETCS on-board the STM state.",
-            Identifiers = new List<string>(new[] { "15" }),
+            Identifiers = new Identifiers { Numeric = { 15 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -261,7 +261,7 @@ namespace TrainShark.DataSets
         {
             Name = "Button Request",
             Comment = "Create or update the visual states of buttons by STM. Only referenced buttons are updated",
-            Identifiers = new List<string>(new[] { "32" }),
+            Identifiers = new Identifiers { Numeric = { 32 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -321,7 +321,7 @@ namespace TrainShark.DataSets
         {
             Name = "Indicator Request",
             Comment = "Create or update the visual states of indicators by STM.\r\nOnly referenced indicators are updated",
-            Identifiers = new List<string>(new[] { "35" }),
+            Identifiers = new Identifiers { Numeric = { 35 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -381,7 +381,7 @@ namespace TrainShark.DataSets
         {
             Name = "Diagnostic Message",
             Comment = "Packet which delivers diagnostic message.",
-            Identifiers = new List<string> { "77" },
+            Identifiers = new Identifiers { Numeric = { 77 }  },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -420,7 +420,7 @@ namespace TrainShark.DataSets
         {
             Name = "BIU status to STM",
             Comment = "Transmission of the brake interface status to STM",
-            Identifiers = new List<string>(new[] { "136" }),
+            Identifiers = new Identifiers { Numeric = { 136 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -460,7 +460,7 @@ namespace TrainShark.DataSets
         {
             Name = "TIU status to STM",
             Comment = "Transmission of the train interface inputs status/availability to STM",
-            Identifiers = new List<string>(new[] { "139" }),
+            Identifiers = new Identifiers { Numeric = { 139 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -522,7 +522,7 @@ namespace TrainShark.DataSets
         {
             Name = "STM information to JRU",
             Comment = "National STM data transmitted to the JRU. (Structure of the data internal to each company)",
-            Identifiers = new List<string> { "161" },
+            Identifiers = new Identifiers { Numeric = { 161 }  },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -565,7 +565,7 @@ namespace TrainShark.DataSets
         {
             Name = "Train Data",
             Comment = "Validated train data",
-            Identifiers = new List<string>(new[] { "175" }),
+            Identifiers = new Identifiers { Numeric = { 175 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -620,7 +620,7 @@ namespace TrainShark.DataSets
         {
             Name = "Train Data additional brake characteristic to STM",
             Comment = "Validated train data additional braking characteristic",
-            Identifiers = new List<string>(new[] { "176" }),
+            Identifiers = new Identifiers { Numeric = { 176 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -723,7 +723,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition STM_177 => new DataSetDefinition()
         {
             Name = "Additional Data Values and date/time to STM",
-            Identifiers = new List<string> { "177" },
+            Identifiers = new Identifiers { Numeric = { 177 }  },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -785,7 +785,7 @@ namespace TrainShark.DataSets
         {
             Name = "National values to STM",
             Comment = "Downloads a set of National Values",
-            Identifiers = new List<string>(new[] { "178" }),
+            Identifiers = new Identifiers { Numeric = { 178 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -811,7 +811,7 @@ namespace TrainShark.DataSets
         {
             Name = "Specific NTC Data Entry request",
             Comment = "Request for Specific NTC Data Entry.\r\nThis packet can be grouped with other STM-179 packets by using the Q_FOLLOWING indicator in order to form one common Specific NTC Data Entry request.\r\nNote: The STM indicates the \"End of Specific NTC Data Entry\" by a packet STM-179, with N_ITER=0.",
-            Identifiers = new List<string>(new[] { "179" }),
+            Identifiers = new Identifiers { Numeric = { 179 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
@@ -913,7 +913,7 @@ namespace TrainShark.DataSets
         {
             Name = "Specific STM Data need",
             Comment = "STM need for Specific STM Data Entry.",
-            Identifiers = new List<string>(new[] { "181" }),
+            Identifiers = new Identifiers { Numeric = { 181 } },
             BitFields = new List<BitField>()
             {
                 NID_PACKET,

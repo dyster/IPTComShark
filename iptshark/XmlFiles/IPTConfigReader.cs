@@ -106,7 +106,7 @@ namespace TrainShark.XmlFiles
 
             foreach (var t in Telegrams)
             {
-                var comid = t.Comid.ToString();
+                var comid = (int)t.Comid;
 
                 var datasetdef = datasetholder.Find(dsh => dsh.KnownIds.Contains(t.Datasetid)).ParsedSet;
 
@@ -122,12 +122,16 @@ namespace TrainShark.XmlFiles
                 else if (!datasetdef.Name.Contains(name))
                     datasetdef.Name += "," + name;
 
-                if (!datasetdef.Identifiers.Contains(comid))
-                    datasetdef.Identifiers.Add(comid);
+                if (datasetdef.Identifiers == null)
+                    datasetdef.Identifiers = new Identifiers();
+
+                if (!datasetdef.Identifiers.Numeric.Contains(comid))
+                    datasetdef.Identifiers.Numeric.Add(comid);
             }
 
             var outlist = datasetholder.Select(dsh => dsh.ParsedSet).ToList();
-            var removed = outlist.RemoveAll(d => d.Identifiers.Count == 0);
+            outlist.RemoveAll(d => d.Identifiers == null);
+            outlist.RemoveAll(d => d.Identifiers.Numeric.Count == 0);
 
             return new DataSetCollection() { DataSets = outlist };
         }

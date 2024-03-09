@@ -309,8 +309,8 @@ namespace TrainShark.Parsers
                     int ss58pos = 1;
                     do
                     {
-                        var ident = Functions.FieldGetter(ss58payload, ss58pos, 8);
-                        var definition = ss58.FindByIdentifier(ident.ToString());
+                        var ident = (int)Functions.FieldGetter(ss58payload, ss58pos, 8);
+                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = {ident}});
                         parse.DisplayFields.Add(new DisplayField("STM-", ident));
 
                         if (definition == null)

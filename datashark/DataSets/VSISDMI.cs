@@ -87,10 +87,7 @@ namespace TrainShark.DataSets
             Name = "EVC_0 MMI_START_ATP",
             Comment =
                 "This packet shall be sent when the ETC needs to establish contact and exchange start-up information with the MMI.",
-            Identifiers = new List<string>
-            {
-                "230530000",
-                "230535000"
+            Identifiers = new Identifiers { Numeric = { 230530000,230535000 } 
             },
             BitFields = new List<BitField>
             {
@@ -128,12 +125,7 @@ namespace TrainShark.DataSets
                 "This packet contains dynamic information, such as current train speed, current position and current target data for the driver." +
                 "\r\nNote: This packet is routed via dedicated port and thus no header nor length information is contained in the (plain) data set. " +
                 "It is also protected via SDTv2.\r\nSome variables that were formerly contained in EVC-1 are now part of EVC-7, which has to be evaluated by the DMI as well.",
-            Identifiers = new List<string>
-            {
-                "230530010",
-                "230535010",
-                "230530011",
-                "230535011"
+            Identifiers = new Identifiers { Numeric = { 230530010,  230535010, 230530011, 230535011 } 
             },
             BitFields = new List<BitField>
             {
@@ -395,10 +387,7 @@ namespace TrainShark.DataSets
             Name = "EVC_2 MMI_STATUS",
             Comment =
                 "This packet contains status information for the driver and shall be sent to the MMI when­ever any of the status has changed, and at least once every 5 seconds.",
-            Identifiers = new List<string>
-            {
-                "230530020",
-                "230535020"
+            Identifiers = new Identifiers { Numeric = { 230530020,230535020 } 
             },
             BitFields = new List<BitField>
             {
@@ -452,10 +441,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent whenever the time is changed in the ETC clock function." +
                 "\r\nNote that there is a corresponding message from MMI to ETC. The issue of the message depends on who of the units are selected as “clock master”. " +
                 "This may vary from system to system, but in a specific system, only the clock master is allowed to initiate the message.",
-            Identifiers = new List<string>
-            {
-                "230530030",
-                "230535030"
+            Identifiers = new Identifiers { Numeric = { 230530030,230535030 } 
             },
             BitFields = new List<BitField>
             {
@@ -474,10 +460,7 @@ namespace TrainShark.DataSets
                 "This packet contains trackside information to the driver. " +
                 "Whenever new information is received from trackside, and at least once every 5 seconds, " +
                 "the speed profile and the gradient profile shall be sent to the MMI.",
-            Identifiers = new List<string>
-            {
-                "230530040",
-                "230535040"
+            Identifiers = new Identifiers { Numeric = { 230530040,230535040 } 
             },
             BitFields = new List<BitField>
             {
@@ -599,10 +582,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_5 MMI_GEO_POSITION",
             Comment = "This packet contains the geographical position to be presented on request by the driver.",
-            Identifiers = new List<string>
-            {
-                "230530050",
-                "230535050"
+            Identifiers = new Identifiers { Numeric = { 230530050,230535050 } 
             },
             BitFields = new List<BitField>
             {
@@ -640,10 +620,7 @@ namespace TrainShark.DataSets
                 "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
                 "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
                 "\r\n\r\nNote: Parameter 'MMI_N_DATA_ELEMENTS' distinguishes between use case 1.) and 2.)",
-            Identifiers = new List<string>
-            {
-                "230530060",
-                "230535060"
+            Identifiers = new Identifiers { Numeric = { 230530060,230535060 } 
             },
             BitFields = new List<BitField>
             {
@@ -740,12 +717,7 @@ namespace TrainShark.DataSets
             Comment =
                 "The signals in this telegram are outputs from the generic ETCS OB R4 system. This telegram collects miscellaneous output signals to the train." +
                 "\r\nNote: This packet is routed via dedicated port and thus no header nor length information is contained in the (plain) data set. It is also protected via SDTv2.",
-            Identifiers = new List<string>
-            {
-                "230530070",
-                "230535070",
-                "230530071",
-                "230535071"
+            Identifiers = new Identifiers { Numeric = { 230530070,  230535070, 230530071, 230535071 } 
             },
             BitFields = new List<BitField>
             {
@@ -908,10 +880,7 @@ namespace TrainShark.DataSets
                 "Except for the presentation, the basic principle is however the same." +
                 "\r\nMMI_Q_TEXT also contains special values e.g. for deletion of message groups." +
                 "\r\nRefer to the description of the Q_TEXT variable regarding the use of the free text carried by X_TEXT.",
-            Identifiers = new List<string>
-            {
-                "230530080",
-                "230535080"
+            Identifiers = new Identifiers { Numeric = { 230530080,230535080 } 
             },
             BitFields = new List<BitField>
             {
@@ -973,10 +942,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet will be sent from ETC to MMI when the driver has finished the data entry by pressing the \"Yes\" button and all checks have passed. " +
                 "The packet starts the Train Data Validation window/procedure at MMI.",
-            Identifiers = new List<string>
-            {
-                "230530090",
-                "230535090"
+            Identifiers = new Identifiers { Numeric = { 230530090,230535090 } 
             },
             BitFields = new List<BitField>
             {
@@ -1125,10 +1091,7 @@ namespace TrainShark.DataSets
                 "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
                 "\r\n\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
                 "\r\n\r\nNote: Parameter 'MMI_NID_DATA_ELEMENTS' distinguishes between use case 1.) and 2.)",
-            Identifiers = new List<string>
-            {
-                "230530100",
-                "230535100"
+            Identifiers = new Identifiers { Numeric = { 230530100,230535100 } 
             },
             BitFields = new List<BitField>
             {
@@ -1163,10 +1126,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_13 MMI_DATA_VIEW",
             Comment = "This packet shall be sent when the driver has requested to open the Data View window.",
-            Identifiers = new List<string>
-            {
-                "230530110",
-                "230535110"
+            Identifiers = new Identifiers { Numeric = { 230530110,230535110 } 
             },
             BitFields = new List<BitField>
             {
@@ -1299,10 +1259,7 @@ namespace TrainShark.DataSets
             Name = "EVC_14 MMI_CURRENT_DRIVER_ID",
             Comment =
                 "This packet shall be sent when the driver is intended to enter/validate /view driver identity number.",
-            Identifiers = new List<string>
-            {
-                "230530120",
-                "230535120"
+            Identifiers = new Identifiers { Numeric = { 230530120,230535120 } 
             },
             BitFields = new List<BitField>
             {
@@ -1337,10 +1294,7 @@ namespace TrainShark.DataSets
             Name = "EVC_16 MMI_CURRENT_TRAIN_NUMBER",
             Comment =
                 "This packet shall be sent when the driver is intended to enter/validate/view train running number",
-            Identifiers = new List<string>
-            {
-                "230530130",
-                "230535130"
+            Identifiers = new Identifiers { Numeric = { 230530130,230535130 } 
             },
             BitFields = new List<BitField>
             {
@@ -1360,10 +1314,7 @@ namespace TrainShark.DataSets
                 "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
                 "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
                 "\r\n\r\nNote: Parameter 'MMI_N_VBC' distinguishes between use case 1.) and 2.)",
-            Identifiers = new List<string>
-            {
-                "230530140",
-                "230535140"
+            Identifiers = new Identifiers { Numeric = { 230530140,230535140 } 
             },
             BitFields = new List<BitField>
             {
@@ -1421,10 +1372,7 @@ namespace TrainShark.DataSets
                 "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
                 "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI." +
                 "\r\n\r\nNote: Parameter 'MMI_N_VBC' distinguishes between use case 1.) and 2.)",
-            Identifiers = new List<string>
-            {
-                "230530150",
-                "230535150"
+            Identifiers = new Identifiers { Numeric = { 230530150,230535150 } 
             },
             BitFields = new List<BitField>
             {
@@ -1472,10 +1420,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent when the ETC requests the driver to select level. The packet contains a list of ETCS and NTC levels and related additional status information. " +
                 "Possible use cases are display of 'default level list', display of 'trackside supported level list', display of 'inhibit level list'.",
-            Identifiers = new List<string>
-            {
-                "230530160",
-                "230535160"
+            Identifiers = new Identifiers { Numeric = { 230530160,230535160 } 
             },
             BitFields = new List<BitField>
             {
@@ -1535,10 +1480,7 @@ namespace TrainShark.DataSets
                 "\r\n1.) Display 'RBC contact', 'RBC data' or 'Radio Network ID' when entering RBC data. Send 'RBC' data in \"data view\" procedure." +
                 "\r\n2.) Display/change echo text after data checks have been performed by ETC; this as well includes control over the allowed driver actions in case some data check has failed" +
                 "\r\nIt also gives the ETC the ability to control the status/type of the \"Yes\" button, if specified by functional requirements for ETC and DMI.",
-            Identifiers = new List<string>
-            {
-                "230530170",
-                "230535170"
+            Identifiers = new Identifiers { Numeric = { 230530170,230535170 } 
             },
             BitFields = new List<BitField>
             {
@@ -1604,10 +1546,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_23 MMI_LSSMA",
             Comment = "This packet is sent sporadically from ETC when LSSMA display shall be started/updated/stopped.",
-            Identifiers = new List<string>
-            {
-                "230530180",
-                "230535180"
+            Identifiers = new Identifiers { Numeric = { 230530180,230535180 } 
             },
             BitFields = new List<BitField>
             {
@@ -1630,10 +1569,7 @@ namespace TrainShark.DataSets
             Name = "EVC_24 MMI_SYSTEM_INFO",
             Comment =
                 "This packet shall be sent on request from the driver. The packet contains misc. system info for operational and initial maintenance purposes.",
-            Identifiers = new List<string>
-            {
-                "230530190",
-                "230535190"
+            Identifiers = new Identifiers { Numeric = { 230530190,230535190 } 
             },
             BitFields = new List<BitField>
             {
@@ -1783,10 +1719,7 @@ namespace TrainShark.DataSets
                 "This packet is used when a STM requests specific data input from the driver. Each MMI packet contains the data of one packet STM-179 according to [FFFIS_058], which in turn holds up to 5 variables. " +
                 "If more than 5 variables need to be presented this MMI packet will be repeated. NID_PACKET and L_PACKET of packet STM-179 are stripped." +
                 "\r\nBecause the content of this packet is given by the STM-functionality the assignment, ranges, values and meaning of all variables can only be given in the project-specific documentation.",
-            Identifiers = new List<string>
-            {
-                "230530200",
-                "230535200"
+            Identifiers = new Identifiers { Numeric = { 230530200,230535200 } 
             },
             BitFields = new List<BitField>
             {
@@ -1877,10 +1810,7 @@ namespace TrainShark.DataSets
                 "Each MMI packet contains the data of one packet STM-183 according to SUBSET-058, which in turn holds up to 5 variables. " +
                 "If more than 5 variables need to be presented this MMI packet will be repeated. NID_PACKET and L_PACKET of packet STM-183 are stripped." +
                 "\r\nBecause the content of this packet is given by the STM-functionality the assignment, ranges, values and meaning of all variables can only be given in the project-specific documentation.",
-            Identifiers = new List<string>
-            {
-                "230530210",
-                "230535210"
+            Identifiers = new Identifiers { Numeric = { 230530210,230535210 } 
             },
             BitFields = new List<BitField>
             {
@@ -1939,10 +1869,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet is sent to the MMI if a STM requests a national specific test procedure. The STM issues such a request via packet STM-19 according to [FFFIS_058]. " +
                 "ETCS Onboard transfers the information of STM-19 to packet EVC-27. Packet STM-19 is not seen by the MMI.",
-            Identifiers = new List<string>
-            {
-                "230530220",
-                "230535220"
+            Identifiers = new Identifiers { Numeric = { 230530220,230535220 } 
             },
             BitFields = new List<BitField>
             {
@@ -1993,10 +1920,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent from ETC to MMI when the driver has finished the 'Set VBC' data entry by pressing the \"Yes\" button and all checks have passed. " +
                 "The packet starts the 'Set VBC' Data Validation window / procedure at MMI. ",
-            Identifiers = new List<string>
-            {
-                "230530230",
-                "230535230"
+            Identifiers = new Identifiers { Numeric = { 230530230,230535230 } 
             },
             BitFields = new List<BitField>
             {
@@ -2034,10 +1958,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent from ETC to MMI when the driver has finished the 'Remove VBC' data entry by pressing the \"Yes\" button and all checks have passed. " +
                 "The packet starts the 'Remove VBC' Data Validation window / procedure at MMI. ",
-            Identifiers = new List<string>
-            {
-                "230530240",
-                "230535240"
+            Identifiers = new Identifiers { Numeric = { 230530240,230535240 } 
             },
             BitFields = new List<BitField>
             {
@@ -2075,10 +1996,7 @@ namespace TrainShark.DataSets
             Comment =
                 "The packet is used by the ETC to dynamically enable/disable generic and customised (i.e. project specific) procedures on the MMI." +
                 "\r\nNote: The customisable contents of the packet (variables MMI_Q_EVC_PROJECT, MMI_M_CUST_PROC_ID, MMI_Q_CUST_REQUEST_ENABLE) may be customised by projects. This has to be specified in the project's documentation.",
-            Identifiers = new List<string>
-            {
-                "230530250",
-                "230535250"
+            Identifiers = new Identifiers { Numeric = { 230530250,230535250 } 
             },
             BitFields = new List<BitField>
             {
@@ -2345,10 +2263,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_31 MMI_NTC_DE_SELECT",
             Comment = "This packet controls the display of the NTC data entry selection window (ERA ch. 12.2.1).",
-            Identifiers = new List<string>
-            {
-                "230530260",
-                "230535260"
+            Identifiers = new Identifiers { Numeric = { 230530260,230535260 } 
             },
             BitFields = new List<BitField>
             {
@@ -2391,10 +2306,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_32 MMI_TRACK_CONDITIONS",
             Comment = "Packet replacing old ATP-2 packet. This packet transmits track condition information.",
-            Identifiers = new List<string>
-            {
-                "230530270",
-                "230535270"
+            Identifiers = new Identifiers { Numeric = { 230530270,230535270 } 
             },
             BitFields = new List<BitField>
             {
@@ -2534,10 +2446,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_33 MMI_ADDITIONAL_ORDER",
             Comment = "Packet replacing old ATP-3 packet. This packet is the additional order or announcement.",
-            Identifiers = new List<string>
-            {
-                "230530280",
-                "230535280"
+            Identifiers = new Identifiers { Numeric = { 230530280,230535280 } 
             },
             BitFields = new List<BitField>
             {
@@ -2587,10 +2496,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_34 MMI_SYSTEM_VERSION",
             Comment = "Packet containing operated system version",
-            Identifiers = new List<string>
-            {
-                "230530290",
-                "230535290"
+            Identifiers = new Identifiers { Numeric = { 230530290,230535290 } 
             },
             BitFields = new List<BitField>
             {
@@ -2614,10 +2520,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent when stored maintenance data shall be presented via the MMI. " +
                 "This packet is used in relation with packets EVC-41, EVC-140 and EVC-141. " +
                 "The purpose of those packets is to provide vital maintenance data to the ATP.",
-            Identifiers = new List<string>
-            {
-                "230530300",
-                "230535300"
+            Identifiers = new Identifiers { Numeric = { 230530300,230535300 } 
             },
             BitFields = new List<BitField>
             {
@@ -2649,10 +2552,7 @@ namespace TrainShark.DataSets
                 "This packet is used in relation with packets EVC-40, EVC-140 and EVC-141." +
                 "\r\nNote: All variables in this packet (Exception: MMI_M_PACKET and MMI_L_PACKET) shall be the same as in packet EVC-40 but bit-inverted and in reverse order. " +
                 "Their names shall end with “_”. See train data packets EVC-6, EVC-10, EVC-110 and EVC-117 as examples of packet definitions according this rule.",
-            Identifiers = new List<string>
-            {
-                "230530310",
-                "230535310"
+            Identifiers = new Identifiers { Numeric = { 230530310,230535310 } 
             },
             BitFields = new List<BitField>
             {
@@ -2693,10 +2593,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent in response to a request to display or update the Home KMC ID maintenance parameter by the DMI. " +
                 "This packet is used in relation with EVC-142",
-            Identifiers = new List<string>
-            {
-                "230531340",
-                "230536340",
+            Identifiers = new Identifiers { Numeric = { 230531340,230536340 } ,
             },
             BitFields = new List<BitField>
             {
@@ -2742,10 +2639,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent when stored brake percentage data shall be presented via the MMI. " +
                 "This packet is used in relation with packets EVC-51, EVC-150 and EVC-151. " +
                 "The purpose of those packets is to allow the driver to modify the brake percentage besides the Train Data Entry procedure.",
-            Identifiers = new List<string>
-            {
-                "230530320",
-                "230535320"
+            Identifiers = new Identifiers { Numeric = { 230530320,230535320 } 
             },
             BitFields = new List<BitField>
             {
@@ -2765,10 +2659,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent when new or accepted brake percentage data shall be presented via the MMI for confirmation. This packet is used in relation with packets EVC-50, EVC-150 and EVC-151." +
                 "\r\nNote: All variables in this packet(Exception: MMI_M_PACKET and MMI_L_PACKET) shall be the same as in packet EVC - 50 but bit - inverted. Their names shall end with “_”. " +
                 "See train data packets EVC-6, EVC-10, EVC-110 and EVC-117 as examples of packet definitions according this rule.",
-            Identifiers = new List<string>
-            {
-                "230530330",
-                "230535330"
+            Identifiers = new Identifiers { Numeric = { 230530330,230535330 } 
             },
             BitFields = new List<BitField>
             {
@@ -2798,12 +2689,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent continuously to display the Set Speed information on the DMI." +
                 "\r\nNote: This packet is routed via dedicated port and thus no header nor length information is contained in the (plain) data set.",
-            Identifiers = new List<string>
-            {
-                "230530350",
-                "230535350",
-                "230530351",
-                "230535351"
+            Identifiers = new Identifiers { Numeric = { 230530350,  230535350, 230530351, 230535351 } 
             },
             BitFields = new List<BitField>
             {
@@ -2848,10 +2734,7 @@ namespace TrainShark.DataSets
             Name = "EVC_100 MMI_START_MMI",
             Comment =
                 "This packet shall be sent as the MMI's answer to MMI_START_ATP and contains version and status information.",
-            Identifiers = new List<string>
-            {
-                "230531000",
-                "230536000"
+            Identifiers = new Identifiers { Numeric = { 230531000,230536000 } 
             },
             BitFields = new List<BitField>
             {
@@ -2893,10 +2776,7 @@ namespace TrainShark.DataSets
             Name = "EVC_101 MMI_DRIVER_REQUEST",
             Comment =
                 "This packet shall be sent when the driver requests for an action from the ATP, typically by pressing a button.",
-            Identifiers = new List<string>
-            {
-                "230531010",
-                "230536010"
+            Identifiers = new Identifiers { Numeric = { 230531010,230536010 } 
             },
             BitFields = new List<BitField>
             {
@@ -3008,12 +2888,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent cyclically as an alive and status signal." +
                 "\r\nNote: This packet is routed via dedicated port and thus no header nor length information is contained in the (plain) data set. It is also protected via SDTv2.",
 
-            Identifiers = new List<string>
-            {
-                "230531020",
-                "230536020",
-                "230531021",
-                "230536021"
+            Identifiers = new Identifiers { Numeric = { 230531020,  230536020, 230531021, 230536021 } 
             },
             BitFields = new List<BitField>
             {
@@ -3184,10 +3059,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_104 MMI_NEW_DRIVER_DATA",
             Comment = "This packet shall be sent when the driver has entered or validated driver identity number.",
-            Identifiers = new List<string>
-            {
-                "230531030",
-                "230536030",
+            Identifiers = new Identifiers { Numeric = { 230531030,230536030 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3203,10 +3075,7 @@ namespace TrainShark.DataSets
             Name = "EVC_106 MMI_NEW_SR_RULES",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has submitted data in the 'SR speed / distance' window.",
-            Identifiers = new List<string>
-            {
-                "230531040",
-                "230536040",
+            Identifiers = new Identifiers { Numeric = { 230531040,230536040 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3243,10 +3112,7 @@ namespace TrainShark.DataSets
                 "\r\n2. Driver accepts a data element by pressing 'Enter_Delay_Type'" +
                 "\r\n3. Driver completes entering a data block by pressing 'Yes'" +
                 "\r\n4. Driver overrules an operational check rule by pressing 'Delay Type Yes'",
-            Identifiers = new List<string>
-            {
-                "230531050",
-                "230536050",
+            Identifiers = new Identifiers { Numeric = { 230531050,230536050 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3293,10 +3159,7 @@ namespace TrainShark.DataSets
             Name = "EVC_109 MMI_SET_TIME_MMI",
             Comment =
                 "This packet shall be sent whenever the time is changed in the MMI clock function. The content is the same as in packet 3.",
-            Identifiers = new List<string>
-            {
-                "230531060",
-                "230536060",
+            Identifiers = new Identifiers { Numeric = { 230531060,230536060 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3313,10 +3176,7 @@ namespace TrainShark.DataSets
             Name = "EVC_110 MMI_CONFIRMED_TRAIN_DATA",
             Comment =
                 "This packet shall be sent when the driver has confirmed the presented train data during Train Data Validation.",
-            Identifiers = new List<string>
-            {
-                "230531070",
-                "230536070",
+            Identifiers = new Identifiers { Numeric = { 230531070,230536070 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3425,10 +3285,7 @@ namespace TrainShark.DataSets
             Name = "EVC_111 MMI_DRIVER_MESSAGE_ACK",
             Comment =
                 "This packet shall be sent as a positive/negative response, if required, on the “Driver Message” packet from the ETC.",
-            Identifiers = new List<string>
-            {
-                "230531080",
-                "230536080",
+            Identifiers = new Identifiers { Numeric = { 230531080,230536080 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3477,10 +3334,7 @@ namespace TrainShark.DataSets
                 "\r\n2.) Driver accepts a data element by pressing 'Enter_Delay_Type'" +
                 "\r\n3.) Driver completes entering a data block by pressing 'Yes'" +
                 "\r\n4.) Driver overrules an operational check rule by pressing 'Delay Type Yes'",
-            Identifiers = new List<string>
-            {
-                "230531090",
-                "230536090",
+            Identifiers = new Identifiers { Numeric = { 230531090,230536090 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3519,10 +3373,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_116 MMI_NEW_TRAIN_NUMBER",
             Comment = "This packet shall be sent when the driver has entered or validated train running number. ",
-            Identifiers = new List<string>
-            {
-                "230531100",
-                "230536100",
+            Identifiers = new Identifiers { Numeric = { 230531100,230536100 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3538,10 +3389,7 @@ namespace TrainShark.DataSets
             Name = "EVC_118 MMI_NEW_SET_VBC",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has submitted data in the 'Set VBC' window.",
-            Identifiers = new List<string>
-            {
-                "230531110",
-                "230536110",
+            Identifiers = new Identifiers { Numeric = { 230531110,230536110 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3558,10 +3406,7 @@ namespace TrainShark.DataSets
             Name = "EVC_119 MMI_NEW_REMOVE_VBC",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has submitted data in the 'Remove VBC' window.",
-            Identifiers = new List<string>
-            {
-                "230531120",
-                "230536120",
+            Identifiers = new Identifiers { Numeric = { 230531120,230536120 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3578,10 +3423,7 @@ namespace TrainShark.DataSets
             Name = "EVC_121 MMI_NEW_LEVEL",
             Comment =
                 "This packet shall be sent when the driver has selected an ETCS or NTC level or has changed the inhibit status of an installed level.",
-            Identifiers = new List<string>
-            {
-                "230531130",
-                "230536130",
+            Identifiers = new Identifiers { Numeric = { 230531130,230536130 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3621,10 +3463,7 @@ namespace TrainShark.DataSets
         {
             Name = "EVC_122 MMI_NEW_LANGUAGE",
             Comment = "This packet will be sent when the driver has selected a new language with the language button.",
-            Identifiers = new List<string>
-            {
-                "230531140",
-                "230536140",
+            Identifiers = new Identifiers { Numeric = { 230531140,230536140 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3647,10 +3486,7 @@ namespace TrainShark.DataSets
             Name = "EVC_123 MMI_SPECIFIC_STM_DATA_TO_STM",
             Comment =
                 "This packet is used when the MMI returns specific data requested from the STM. Each MMI packet contains the data of one packet STM-180 according to SUBSET-058, which in turn holds up to 5 variables. If more than 5 variables need to be presented this MMI packet will be repeated. NID_PACKET and L_PACKET of packet STM-180 are stripped.\r\nBecause the content of this packet is given by the STM-functionality the assignment, ranges, values and meaning of all variables can only be given in the project-specific documentation.",
-            Identifiers = new List<string>
-            {
-                "230531150",
-                "230536150",
+            Identifiers = new Identifiers { Numeric = { 230531150,230536150 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3691,10 +3527,7 @@ namespace TrainShark.DataSets
             Name = "EVC_128 MMI_CONFIRMED_SET_VBC",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has confirmed data in the 'Set VBC' validation window.",
-            Identifiers = new List<string>
-            {
-                "230531160",
-                "230536160"
+            Identifiers = new Identifiers { Numeric = { 230531160,230536160 } 
             },
             BitFields = new List<BitField>
             {
@@ -3731,10 +3564,7 @@ namespace TrainShark.DataSets
             Name = "EVC_129 MMI_CONFIRMED_REMOVE_VBC",
             Comment =
                 "This packet shall be sent sporadically from DMI when the driver has confirmed data in the 'Remove VBC' validation window.",
-            Identifiers = new List<string>
-            {
-                "230531170",
-                "230536170"
+            Identifiers = new Identifiers { Numeric = { 230531170,230536170 } 
             },
             BitFields = new List<BitField>
             {
@@ -3772,10 +3602,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent when the presented maintenance data have been accepted. The content is the same as in packet EVC-40, “MMI_CURRENT_MAINTENANCE_DATA”. " +
                 "This packet is used in relation with packets EVC-40, EVC-41 and EVC-141.",
-            Identifiers = new List<string>
-            {
-                "230531180",
-                "230536180",
+            Identifiers = new Identifiers { Numeric = { 230531180,230536180 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3806,10 +3633,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent when the presented maintenance data have been confirmed. " +
                 "The content is the same as in packet EVC-41, “MMI_ECHOED_MAINTENANCE_DATA”, but bit-inverted (except for MMI_M_PACKET and MMI_L_PACKET). " +
                 "This packet is used in relation with packets EVC-40, EVC-41 and EVC-140.",
-            Identifiers = new List<string>
-            {
-                "230531190",
-                "230536190",
+            Identifiers = new Identifiers { Numeric = { 230531190,230536190 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3851,10 +3675,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent when a request to display or update the Home KMC ID maintenance parameter is initiated by the DMI." +
                 "This packet is used in relation with EVC-42.",
-            Identifiers = new List<string>
-            {
-                "230531240",
-                "230536240",
+            Identifiers = new Identifiers { Numeric = { 230531240,230536240 } ,
             },
             BitFields = new List<BitField>
             {
@@ -3872,10 +3693,7 @@ namespace TrainShark.DataSets
             Comment =
                 "This packet shall be sent when the presented brake percentage data have been accepted. The content is the same as in packet EVC-50, “MMI_CURRENT_BRAKE_PERCENTAGE”. " +
                 "This packet is used in relation with packets EVC-50, EVC-51 and EVC-151.",
-            Identifiers =
-            {
-                "230531200",
-                "230536200"
+            Identifiers = new Identifiers { Numeric = { 230531200,  230536200 } 
             },
             BitFields = new List<BitField>
             {
@@ -3895,10 +3713,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent when the presented brake percentage data have been confirmed. The content is the same as in packet EVC-51, “MMI_ECHOED_BRAKE_PERCENTAGE”. " +
                 "This packet is used in relation with packets EVC-50, EVC-51 and EVC-150." +
                 "\r\nNote: All variables in this packet (Exception: MMI_M_PACKET and MMI_L_PACKET) shall be the same as in packet EVC-50 but bit-inverted. Their names shall end with “_”.",
-            Identifiers =
-            {
-                "230531210",
-                "230536210"
+            Identifiers = new Identifiers { Numeric = { 230531210,  230536210 } 
             },
             BitFields = new List<BitField>
             {
@@ -3927,10 +3742,7 @@ namespace TrainShark.DataSets
             Name = "EVC_152 MMI_DRIVER_ACTION",
             Comment = "This packet shall be sent when the corresponding driver action is performed." +
                       "\r\nThe data is used by ETC to record the driver actions in JRU.",
-            Identifiers =
-            {
-                "230531220",
-                "230536220"
+            Identifiers = new Identifiers { Numeric = { 230531220,  230536220 } 
             },
             BitFields = new List<BitField>
             {
@@ -4000,10 +3812,7 @@ namespace TrainShark.DataSets
             Name = "EVC_153 MMI_DISPLAY_STATUS_JRU",
             Comment =
                 "This packet shall be sent when the information displayed to the driver has changed. The data is used by the ETC to record the DMI status in the JRU.",
-            Identifiers =
-            {
-                "230531230",
-                "230536230"
+            Identifiers = new Identifiers { Numeric = { 230531230,  230536230 } 
             },
             BitFields = new List<BitField>
             {
@@ -4197,10 +4006,7 @@ namespace TrainShark.DataSets
                 "This packet shall be sent periodically (process data) and contains all information necessary to create the " +
             "JRU messages 20 (Speed and Distance Monitoring Information) and 44 (LSSMA)." +
             "Note: Size is 32 Bytes, cycle time is 512 ms.",
-            Identifiers =
-            {
-                "230531250",
-                "230536250"
+            Identifiers = new Identifiers { Numeric = { 230531250,  230536250 } 
             },
             BitFields = new List<BitField>
             {
@@ -4393,10 +4199,7 @@ namespace TrainShark.DataSets
             "(up to 255 characters) and such a transfer on the GPP may take several seconds. " +
             "The strategy to reduce the load on the GPP is to identify each plain text message by the identifier MMI_I_TEXT and cache it in the ETC. " +
             "The DMI can report back only this identifier.",
-            Identifiers =
-            {
-                "230531260",
-                "230536260"
+            Identifiers = new Identifiers { Numeric = { 230531260,  230536260 } 
             },
             BitFields = new List<BitField>
             {
@@ -5956,7 +5759,7 @@ namespace TrainShark.DataSets
         {
             Name = "IPT_ECHO IPT_ECHO",
             Comment = "ECHO telegram structure",
-            Identifiers = new List<string> {"110"},
+            Identifiers = new Identifiers { Numeric = { 110 } },
             BitFields = new List<BitField>
             {
                 new BitField
