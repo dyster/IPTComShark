@@ -140,12 +140,9 @@ namespace datashark.DataSets
                 new BitField{Name = "Train Stop Overide Active MESS", BitFieldType = BitFieldType.Bool, Length = 1},
 
             }
-        };
+        }
 
-        public static DataSetDefinition GWtoEVC = new DataSetDefinition
-        {
-            Name = "GW to EVC",
-            BitFields = new List<BitField>
+        public static List<BitField> GWtoEVCdataset => new List<BitField>
             {
                 new BitField{Name = "TCMS_LifeSign", BitFieldType = BitFieldType.UInt8, Length = 8},
                 new BitField{Name = "Service_Brake_active_Vehicle", BitFieldType = BitFieldType.Bool, Length = 1},
@@ -164,7 +161,22 @@ namespace datashark.DataSets
                 new BitField{Name = "SpareC7", BitFieldType = BitFieldType.Spare, Length = 32},
                 new BitField{Name = "SpareC8", BitFieldType = BitFieldType.Spare, Length = 32},
 
-            }
+            };
+
+        public static DataSetDefinition GWtoEVC1 = new DataSetDefinition
+        {
+            Name = "GW->CPUA",
+            Identifiers = new Identifiers { Numeric = new List<int> { 111 }, Source = new IPv4(192, 168, 1, 15), Destination = new IPv4(192, 168, 1, 21) },
+            BitFields = GWtoEVCdataset
         };
+
+        public static DataSetDefinition GWtoEVC2 = new DataSetDefinition
+        {
+            Name = "GW->CPUB",
+            Identifiers = new Identifiers { Numeric = new List<int> { 124 }, Source = new IPv4(192, 168, 1, 15), Destination = new IPv4(192, 168, 1, 23) },
+            BitFields = GWtoEVCdataset
+        };
+
+
     }
 }
