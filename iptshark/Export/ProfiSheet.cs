@@ -81,7 +81,7 @@ namespace TrainShark.Export
             }
         }
 
-        public int Push(CapturePacket packet, Parse parse)
+        public int Push(CapturePacket packet, ParseOutput parse)
         {
 
 

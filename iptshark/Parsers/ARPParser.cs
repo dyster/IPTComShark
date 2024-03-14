@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace TrainShark.Parsers
 {
-    public class ARPParser : IParser
+    public class ARPParser : ParserBase
     {
-        public ProtocolType ProtocolType => ProtocolType.ARP;
+        public override ProtocolType ProtocolType => ProtocolType.ARP;
 
-        public Parse Extract(byte[] data, iPacket iPacket)
+        public override ParseOutput Extract(byte[] data, iPacket iPacket)
         {
-            var parse = new Parse();
+            var parse = new ParseOutput();
             var segment = new ByteArraySegment(data);
             var arp = new PacketDotNet.ArpPacket(segment);
             parse.DisplayFields = new List<DisplayField>();

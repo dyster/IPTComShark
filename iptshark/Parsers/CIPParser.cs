@@ -152,7 +152,7 @@ namespace TrainShark.Parsers
             }
         }
 
-        public static void ParseCommonFormat(byte[] data, int pos, Parse parse, iTraveller traveller)
+        public static void ParseCommonFormat(byte[] data, int pos, ParseOutput parse, iTraveller traveller)
         {
             var baseSet = new DataSetDefinition { Name = "Common Format" };
             var pds = ParsedDataSet.Create(baseSet);
@@ -465,13 +465,13 @@ namespace TrainShark.Parsers
         }
     }
 
-    public class CIPParser : IParser
+    public class CIPParser : ParserBase
     {
-        public ProtocolType ProtocolType => ProtocolType.CIP;
+        public override ProtocolType ProtocolType => ProtocolType.CIP;
 
-        public Parse Extract(byte[] data, iPacket iPacket)
+        public override ParseOutput Extract(byte[] data, iPacket iPacket)
         {
-            var parse = new Parse();
+            var parse = new ParseOutput();
             var enip_packet_type = ClassifyPacket(iPacket as iTraveller);
 
             var baseSet = new DataSetDefinition { Name = "Industrial Ethernet" };
@@ -548,15 +548,15 @@ namespace TrainShark.Parsers
         }
     }
 
-    public class CIPIOParser : IParser
+    public class CIPIOParser : ParserBase
     {
-        public ProtocolType ProtocolType => ProtocolType.CIPIO;
+        public override ProtocolType ProtocolType => ProtocolType.CIPIO;
 
-        public Parse Extract(byte[] data, iPacket iPacket)
+        public override ParseOutput Extract(byte[] data, iPacket iPacket)
         {
             var traveller = (iTraveller)iPacket;
 
-            var parse = new Parse();
+            var parse = new ParseOutput();
 
             var pds = new ParsedDataSet();
             parse.ParsedData = new List<ParsedDataSet> { pds };

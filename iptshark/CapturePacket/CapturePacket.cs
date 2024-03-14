@@ -34,12 +34,12 @@ namespace TrainShark
         //{
         //}
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, ParserFactory parserFactory)
+        public static ParseOutput? ExtractParsedData(CapturePacket packet, Packet topPacket, ParserFactory parserFactory)
         {
             return ExtractParsedData(packet, topPacket, false, parserFactory);
         }
 
-        public static Parse? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive, ParserFactory parserFactory)
+        public static ParseOutput? ExtractParsedData(CapturePacket packet, Packet topPacket, bool extensive, ParserFactory parserFactory)
         {
             if (!string.IsNullOrEmpty(packet.Error))
                 return null;

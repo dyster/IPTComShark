@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace TrainShark.Parsers
 {
-    public class NTPParser : IParser
+    public class NTPParser : ParserBase
     {
-        public Parse Extract(byte[] payload, iPacket iPacket)
+        public override ParseOutput Extract(byte[] payload, iPacket iPacket)
         {
-            var pars = new Parse();
+            var pars = new ParseOutput();
 
             var data = NTP.NTPDataSet.Parse(payload);
 
@@ -69,7 +69,7 @@ namespace TrainShark.Parsers
         }
 
 
-        public ProtocolType ProtocolType => ProtocolType.NTP;
+        public override ProtocolType ProtocolType => ProtocolType.NTP;
 
         private static DateTime ParseNTPDate(uint integer, uint fraction)
         {

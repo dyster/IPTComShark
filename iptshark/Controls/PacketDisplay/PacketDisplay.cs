@@ -86,9 +86,9 @@ namespace TrainShark.Controls
                     }
                 }
 
-                Parse parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
+                ParseOutput parse = ParserFactory.DoPacket(originalpacket.Protocol, payload, originalpacket);
                 byte[] oldpayload;
-                Parse oldparse;
+                ParseOutput oldparse;
                 if (originalpacket.Previous != null)
                 {
                     oldpayload = BackStore.GetPayload(originalpacket.Previous.No);
@@ -248,7 +248,7 @@ namespace TrainShark.Controls
             dataListViewRight.DataSource = dataLines;
         }
 
-        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, Parse? parse, Parse oldparse)
+        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, ParseOutput? parse, ParseOutput oldparse)
         {
             var dataSetCount = 0;
             foreach (var parsedDataSet in parse.ParsedData)

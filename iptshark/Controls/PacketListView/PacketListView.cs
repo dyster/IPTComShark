@@ -530,7 +530,7 @@ namespace TrainShark.Controls
             if (o != null)
             {
                 var payload = BackStore.GetPayload(o.No);
-                Parse? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
+                ParseOutput? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
                 if (parse != null)
                 {
 

@@ -7,7 +7,7 @@ using Functions = BitDataParser.Functions;
 
 namespace TrainShark.Parsers
 {
-    class SPLParser : IParser
+    class SPLParser : ParserBase
     {
         private static int[] SS58SAPs =
         {
@@ -28,9 +28,9 @@ namespace TrainShark.Parsers
             0b100111,
         };
 
-        public Parse Extract(byte[] payload, iPacket iPacket)
+        public override ParseOutput Extract(byte[] payload, iPacket iPacket)
         {
-            var parse = new Parse();
+            var parse = new ParseOutput();
 
             parse.DisplayFields = new List<DisplayField>();
             parse.ParsedData = new List<ParsedDataSet>();
@@ -82,7 +82,7 @@ namespace TrainShark.Parsers
             return parse;
         }
 
-        public static void SS57(byte[] splframeArray, Parse parse, int SAP)
+        public static void SS57(byte[] splframeArray, ParseOutput parse, int SAP)
         {
             // get the SLL header
             var header = Subset57.SLLHeader.Parse(splframeArray);
@@ -366,6 +366,6 @@ namespace TrainShark.Parsers
             if (checksum != null) parse.ParsedData.Add(checksum);
         }
 
-        public ProtocolType ProtocolType => ProtocolType.UDP_SPL;
+        public override ProtocolType ProtocolType => ProtocolType.UDP_SPL;
     }
 }

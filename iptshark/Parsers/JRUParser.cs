@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace TrainShark.Parsers
 {
-    class JRUParser : IParser
+    class JRUParser : ParserBase
     {
-        public Parse Extract(byte[] jruload, iPacket iPacket)
+        public override ParseOutput Extract(byte[] jruload, iPacket iPacket)
         {
-            var parse = new Parse();
+            var parse = new ParseOutput();
             parse.DisplayFields = new List<DisplayField>();
             parse.ParsedData = new List<ParsedDataSet>();
             var ss27Parser = new SS27Parser();
@@ -43,6 +43,6 @@ namespace TrainShark.Parsers
             return parse;
         }
 
-        public ProtocolType ProtocolType => ProtocolType.JRU;
+        public override ProtocolType ProtocolType => ProtocolType.JRU;
     }
 }

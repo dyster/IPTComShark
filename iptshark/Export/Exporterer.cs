@@ -165,7 +165,7 @@ namespace TrainShark.Export
             foreach (var packet in Selection)
             {
                 var payload = _backStore.GetPayload(packet.No);
-                Parsers.Parse? parse = _parserFactory.DoPacket(packet.Protocol, payload, packet);
+                Parsers.ParseOutput? parse = _parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse != null)
                     xLSMaker2.Push(packet, parse);
                 i++;

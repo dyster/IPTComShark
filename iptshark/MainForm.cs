@@ -20,6 +20,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static TrainShark.Classes.Conversions;
+using System.Reflection;
 
 namespace TrainShark
 {
@@ -44,9 +45,21 @@ namespace TrainShark
             _parserFactory = GenerateParserFactory();
 
             //var ipt = new IPT();
-            //ipt.SerializeDataContract(@"d:\temp\iptdc.xml");
-            //ipt.SerializeXml(@"d:\temp\ipt.xml");
-            //ipt.SerializeJson(@"d:\temp\iptdc.xml");
+            //ipt.SerializeDataContract(@"c:\temp\iptdc.xml");
+            //ipt.SerializeXml(@"c:\temp\ipt.xml");
+            //ipt.SerializeJson(@"c:\temp\iptdc.json");
+            var baseType = typeof(DataSetCollection);
+            var allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var datasettypes = allAssemblies.SelectMany(assembly => assembly.GetTypes()).Where(type => type.IsSubclassOf(baseType) && !type.IsAbstract);
+            foreach (var type in datasettypes)
+            {
+                var instance = Activator.CreateInstance(type) as DataSetCollection;
+                if (instance != null)
+                {
+                    //instance.SerializeXml(@$"c:\temp\{type.Name}_{instance.Name}.xml");
+                    //instance.SerializeJson(@$"c:\temp\{type.Name}_{instance.Name}.json");
+                }
+            }
 
             _backStore = new BackStore.BackStore(_parserFactory);
             _backStore.FinishedProcessing += _backStore_FinishedProcessing;
@@ -812,7 +825,7 @@ namespace TrainShark
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var list = new List<Tuple<CapturePacket, Parse>>();
+            var list = new List<Tuple<CapturePacket, ParseOutput>>();
             var count = 0;
 
             var processor = new BackStore.BackStore(_parserFactory, true);
@@ -824,7 +837,7 @@ namespace TrainShark
                 foreach (var block in pcapReader.Enumerate())
                 {
                     var packet = processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.Header.network), out var notused);
-                    list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
+                    list.Add(new Tuple<CapturePacket, ParseOutput>(packet, notused));
                     count++;
                 }
             }
@@ -836,7 +849,7 @@ namespace TrainShark
                     if (block.Header == PCAPNGHeader.EnhancedPacket)
                     {
                         var packet = processor.Add(new Raw(block.DateTime, block.PayLoad, (LinkLayerType)block.LinkLayerType), out var notused);
-                        list.Add(new Tuple<CapturePacket, Parse>(packet, notused));
+                        list.Add(new Tuple<CapturePacket, ParseOutput>(packet, notused));
                         count++;
                     }
 
@@ -895,7 +908,7 @@ namespace TrainShark
                 WriteIndented = true,
                 Converters = { new Classes.IPJsonConverter() }
             };
-            var json = JsonSerializer.Serialize(list, typeof(List<Tuple<CapturePacket, Parse>>), options);
+            var json = JsonSerializer.Serialize(list, typeof(List<Tuple<CapturePacket, ParseOutput>>), options);
             File.WriteAllText(file + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".json", json);
         }
 

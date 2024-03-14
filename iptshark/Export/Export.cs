@@ -40,7 +40,7 @@ namespace TrainShark.Export
                 int topcol = 4;
                 // TODO fix so it uses the whole list
                 var payload = backStore.GetPayload(packets.First.Value.No);
-                Parse extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload, packets.First.Value);
+                ParseOutput extractParse = parserFactory.DoPacket(packets.First.Value.Protocol, payload, packets.First.Value);
 
                 if (extractParse != null)
                 {
@@ -194,7 +194,7 @@ namespace TrainShark.Export
                 sb.Append(@" ");
 
                 var payload = backStore.GetPayload(packet.No);
-                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
+                ParseOutput? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse != null)
                 {
                     var displayFields = parse.ParsedData.SelectMany(dataset =>
@@ -241,7 +241,7 @@ namespace TrainShark.Export
 
                 csvExport["Name"] = packet.Name;
                 var payload = backStore.GetPayload(packet.No);
-                Parse? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
+                ParseOutput? parse = parserFactory.DoPacket(packet.Protocol, payload, packet);
                 if (parse != null)
                 {
                     var displayFields = parse.ParsedData.SelectMany(dataset =>

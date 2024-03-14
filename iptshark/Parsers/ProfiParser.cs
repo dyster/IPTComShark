@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace TrainShark.Parsers
 {
-    internal class ProfiParser : IParser
+    internal class ProfiParser : ParserBase
     {
-        public ProtocolType ProtocolType => ProtocolType.Profibus;
+        public override ProtocolType ProtocolType => ProtocolType.Profibus;
 
-        public Parse Extract(byte[] data, iPacket iPacket)
+        public override ParseOutput Extract(byte[] data, iPacket iPacket)
         {
-            var parse = new Parse();
+            var parse = new ParseOutput();
             parse.DisplayFields = new List<DisplayField>();
             parse.ParsedData = new List<ParsedDataSet>();
 

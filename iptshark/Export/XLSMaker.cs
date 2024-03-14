@@ -60,7 +60,7 @@ namespace TrainShark.Export
             }
         }
 
-        public void Push(CapturePacket packet, Parse parse)
+        public void Push(CapturePacket packet, ParseOutput parse)
         {
             if (_rows > 1000000)
             {
@@ -96,7 +96,7 @@ namespace TrainShark.Export
         }
 
         private int rowindex = 2;
-        private void PushEverythingSheet(CapturePacket packet, Parse parse)
+        private void PushEverythingSheet(CapturePacket packet, ParseOutput parse)
         {
             if (rowindex > 1000000)
             {

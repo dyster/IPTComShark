@@ -228,10 +228,10 @@ namespace TrainShark.BackStore
         /// </summary>
         /// <param name="raw">Raw ethernet data</param>
         /// <returns>The parsed packet</returns>
-        public CapturePacket Add(Raw raw, out Parse parse)
+        public CapturePacket Add(Raw raw, out ParseOutput parse)
         {
             var seed = ++_seed;
-            parse = new Parse();
+            parse = new ParseOutput();
             Packet topPacket = PacketWrapper.Parse(raw);
 
 

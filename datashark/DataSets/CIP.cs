@@ -13,6 +13,11 @@ namespace datashark.DataSets
             Description = "";
 
             DataSets.Add(TPWStoDMI);
+            DataSets.Add(DMItoTPWS);
+            DataSets.Add(GWtoDMI);
+            DataSets.Add(TPWStoGW);
+            DataSets.Add(GWtoEVC1);
+            DataSets.Add(GWtoEVC2);
         }
 
         public static DataSetDefinition TPWStoDMI = new DataSetDefinition
@@ -140,7 +145,7 @@ namespace datashark.DataSets
                 new BitField{Name = "Train Stop Overide Active MESS", BitFieldType = BitFieldType.Bool, Length = 1},
 
             }
-        }
+        };
 
         public static List<BitField> GWtoEVCdataset => new List<BitField>
             {

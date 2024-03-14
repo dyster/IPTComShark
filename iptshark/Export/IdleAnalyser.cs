@@ -150,7 +150,7 @@ namespace TrainShark.Export
 
         }
 
-        public void Push(CapturePacket packet, Parse parse)
+        public void Push(CapturePacket packet, ParseOutput parse)
         {
 
             if (packet.Protocol != ProtocolType.UDP_SPL)
