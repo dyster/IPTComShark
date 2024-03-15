@@ -1,9 +1,9 @@
 ﻿using TrainShark.DataSets;
 using TrainShark.Parsers;
 using OfficeOpenXml;
-using OxyPlot;
-using OxyPlot.Legends;
-using OxyPlot.Series;
+//using OxyPlot;
+//using OxyPlot.Legends;
+//using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,6 +30,7 @@ namespace TrainShark.Export
 
         }
 
+        /*
         public PlotModel Finalize()
         {
             worksheet.Cells[1, colindex].Value = "Snd Addr";
@@ -148,7 +149,7 @@ namespace TrainShark.Export
 
             return plotModel;
 
-        }
+        }*/
 
         public void Push(CapturePacket packet, ParseOutput parse)
         {

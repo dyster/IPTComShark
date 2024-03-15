@@ -469,6 +469,7 @@ namespace TrainShark
             // 
             // exportSVGSequenceDiagramToolStripMenuItem
             // 
+            exportSVGSequenceDiagramToolStripMenuItem.Enabled = false;
             exportSVGSequenceDiagramToolStripMenuItem.Name = "exportSVGSequenceDiagramToolStripMenuItem";
             exportSVGSequenceDiagramToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             exportSVGSequenceDiagramToolStripMenuItem.Text = "Export SVG sequence diagram";

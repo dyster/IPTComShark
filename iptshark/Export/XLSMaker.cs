@@ -1,7 +1,7 @@
 ﻿using TrainShark.Classes;
 using TrainShark.Parsers;
 using OfficeOpenXml;
-using OxyPlot;
+//using OxyPlot;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -227,12 +227,12 @@ namespace TrainShark.Export
 
             }
 
-            if (ExportSAPIdleAnalysis)
-            {
-                var plotModel = _idleAnalyser.Finalize();
-
-                SvgExporter.Export(plotModel, File.OpenWrite(Path.ChangeExtension(Outputfile, ".svg")), 10000, 10000, true);
-            }
+            //if (ExportSAPIdleAnalysis)
+            //{
+            //    var plotModel = _idleAnalyser.Finalize();
+            //
+            //    SvgExporter.Export(plotModel, File.OpenWrite(Path.ChangeExtension(Outputfile, ".svg")), 10000, 10000, true);
+            //}
 
             // set some document properties
             _package.Workbook.Properties.Title = "Parsed traffic";
