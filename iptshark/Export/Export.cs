@@ -1,5 +1,4 @@
 using BitDataParser;
-using TrainShark.Parsers;
 using OfficeOpenXml;
 using PacketDotNet;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TrainShark.Parsers;
 
 namespace TrainShark.Export
 {
@@ -50,7 +50,6 @@ namespace TrainShark.Export
                     }
                 }
 
-
                 //Ok now format the values;
                 using (ExcelRange range = worksheet.Cells[3, 1, 3, 4])
                 {
@@ -91,15 +90,14 @@ namespace TrainShark.Export
                     rowindex++;
                 }
 
-
-                //There is actually no need to calculate, Excel will do it for you, but in some cases it might be useful. 
-                //For example if you link to this workbook from another workbook or you will open the workbook in a program that hasn't a calculation engine or 
+                //There is actually no need to calculate, Excel will do it for you, but in some cases it might be useful.
+                //For example if you link to this workbook from another workbook or you will open the workbook in a program that hasn't a calculation engine or
                 //you want to use the result of a formula in your program.
                 worksheet.Calculate();
 
                 worksheet.Cells.AutoFitColumns(0); //Autofit columns for all cells
 
-                // lets set the header text 
+                // lets set the header text
                 worksheet.HeaderFooter.OddHeader.CenteredText = "&24&U&\"Arial,Regular Bold\" Parsed Traffic";
                 // add the page number to the footer plus the total number of pages
                 worksheet.HeaderFooter.OddFooter.RightAlignedText =
@@ -126,15 +124,10 @@ namespace TrainShark.Export
                 // set some extended property values
                 package.Workbook.Properties.Company = "";
 
-
                 // save our new workbook and we are done!
                 package.Save();
             }
         }
-
-
-
-
 
         private static string SS27tostring(SS27Packet packet)
         {
@@ -189,7 +182,6 @@ namespace TrainShark.Export
                 sb.Append(packet.Date);
                 sb.Append(@"\tab ");
 
-
                 sb.Append(packet.Name);
                 sb.Append(@" ");
 
@@ -209,7 +201,6 @@ namespace TrainShark.Export
                     }
                 }
 
-
                 // since we have IPT, straight cast to UDP, BAM
                 // TODO temp disabled !!!
                 var topPacket = backStore.GetPacket(packet.No);
@@ -219,25 +210,21 @@ namespace TrainShark.Export
                 var bytes = IPTWPPacket.GetIPTPayload(udp.PayloadData);
                 sb.Append(@"\line\ul " + BitConverter.ToString(bytes) + @"\ulnone");
 
-
                 sb.AppendLine(@"\line");
             }
 
             return sb.ToString();
         }
 
-
         public static string MakeCSV(List<CapturePacket> packets, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
             var csvExport = new CsvExport();
-
 
             foreach (CapturePacket packet in packets)
             {
                 csvExport.AddRow();
                 csvExport["Time"] = packet.Date; // + "." + l.Time.Millisecond;
                 csvExport["ms"] = packet.Date.Millisecond;
-
 
                 csvExport["Name"] = packet.Name;
                 var payload = backStore.GetPayload(packet.No);
@@ -248,7 +235,6 @@ namespace TrainShark.Export
                         dataset.ParsedFields.Select(f => new DisplayField(f)));
                     csvExport["Data"] = string.Join(" ", displayFields);
                 }
-
 
                 //csvExport["Raw"] = BitConverter.ToString(packet.GetRawData());
             }

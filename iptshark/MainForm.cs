@@ -1,11 +1,5 @@
 ﻿using BitDataParser;
 using BustPCap;
-using TrainShark.DataSets;
-using TrainShark.Export;
-using TrainShark.FileManager;
-using TrainShark.Import;
-using TrainShark.Parsers;
-using TrainShark.Windows;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using System;
@@ -19,8 +13,13 @@ using System.Numerics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using TrainShark.DataSets;
+using TrainShark.Export;
+using TrainShark.FileManager;
+using TrainShark.Import;
+using TrainShark.Parsers;
+using TrainShark.Windows;
 using static TrainShark.Classes.Conversions;
-using System.Reflection;
 
 namespace TrainShark
 {
@@ -73,7 +72,6 @@ namespace TrainShark
 
             Logger.Instance.LogAdded += (sender, log) => UpdateStatus(log.ToString());
 
-
             packetListView1.PacketSelected += (sender, args) => packetDisplay1.SetObject(args.Packet);
 
             var packetSettings = TrainShark.Controls.PacketListSettings.DeserializeString(Properties.Settings.Default.PacketListSettings);
@@ -104,7 +102,6 @@ namespace TrainShark
             {
                 OpenPath(args);
             }
-
         }
 
         public static ParserFactory GenerateParserFactory()
@@ -122,6 +119,7 @@ namespace TrainShark
 
             return parserFactory;
         }
+
         private static bool ValidateArgs(string[] args)
         {
             bool valid = false;
@@ -147,7 +145,6 @@ namespace TrainShark
             packetListView1.Clear();
             _backStore.Clear();
 
-
             _capturedData = 0;
         }
 
@@ -165,7 +162,6 @@ namespace TrainShark
         }
 
         //private delegate void AddToListDelegate(CapturePacket o);
-
 
         private void device_OnPacketArrival(object sender, PacketCapture pc)
         {
@@ -205,7 +201,6 @@ namespace TrainShark
             //_pcapWriter = new PCAPWriter(@"c:\temp", "testfile");
             //_pcapWriter.RotationTime = 30;
             //_pcapWriter.Start();
-
 
             if (!backgroundWorker1.IsBusy)
                 backgroundWorker1.RunWorkerAsync();
@@ -255,7 +250,6 @@ namespace TrainShark
                 // TODO try and restore this old behaviour somehow
                 //captureDevices.RemoveAll(d => d.Loopback || d.Addresses.Count == 0);
 
-
                 var interfacePicker = new InterfacePicker(captureDevices);
                 interfacePicker.ShowDialog();
 
@@ -273,14 +267,11 @@ namespace TrainShark
                     device_OnPacketArrival;
             }
 
-
             UpdateStatus("Recording from " + _device.Interface.FriendlyName);
-
 
             // Open the device for capturing
             var readTimeoutMilliseconds = 1000;
             _device.Open(DeviceModes.Promiscuous, readTimeoutMilliseconds);
-
 
             // Start the capturing process
             _device.StartCapture();
@@ -292,7 +283,6 @@ namespace TrainShark
 
             Process proc = Process.GetCurrentProcess();
             var memorySize64 = proc.PrivateMemorySize64;
-
 
             var sizestring = "";
             if (_capturedData > 1024 * 1024)
@@ -312,8 +302,6 @@ namespace TrainShark
             //statusLeft.Text = packetListView1.Count() + " captured packets, " + sizestring + ". " + _discaredPackets +
             //                  " discarded packets, " + sizestring2 + ". " + memorystring + ".";
 
-
-
             var tuples = new List<Tuple<Color, string>>();
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, _backStore.CapturedPackets.ToString()));
             tuples.Add(new Tuple<Color, string>(Color.Black, " captured packets |"));
@@ -326,12 +314,10 @@ namespace TrainShark
             tuples.Add(new Tuple<Color, string>(Color.DarkRed, PrettyPrintSize(memorySize64)));
             tuples.Add(new Tuple<Color, string>(Color.Black, "|"));
 
-
             var renderStatusText = RenderStatusText(statusLeft.BackColor, statusLeft.Height, statusLeft.Font, tuples);
 
             statusLeft.Image = renderStatusText;
         }
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -422,9 +408,7 @@ namespace TrainShark
         {
         }
 
-
         private delegate void UpdateStatusDelegate(string text);
-
 
         private void openFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -471,7 +455,6 @@ namespace TrainShark
                     SetApplicationTitle(e.Inputs);
                 });
             }
-
         }
 
         private void _backStore_FinishedProcessing(object sender, uint e)
@@ -486,7 +469,6 @@ namespace TrainShark
 
             Logger.Log("--------- Performance info of particular datasets used while parsing IPTCom (Top 20) -----------", Severity.Info);
             Logger.Log($"Backstore finished processing {e} packets in {DateTime.Now - _loadStarted}", Severity.Info);
-
         }
 
         private void saveCurrentFilterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -561,11 +543,8 @@ namespace TrainShark
 
         private void exportXLSXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-
             var exporterer = new Exporterer(packetListView1.GetAllPackets(), packetListView1.GetFilteredPackets(), packetListView1.GetSelectedPackets(), _backStore, _parserFactory);
             var showDialog = exporterer.ShowDialog(this);
-
         }
 
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -596,7 +575,6 @@ namespace TrainShark
             var dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                
                 if (importer.CanImport(openFileDialog.FileName))
                 {
                     foreach (var capturePacket in importer.Import(openFileDialog.FileName))
@@ -612,7 +590,7 @@ namespace TrainShark
         }
 
         private void reportAnIssueToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        {
             Process.Start(new ProcessStartInfo("https://gitlab.bt.bombardier.net/jsonesso/IPTComShark/-/issues") { UseShellExecute = true });
         }
 
@@ -650,13 +628,11 @@ namespace TrainShark
             var img = new Bitmap(200, height);
             Graphics gx = Graphics.FromImage(img);
 
-
             int totalwidth = 0;
             foreach (var pair in texts)
             {
                 totalwidth += (int)gx.MeasureString(pair.Item2, font).Width;
             }
-
 
             img = new Bitmap(totalwidth, height);
             gx = Graphics.FromImage(img);
@@ -806,7 +782,6 @@ namespace TrainShark
             }
         }
 
-
         private static void RunBenchmark(string file)
         {
             var totalMemory = GC.GetTotalMemory(false);
@@ -852,10 +827,8 @@ namespace TrainShark
                         list.Add(new Tuple<CapturePacket, ParseOutput>(packet, notused));
                         count++;
                     }
-
                 }
             }
-
 
             stopwatch.Stop();
 
@@ -871,7 +844,6 @@ namespace TrainShark
             var userProcessorTime_2 = myProcess.UserProcessorTime;
             var privilegedProcessorTime_2 = myProcess.PrivilegedProcessorTime;
             var totalProcessorTime_2 = myProcess.TotalProcessorTime;
-
 
             var peakPagedMem = myProcess.PeakPagedMemorySize64;
             var peakVirtualMem = myProcess.PeakVirtualMemorySize64;
@@ -946,7 +918,7 @@ namespace TrainShark
                     e.Cancel = true;
                     textBoxIgnoreComid.Select(0, textBoxIgnoreComid.Text.Length);
 
-                    // Set the ErrorProvider error with the text to display. 
+                    // Set the ErrorProvider error with the text to display.
                     errorProvider1.SetError(textBoxIgnoreComid, errorMsg);
                 }
                 else
@@ -1017,7 +989,6 @@ namespace TrainShark
                         errorMessage = "Token: " + t + " is not a valid ComID";
                         return false;
                     }
-
                 }
             }
             errorMessage = String.Empty;
@@ -1029,9 +1000,6 @@ namespace TrainShark
             Clipboard.SetText(string.Join(Environment.NewLine,
                 Logger.Instance.GetLog().Select(log => log.ToString())));
         }
-
-        
-
 
         //public enum Protocol
         //{

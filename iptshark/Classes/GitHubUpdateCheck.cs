@@ -38,7 +38,6 @@ namespace TrainShark
             }
             catch (Exception e)
             {
-
                 Logger.Log("Version check failed", Severity.Warning, e);
                 return null;
             }

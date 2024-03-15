@@ -1,10 +1,10 @@
-﻿using TrainShark.Classes;
-using Renci.SshNet;
+﻿using Renci.SshNet;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using TrainShark.Classes;
 
 namespace TrainShark.Windows
 {
@@ -50,18 +50,14 @@ namespace TrainShark.Windows
                 textBoxUsername.Text,
                 new PasswordAuthenticationMethod(textBoxUsername.Text, textBoxPassword.Text));
 
-
             _client = new SshClient(connectionInfo);
             _client.Connect();
 
-
             PrintCommand(_client.RunCommand("mkfifo /tmp/remcap"));
-
 
             var command = _client.CreateCommand("cat /tmp/remcap");
             command.BeginExecute();
             _stream = command.OutputStream;
-
 
             var combine = Path.Combine(textBoxFolder.Text, textBoxPrefix.Text);
             int filetick = 0;
@@ -98,7 +94,7 @@ namespace TrainShark.Windows
                     //if (_stopCapture)
                     //{
                     //    sshClientPipe.Disconnect();
-                    //    
+                    //
                     //}
                 }
 
@@ -115,7 +111,6 @@ namespace TrainShark.Windows
             tcpdumpcommand.BeginExecute();
             PrintCommand(tcpdumpcommand);
             //PrintCommand(sshClientCommand.RunCommand("tcpdump -i any -w /tmp/remcap not port " + textBoxPort.Text + ""));
-
 
             //var stream = command.OutputStream;
             //using (var fileStream = new FileStream("c:\\temp\\tryfile", FileMode.Create))

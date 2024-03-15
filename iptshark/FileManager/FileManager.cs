@@ -1,5 +1,4 @@
 ﻿using BustPCap;
-using TrainShark.BackStore;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using System;
@@ -9,16 +8,17 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using TrainShark.BackStore;
 
 namespace TrainShark.FileManager
 {
     public class FileManager : IDisposable
-    {                
+    {
         private Form _popup;
         private ProgressBar _progressbar;
         private bool _closing = false;
         private int _lastProgress = 0;
-        
+
         public FileManager()
         {
             //pcapReader.ProgressUpdated += (sender, i) => _progressbar.Value = i;
@@ -38,7 +38,7 @@ namespace TrainShark.FileManager
         {
             PacketCounter++;
             UpdateProgress((PacketCounter * 100) / PacketTotal);
-            
+
             var raw = new Raw(pcapBlock.DateTime, pcapBlock.PayLoad,
                 (LinkLayerType)pcapBlock.Header.network);
             if (raw.TimeStamp >= FilterFrom && raw.TimeStamp <= FilterTo)
@@ -61,7 +61,7 @@ namespace TrainShark.FileManager
                 OnRawParsed(raw);
                 return raw;
             }
-            return null;            
+            return null;
         }
 
         private delegate void ProgressDelegate(int i);
@@ -134,7 +134,7 @@ namespace TrainShark.FileManager
                             if (raw != null)
                                 yield return raw;
                         }
-                    }                    
+                    }
                 }
                 else if (source.SourceType == SourceType.Zip)
                 {
@@ -155,20 +155,16 @@ namespace TrainShark.FileManager
                     }
                     else
                     {
-                        
-                        
-                            using (var filestream = File.OpenRead(source.FileInfo.FullName))
+                        using (var filestream = File.OpenRead(source.FileInfo.FullName))
+                        {
+                            using (var reader = ReaderFactory.Open(filestream))
                             {
-                                using (var reader = ReaderFactory.Open(filestream))
+                                foreach (var raw in ZipReader(reader, source))
                                 {
-                                    foreach (var raw in ZipReader(reader, source))
-                                    {
-                                        yield return raw;
-                                    }
+                                    yield return raw;
                                 }
                             }
-                        
-                        
+                        }
 
                         GC.Collect();
                     }
@@ -240,15 +236,12 @@ namespace TrainShark.FileManager
                 FilterFrom = fo.DateTimeFrom;
                 FilterTo = fo.DateTimeTo;
                 ProcessingFilters = fo.ProcessingFilters;
-                               
 
                 foreach (var raw in EnumerateFiles(fo.DataSources))
                 {
                     yield return raw;
                 }
-
-                
-            }            
+            }
         }
 
         /// <summary>
@@ -270,15 +263,15 @@ namespace TrainShark.FileManager
 
                 Thread thread = new Thread((object o) =>
                     {
-                    foreach (var raw in EnumerateFiles(fo.DataSources))
-                    {
-                        // Enu merate good times come on                        
-                        count++;
-                    }
+                        foreach (var raw in EnumerateFiles(fo.DataSources))
+                        {
+                            // Enu merate good times come on
+                            count++;
+                        }
 
-                    if (FinishedLoading != null)
-                        FinishedLoading.Invoke(this, new FinishedEventArgs(start, DateTime.Now, count, fo.DataSources, inputs));                    
-                });
+                        if (FinishedLoading != null)
+                            FinishedLoading.Invoke(this, new FinishedEventArgs(start, DateTime.Now, count, fo.DataSources, inputs));
+                    });
 
                 thread.Start();
             }
@@ -314,6 +307,7 @@ namespace TrainShark.FileManager
             string text = Encoding.Default.GetString(bytes);
             return text;
         }
+
         private void ReleaseUnmanagedResources()
         {
             _closing = true;
@@ -354,7 +348,7 @@ namespace TrainShark.FileManager
                 }
 
                 pcapWriter.WritePacket(raw.RawData, raw.TimeStamp);
-                count++;                
+                count++;
             }
             Thread.Sleep(1000); // just making sure
             pcapWriter.Stop();

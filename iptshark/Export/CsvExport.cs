@@ -22,12 +22,12 @@ namespace TrainShark.Export
         /// <summary>
         /// To keep the ordered list of column names
         /// </summary>
-        List<string> _fields = new List<string>();
+        private List<string> _fields = new List<string>();
 
         /// <summary>
         /// The list of rows
         /// </summary>
-        List<Dictionary<string, object>> _rows = new List<Dictionary<string, object>>();
+        private List<Dictionary<string, object>> _rows = new List<Dictionary<string, object>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsvExport"/> class.
@@ -50,7 +50,7 @@ namespace TrainShark.Export
         /// <summary>
         /// The current row
         /// </summary>
-        Dictionary<string, object> _currentRow
+        private Dictionary<string, object> _currentRow
         {
             get { return _rows[_rows.Count - 1]; }
         }

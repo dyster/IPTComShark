@@ -1,9 +1,9 @@
-﻿using TrainShark.DataSets;
-using TrainShark.Parsers;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TrainShark.DataSets;
+using TrainShark.Parsers;
 
 namespace TrainShark.Export
 {
@@ -26,7 +26,6 @@ namespace TrainShark.Export
 
             foreach (var col in profiRow.Items)
                 worksheet.Cells[1, colindex++].Value = col.Name;
-
 
             using (ExcelRange range = worksheet.Cells[1, 1, 1, colindex - 1])
             {
@@ -70,7 +69,7 @@ namespace TrainShark.Export
         private class ProfiCol
         {
             public string Name;
-            int Index;
+            private int Index;
             public object Value;
 
             public override string ToString()
@@ -83,15 +82,10 @@ namespace TrainShark.Export
 
         public int Push(CapturePacket packet, ParseOutput parse)
         {
-
-
             var addRows = new List<ProfiRow>();
 
             if (packet.Protocol == ProtocolType.UDP_SPL)
             {
-
-
-
                 ushort sndaddr = 0;
                 ushort dsap = 0;
 
@@ -104,14 +98,12 @@ namespace TrainShark.Export
                         continue;
                     }
 
-
                     if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
                     {
-
                         sndaddr = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value); // sndaddr
                         dsap = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value); // dsap
 
-                        // SPL header means new profibus packet        
+                        // SPL header means new profibus packet
                         ProfiRow profiRow = new ProfiRow();
 
                         profiRow.Items[0].Value = packet.No;
@@ -125,12 +117,6 @@ namespace TrainShark.Export
 
                         addRows.Add(profiRow);
 
-
-
-
-
-
-
                         if (idletimes.ContainsKey(sndaddr, dsap))
                         {
                             var beforetime = idletimes[sndaddr, dsap];
@@ -140,15 +126,12 @@ namespace TrainShark.Export
                         }
 
                         idletimes[sndaddr, dsap] = packet.Date;
-
-
                     }
                     else if (parsedDataSet.Definition.Name == Subset57.SLLHeader.Name)
                     {
                         addRows.Last().Items[8].Value = parsedDataSet.ParsedFields[0].Value;
                         addRows.Last().Items[9].Value = parsedDataSet.ParsedFields[1].Value;
                         addRows.Last().Items[10].Value = parsedDataSet.ParsedFields[2].Value;
-
                     }
                     else if (parsedDataSet.Definition.Name == Subset57.SLLTimestamp.Name)
                     {
@@ -180,8 +163,6 @@ namespace TrainShark.Export
                         }
 
                         idlereftimes[sndaddr, dsap] = refTime;
-
-
                     }
                     else if (parsedDataSet.Definition.Name == Subset57.Cmd0ConnectRequest.Name)
                     {
@@ -194,7 +175,6 @@ namespace TrainShark.Export
                             addRows.Last().Items[12].Value = parsedDataSet.ParsedFields[0].Value;
                             addRows.Last().Items[13].Value = parsedDataSet.ParsedFields[1].Value;
                         }
-
                     }
                     else if (parsedDataSet.Definition.Name == Subset57.Cmd5Disconnect.Name)
                     {
@@ -207,23 +187,15 @@ namespace TrainShark.Export
                             addRows.Last().Items[14].Value = parsedDataSet.ParsedFields[0].Value;
                             addRows.Last().Items[15].Value = parsedDataSet.ParsedFields[1].Value;
                         }
-
                     }
                     else
                     {
-
                     }
                 }
-
-
             }
             int news = 0;
             foreach (var addrow in addRows)
             {
-
-
-
-
                 rowindex++;
                 worksheet.Cells[rowindex, 2].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss.000";
                 for (int i = 0; i < addrow.Items.Count; i++)

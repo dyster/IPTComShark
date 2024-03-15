@@ -1,10 +1,11 @@
-using TrainShark.Parsers;
 /*using Svg;
 using Svg.DataTypes;
 using Svg.Pathing;*/
+
 using System.Collections.Generic;
 using System.Net;
 using System.Windows.Forms;
+using TrainShark.Parsers;
 
 namespace TrainShark.SeqDiagram
 {
@@ -129,13 +130,11 @@ namespace TrainShark.SeqDiagram
                 });
             }
 
-
             foreach (Sequence sequence in list)
             {
                 // get the x axis of the two devices we are relating
                 int one = devices[sequence.From];
                 int two = devices[sequence.To];
-
 
                 groupArrows.Children.Add(new SvgLine
                 {
@@ -158,7 +157,6 @@ namespace TrainShark.SeqDiagram
                     Y = new SvgUnitCollection {new SvgUnit(arrowgen - 2)},
                     TextAnchor = SvgTextAnchor.Middle
                 });
-
 
                 var svgBoxText = new SvgText
                 {
@@ -224,7 +222,6 @@ namespace TrainShark.SeqDiagram
                         lines++;
                     }
 
-
                     if (strlen > maxstrlen)
                         maxstrlen = strlen;
                 }
@@ -232,7 +229,6 @@ namespace TrainShark.SeqDiagram
                 // box height calc, 30 margin + 14 per line. Then have 20 between box bottom and next arrow (at least)
 
                 var boxheight = (int) (lines * font.Height * 1.02);
-
 
                 // draw the box
                 groupDescriptionBoxes.Children.Add(new SvgRectangle
@@ -250,7 +246,6 @@ namespace TrainShark.SeqDiagram
                 arrowgen += boxheight + 30;
             }
 
-
             // finally, draw the baselines
             foreach (KeyValuePair<IPAddress, int> device in devices)
                 groupBaselines.Children.Add(new SvgLine
@@ -265,7 +260,6 @@ namespace TrainShark.SeqDiagram
             svg.Width = descriptionBaseline + maxboxwidth + 5;
             svg.Height = arrowgen + 5;
             svg.ViewBox = new SvgViewBox(0, 0, descriptionBaseline + maxboxwidth + 5, arrowgen + 5);
-
 
             using (FileStream fileStream = File.Create(fileName))
             {
@@ -300,9 +294,7 @@ namespace TrainShark.SeqDiagram
                 // after all vertical lines have been placed, make one for the description boxes
                 int descriptionBaseline = baselinegen + 50;
 
-
                 var umlFile = new UMLFile(); // make the xml for UMLet
-
 
                 // make the device boxes
                 foreach (KeyValuePair<string, int> device in devices)
@@ -314,7 +306,6 @@ namespace TrainShark.SeqDiagram
                             W = unitBoxWidth,
                             H = unitBoxHeight
                         }, device.Key, "orange"));
-
 
                 foreach (Sequence sequence in list)
                 {
@@ -339,7 +330,6 @@ namespace TrainShark.SeqDiagram
                             W = one - two,
                             H = 0
                         }, sequence.Name));
-
 
                     // make key value pairs and squeeze them into the box
                     var strs = new List<string>();
@@ -399,7 +389,6 @@ namespace TrainShark.SeqDiagram
                     // setup next arrow
                     arrowgen += boxheight + 20;
                 }
-
 
                 // finally, draw the baselines
                 foreach (KeyValuePair<string, int> device in devices)
@@ -477,7 +466,6 @@ namespace TrainShark.SeqDiagram
                         dic = now;
                     }
                 }
-
 
                 var sequence = new Sequence
                 {

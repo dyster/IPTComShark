@@ -1,13 +1,12 @@
-﻿using TrainShark.DataSets;
-using TrainShark.Parsers;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
+
 //using OxyPlot;
 //using OxyPlot.Legends;
 //using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+using TrainShark.DataSets;
+using TrainShark.Parsers;
 
 namespace TrainShark.Export
 {
@@ -26,8 +25,6 @@ namespace TrainShark.Export
         public IdleAnalyser(ExcelWorksheet ws)
         {
             worksheet = ws;
-
-
         }
 
         /*
@@ -148,17 +145,14 @@ namespace TrainShark.Export
             }
 
             return plotModel;
-
         }*/
 
         public void Push(CapturePacket packet, ParseOutput parse)
         {
-
             if (packet.Protocol != ProtocolType.UDP_SPL)
             {
                 return;
             }
-
 
             ushort recaddr = 0;
             ushort sndaddr = 0;
@@ -173,15 +167,13 @@ namespace TrainShark.Export
                     continue;
                 }
 
-
                 if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
                 {
-
                     recaddr = Convert.ToUInt16(parsedDataSet.ParsedFields[1].Value); // sndaddr
                     sndaddr = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value); // sndaddr
                     dsap = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value); // dsap
 
-                    // SPL header means new profibus packet        
+                    // SPL header means new profibus packet
 
                     if (lastReceivedMsg.ContainsKey(sndaddr, dsap))
                     {
@@ -195,8 +187,6 @@ namespace TrainShark.Export
                         hasSpan = false;
 
                     lastReceivedMsg[sndaddr, dsap] = packet.Date;
-
-
                 }
                 else if (parsedDataSet.Definition.Name == Subset57.SLLHeader.Name)
                 {
@@ -207,15 +197,12 @@ namespace TrainShark.Export
                     {
                         if (hasSpan && currentSpan > 5d)
                         {
-
-
                             if (idleTimes.ContainsKey(sndaddr, dsap))
                                 idleTimes[sndaddr, dsap].Add(currentSpan);
                             else
                                 idleTimes[sndaddr, dsap] = new List<double> { currentSpan };
                         }
                     }
-
                 }
                 else if (parsedDataSet.Definition.Name == Subset57.SLLTimestamp.Name)
                 {
@@ -233,7 +220,6 @@ namespace TrainShark.Export
                     }
                 }
             }
-
         }
     }
 }

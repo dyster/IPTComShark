@@ -53,7 +53,6 @@ namespace TrainShark.Windows
         {
             var udpClient = new UdpClient();
 
-
             var que = new Queue<SendPacket>();
             foreach (var kvp in _packets)
             {
@@ -63,10 +62,6 @@ namespace TrainShark.Windows
                     var sendPacket = new SendPacket(_packetTimes[kvp.Key], packet);
                     que.Enqueue(sendPacket);
                 }
-
-
-
-
             }
 
             DateTime startTime = que.Peek().Date;
@@ -75,7 +70,6 @@ namespace TrainShark.Windows
             var totalMS = (endTime - startTime).TotalMilliseconds;
 
             Stopwatch stopwatch = new Stopwatch();
-
 
             stopwatch.Start();
 
@@ -119,9 +113,7 @@ namespace TrainShark.Windows
                     }
                     else if (dequeue.Ipv4Packet.PayloadPacket is TcpPacket tcp)
                     {
-
                     }
-
                 });
 
                 if (que.Count > 0)
@@ -135,7 +127,6 @@ namespace TrainShark.Windows
                     backgroundWorker1.ReportProgress(0);
                 }
             }
-
 
             stopwatch.Stop();
         }
@@ -178,7 +169,6 @@ namespace TrainShark.Windows
                     var parse = PacketWrapper.Parse(raw);
                     if (parse.HasPayloadPacket && parse.PayloadPacket is IPv4Packet ipv4)
                     {
-
                         _packets.Add(seed, ipv4);
                         _packetTimes.Add(seed, raw.TimeStamp);
                         seed++;
@@ -206,7 +196,6 @@ namespace TrainShark.Windows
 
             //var firstPack = _packets.First();
             //var startTime = DateTime.Now;
-
 
             comboBox1.DataSource = _ips;
 

@@ -1,11 +1,11 @@
 ﻿using BitDataParser;
-using TrainShark.DataSets;
-using TrainShark.Parsers;
 using PacketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
+using TrainShark.DataSets;
+using TrainShark.Parsers;
 
 namespace TrainShark
 {
@@ -15,7 +15,6 @@ namespace TrainShark
         private static readonly IPAddress OpcAddress = IPAddress.Parse("192.168.1.14");
 
         private string _customName = null;
-
 
         /// <summary>
         /// Constructor to create an artifical packet
@@ -69,7 +68,6 @@ namespace TrainShark
                 }
 
                 payloadData = udp.PayloadData;
-
             }
             else if (ipv4.Protocol == PacketDotNet.ProtocolType.Tcp)
             {
@@ -135,10 +133,9 @@ namespace TrainShark
             }
             else if (actionPacket is IPv4Packet ipv4)
             {
-
                 if (ipv4.SourceAddress != null) Source = ipv4.SourceAddress.GetAddressBytes();
                 if (ipv4.DestinationAddress != null) Destination = ipv4.DestinationAddress.GetAddressBytes();
-                
+
                 if ((ipv4.FragmentFlags & 0x01) == 0x01)
                 {
                     // fragments are rebuilt in the backstore
@@ -169,7 +166,6 @@ namespace TrainShark
                             Error = e.Message;
                             break;
                         }
-
 
                         if ((tcpPacket.DestinationPort == 50039 || tcpPacket.DestinationPort == 50040) &&
                             tcpPacket.PayloadData.Length > 0)
@@ -204,7 +200,6 @@ namespace TrainShark
                         {
                             Protocol = ProtocolType.CIP;
                         }
-                        
 
                         break;
 
@@ -236,7 +231,6 @@ namespace TrainShark
                             this.Error = "Malformed UDP";
                             return;
                         }
-
 
                         if (udp.SourcePort == 123 && udp.DestinationPort == 123)
                         {
@@ -373,7 +367,7 @@ namespace TrainShark
 
                     case PacketDotNet.ProtocolType.Icmp:
                         Protocol = ProtocolType.ICMP;
-                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();                        
+                        ProtocolInfo = (ipv4.PayloadPacket as IcmpV4Packet).TypeCode.ToString();
                         // dunno
                         break;
 
@@ -384,9 +378,8 @@ namespace TrainShark
 
                     default:
                         Protocol = ProtocolType.UNKNOWN;
-                        //throw new ArgumentOutOfRangeException(); 
+                        //throw new ArgumentOutOfRangeException();
                         break;
-
                 }
             }
             else if (actionPacket is ArpPacket arpPacket)
@@ -423,7 +416,6 @@ namespace TrainShark
                 Destination = traveller.Destination;
             }
 
-
             // reading headers might fail so removing
             //else if (raw.LinkLayer == LinkLayerType.Ethernet && actionPacket.HeaderData[12] == 0x88 &&
             //         actionPacket.HeaderData[13] == 0xe1)
@@ -443,7 +435,6 @@ namespace TrainShark
             //    Protocol = ProtocolType.LLDP;
             //    // ignore
             //}
-
         }
 
         /// <summary>
@@ -476,6 +467,7 @@ namespace TrainShark
 
         [JsonIgnore]
         public ushort SourcePort { get; set; }
+
         [JsonIgnore]
         public ushort DestinationPort { get; set; }
 
@@ -513,8 +505,6 @@ namespace TrainShark
             set { _customName = value; }
         }
 
-        
-
         /// <summary>
         /// If this packet is part of a chain, get only the ParsedData that has changed
         /// </summary>
@@ -525,7 +515,6 @@ namespace TrainShark
 
             if (newD == null || newD.Count == 0)
                 return delta;
-
 
             if (oldD != null && newD.Count == oldD.Count)
             {

@@ -11,6 +11,7 @@ namespace TrainShark.Controls
         private uint _max = default;
         private Dictionary<uint, uint> _list = new Dictionary<uint, uint>();
         private DateTime _epoch = new DateTime(2000, 1, 1);
+
         public HeatBar()
         {
             InitializeComponent();
@@ -21,8 +22,6 @@ namespace TrainShark.Controls
             formGraphics.FillRectangle(myBrush, new Rectangle(0, 0, 200, 300));
             myBrush.Dispose();
             formGraphics.Dispose();
-
-
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -46,8 +45,6 @@ namespace TrainShark.Controls
 
             uint totalSpan = _max - _min;
             double pixelSpan = totalSpan / width;
-
-
         }
 
         private uint DateToEpoch(DateTime dateTime)
@@ -68,10 +65,7 @@ namespace TrainShark.Controls
             else
             {
                 _list.Add(time, 1);
-
             }
-
-
 
             if (_max == default)
             {
@@ -98,7 +92,6 @@ namespace TrainShark.Controls
 
         private void HeatBar_Load(object sender, EventArgs e)
         {
-
         }
     }
 

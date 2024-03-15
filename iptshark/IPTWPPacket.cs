@@ -80,7 +80,6 @@ namespace TrainShark
 
             ushort datasetlength = (ushort)header["DatasetLength"];
 
-
             // calculate what the total size of the packet should be, header + framecheck for header + datasetlength
             int totalsize = ((ushort)header["HeaderLength"]) + 4 + datasetlength;
 
@@ -164,7 +163,6 @@ namespace TrainShark
                     0));
             }
 
-
             var headLen = GetHeaderLength(payload);
             dic.Add("HeaderLength", headLen);
 
@@ -209,7 +207,6 @@ namespace TrainShark
 
             dic.Add("FrameCheckSequence", BitConverter.ToUInt32(
                 new[] { payload[headLen + 3], payload[headLen + 2], payload[headLen + 1], payload[headLen] }, 0));
-
 
             return dic;
         }

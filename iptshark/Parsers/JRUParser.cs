@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TrainShark.Parsers
 {
-    class JRUParser : ParserBase
+    internal class JRUParser : ParserBase
     {
         public override ParseOutput Extract(byte[] jruload, iPacket iPacket)
         {

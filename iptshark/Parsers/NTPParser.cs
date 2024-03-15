@@ -1,8 +1,8 @@
 ﻿using BitDataParser;
-using TrainShark.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TrainShark.DataSets;
 
 namespace TrainShark.Parsers
 {
@@ -67,7 +67,6 @@ namespace TrainShark.Parsers
 
             return pars;
         }
-
 
         public override ProtocolType ProtocolType => ProtocolType.NTP;
 

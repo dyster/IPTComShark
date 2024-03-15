@@ -1,6 +1,4 @@
 ﻿using BrightIdeasSoftware;
-using TrainShark.Export;
-using TrainShark.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using TrainShark.Export;
+using TrainShark.Parsers;
 
 namespace TrainShark.Controls
 {
@@ -64,7 +64,7 @@ namespace TrainShark.Controls
             {
                 var packet = (CapturePacket)rowObject;
                 return packet?.Date.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            };            
+            };
 
             olvColumnFrom.AspectGetter += rowObject =>
             {
@@ -109,8 +109,6 @@ namespace TrainShark.Controls
                     return packet.IPTWPType.Value;
                 return null;
             };
-
-
 
             fastObjectListView1.ColumnReordered += FastObjectListView1_ColumnReordered;
             fastObjectListView1.ColumnWidthChanged += FastObjectListView1_ColumnWidthChanged;
@@ -196,7 +194,6 @@ namespace TrainShark.Controls
             //    return cluster;
             //};
 
-
             fastObjectListView1.RowFormatter += item =>
             {
                 if (item.RowObject != null)
@@ -210,18 +207,23 @@ namespace TrainShark.Controls
                             case ProtocolType.IPTWP:
                                 item.BackColor = IptwpColor;
                                 break;
+
                             case ProtocolType.ARP:
                                 item.BackColor = ArpColor;
                                 break;
+
                             case ProtocolType.TCP:
                                 item.BackColor = TcpColor;
                                 break;
+
                             case ProtocolType.JRU:
                                 item.BackColor = Color.Orange;
                                 break;
+
                             case ProtocolType.UDP:
                                 item.BackColor = UdpColor;
                                 break;
+
                             case ProtocolType.UNKNOWN:
                                 item.BackColor = Color.MediumVioletRed;
                                 break;
@@ -229,13 +231,9 @@ namespace TrainShark.Controls
                 }
             };
 
-
-
             olvColumnDictionary.Renderer = new MultiColourTextRenderer();
 
             UpdateFilter();
-
-
 
             fastObjectListView1.OverlayText = new TextOverlay() { Text = "If you can read this, the universe has come apart" };
         }
@@ -303,7 +301,6 @@ namespace TrainShark.Controls
 
             Settings.ColumnInfos = cset;
 
-
             SaveSettings();
         }
 
@@ -334,7 +331,6 @@ namespace TrainShark.Controls
             fastObjectListView1.AdditionalFilter = new ModelFilter(model =>
             {
                 var capturePacket = (CapturePacket)model;
-
 
                 if (Settings.IgnoreLoopback && capturePacket.Source != null && capturePacket.Destination != null &&
                     Equals(new IPAddress(capturePacket.Source), localhost) &&
@@ -375,7 +371,6 @@ namespace TrainShark.Controls
                     {
                         field.Display = !Settings.IgnoreVariables.Contains(field.Name);
                     }
-
                 }
 
                 if (searchRegex != null)
@@ -533,7 +528,6 @@ namespace TrainShark.Controls
                 ParseOutput? parse = ParserFactory.DoPacket(o.Protocol, payload, o);
                 if (parse != null)
                 {
-
                     if (parse.ParsedData != null)
                     {
                         var list = new List<DisplayField>();
@@ -546,7 +540,6 @@ namespace TrainShark.Controls
                         Clipboard.SetText(s, TextDataFormat.Text);
                         Logger.Log("Parsed data copied to ClipBoard", Severity.Info);
                     }
-
                 }
             }
         }
@@ -655,7 +648,6 @@ namespace TrainShark.Controls
                 var exporterer = new Exporterer(this.GetAllPackets(), this.GetFilteredPackets(), this.GetSelectedPackets(), BackStore, ParserFactory);
                 exporterer.ShowDialog(this);
             }
-
         }
 
         private void copyDisplayedTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -663,12 +655,12 @@ namespace TrainShark.Controls
             CapturePacket o = (CapturePacket)fastObjectListView1.SelectedObject;
             if (o != null)
             {
-                if(o.DisplayFields != null)
+                if (o.DisplayFields != null)
                 {
                     var s = string.Join(" ", o.DisplayFields);
                     Clipboard.SetText(s, TextDataFormat.Text);
                     Logger.Log("Displayed data copied to ClipBoard", Severity.Info);
-                }                
+                }
             }
         }
     }

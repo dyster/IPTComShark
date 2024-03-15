@@ -48,7 +48,6 @@ namespace TrainShark
                 this.Source[0] = SAaddress;
                 this.Destination[0] = DAaddress;
 
-
                 var FC = new BitSet(data[pos++]);
                 var fcRes = FC[0].Value;
                 if (fcRes != false)
@@ -70,7 +69,6 @@ namespace TrainShark
                     throw new Exception("Code breakdown!");
                 }
 
-
                 if (fcFrameType)
                 {
                     var functionCode = "UNKNOWN";
@@ -85,34 +83,42 @@ namespace TrainShark
                         case 11:
                             functionCode = "Reserved";
                             break;
+
                         case 3:
                             functionCode = "Send data ack low";
                             break;
+
                         case 4:
                             functionCode = "Send data no ack low";
                             break;
+
                         case 5:
                             functionCode = "Send data ack high";
                             break;
+
                         case 6:
                             functionCode = "send data no ack high";
                             break;
+
                         case 9:
                             functionCode = "Request FDL status with reply";
                             break;
+
                         case 12:
                             functionCode = "Send and Request Data low";
                             break;
+
                         case 13:
                             functionCode = "Send and Request Data high";
                             break;
+
                         case 14:
                             functionCode = "Request Ident with Reply";
                             break;
+
                         case 15:
                             functionCode = "Request LSAP Status with Reply";
                             break;
-
                     }
                     ProtocolInfo = "Req=" + functionCode;
                 }
@@ -120,9 +126,7 @@ namespace TrainShark
                 {
                     DisplayFields.Add(new DisplayField("type", "ack"));
                     ProtocolInfo = "Ack=" + fcFunc;
-
                 }
-
 
                 // to keep track of how much of the data length the extension octets occupy
                 var extensionLength = 0;
@@ -163,8 +167,6 @@ namespace TrainShark
                     }
                 }
 
-
-
                 // advertised length, minus DA,SA and FC octets, and whatever extension addresses were read
                 var remain = length - 3 - extensionLength;
                 var datablock = new byte[remain];
@@ -178,7 +180,6 @@ namespace TrainShark
 
                 this.PayloadData = datablock;
 
-
                 if (length - pos == -4)
                 {
                     // header is 4 bytes, so we have reached end of data
@@ -186,18 +187,7 @@ namespace TrainShark
                 else
                     DisplayFields.Add(new DisplayField("remaining data", length - pos));
             }
-
-
-
-
-
-
-
-
-
-
         }
-
 
         public string Name { get; set; }
 

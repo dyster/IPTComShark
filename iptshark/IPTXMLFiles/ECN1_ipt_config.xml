@@ -6665,7 +6665,7 @@ Value: 0 = "GMT Reference, i.e. Time Zone '48'."]]></comment>
       </process-variable>
       <process-variable name="IDispEDBrIslFb" type="BOOLEAN8" offset="2640" array-size="1" unit="" scale="1" zero-offset="0" BitValueType="0">
         <comment><![CDATA[Display ED Isolation Feedback (to CCU-S)]]></comment>
-      </process-variable>      
+      </process-variable>
     </data-set>
     <data-set data-set-id="2012003">
       <process-variable name="HmiState" type="UINT16" array-size="1" offset="0" />

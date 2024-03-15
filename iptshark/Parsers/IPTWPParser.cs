@@ -1,16 +1,16 @@
 ﻿using BitDataParser;
-using TrainShark.Classes;
-using TrainShark.Windows;
-using TrainShark.XmlFiles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using TrainShark.Classes;
+using TrainShark.Windows;
+using TrainShark.XmlFiles;
 
 namespace TrainShark.Parsers
 {
-    class IPTWPParser : ParserBase
+    internal class IPTWPParser : ParserBase
     {
         private const string Iptfile = @"ECN1_ipt_config.xml";
 
@@ -54,8 +54,6 @@ namespace TrainShark.Parsers
                 }
 #endif
             }
-
-
 
             DataStore.RebuildIndex();
         }

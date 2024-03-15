@@ -5,9 +5,9 @@ namespace TrainShark
     public class MultiArray<T1, T2, Tdata>
     {
         private Dictionary<T1, Dictionary<T2, Tdata>> _upperDic = new Dictionary<T1, Dictionary<T2, Tdata>>();
+
         public MultiArray()
         {
-
         }
 
         public IEnumerable<T1> GetKeys()
@@ -35,14 +35,12 @@ namespace TrainShark
                     _upperDic.Add(k1, new Dictionary<T2, Tdata>());
                 }
                 return _upperDic[k1][k2];
-
             }
             set
             {
                 if (!_upperDic.ContainsKey(k1))
                 {
                     _upperDic.Add(k1, new Dictionary<T2, Tdata>());
-
                 }
 
                 if (_upperDic[k1].ContainsKey(k2))
@@ -53,7 +51,6 @@ namespace TrainShark
                 {
                     _upperDic[k1].Add(k2, value);
                 }
-
             }
         }
 

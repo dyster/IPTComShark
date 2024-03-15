@@ -1,12 +1,8 @@
-﻿using TrainShark.Classes;
-using TrainShark.Parsers;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using TrainShark.Classes;
+using TrainShark.Parsers;
 
 namespace TrainShark.Import
 {
@@ -30,31 +26,28 @@ namespace TrainShark.Import
             foreach (var line in File.ReadLines(fileName))
             {
                 Match match = _regex.Match(line);
-                
-                    string value = match.Groups["hex"].Value;
-                    string hexstring = value.Replace(" ", "");
-                    byte[] bytearray = Conversions.StringToByteArray(hexstring);
 
-                    if (bytearray[3] == 0x20 && bytearray[7] != 0)
-                    {
-                        var sub = BitDataParser.Functions.SubArrayGetterX(bytearray, 77, bytearray.Length*8-77);
-                        var ss27 = (SS27Packet)ss27Parser.ParseData(sub);
+                string value = match.Groups["hex"].Value;
+                string hexstring = value.Replace(" ", "");
+                byte[] bytearray = Conversions.StringToByteArray(hexstring);
 
+                if (bytearray[3] == 0x20 && bytearray[7] != 0)
+                {
+                    var sub = BitDataParser.Functions.SubArrayGetterX(bytearray, 77, bytearray.Length * 8 - 77);
+                    var ss27 = (SS27Packet)ss27Parser.ParseData(sub);
 
-                        var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
+                    var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
 
-                        capturePacket.No = sortIndex++;
+                    capturePacket.No = sortIndex++;
 
-                        // add to the chain
-                        //if (prev != null)
-                        //    deviceLog.Previous = prev;
-                        //prev = deviceLog;
+                    // add to the chain
+                    //if (prev != null)
+                    //    deviceLog.Previous = prev;
+                    //prev = deviceLog;
 
-                        yield return capturePacket;
-                    }
-                
+                    yield return capturePacket;
+                }
             }
-            
         }
     }
 }

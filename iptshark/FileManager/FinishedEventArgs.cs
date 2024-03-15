@@ -25,5 +25,4 @@ namespace TrainShark.FileManager
             return $"Finished reading {DataSources.Count} files containing {Count} packets in {Now - Start}";
         }
     }
-
 }

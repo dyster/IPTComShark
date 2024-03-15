@@ -1,6 +1,6 @@
-﻿using TrainShark.Properties;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using TrainShark.Properties;
 
 namespace TrainShark.Controls
 {

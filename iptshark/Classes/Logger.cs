@@ -40,7 +40,6 @@ namespace TrainShark
         private DateTime _lastFlushed;
         private string _logPathPrefix;
 
-
         /// <summary>
         ///     Private constructor to prevent instance creation
         /// </summary>
@@ -151,7 +150,6 @@ namespace TrainShark
                 FlushLog(false);
             }
 
-
             OnLogAdded(logEntry);
         }
 
@@ -213,7 +211,6 @@ namespace TrainShark
                 list.AddRange(_logQueue.ToList());
                 _logQueue.Clear();
             }
-
 
             // if we are shutting down, do a do or die write on current thread
             if (isTerminating)

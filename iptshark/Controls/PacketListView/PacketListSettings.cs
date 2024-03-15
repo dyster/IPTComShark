@@ -113,7 +113,6 @@ namespace TrainShark.Controls
             return JsonSerializer.Serialize(this, this.GetType());
         }
 
-
         public static PacketListSettings DeserializeFile(string file)
         {
             using (var fileStream = File.OpenRead(file))

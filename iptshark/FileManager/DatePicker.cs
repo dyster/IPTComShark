@@ -24,7 +24,6 @@ namespace TrainShark.FileManager
             if (dates.Count == 0)
                 return;
 
-
             dates.Sort();
 
             _from = dates.First();

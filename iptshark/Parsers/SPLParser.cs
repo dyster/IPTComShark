@@ -1,13 +1,13 @@
 ﻿using BitDataParser;
-using TrainShark.DataSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TrainShark.DataSets;
 using Functions = BitDataParser.Functions;
 
 namespace TrainShark.Parsers
 {
-    class SPLParser : ParserBase
+    internal class SPLParser : ParserBase
     {
         private static int[] SS58SAPs =
         {
@@ -69,7 +69,6 @@ namespace TrainShark.Parsers
                 remainer = payload.Length * 8 - (position);
             } while (remainer > 0);
 
-
             if (remainer > -1)
                 parse.DisplayFields.Add(new DisplayField("Remaining bits", remainer));
 
@@ -119,7 +118,6 @@ namespace TrainShark.Parsers
                 var checksumBytes = new byte[checksumlength];
                 Array.Copy(splframeArray, splframeArray.Length - checksumlength, checksumBytes, 0, checksumlength);
                 checksum = Subset57.SL4Checksum.Parse(checksumBytes);
-
             }
             else if (trueCommand >= 0x00 && trueCommand <= 0x3F)
             {
@@ -143,7 +141,6 @@ namespace TrainShark.Parsers
                 // Nooooooo
             }
 
-
             // 2 for header
             byte[] framePayload = new byte[splframeArray.Length - headerLength - checksumlength - timestamplength];
             Array.Copy(splframeArray, headerLength, framePayload, 0, framePayload.Length);
@@ -161,7 +158,6 @@ namespace TrainShark.Parsers
 
             var framePosition = 1;
 
-
             //var sll = SS57Parser.Parse(splframeArray, out var outfields, Convert.ToInt32(sapField.TrueValue));
 
             //parse.ParsedData.AddRange(sll);
@@ -177,7 +173,6 @@ namespace TrainShark.Parsers
             if (splframeArray.Length * 8 > sllread)
             {
                 var sllPayload = Functions.SubArrayGetter(splframeArray, sllread + 1);
-
 
                 parse.DisplayFields.Add(new DisplayField("SLLPayloadRemain", BitConverter.ToString(sllPayload)));
             }*/
@@ -196,17 +191,13 @@ namespace TrainShark.Parsers
                     parse.DisplayFields.Add(new DisplayField("ERROR", e.Message));
                     return null;
                 }
-
-
             }
-
 
             // TODO add all the Safe link layer stuff
             if (trueCommand == 0x80 || trueCommand == 0x00 || trueCommand == 0xC0)
             {
                 // Connect Request
                 //framePayload = Parse(Subset57.Cmd0ConnectRequest, framePayload, ref framePosition);
-
             }
             else if (cmd == 1)
             {
@@ -253,7 +244,6 @@ namespace TrainShark.Parsers
             else if (trueCommand == 0x89 || trueCommand == 0x09 || trueCommand == 0xC9)
             {
                 // upper layer
-
 
                 if (SAP >= 8 && SAP <= 31)
                 {
@@ -310,7 +300,7 @@ namespace TrainShark.Parsers
                     do
                     {
                         var ident = (int)Functions.FieldGetter(ss58payload, ss58pos, 8);
-                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = {ident}});
+                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = { ident } });
                         parse.DisplayFields.Add(new DisplayField("STM-", ident));
 
                         if (definition == null)

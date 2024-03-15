@@ -1,12 +1,12 @@
-﻿using TrainShark.Parsers;
-using TrainShark.Windows;
-using PacketDotNet;
+﻿using PacketDotNet;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using TrainShark.Parsers;
+using TrainShark.Windows;
 
 namespace TrainShark.Controls
 {
@@ -56,13 +56,13 @@ namespace TrainShark.Controls
             var next = originalpacket.Next;
             var prevcount = 0;
             var nextcount = 0;
-            while(previous != null )
+            while (previous != null)
             {
                 prevcount++;
                 previous = previous.Previous;
             }
 
-            while(next != null)
+            while (next != null)
             {
                 nextcount++;
                 next = next.Next;
@@ -115,7 +115,7 @@ namespace TrainShark.Controls
                         if (parse != null && !parse.NoParserInstalled && parse.ParsedData.Count == 1 &&
                             originalpacket.Previous != null)
                         {
-                            // if only one set we can do change detection                          
+                            // if only one set we can do change detection
 
                             dataLines.Add(new DataLine(ticker++)
                             { IsCategory = true, Name = parse.ParsedData[0].Name });
@@ -258,11 +258,11 @@ namespace TrainShark.Controls
                 var parsedFieldCount = 0;
                 foreach (var field in parsedDataSet.ParsedFields)
                 {
-                    if(oldparse != null && oldparse.ParsedData.Count > dataSetCount && oldparse.ParsedData[dataSetCount].ParsedFields.Count > parsedFieldCount)
+                    if (oldparse != null && oldparse.ParsedData.Count > dataSetCount && oldparse.ParsedData[dataSetCount].ParsedFields.Count > parsedFieldCount)
                     {
                         var mikeOldField = oldparse.ParsedData[dataSetCount].ParsedFields[parsedFieldCount];
                         var changed = !mikeOldField.Value.Equals(field.Value);
-                        dataLines.Add(new DataLine(field, ticker++) { Changed = changed});
+                        dataLines.Add(new DataLine(field, ticker++) { Changed = changed });
                     }
                     else
                         dataLines.Add(new DataLine(field, ticker++));

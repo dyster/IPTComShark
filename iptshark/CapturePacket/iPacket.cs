@@ -8,7 +8,6 @@ namespace TrainShark
         public ProtocolType Protocol { get; }
         public List<DisplayField> DisplayFields { get; set; }
         public string Name { get; set; }
-
     }
 
     /// <summary>
@@ -19,7 +18,7 @@ namespace TrainShark
         public byte[] Source { get; set; }
 
         public byte[] Destination { get; set; }
-        public ushort SourcePort {get;set;}
-        public ushort DestinationPort { get;set;}
+        public ushort SourcePort { get; set; }
+        public ushort DestinationPort { get; set; }
     }
 }

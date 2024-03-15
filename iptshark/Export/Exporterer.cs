@@ -1,9 +1,9 @@
-﻿using TrainShark.Parsers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using TrainShark.Parsers;
 
 namespace TrainShark.Export
 {
@@ -14,7 +14,7 @@ namespace TrainShark.Export
         private readonly List<CapturePacket> _getSelectedPackets;
         private readonly BackStore.BackStore _backStore;
         private readonly ParserFactory _parserFactory;
-        BackgroundWorker _worker;
+        private BackgroundWorker _worker;
 
         public Exporterer(List<CapturePacket> getAllPackets, List<CapturePacket> getFilteredPackets, List<CapturePacket> getSelectedPackets, BackStore.BackStore backStore, ParserFactory parserFactory)
         {
@@ -54,7 +54,6 @@ namespace TrainShark.Export
                 }
             }
 
-
             var saveFileDialog = new SaveFileDialog
             {
                 AddExtension = true,
@@ -75,11 +74,10 @@ namespace TrainShark.Export
             progressBar1.Value = 0;
 
             _worker.RunWorkerAsync();
-
         }
 
-
         private delegate void FinishDelegate();
+
         private delegate void ProgressDelegate(int progress);
 
         private void ExportFinished()
@@ -110,8 +108,6 @@ namespace TrainShark.Export
             ExportProfibus = checkBoxProfibus.Checked;
             ExportSAPIdleAnalysis = checkBoxSAPIdle.Checked;
 
-
-
             if (radioButtonSelectAll.Checked)
                 Selection = _getAllPackets;
             else if (radioButtonSelectFilter.Checked)
@@ -120,7 +116,6 @@ namespace TrainShark.Export
                 Selection = _getSelectedPackets;
             else if (radioButtonSelectFile.Checked)
             {
-
                 if (sourceFiles != null)
                 {
                     var opener = new FileManager.FileOpener(sourceFiles);
@@ -150,7 +145,6 @@ namespace TrainShark.Export
                         DoProgress(count, total);
                     }
                     xLSMaker.Finalize();
-
                 }
                 else
                 {
@@ -176,6 +170,7 @@ namespace TrainShark.Export
         }
 
         private int lastProgress = 0;
+
         private void DoProgress(int i, int total)
         {
             var perc = i * 100 / total;

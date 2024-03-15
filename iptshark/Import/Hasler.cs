@@ -1,17 +1,16 @@
-﻿using TrainShark.Classes;
-using TrainShark.Parsers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using TrainShark.Classes;
+using TrainShark.Parsers;
 
 namespace TrainShark.Import
 {
-    class Hasler : IImporter
+    internal class Hasler : IImporter
     {
         private readonly Regex _regex = new Regex(@"<binary length=""464"">(?<hex>[\w ]*)</binary>",
             RegexOptions.Singleline);
-
 
         public bool CanImport(string path)
         {
@@ -30,9 +29,9 @@ namespace TrainShark.Import
         }
 
         public IEnumerable<CapturePacket> Import(string path)
-        {            
+        {
             string text = File.ReadAllText(path);
-                        
+
             int sortIndex = 1;
 
             var ss27Parser = new SS27Parser();
@@ -43,9 +42,7 @@ namespace TrainShark.Import
                 string hexstring = value.Replace(" ", "");
                 byte[] bytearray = Conversions.StringToByteArray(hexstring);
 
-
                 var ss27 = (SS27Packet)ss27Parser.ParseData(bytearray);
-
 
                 var capturePacket = new CapturePacket(ProtocolType.JRU, ss27.MsgType.ToString(), ss27.DateTime);
 
@@ -56,13 +53,10 @@ namespace TrainShark.Import
                 //    deviceLog.Previous = prev;
                 //prev = deviceLog;
 
-
                 yield return capturePacket;
-            }            
+            }
         }
 
         public event EventHandler<int> ProgressUpdated;
-
-        
     }
 }

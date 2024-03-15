@@ -1,5 +1,4 @@
 ﻿using BustPCap;
-using TrainShark.BackStore;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Readers;
 using System;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using TrainShark.BackStore;
 
 namespace TrainShark.FileManager
 {
@@ -34,7 +34,6 @@ namespace TrainShark.FileManager
             dataListView1.PrimarySortColumn = olvColumnStart;
 
             Load += (object sender, EventArgs e) => { backgroundWorker1.RunWorkerAsync(); };
-
         }
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -57,7 +56,6 @@ namespace TrainShark.FileManager
             UpdateList("Inspecting " + fileNames.Count + " files");
 
             InspectFiles(fileNames);
-
 
             GC.Collect();
         }
@@ -129,19 +127,12 @@ namespace TrainShark.FileManager
                                 Packets = pcapFileReader.Count
                             };
                             UpdateList(dsource);
-
-
-
-
                         }
 
                         Interlocked.Decrement(ref threadCount);
                     });
 
                     continue;
-
-
-
                 }
 
                 if (first4[3] == 0xFD && first4[2] == 0x2F && first4[1] == 0xB5 && first4[0] == 0x28)
@@ -149,7 +140,6 @@ namespace TrainShark.FileManager
                     // Zstandard
                     continue;
                 }
-
 
                 if (SevenZipArchive.IsSevenZipFile(fileName))
                 {
@@ -170,7 +160,6 @@ namespace TrainShark.FileManager
                     continue;
                 }
 
-
                 ThreadPool.QueueUserWorkItem(x =>
                 {
                     Interlocked.Increment(ref threadCount);
@@ -179,7 +168,6 @@ namespace TrainShark.FileManager
 
                     Interlocked.Decrement(ref threadCount);
                 });
-
             }
 
             // Give all threads a chance to start
@@ -252,7 +240,6 @@ namespace TrainShark.FileManager
                                 SourceType = SourceType.Zip,
                                 ArchiveKey = reader.Entry.Key
                             };
-
 
                             if (BaseReader.IsPCAP(readbytes))
                             {
@@ -410,7 +397,6 @@ namespace TrainShark.FileManager
                         MessageBox.Show("Discarded " + stringip);
                 }
             }
-
 
             SetData();
 

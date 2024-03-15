@@ -11,9 +11,8 @@ namespace TrainShark
                 return new BDSPacket(raw.RawData);
             else if (raw.LinkLayer == LinkLayerType.Profibus)
             {
-                // todo 
+                // todo
                 return new ProfiPacket(raw.RawData);
-
             }
             else if (raw.LinkLayer == LinkLayerType.IEEE8023br)
             {

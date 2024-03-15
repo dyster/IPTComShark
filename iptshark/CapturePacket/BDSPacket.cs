@@ -30,25 +30,26 @@ namespace TrainShark
                     Name = "BDS_BIN";
                     DisplayFields.Add(new DisplayField("binary", BitConverter.ToString(payload)));
                     break;
+
                 case 0x8B:
                     Name = "BDS_BDS";
                     DisplayFields.Add(new DisplayField("txt", ASCIIEncoding.ASCII.GetString(payload)));
                     break;
+
                 case 0x89:
                     var name = "BDS_TXT";
-                    
+
                     var df = DoText(payload, ref name);
                     Name = name;
                     DisplayFields.Add(df);
                     break;
+
                 default:
                     Name = header[0] + "_???";
                     break;
             }
             var bdsheader = new BDSHeader(header);
             BDSHeader = bdsheader;
-
-
 
             ProtocolInfo = bdsheader.ToString();
         }
@@ -67,17 +68,15 @@ namespace TrainShark
         {
             //var txt = ASCIIEncoding.ASCII.GetString(payload);
 
-            
-
             var isMatch = false;
-            for(int i = 0; i < txtstartbytes.Length; i++)
+            for (int i = 0; i < txtstartbytes.Length; i++)
             {
                 isMatch = txtstartbytes[i] == payload[i];
                 if (!isMatch)
                     break;
             }
 
-            if(isMatch)
+            if (isMatch)
             {
                 name = "BDS_ORT";
                 var newlen = payload.Length - txtstartbytes.Length;
@@ -85,9 +84,9 @@ namespace TrainShark
                 Array.Copy(payload, txtstartbytes.Length, txtbytes, 0, newlen);
 
                 var moduleId = ASCIIEncoding.ASCII.GetString(txtbytes, 0, 2);
-                var txt = ASCIIEncoding.ASCII.GetString(txtbytes, 3, txtbytes.Length-3);
+                var txt = ASCIIEncoding.ASCII.GetString(txtbytes, 3, txtbytes.Length - 3);
 
-                if(csqRegex.IsMatch(txt))
+                if (csqRegex.IsMatch(txt))
                 {
                     name = "BDS_ORT_CSQ";
                     var match = csqRegex.Match(txt);
@@ -118,9 +117,9 @@ namespace TrainShark
                     var match = cregRegex.Match(txt);
 
                     var n = Convert.ToUInt16(match.Groups[1].ToString());
-                    
+
                     var stat = Convert.ToUInt16(match.Groups[2].ToString());
-                    
+
                     var rettxt = $"N={n} STAT={stat}";
                     if (!string.IsNullOrEmpty(match.Groups[3].ToString()))
                         rettxt += " OK";
@@ -137,8 +136,6 @@ namespace TrainShark
 
             var df = new DisplayField("txt", null);
 
-
-
             return df;
         }
 
@@ -153,7 +150,6 @@ namespace TrainShark
     {
         public BDSHeader(byte[] data)
         {
-
             length = BitConverter.ToUInt16(new byte[] { data[2], data[1] }, 0);
             n_ver = (ushort)data[3];
             device = (ushort)data[4];

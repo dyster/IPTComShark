@@ -1,6 +1,6 @@
 ﻿using BitDataParser;
-using TrainShark.DataSets;
 using System.Collections.Generic;
+using TrainShark.DataSets;
 
 namespace TrainShark.Classes
 {
@@ -32,11 +32,11 @@ namespace TrainShark.Classes
                 foreach (var dataSetDefinition in dataSetCollection.DataSets)
                 {
                     foreach (var i in dataSetDefinition.Identifiers.Numeric)
-                    {                        
+                    {
                         //TODO this currently uses numeric identifier only because it is only used by iptcom... should make generic
                         if (_comidIndex.ContainsKey((uint)i))
                         {
-                            //Logger.Log("Conflicting identifier " + identifier, Severity.Warning); 
+                            //Logger.Log("Conflicting identifier " + identifier, Severity.Warning);
                         }
                         else
                             _comidIndex.Add((uint)i, dataSetDefinition);

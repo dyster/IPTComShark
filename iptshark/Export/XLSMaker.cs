@@ -1,11 +1,12 @@
-﻿using TrainShark.Classes;
-using TrainShark.Parsers;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
+
 //using OxyPlot;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using TrainShark.Classes;
+using TrainShark.Parsers;
 
 namespace TrainShark.Export
 {
@@ -35,8 +36,6 @@ namespace TrainShark.Export
             _package = new ExcelPackage(newFile);
 
             InitSheets();
-
-
         }
 
         private void InitSheets()
@@ -45,13 +44,11 @@ namespace TrainShark.Export
             {
                 worksheet = _package.Workbook.Worksheets.Add("Packets");
                 PrepEverythingSheet(worksheet);
-
             }
 
             if (ExportProfibus)
             {
                 _profiSheet = new ProfiSheet(_package.Workbook.Worksheets.Add("Profibus"));
-
             }
 
             if (ExportSAPIdleAnalysis)
@@ -76,7 +73,6 @@ namespace TrainShark.Export
                 _rows = 0;
             }
 
-
             if (ExportProfibus)
             {
                 int v = _profiSheet.Push(packet, parse);
@@ -96,6 +92,7 @@ namespace TrainShark.Export
         }
 
         private int rowindex = 2;
+
         private void PushEverythingSheet(CapturePacket packet, ParseOutput parse)
         {
             if (rowindex > 1000000)
@@ -128,7 +125,7 @@ namespace TrainShark.Export
             {
                 // TODO temp disabled for now !!!!!
                 //worksheet.Cells[rowindex, 4].Value =
-                //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value)); 
+                //    string.Join(" ", packet.GetDelta().Select(d => d.Name+": "+d.Value));
             }
 
             var parseCell = worksheet.Cells[rowindex, 5];
@@ -143,7 +140,6 @@ namespace TrainShark.Export
             {
                 foreach (var parsedDataSet in parse.ParsedData)
                 {
-
                     var clean = Conversions.RemoveInvalidXMLChars(parsedDataSet.Name);
 
                     var richbit = parseCell.RichText.Add(clean).Bold = true;
@@ -154,8 +150,6 @@ namespace TrainShark.Export
                     parseCell.RichText.Add(s + "\n");
                 }
             }
-
-
 
             //if (parse.HasValue)
             //    worksheet.Cells[rowindex, 5].Value =
@@ -216,7 +210,6 @@ namespace TrainShark.Export
             }
         }
 
-
         public void Finalize()
         {
             if (_finalized)
@@ -224,7 +217,6 @@ namespace TrainShark.Export
 
             if (ExportProfibus)
             {
-
             }
 
             //if (ExportSAPIdleAnalysis)
@@ -250,7 +242,6 @@ namespace TrainShark.Export
 
                 //sheet.Cells.AutoFitColumns(0);
             }
-
 
             // save our new workbook and we are done!
             _package.Save();

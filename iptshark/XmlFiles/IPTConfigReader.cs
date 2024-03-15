@@ -38,7 +38,6 @@ namespace TrainShark.XmlFiles
                                 if (!Telegrams.Contains(telegram))
                                     Telegrams.Add(telegram);
                             }
-
                         }
                     foreach (cpuDatasetlist cpuDatasetlist in deserialize.Items.Where(i => i is cpuDatasetlist))
                         Datasets.AddRange(cpuDatasetlist.Dataset);
@@ -101,7 +100,6 @@ namespace TrainShark.XmlFiles
                 }
                 else
                     find.KnownIds.Add(dataset.Datasetid);
-
             }
 
             foreach (var t in Telegrams)
@@ -142,7 +140,6 @@ namespace TrainShark.XmlFiles
             foreach (ProcessVariable processVariable in set.Processvariable)
             {
                 int arraysize = int.Parse(processVariable.Arraysize);
-
 
                 if (processVariable.Type == "CHAR8")
                 {
@@ -191,43 +188,53 @@ namespace TrainShark.XmlFiles
                                 field.BitFieldType = BitFieldType.Bool;
                                 field.Length = 1;
                                 break;
+
                             case "BOOLEAN8":
                             case "BOOL8":
                                 field.BitFieldType = BitFieldType.Bool;
                                 field.Length = 8;
                                 break;
+
                             case "UINT8":
                                 field.BitFieldType = BitFieldType.UInt8;
                                 field.Length = 8;
                                 break;
+
                             case "INT8":
                                 field.BitFieldType = BitFieldType.Int8;
                                 field.Length = 8;
                                 break;
+
                             case "UINT16":
                                 field.BitFieldType = BitFieldType.UInt16;
                                 field.Length = 16;
                                 break;
+
                             case "INT16":
                                 field.BitFieldType = BitFieldType.Int16;
                                 field.Length = 16;
                                 break;
+
                             case "UINT32":
                                 field.BitFieldType = BitFieldType.UInt32;
                                 field.Length = 32;
                                 break;
+
                             case "INT32":
                                 field.BitFieldType = BitFieldType.Int32;
                                 field.Length = 32;
                                 break;
+
                             case "REAL32":
                                 field.BitFieldType = BitFieldType.Float32;
                                 field.Length = 32;
                                 break;
+
                             case "TIME48":
                                 field.BitFieldType = BitFieldType.HexString;
                                 field.Length = 48;
                                 break;
+
                             default:
                                 throw new Exception("Unknown Type!");
                                 break;
@@ -371,7 +378,6 @@ namespace TrainShark.XmlFiles
         public string Offset { get; set; }
     }
 }
-
 
 /*
 <? xml version="1.0" encoding="utf-8"?>
