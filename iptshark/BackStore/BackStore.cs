@@ -107,7 +107,7 @@ namespace TrainShark.BackStore
                     {
                         var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         return null;
                     }
@@ -124,7 +124,7 @@ namespace TrainShark.BackStore
                     {
                         var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         return null;
                     }
@@ -266,7 +266,7 @@ namespace TrainShark.BackStore
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 //not sure what to do with this here, the exception will be re-captured when creating the CapturePacket further down.
                 //this should be optimized somehow but not sure how, at least it is an infrequent event
