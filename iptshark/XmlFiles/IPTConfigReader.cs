@@ -236,8 +236,7 @@ namespace TrainShark.XmlFiles
                                 break;
 
                             default:
-                                throw new Exception("Unknown Type!");
-                                break;
+                                throw new Exception("Unknown Type!");                                
                         }
 
                         list.Add(field);
