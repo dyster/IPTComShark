@@ -62,7 +62,7 @@ namespace TrainShark
                 {
                     var throwaway = udp.DestinationPort + udp.SourcePort + udp.Length + udp.Checksum;
                 }
-                catch (Exception e)
+                catch
                 {
                     return null;
                 }
@@ -79,7 +79,7 @@ namespace TrainShark
                 {
                     var throwaway = tcp.DestinationPort + tcp.SourcePort + tcp.Checksum;
                 }
-                catch (Exception e)
+                catch
                 {
                     return null;
                 }
@@ -117,7 +117,7 @@ namespace TrainShark
                 // TODO change this, the bytes read is really expensive as it reassambles the whole packet
                 var throwaway = originalPacket.Bytes.Length + originalPacket.HeaderData.Length;
             }
-            catch (Exception e)
+            catch
             {
                 ProtocolInfo = "Malformed Packet or Header";
                 this.Error = "Malformed Packet or Header";
@@ -225,7 +225,7 @@ namespace TrainShark
                         {
                             var throwaway = udp.Length + udp.Checksum;
                         }
-                        catch (Exception e)
+                        catch
                         {
                             ProtocolInfo = "Malformed UDP";
                             this.Error = "Malformed UDP";
