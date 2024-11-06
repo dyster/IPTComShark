@@ -591,7 +591,7 @@ namespace TrainShark
 
         private void reportAnIssueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo("https://gitlab.bt.bombardier.net/jsonesso/IPTComShark/-/issues") { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo("https://github.com/dyster/IPTComShark/issues") { UseShellExecute = true });
         }
 
         private void packetListView1_DragEnter(object sender, DragEventArgs e)
