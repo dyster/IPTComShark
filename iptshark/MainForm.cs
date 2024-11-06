@@ -108,7 +108,7 @@ namespace TrainShark
         {
             var parserFactory = new ParserFactory();
             parserFactory.AddParser(new NTPParser());
-            parserFactory.AddParser(new SPLParser());
+            //parserFactory.AddParser(new SPLParser());
             parserFactory.AddParser(new JRUParser());
             parserFactory.AddParser(new ARPParser());
             parserFactory.AddParser(new ProfiParser());

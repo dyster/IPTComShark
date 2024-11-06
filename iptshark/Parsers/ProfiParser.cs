@@ -16,7 +16,8 @@ namespace TrainShark.Parsers
             var traveller = (iTraveller)iPacket;
 
             // the second byte of the destination holds the SAP id
-            SPLParser.SS57(data, parse, traveller.Destination[1]);
+            // TODO this needs to be broken back into trainshark
+            //SPLParser.SS57(data, parse, traveller.Destination[1]);
 
             return parse;
         }

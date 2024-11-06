@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using BitDataParser;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace TrainShark.Export
                         continue;
                     }
 
-                    if (parsedDataSet.Definition.Name == DataSets.VAP.UDP_SPL.Name)
+                    if (parsedDataSet.Definition.Name == UDP_SPL.Name)
                     {
                         sndaddr = Convert.ToUInt16(parsedDataSet.ParsedFields[2].Value); // sndaddr
                         dsap = Convert.ToUInt16(parsedDataSet.ParsedFields[3].Value); // dsap
@@ -207,5 +208,55 @@ namespace TrainShark.Export
 
             return news;
         }
+
+        public static DataSetDefinition UDP_SPL => new DataSetDefinition()
+        {
+            Name = "UDP_SPL",
+            BitFields = new List<BitField>()
+            {
+                //new BitField()
+                //{
+                //    Name = "SPL Seq",
+                //    BitFieldType = BitFieldType.UInt8,
+                //    Length = 8
+                //},
+                new BitField()
+                {
+                    Name = "SPLFrameLen",
+                    BitFieldType = BitFieldType.UInt16,
+                    Length = 16
+                },
+                new BitField()
+                {
+                    Name = "RecAddr",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField()
+                {
+                    Name = "SndAddr",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField()
+                {
+                    Name = "DSAP",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField()
+                {
+                    Name = "SSAP",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+                new BitField()
+                {
+                    Name = "FDL mode",
+                    BitFieldType = BitFieldType.UInt8,
+                    Length = 8
+                },
+            }
+        };
     }
 }

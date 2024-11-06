@@ -17,8 +17,8 @@ namespace TrainShark.DataSets
             DataSets.Add(com103);
             DataSets.Add(com222);
             DataSets.Add(com223);
-            DataSets.Add(PSCCtrlOp);
-            DataSets.Add(CCUOGlobalA);
+            //DataSets.Add(PSCCtrlOp);
+            //DataSets.Add(CCUOGlobalA);
         }
 
         public static DataSetDefinition PISRepManMsgLst => new DataSetDefinition
@@ -1031,6 +1031,7 @@ namespace TrainShark.DataSets
             }
         };
 
+        /* this is not generic iptcom
         public static DataSetDefinition PSCCtrlOp => new DataSetDefinition
         {
             Name = "PSCCtrlOp",
@@ -1057,9 +1058,10 @@ namespace TrainShark.DataSets
                     VariableLengthSettings = new VariableLengthSettings {Name = "CMessageLength", ScalingFactor = 8}
                 }
             }
-        };
+        };*/
 
-        public static DataSetDefinition CCUOGlobalA => new DataSetDefinition
+        /* this is not generic iptcom
+         * public static DataSetDefinition CCUOGlobalA => new DataSetDefinition
         {
             Name = "CCUOGlobalA",
             Identifiers = new Identifiers { Numeric = { 201100100 } 
@@ -1333,6 +1335,6 @@ namespace TrainShark.DataSets
                     Length = 8*3
                 },
             }
-        };
+        };*/
     }
 }

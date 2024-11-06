@@ -12,8 +12,7 @@ namespace TrainShark.Export
     {
         private bool _finalized = false;
         private ExcelPackage _package;
-        private ProfiSheet _profiSheet;
-        private IdleAnalyser _idleAnalyser;
+        private ProfiSheet _profiSheet;        
         private ExcelWorksheet worksheet;
         private long _rows = 0;
         private int _rotation = 0;
