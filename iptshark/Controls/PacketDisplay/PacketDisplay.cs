@@ -248,7 +248,7 @@ namespace TrainShark.Controls
             dataListViewRight.DataSource = dataLines;
         }
 
-        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, ParseOutput? parse, ParseOutput oldparse)
+        private static uint ParseToDataLines(uint ticker, List<DataLine> dataLines, ParseOutput parse, ParseOutput oldparse)
         {
             var dataSetCount = 0;
             foreach (var parsedDataSet in parse.ParsedData)
