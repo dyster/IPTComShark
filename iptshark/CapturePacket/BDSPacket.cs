@@ -132,11 +132,7 @@ namespace TrainShark
             else
             {
                 return new DisplayField("txt", ASCIIEncoding.ASCII.GetString(payload));
-            }
-
-            var df = new DisplayField("txt", null);
-
-            return df;
+            }            
         }
 
         public string ASCII()
