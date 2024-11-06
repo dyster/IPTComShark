@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using BitDataParser;
 
 namespace TrainShark.Parsers
 {
@@ -25,9 +25,7 @@ namespace TrainShark.Parsers
 
         public string Level { get; set; }
 
-
         public string Mode { get; set; }
-
 
         public ushort V_TRAIN { get; set; }
 
@@ -36,7 +34,6 @@ namespace TrainShark.Parsers
         [XmlIgnore] public ParsedDataSet Header { get; set; }
 
         [XmlIgnore] public List<ParsedDataSet> ExtraMessages { get; set; }
-
 
         public byte[] PayLoad { get; set; }
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BitDataParser;
 
 // ReSharper disable InconsistentNaming
 #pragma warning disable 1591
@@ -30,7 +30,6 @@ namespace TrainShark.DataSets
                 // 38 both
 
                 // 100 in total!
-
 
                 return fieldInfos.Count() / 100f;
             }
@@ -105,7 +104,7 @@ namespace TrainShark.DataSets
             Comment = "Has been scaled by 0.05 to m/s"
         };
 
-        #endregion
+        #endregion A_
 
         #region D_
 
@@ -427,7 +426,7 @@ namespace TrainShark.DataSets
             Comment = "10 cm, 1m or 10 m depends on Q_SCALE"
         };
 
-        #endregion
+        #endregion D_
 
         #region G_
 
@@ -447,7 +446,7 @@ namespace TrainShark.DataSets
             Comment = "1‰"
         };
 
-        #endregion
+        #endregion G_
 
         #region L_
 
@@ -645,7 +644,7 @@ namespace TrainShark.DataSets
             Comment = "10 cm, 1m or 10 m depends on Q_SCALE"
         };
 
-        #endregion
+        #endregion L_
 
         #region M_
 
@@ -966,7 +965,7 @@ namespace TrainShark.DataSets
             Comment = "Version of the ERTMS/ETCS system"
         };
 
-        #endregion
+        #endregion M_
 
         #region N_
 
@@ -1184,7 +1183,7 @@ namespace TrainShark.DataSets
             Comment = "16 383 = Contact last known RBC"
         };
 
-        #endregion
+        #endregion N_
 
         #region Q_
 
@@ -1378,7 +1377,6 @@ namespace TrainShark.DataSets
             Length = 6,
             Comment = "meters"
         };
-
 
         public static BitField Q_LINKORIENTATION = new BitField
         {
@@ -1839,7 +1837,7 @@ namespace TrainShark.DataSets
             Length = 1
         };
 
-        #endregion
+        #endregion Q_
 
         #region T_
 
@@ -1982,7 +1980,7 @@ namespace TrainShark.DataSets
             Comment = "seconds"
         };
 
-        #endregion
+        #endregion T_
 
         #region V_
 
@@ -2164,7 +2162,7 @@ namespace TrainShark.DataSets
             Comment = "5 km/h"
         };
 
-        #endregion
+        #endregion V_
 
         public static BitField X_TEXT = new BitField
         {
@@ -2458,7 +2456,6 @@ namespace TrainShark.DataSets
                                     }
                                 },
 
-
                                 L_NVKRINT,
                                 M_NVKRINT,
                                 N_ITER,
@@ -2483,7 +2480,6 @@ namespace TrainShark.DataSets
                     }
                 }
             };
-
 
         public static DataSetDefinition Packet5Linking = new DataSetDefinition
         {
@@ -2554,7 +2550,6 @@ namespace TrainShark.DataSets
             }
         };
 
-
         public static DataSetDefinition Packet6VirtualBaliseCoverOrder =
             new DataSetDefinition
             {
@@ -2570,7 +2565,6 @@ namespace TrainShark.DataSets
                     T_VBC
                 }
             };
-
 
         public static DataSetDefinition Packet12Level1MovementAuthority =
             new DataSetDefinition
@@ -2622,12 +2616,10 @@ namespace TrainShark.DataSets
                 }
             };
 
-
         /* TODO implement this
     public static DataSetDefinition Packet13StaffResponsibleDistanceInformationFromLoop =
         new DataSetDefinition {BitFields = new List<BitField> { }};
         */
-
 
         public static DataSetDefinition Packet15Level23MovementAuthority = new DataSetDefinition
         {
@@ -2690,7 +2682,6 @@ namespace TrainShark.DataSets
                     L_SECTION
                 }
             };
-
 
         public static DataSetDefinition Packet21GradientProfile =
             new DataSetDefinition
@@ -2797,7 +2788,6 @@ namespace TrainShark.DataSets
                 }
             };
 
-
         /* TODO implement this
     public static DataSetDefinition Packet39TrackConditionChangeOfTractionSystem =
         new DataSetDefinition BitFields = new List<BitField> { }};
@@ -2817,7 +2807,6 @@ namespace TrainShark.DataSets
                     M_CURRENT
                 }
             };
-
 
         public static DataSetDefinition Packet41LevelTransitionOrder =
             new DataSetDefinition
@@ -2898,7 +2887,6 @@ namespace TrainShark.DataSets
                 }
             };
 
-
         public static DataSetDefinition Packet42SessionManagement =
             new DataSetDefinition
             {
@@ -2916,9 +2904,9 @@ namespace TrainShark.DataSets
                 }
             };
 
-        
         public static DataSetDefinition Packet44TrackToTrain =
-            new DataSetDefinition {
+            new DataSetDefinition
+            {
                 Name = "Packet 44",
                 BitFields = new List<BitField>
             {
@@ -2928,7 +2916,6 @@ namespace TrainShark.DataSets
                 new BitField{Name = "NID_XUSER", Length = 9, BitFieldType = BitFieldType.UInt16}
             }
             };
-            
 
         public static DataSetDefinition Packet45RadioNetworkRegistration =
             new DataSetDefinition
@@ -2943,9 +2930,9 @@ namespace TrainShark.DataSets
                 }
             };
 
-        
         public static DataSetDefinition Packet46ConditionalLevelTransitionOrder =
-            new DataSetDefinition {
+            new DataSetDefinition
+            {
                 Name = "Conditional Level Transition Order",
                 BitFields = new List<BitField>
             {
@@ -3017,12 +3004,10 @@ namespace TrainShark.DataSets
                 }
             }
             };
-        
 
         /* TODO implement this
     public static DataSetDefinition Packet49ListOfBalisesForShArea =
         new DataSetDefinition {BitFields = new List<BitField> { }};
-
 
     public static DataSetDefinition Packet51AxleLoadSpeedProfile =
         new DataSetDefinition {BitFields = new List<BitField> { }};
@@ -3045,7 +3030,6 @@ namespace TrainShark.DataSets
                     T_CYCRQST
                 }
             };
-
 
         public static DataSetDefinition Packet58PositionReportParameters =
             new DataSetDefinition
@@ -3210,7 +3194,6 @@ namespace TrainShark.DataSets
                 }
             };
 
-
         public static DataSetDefinition Packet72PacketForSendingPlainTextMessages =
             new DataSetDefinition
             {
@@ -3271,8 +3254,7 @@ namespace TrainShark.DataSets
                         }
                     },
                     Q_TEXTCONFIRM,
-                    
-                    
+
                     new BitField
                     {
                         VariableLengthSettings = new VariableLengthSettings
@@ -3353,7 +3335,7 @@ namespace TrainShark.DataSets
                             }
                         },
                     },
-                    
+
                     L_TEXT,
                     X_TEXT
                 }
@@ -3367,11 +3349,10 @@ namespace TrainShark.DataSets
             new DataSetDefinition {BitFields = new List<BitField> { }};
         */
 
-
         public static DataSetDefinition Packet80ModeProfile = new DataSetDefinition
-            {
-                Name = "Mode profile",
-                BitFields = new List<BitField>
+        {
+            Name = "Mode profile",
+            BitFields = new List<BitField>
                 {
                     NID_PACKET,
                     Q_DIR,
@@ -3405,7 +3386,7 @@ namespace TrainShark.DataSets
                         }
                     }
                 }
-            }
+        }
             ;
 
         /* TODO implement this
@@ -3468,9 +3449,9 @@ namespace TrainShark.DataSets
             };
 
         public static DataSetDefinition Packet134EolmPacket = new DataSetDefinition
-            {
-                Name = "EOLM Packet",
-                BitFields = new List<BitField>
+        {
+            Name = "EOLM Packet",
+            BitFields = new List<BitField>
                 {
                     NID_PACKET,
                     Q_DIR,
@@ -3482,7 +3463,7 @@ namespace TrainShark.DataSets
                     Q_LOOPDIR,
                     Q_SSCODE
                 }
-            }
+        }
             ;
 
         public static DataSetDefinition Packet135StopShuntingOnDeskOpening =
@@ -3647,7 +3628,7 @@ namespace TrainShark.DataSets
             }
         };
 
-        #endregion
+        #endregion Track To Train Chapter 7
 
         #region Train To Track Chapter 7
 
@@ -3791,7 +3772,7 @@ namespace TrainShark.DataSets
         new DataSetDefinition {BitFields = new List<BitField> { }};
         */
 
-        #endregion
+        #endregion Train To Track Chapter 7
 
         #region Both Directions Chapter 7
 
@@ -3804,7 +3785,7 @@ namespace TrainShark.DataSets
                 }
             };
 
-        #endregion
+        #endregion Both Directions Chapter 7
 
         public static DataSetDefinition BaliseHeader = new DataSetDefinition
         {
@@ -3970,7 +3951,6 @@ namespace TrainShark.DataSets
                 Q_INFILL
             }
         };
-
 
         public static DataSetDefinition Message154NoCompatibleVersionSupported = new DataSetDefinition
         {
@@ -4341,6 +4321,6 @@ namespace TrainShark.DataSets
             }
         };
 
-        #endregion
+        #endregion RadioMessages Chapter 8
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using BitDataParser;
 using TrainShark.DataSets;
 using static BitDataParser.Functions;
 
@@ -26,18 +24,16 @@ namespace TrainShark.Parsers
 
             LastParsedPacket = parsed;
 
-
             var parsedHeader = Subset27.Header.Parse(data);
 
-            var NID_MESSAGE = (byte) parsedHeader.GetField("NID_MESSAGE").Value;
+            var NID_MESSAGE = (byte)parsedHeader.GetField("NID_MESSAGE").Value;
 
             parsed.Name = "JRU-" + NID_MESSAGE;
 
             bool tryParse0 = Enum.TryParse(NID_MESSAGE.ToString(), out SS27MsgType typeEnum);
             parsed.MsgType = tryParse0 ? typeEnum : SS27MsgType.INVALID;
 
-
-            var L_MESSAGE = (ushort) parsedHeader.GetField("L_MESSAGE").Value;
+            var L_MESSAGE = (ushort)parsedHeader.GetField("L_MESSAGE").Value;
 
             //if (L_MESSAGE < data.Length)
             //{
@@ -51,7 +47,6 @@ namespace TrainShark.Parsers
                 parsed.Header.ParsedFields.Add(ParsedField.CreateError("L_MESSAGE exceeds length of data"));
                 return parsed;
             }
-
 
             DateTime dateTime = ExtractDateTime(data);
             parsedHeader.GetField("Date").Value = dateTime;
@@ -93,9 +88,6 @@ namespace TrainShark.Parsers
             // copy into new array for convenience
             byte[] payload = SubArrayGetterX(data, 309, payloadlength);
 
-            
-
-
             DoPackets(typeEnum, parsed, payload);
 
             return parsed;
@@ -104,10 +96,12 @@ namespace TrainShark.Parsers
         public class Position
         {
             public int BitPosition { get; set; } = 1;
+
             public void Increment()
             {
                 BitPosition++;
             }
+
             public void Add(int value)
             {
                 BitPosition += value;
@@ -122,84 +116,96 @@ namespace TrainShark.Parsers
             {
                 case SS27MsgType.General:
                     break;
+
                 case SS27MsgType.TRAINDATA: //TODO implement
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     parsed.Events.Add(new ETCSEvent("Train Data entered"));
                     goto default;
                 case SS27MsgType.EMERGENCYBRAKECOMMANDSTATE:
                     parsed.SubMessage = Subset27.EBrakeCommandState.Parse(payload);
-                    if ((bool) parsed.SubMessage.GetField("M_BRAKE_COMMAND_STATE").Value)
+                    if ((bool)parsed.SubMessage.GetField("M_BRAKE_COMMAND_STATE").Value)
                         parsed.Events.Add(new ETCSEvent("Emergency Brake Applied", ETCSEventType.Main));
                     else
                         parsed.Events.Add(new ETCSEvent("Emergency Brake Released", ETCSEventType.Main));
 
-
                     break;
+
                 case SS27MsgType.SERVICEBRAKECOMMANDSTATE:
                     parsed.SubMessage = Subset27.SBrakeCommandState.Parse(payload);
-                    if ((bool) parsed.SubMessage.GetField("M_BRAKE_COMMAND_STATE").Value)
+                    if ((bool)parsed.SubMessage.GetField("M_BRAKE_COMMAND_STATE").Value)
                         parsed.Events.Add(new ETCSEvent("Service Brake Applied", ETCSEventType.Main));
                     else
                         parsed.Events.Add(new ETCSEvent("Service Brake Released", ETCSEventType.Main));
 
-
                     break;
+
                 case SS27MsgType.MESSAGETORADIOINFILLUNIT:
                     parsed.SubMessage = Subset27.MessageToRadioInfillUnit.Parse(payload);
                     break;
+
                 case SS27MsgType.MESSAGEFROMRADIOINFILLUNIT:
                     parsed.SubMessage = Subset27.MessageFromRadioInfillUnit.Parse(payload);
                     break;
-                case SS27MsgType.TELEGRAMFROMBALISE:                    
+
+                case SS27MsgType.TELEGRAMFROMBALISE:
                     var dataSet = Subset26.BaliseHeader.Parse(payload);
                     var nidbg = dataSet.GetField("NID_BG").Value;
                     var npig = dataSet.GetField("N_PIG").Value;
                     parsed.Events.Add(new ETCSEvent($"Balise {nidbg}:{npig} passed", ETCSEventType.Wayside));
                     position.Add(dataSet.BitsRead);
-                    dataSet.ParsedFields.Add(ParsedField.Create(new BitField {Name = "BalisePayload"},
+                    dataSet.ParsedFields.Add(ParsedField.Create(new BitField { Name = "BalisePayload" },
                         BitConverter.ToString(payload)));
 
                     parsed.SubMessage = dataSet;
                     GoDoPackets(payload, parsed, true, position);
                     break;
+
                 case SS27MsgType.MESSAGEFROMEUROLOOP: //TODO implement
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     goto default;
                 case SS27MsgType.MESSAGEFROMRBC:
                     GoParseRadioMessage(payload, parsed);
                     break;
+
                 case SS27MsgType.MESSAGETORBC:
                     GoParseRadioMessage(payload, parsed);
                     break;
+
                 case SS27MsgType.DRIVERSACTIONS:
                     parsed.SubMessage = Subset27.DriversActions.Parse(payload);
                     parsed.Events.Add(new ETCSEvent("Driver Action: " + parsed.SubMessage.ParsedFields.First().Value,
                         ETCSEventType.Main));
                     break;
+
                 case SS27MsgType.BALISEGROUPERROR:
                     parsed.SubMessage = Subset27.BaliseGroupError.Parse(payload);
                     parsed.Events.Add(new ETCSEvent("Balise Error: " + parsed.SubMessage.GetField("M_ERROR").Value,
                         ETCSEventType.Failure));
                     break;
+
                 case SS27MsgType.RADIOERROR:
                     parsed.SubMessage = Subset27.RadioError.Parse(payload);
                     parsed.Events.Add(new ETCSEvent("Radio Error: " + parsed.SubMessage.GetField("M_ERROR").Value,
                         ETCSEventType.Failure));
                     break;
+
                 case SS27MsgType.STMINFORMATION: //TODO implement
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     goto default;
                 case SS27MsgType.INFORMATIONFROMCOLDMOVEMENTDETECTOR:
                     parsed.SubMessage = Subset27.InformationFromColdMovementDetector.Parse(payload);
                     break;
+
                 case SS27MsgType.STARTDISPLAYINGFIXEDTEXTMESSAGE:
                     parsed.SubMessage = Subset27.StartDisplayingFixedTextMessage.Parse(payload);
                     parsed.Events.Add(
                         new ETCSEvent("Fixed Text Message: " + parsed.SubMessage.ParsedFields.First().Value));
                     break;
+
                 case SS27MsgType.STOPDISPLAYINGFIXEDTEXTMESSAGE:
                     parsed.SubMessage = Subset27.StopDisplayingFixedTextMessage.Parse(payload);
                     break;
+
                 case SS27MsgType.STARTDISPLAYINGPLAINTEXTMESSAGE:
                     parsed.SubMessage = Subset27.StartDisplayingPlainTextMessage.Parse(payload);
                     var textmsg = parsed.SubMessage.GetField("X_TEXT").Value.ToString();
@@ -225,14 +231,16 @@ namespace TrainShark.Parsers
                         parsed.Events.Add(new ETCSEvent("Plain Text: " + textmsg));
                     }
 
-
                     break;
+
                 case SS27MsgType.STOPDISPLAYINGPLAINTEXTMESSAGE:
                     parsed.SubMessage = Subset27.StopDisplayingPlainTextMessage.Parse(payload);
                     break;
+
                 case SS27MsgType.SPEEDANDDISTANCEMONITORINGINFORMATION:
                     parsed.SubMessage = Subset27.SpeedAndDistanceMonitoringInformation.Parse(payload);
                     break;
+
                 case SS27MsgType.DMISYMBOLSTATUS:
                     parsed.SubMessage = Subset27.DmiSymbolStatus.Parse(payload);
 
@@ -246,11 +254,12 @@ namespace TrainShark.Parsers
                     goto default;
                 case SS27MsgType.DMISOUNDSTATUS:
                     parsed.SubMessage = Subset27.DmiSoundStatus.Parse(payload);
-                    if ((bool) parsed.SubMessage.GetField("Sound Overspeed").Value)
+                    if ((bool)parsed.SubMessage.GetField("Sound Overspeed").Value)
                         parsed.Events.Add(new ETCSEvent("Sound played: Overspeed"));
-                    if ((bool) parsed.SubMessage.GetField("Sound Warning").Value)
+                    if ((bool)parsed.SubMessage.GetField("Sound Warning").Value)
                         parsed.Events.Add(new ETCSEvent("Sound played: Warning"));
                     break;
+
                 case SS27MsgType.DMISYSTEMSTATUSMESSAGE:
                     parsed.SubMessage = Subset27.DmiSystemStatusMessage.Parse(payload);
                     if (parsed.SubMessage.ParsedFields.Count > 0)
@@ -258,6 +267,7 @@ namespace TrainShark.Parsers
                                                         string.Join(", ",
                                                             parsed.SubMessage.ParsedFields.Select(p => p.Name))));
                     break;
+
                 case SS27MsgType.ADDITIONALDATA:
                     parsed.SubMessage = Subset27.AdditionalData.Parse(payload);
                     goto default;
@@ -268,11 +278,13 @@ namespace TrainShark.Parsers
                     parsed.SubMessage = Subset27.NtcSelected.Parse(payload);
                     parsed.Events.Add(new ETCSEvent("NTC selected: " + parsed.SubMessage.ParsedFields.First().Value));
                     break;
+
                 case SS27MsgType.SAFETYCRITICALFAULTINMODESLNLORPS:
                     // does not contain any data
                     parsed.Events.Add(
                         new ETCSEvent("Safety Critical Fault in mode SL, NL or PS", ETCSEventType.Failure));
                     break;
+
                 case SS27MsgType.VIRTUALBALISECOVERSETBYTHEDRIVER: //TODO implement
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     goto default;
@@ -283,6 +295,7 @@ namespace TrainShark.Parsers
                     parsed.SubMessage = Subset27.SleepingInput.Parse(payload);
                     parsed.Events.Add(new ETCSEvent("Sleeping Input: " + parsed.SubMessage.ParsedFields.First().Value));
                     break;
+
                 case SS27MsgType.PASSIVESHUNTINGINPUT: //TODO implement
                     parsed.SubMessage = Subset27.PassiveShuntingInput.Parse(payload);
                     goto default;
@@ -306,30 +319,36 @@ namespace TrainShark.Parsers
                     goto default;
                 case SS27MsgType.CABSTATUS:
                     parsed.SubMessage = Subset27.CabStatus.Parse(payload);
-                    if ((bool) parsed.SubMessage.ParsedFields.First().Value)
+                    if ((bool)parsed.SubMessage.ParsedFields.First().Value)
                         parsed.Events.Add(new ETCSEvent("Cab Activated", ETCSEventType.Main));
                     else
                         parsed.Events.Add(new ETCSEvent("Cab Deactivated", ETCSEventType.Main));
                     break;
+
                 case SS27MsgType.DIRECTIONCONTROLLERPOSITION:
                     parsed.SubMessage = Subset27.DirectionControllerPosition.Parse(payload);
                     parsed.Events.Add(
                         new ETCSEvent("Direction Controller: " + parsed.SubMessage.ParsedFields.First().Value));
                     break;
+
                 case SS27MsgType.TRACTIONSTATUS: // TODO implement correctly
                     parsed.SubMessage = Subset27.CabStatus.Parse(payload);
                     break;
+
                 case SS27MsgType.TYPEOFTRAINDATA:
                     parsed.SubMessage = Subset27.TypeOfTrainDataEntry.Parse(payload);
                     break;
+
                 case SS27MsgType.NATIONALSYSTEMISOLATION:
                     parsed.SubMessage = Subset27.NationalSystemIsolation.Parse(payload);
                     break;
+
                 case SS27MsgType.TRACTIONCUTOFFCOMMANDSTATE:
                     parsed.SubMessage = Subset27.TCOState.Parse(payload);
                     parsed.Events.Add(
                         new ETCSEvent("Traction Cut-Off: " + parsed.SubMessage.ParsedFields.First().Value));
                     break;
+
                 case SS27MsgType.LOWESTSUPERVISEDSPEEDWITHINTHEMOVEMENTAUTHORITY: //TODO implement
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     goto default;
@@ -337,9 +356,8 @@ namespace TrainShark.Parsers
                     /* TODO removed specific proprietary parsing, should be replaced with generic method (whatever that might be
                     parsed.SubMessage = Proprietary.PropJRU.Parse(payload);
                     position.Add(parsed.SubMessage.BitsRead);
-                    
-                    var subMsgNr = parsed.SubMessage.GetField("SubMsgNr");
 
+                    var subMsgNr = parsed.SubMessage.GetField("SubMsgNr");
 
                     if (subMsgNr != null)
                     {
@@ -353,9 +371,9 @@ namespace TrainShark.Parsers
                             var packetid = parsed.SubMessage.GetField("NID_PACKET");
 
                             if ((ushort) packetid.TrueValue == 15)
-                            {                                
+                            {
                                 parsed.ExtraMessages.Add(Proprietary.STM15.Parse(remain));
-                                position.Add(parsed.ExtraMessages.Last().BitsRead);                                
+                                position.Add(parsed.ExtraMessages.Last().BitsRead);
                             }
                             else if ((ushort) packetid.TrueValue == 161)
                             {
@@ -417,8 +435,8 @@ namespace TrainShark.Parsers
                                 ETCSEventType.Wayside));
                     }*/
 
-
                     break;
+
                 case SS27MsgType.ParseError:
                 case SS27MsgType.INVALID:
                 default:
@@ -428,16 +446,15 @@ namespace TrainShark.Parsers
             }
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dataset"></param>
         /// <param name="payload1"></param>
         /// <param name="position"></param>
         /// <param name="parsed"></param>
         /// <returns></returns>
-        static bool RickRoll(DataSetDefinition dataset, byte[] payload1, Position position, SS27Packet parsed)
+        private static bool RickRoll(DataSetDefinition dataset, byte[] payload1, Position position, SS27Packet parsed)
         {
             var parsedDataSet = dataset.Parse(SubArrayGetter(payload1, position.BitPosition));
 
@@ -450,7 +467,7 @@ namespace TrainShark.Parsers
                     Convert.ToInt32(parsedDataSet.ParsedFields.Last(field => field.Name == "L_PACKET").Value);
                 if (L_PACKET != parsedDataSet.BitsRead)
                 {
-                    parsedDataSet.ParsedFields.Add(ParsedField.CreateError("The number of bits read does not match the value of L_PACKET"));                    
+                    parsedDataSet.ParsedFields.Add(ParsedField.CreateError("The number of bits read does not match the value of L_PACKET"));
                     return false;
                 }
             }
@@ -465,11 +482,9 @@ namespace TrainShark.Parsers
                 }
             }*/
 
-
             // assign the enum instead of the int
             //parsedDataSet.ParsedFields.First(field => field.Name == "NID_PACKET").Value = toTrain;
 
-            
             return true;
         }
 
@@ -513,11 +528,10 @@ namespace TrainShark.Parsers
 
                 if (trackToTrain)
                 {
-                    var toTrain = (SS26PacketTrackToTrain) id;
+                    var toTrain = (SS26PacketTrackToTrain)id;
 
                     // copy ref value for use in anonymous method
                     //var currentPointer = pointer;
-
 
                     switch (toTrain)
                     {
@@ -527,63 +541,75 @@ namespace TrainShark.Parsers
                             parsed.Events.Add(new ETCSEvent("Packet: Virtual Balise Cover Marker",
                                 ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.SystemVersionOrder:
                             if (!RickRoll(Subset26.Packet2SystemVersionOrder, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.NationalValues:
                             if (!RickRoll(Subset26.Packet3NationalValues, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: National Values", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.Linking:
                             if (!RickRoll(Subset26.Packet5Linking, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Linking Info", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.VirtualBaliseCoverOrder:
                             if (!RickRoll(Subset26.Packet6VirtualBaliseCoverOrder, payload, position, parsed))
                                 return;
                             parsed.Events.Add(
                                 new ETCSEvent("Packet: Virtual Balise Cover Order", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.Level1MovementAuthority:
                             if (!RickRoll(Subset26.Packet12Level1MovementAuthority, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.StaffResponsibleDistanceInformationFromLoop:
                             parsed.Events.Add(new ETCSEvent("Packet: Staff Responsible Distance Information From Loop",
                                 ETCSEventType.Wayside));
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.Level23MovementAuthority:
                             if (!RickRoll(Subset26.Packet15Level23MovementAuthority, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.RepositioningInformation:
                             if (!RickRoll(Subset26.Packet16RepositioningInformation, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Repositioning Information",
                                 ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.GradientProfile:
                             if (!RickRoll(Subset26.Packet21GradientProfile, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Gradient Profile", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.InternationalStaticSpeedProfile:
                             if (!RickRoll(Subset26.Packet27InternationalStaticSpeedProfile, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: International Static Speed Profile",
                                 ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.TrackConditionChangeOfTractionSystem:
                             parsed.Events.Add(new ETCSEvent("Packet: TC Change of Tracion System",
                                 ETCSEventType.Wayside));
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.TrackConditionChangeOfAllowedCurrentConsumption:
                             if (!RickRoll(Subset26.Packet40TrackConditionChangeOfAllowedCurrentConsumption,
                                 payload, position, parsed))
@@ -591,11 +617,13 @@ namespace TrainShark.Parsers
                             parsed.Events.Add(new ETCSEvent("Packet: TC Change of allowed current consumption",
                                 ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.LevelTransitionOrder:
                             if (!RickRoll(Subset26.Packet41LevelTransitionOrder, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Level Transition Order", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.SessionManagement:
                             if (!RickRoll(Subset26.Packet42SessionManagement, payload, position, parsed))
                                 return;
@@ -603,14 +631,15 @@ namespace TrainShark.Parsers
                                 "Packet: Session Management: " + parsed.ExtraMessages.Last().GetField("Q_RBC").Value,
                                 ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.DataUsedByApplicationsOutsideTheErtmsEtcsSystem:
 
                             // Skip the rickroll function since Packet44 dataset doesn't match the full length of L_PACKET
                             var parsedDataSet = Subset26.Packet44TrackToTrain.Parse(SubArrayGetter(payload, position.BitPosition));
                             position.Add(parsedDataSet.BitsRead);
-                            
+
                             parsed.ExtraMessages.Add(parsedDataSet);
-                            var fourfourlength = (UInt16) parsed.ExtraMessages.Last().ParsedFields
+                            var fourfourlength = (UInt16)parsed.ExtraMessages.Last().ParsedFields
                                 .Last(f => f.Name == "L_PACKET").Value;
 
                             parsed.ExtraMessages.Add(new ParsedDataSet
@@ -621,14 +650,16 @@ namespace TrainShark.Parsers
                                         BitConverter.ToString(SubArrayGetterX(payload, position.BitPosition, fourfourlength - 32)))
                                 }
                             });
-                            position.Add(fourfourlength - 32);                            
+                            position.Add(fourfourlength - 32);
                             break;
+
                         case SS26PacketTrackToTrain.RadioNetworkRegistration:
                             if (!RickRoll(Subset26.Packet45RadioNetworkRegistration, payload, position, parsed))
                                 return;
                             parsed.Events.Add(
                                 new ETCSEvent("Packet: Radio Network Registration", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.ConditionalLevelTransitionOrder:
                             if (!RickRoll(Subset26.Packet46ConditionalLevelTransitionOrder, payload, position,
                                 parsed))
@@ -636,41 +667,50 @@ namespace TrainShark.Parsers
                             parsed.Events.Add(new ETCSEvent("Packet: Conditional Level Transition Order",
                                 ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.ListOfBalisesForShArea:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.AxleLoadSpeedProfile:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.PermittedBrakingDistanceInformation:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.MovementAuthorityRequestParameters:
                             if (!RickRoll(Subset26.Packet57MovementAuthorityRequestParameters, payload, position,
                                 parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.PositionReportParameters:
                             if (!RickRoll(Subset26.Packet58PositionReportParameters, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.ListOfBalisesInSrAuthority:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.InhibitionOfRevocableTsrsFromBalisesInL23:
                             if (!RickRoll(Subset26.Packet64InhibitionOfRevocableTsrsFromBalisesInL23, payload,
                                 position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.TemporarySpeedRestriction:
                             if (!RickRoll(Subset26.Packet65TemporarySpeedRestriction, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Temporary Speed Restriction", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.TemporarySpeedRestrictionRevocation:
                             if (!RickRoll(Subset26.Packet66TemporarySpeedRestrictionRevocation, payload, position,
                                 parsed))
@@ -678,133 +718,161 @@ namespace TrainShark.Parsers
                             parsed.Events.Add(new ETCSEvent("Packet: Temporary Speed Restriction Revocation",
                                 ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.TrackConditionBigMetalMasses:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.TrackCondition:
                             if (!RickRoll(Subset26.Packet68TrackCondition, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Track Conditions", ETCSEventType.Wayside));
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.TrackConditionStationPlatforms:
                             parsed.Events.Add(new ETCSEvent("Packet: Track Condition Station Platform",
                                 ETCSEventType.Wayside));
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.RouteSuitabilityData:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.AdhesionFactor:
                             if (!RickRoll(Subset26.Packet71AdhesionFactor, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Adhesion Factor", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.PacketForSendingPlainTextMessages:
                             if (!RickRoll(Subset26.Packet72PacketForSendingPlainTextMessages, payload, position,
                                 parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Plain Text Message", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.PacketForSendingFixedTextMessages:
                             parsed.Events.Add(new ETCSEvent("Packet: Fixed Text Message", ETCSEventType.Main));
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.GeographicalPositionInformation:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.ModeProfile:
                             if (!RickRoll(Subset26.Packet80ModeProfile, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Mode Profile", ETCSEventType.Wayside));
                             break;
+
                         case SS26PacketTrackToTrain.LevelCrossingInformation:
                             parsed.Events.Add(new ETCSEvent("Packet: Level Crossing Information", ETCSEventType.Main));
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.TrackAheadFreeUpToLevel23TransitionLocation:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrackToTrain.RbcTransitionOrder:
                             if (!RickRoll(Subset26.Packet131RbcTransitionOrder, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: RBC Transition Order", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.DangerForShuntingInformation:
                             if (!RickRoll(Subset26.Packet132DangerForShuntingInformation, payload, position,
                                 parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.RadioInfillAreaInformation:
                             if (!RickRoll(Subset26.Packet133RadioInfillAreaInformation, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.EolmPacket:
                             if (!RickRoll(Subset26.Packet134EolmPacket, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.StopShuntingOnDeskOpening:
                             if (!RickRoll(Subset26.Packet135StopShuntingOnDeskOpening, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.InfillLocationReference:
                             if (!RickRoll(Subset26.Packet136InfillLocationReference, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.StopIfInStaffResponsible:
                             if (!RickRoll(Subset26.Packet137StopIfInStaffResponsible, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Stop if in SR", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.ReversingAreaInformation:
                             if (!RickRoll(Subset26.Packet138ReversingAreaInformation, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.ReversingSupervisionInformation:
                             if (!RickRoll(Subset26.Packet139ReversingSupervisionInformation, payload, position,
                                 parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.TrainRunningNumberFromRbc:
                             if (!RickRoll(Subset26.Packet140TrainRunningNumberFromRbc, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: TRN from RBC", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrackToTrain.DefaultGradientForTemporarySpeedRestriction:
                             if (!RickRoll(Subset26.Packet141DefaultGradientForTemporarySpeedRestriction, payload,
                                 position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.SessionManagementWithNeighbouringRadioInfillUnit:
                             if (!RickRoll(Subset26.Packet143SessionManagementWithNeighbouringRadioInfillUnit,
                                 payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.InhibitionOfBaliseGroupMessageConsistencyReaction:
                             if (!RickRoll(Subset26.Packet145InhibitionOfBaliseGroupMessageConsistencyReaction,
                                 payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.LssmaDisplayToggleOrder:
                             if (!RickRoll(Subset26.Packet180LssmaDisplayToggleOrder, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.GenericLsFunctionMarker:
                             if (!RickRoll(Subset26.Packet181GenericLsFunctionMarker, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrackToTrain.DefaultBaliseLoopOrRiuInformation:
                             if (!RickRoll(Subset26.Packet254DefaultBaliseLoopOrRiuInformation, payload, position,
                                 parsed))
                                 return;
                             break;
+
                         default:
                             parsed.ExtraMessages.Add(ParsedDataSet.CreateError($"Packet {id} is UNKNOWN, data: " +
                                                                                BitConverter.ToString(
@@ -816,7 +884,7 @@ namespace TrainShark.Parsers
                 }
                 else
                 {
-                    var toTrack = (SS26PacketTrainToTrack) id;
+                    var toTrack = (SS26PacketTrainToTrack)id;
 
                     switch (toTrack)
                     {
@@ -824,38 +892,46 @@ namespace TrainShark.Parsers
                             if (!RickRoll(Subset26.Packet0PositionReport, payload, position, parsed))
                                 return;
                             break;
+
                         case SS26PacketTrainToTrack.PositionReportBasedOnTwoBaliseGroups:
                             if (!RickRoll(Subset26.Packet1PositionReportBasedOnTwoBaliseGroups, payload, position,
                                 parsed))
                                 return;
                             break;
+
                         case SS26PacketTrainToTrack.OnboardTelephoneNumbers:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrainToTrack.ErrorReporting:
                             if (!RickRoll(Subset26.Packet4ErrorReporting, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Error Report", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrainToTrack.TrainRunningNumber:
                             if (!RickRoll(Subset26.Packet5TrainRunningNumber, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: TRN", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrainToTrack.Level23TransitionInformation:
                             if (!RickRoll(Subset26.Packet9Level23TransitionInformation, payload, position, parsed))
                                 return;
                             parsed.Events.Add(new ETCSEvent("Packet: Level 2/3 Transition Info", ETCSEventType.Main));
                             break;
+
                         case SS26PacketTrainToTrack.ValidatedTrainData:
                             DieDie();
                             return;
                             break;
+
                         case SS26PacketTrainToTrack.DataUsedByApplicationsOutsideTheErtmsEtcsSystem:
                             DieDie();
                             return;
                             break;
+
                         default:
                             parsed.ExtraMessages.Add(ParsedDataSet.CreateError($"Packet {id} is UNKNOWN, data: " +
                                                                                BitConverter.ToString(
@@ -869,7 +945,7 @@ namespace TrainShark.Parsers
         }
 
         private static void GoParseRadioMessage(byte[] payload, SS27Packet parsed)
-        {            
+        {
             var position = new Position();
 
             var header = new DataSetDefinition
@@ -892,8 +968,7 @@ namespace TrainShark.Parsers
 
             // peek
             ushort NID_MESSAGE = BitConverter.ToUInt16(SubArrayGetter(payload, position.BitPosition, 8, 2).ToArray(), 0);
-            var msgType = (SS26RadioMessageType) NID_MESSAGE;
-
+            var msgType = (SS26RadioMessageType)NID_MESSAGE;
 
             switch (msgType)
             {
@@ -910,6 +985,7 @@ namespace TrainShark.Parsers
                     GoDoPackets(payload, parsed, true, position);
 
                     break;
+
                 case SS26RadioMessageType.MovementAuthority:
                     if (!RickRoll(Subset26.Message3MovementAuthority, payload, position, parsed))
                         return;
@@ -920,7 +996,6 @@ namespace TrainShark.Parsers
 
                     GoDoPackets(payload, parsed, true, position);
                     break;
-
 
                 case SS26RadioMessageType.RecognitionOfExitFromTripMode:
                     if (!RickRoll(Subset26.Message6RecognitionOfExitFromTRIPMode, payload, position, parsed))
@@ -1066,7 +1141,6 @@ namespace TrainShark.Parsers
                     parsed.Events.Add(new ETCSEvent("To RBC: Validated Train Data"));
                     break;
 
-
                 case SS26RadioMessageType.RequestForShunting:
                     if (!RickRoll(Subset26.Message130RequestForShunting, payload, position, parsed))
                         return;
@@ -1097,7 +1171,6 @@ namespace TrainShark.Parsers
                     GoDoPackets(payload, parsed, false, position);
                     break;
 
-
                 // cases with Packet 0 or 1 followed by optional packets
                 case SS26RadioMessageType.TrainPositionReport:
                     if (!RickRoll(Subset26.Message136TrainPositionReport, payload, position, parsed))
@@ -1106,8 +1179,8 @@ namespace TrainShark.Parsers
                         return;
 
                     var posrep = parsed.ExtraMessages.Last();
-                    var qscale2 = (ushort) posrep.GetField("Q_SCALE").Value;
-                    var dlrbg = (ushort) posrep.GetField("D_LRBG").Value;
+                    var qscale2 = (ushort)posrep.GetField("Q_SCALE").Value;
+                    var dlrbg = (ushort)posrep.GetField("D_LRBG").Value;
                     var distance = Subset26.ApplyQScale(dlrbg, qscale2);
 
                     if (dlrbg == 32767)
@@ -1139,6 +1212,7 @@ namespace TrainShark.Parsers
                     if (!RickRoll(Subset26.Message146Acknowledgement, payload, position, parsed))
                         return;
                     break;
+
                 case SS26RadioMessageType.AcknowledgementOfEmergencyStop:
                     if (!RickRoll(Subset26.Message147AcknowledgementOfEmergencyStop, payload, position, parsed))
                         return;
@@ -1153,6 +1227,7 @@ namespace TrainShark.Parsers
                         return;
                     parsed.Events.Add(new ETCSEvent("To RBC: Track Ahead Free Granted"));
                     break;
+
                 case SS26RadioMessageType.EndOfMission:
                     if (!RickRoll(Subset26.Message150EndOfMission, payload, position, parsed))
                         return;
@@ -1175,11 +1250,13 @@ namespace TrainShark.Parsers
                         return;
                     parsed.Events.Add(new ETCSEvent("To RBC: No Compatible Version Supported", ETCSEventType.Failure));
                     break;
+
                 case SS26RadioMessageType.InitiationOfACommunicationSessionToTrain:
                     if (!RickRoll(Subset26.Message155InitiationOfACommunicationSession, payload, position, parsed))
                         return;
                     parsed.Events.Add(new ETCSEvent("To RBC: Initiation of Comm Session"));
                     break;
+
                 case SS26RadioMessageType.TerminationOfACommunicationSession:
                     if (!RickRoll(Subset26.Message156TerminationOfACommunicationSession, payload, position,
                         parsed))
@@ -1211,7 +1288,6 @@ namespace TrainShark.Parsers
                     parsed.Events.Add(new ETCSEvent("To RBC: Session Established"));
                     break;
 
-
                 default:
                     parsed.ExtraMessages.Add(ParsedDataSet.CreateError("Unexpected Message Type"));
                     break;
@@ -1238,7 +1314,6 @@ namespace TrainShark.Parsers
             return analys;
         }
 
-
         private static bool Packet0or1(byte[] subLoad, SS27Packet ss27Packet, Position position)
         {
             bool success;
@@ -1254,7 +1329,7 @@ namespace TrainShark.Parsers
             else
             {
                 success = false;
-                ss27Packet.ExtraMessages.Add(ParsedDataSet.CreateError("Packet 0 or 1 space contains invalid packet number " + NID_PACKET));                
+                ss27Packet.ExtraMessages.Add(ParsedDataSet.CreateError("Packet 0 or 1 space contains invalid packet number " + NID_PACKET));
             }
 
             return success;
@@ -1365,7 +1440,7 @@ namespace TrainShark.Parsers
     } */
 
     /* Types of JRU messages
-     * 
+     *
      * 1 GENERAL MESSAGE 18
         2 TRAIN DATA 18
         3 EMERGENCY BRAKE COMMAND STATE 27
@@ -1414,6 +1489,6 @@ namespace TrainShark.Parsers
         53
         45-254 SPARE
         255 ETCS ON-BOARD PROPRIETARY JURIDICAL DATA 53
-     * 
+     *
      */
 }

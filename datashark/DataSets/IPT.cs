@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BitDataParser;
+﻿using BitDataParser;
+using System.Collections.Generic;
 
 namespace TrainShark.DataSets
 {
@@ -1035,7 +1035,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition PSCCtrlOp => new DataSetDefinition
         {
             Name = "PSCCtrlOp",
-            Identifiers = new Identifiers { Numeric = { 251200100 } 
+            Identifiers = new Identifiers { Numeric = { 251200100 }
             },
             BitFields = new List<BitField>
             {
@@ -1064,7 +1064,7 @@ namespace TrainShark.DataSets
          * public static DataSetDefinition CCUOGlobalA => new DataSetDefinition
         {
             Name = "CCUOGlobalA",
-            Identifiers = new Identifiers { Numeric = { 201100100 } 
+            Identifiers = new Identifiers { Numeric = { 201100100 }
             },
             BitFields = new List<BitField>
             {

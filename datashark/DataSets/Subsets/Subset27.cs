@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using BitDataParser;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BitDataParser;
 
 namespace TrainShark.DataSets
 {
@@ -193,13 +193,13 @@ namespace TrainShark.DataSets
         public static DataSetDefinition StartDisplayingFixedTextMessage = new DataSetDefinition
         {
             Name = "16 START DISPLAYING FIXED TEXT MESSAGE",
-            BitFields = new List<BitField> {Subset26.Q_TEXT}
+            BitFields = new List<BitField> { Subset26.Q_TEXT }
         };
 
         public static DataSetDefinition StopDisplayingFixedTextMessage = new DataSetDefinition
         {
             Name = "17 STOP DISPLAYING FIXED TEXT MESSAGE",
-            BitFields = new List<BitField> {Subset26.Q_TEXT}
+            BitFields = new List<BitField> { Subset26.Q_TEXT }
         };
 
         public static DataSetDefinition StartDisplayingPlainTextMessage = new DataSetDefinition
@@ -706,7 +706,6 @@ namespace TrainShark.DataSets
             }
         };
 
-
         public static DataSetDefinition DirectionControllerPosition = new DataSetDefinition
         {
             Name = "39 DIRECTION CONTROLLER POSITION",
@@ -810,7 +809,6 @@ namespace TrainShark.DataSets
                     typeof(Subset27).GetFields().Where(f => f.FieldType == typeof(DataSetDefinition));
 
                 // 45 in total
-
 
                 return fieldInfos.Count() / 45f;
             }

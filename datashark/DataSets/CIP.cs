@@ -1,13 +1,11 @@
 ﻿using BitDataParser;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace datashark.DataSets
 {
     public class CIP : DataSetCollection
     {
-        public CIP() 
+        public CIP()
         {
             Name = "CIP";
             Description = "";
@@ -84,7 +82,6 @@ namespace datashark.DataSets
                 new BitField{Name = "Spare4", BitFieldType = BitFieldType.Spare, Length = 32},
                 new BitField{Name = "TRINT_Time", BitFieldType = BitFieldType.UnixEpochUtc, Length = 48},
                 new BitField{Name = "Spare5", BitFieldType = BitFieldType.Spare, Length = 1904}
-                
             }
         };
 
@@ -143,7 +140,6 @@ namespace datashark.DataSets
                 new BitField{Name = "Confirm activation of TSO button MESS", BitFieldType = BitFieldType.Bool, Length = 1},
                 new BitField{Name = "Brake Release MESS", BitFieldType = BitFieldType.Bool, Length = 1},
                 new BitField{Name = "Train Stop Overide Active MESS", BitFieldType = BitFieldType.Bool, Length = 1},
-
             }
         };
 
@@ -165,7 +161,6 @@ namespace datashark.DataSets
                 new BitField{Name = "Driver_id_end", BitFieldType = BitFieldType.UInt64, Length = 64},
                 new BitField{Name = "SpareC7", BitFieldType = BitFieldType.Spare, Length = 32},
                 new BitField{Name = "SpareC8", BitFieldType = BitFieldType.Spare, Length = 32},
-
             };
 
         public static DataSetDefinition GWtoEVC1 = new DataSetDefinition
@@ -181,7 +176,5 @@ namespace datashark.DataSets
             Identifiers = new Identifiers { Numeric = new List<int> { 124 }, Source = new IPv4(192, 168, 1, 15), Destination = new IPv4(192, 168, 1, 23) },
             BitFields = GWtoEVCdataset
         };
-
-
     }
 }

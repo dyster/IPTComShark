@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BitDataParser;
+﻿using BitDataParser;
+using System.Collections.Generic;
 
 namespace TrainShark.DataSets
 {
@@ -45,7 +45,7 @@ namespace TrainShark.DataSets
 
         public static BitField L_CAPTION = new BitField()
         {
-            Name = "L_CAPTION",            
+            Name = "L_CAPTION",
             BitFieldType = BitFieldType.UInt8,
             Length = 5
         };
@@ -87,7 +87,7 @@ namespace TrainShark.DataSets
         {
             Name = "STM/ETCS function version number",
             Comment = "This packet contains implicitly the connection request from the STM or the connection confirmation from the ERTMS/ETCS on-board function and provide also FFFIS STM version number for check.",
-            Identifiers = new Identifiers { Numeric = { 1 }},
+            Identifiers = new Identifiers { Numeric = { 1 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -160,7 +160,6 @@ namespace TrainShark.DataSets
                     }
                 },
                 Subset26.M_MODE
-                              
             }
         };
 
@@ -311,8 +310,6 @@ namespace TrainShark.DataSets
                             X_CAPTION
                         }
                     }
-
-
                 },
             }
         };
@@ -371,8 +368,6 @@ namespace TrainShark.DataSets
                             X_CAPTION
                         }
                     }
-
-
                 },
             }
         };
@@ -381,7 +376,7 @@ namespace TrainShark.DataSets
         {
             Name = "Diagnostic Message",
             Comment = "Packet which delivers diagnostic message.",
-            Identifiers = new Identifiers { Numeric = { 77 }  },
+            Identifiers = new Identifiers { Numeric = { 77 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -392,7 +387,7 @@ namespace TrainShark.DataSets
                 {
                     Name = "N_L_ITER",
                     BitFieldType = BitFieldType.UInt8,
-                    Length = 8                    
+                    Length = 8
                 },
                 new BitField
                 {
@@ -522,7 +517,7 @@ namespace TrainShark.DataSets
         {
             Name = "STM information to JRU",
             Comment = "National STM data transmitted to the JRU. (Structure of the data internal to each company)",
-            Identifiers = new Identifiers { Numeric = { 161 }  },
+            Identifiers = new Identifiers { Numeric = { 161 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -570,7 +565,7 @@ namespace TrainShark.DataSets
             {
                 NID_PACKET,
                 L_PACKET,
-                Subset26.NID_OPERATIONAL,                
+                Subset26.NID_OPERATIONAL,
                 new BitField
                 {
                     Name = "NC_TRAIN",
@@ -582,7 +577,7 @@ namespace TrainShark.DataSets
                     Name = "L_TRAIN",
                     BitFieldType = BitFieldType.UInt16,
                     Length = 12
-                },                
+                },
                 Subset26.V_MAXTRAIN,
                 new BitField
                 {
@@ -624,7 +619,7 @@ namespace TrainShark.DataSets
             BitFields = new List<BitField>()
             {
                 NID_PACKET,
-                L_PACKET,               
+                L_PACKET,
                 new BitField
                 {
                     Name = "T_BEGIN_SB_EF",
@@ -662,8 +657,6 @@ namespace TrainShark.DataSets
                             }
                         }
                     }
-                    
-                    
                 },
                 new BitField
                 {
@@ -702,8 +695,6 @@ namespace TrainShark.DataSets
                             }
                         }
                     }
-
-
                 },
                 new BitField
                 {
@@ -723,7 +714,7 @@ namespace TrainShark.DataSets
         public static DataSetDefinition STM_177 => new DataSetDefinition()
         {
             Name = "Additional Data Values and date/time to STM",
-            Identifiers = new Identifiers { Numeric = { 177 }  },
+            Identifiers = new Identifiers { Numeric = { 177 } },
             BitFields = new List<BitField>
             {
                 NID_PACKET,
@@ -735,7 +726,7 @@ namespace TrainShark.DataSets
                     Length = 32,
                 },
                 Subset26.NID_ENGINE,
-                Subset26.M_ADHESION,                
+                Subset26.M_ADHESION,
                 new BitField()
                 {
                     Name = "T_YEAR",
@@ -924,7 +915,6 @@ namespace TrainShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Need for Specific STM Data Entry"
-                   
                 },
                 new BitField()
                 {
@@ -932,7 +922,6 @@ namespace TrainShark.DataSets
                     BitFieldType = BitFieldType.Bool,
                     Length = 1,
                     Comment = "Need for driver intervention or not"
-                    
                 }
             }
         };

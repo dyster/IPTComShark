@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BitDataParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using BitDataParser;
 using TrainShark.DataSets;
 using static BitDataParser.Functions;
 
@@ -58,8 +58,6 @@ namespace TrainShark.Parsers
             //    throw new ArgumentOutOfRangeException("SL nibble not allowed");
             //}
 
-            
-
             var cmd = Convert.ToByte(cmdField.TrueValue);
 
             var middle = SubArrayGetter(data, position);
@@ -70,8 +68,7 @@ namespace TrainShark.Parsers
                 list.Add(parsedDataSet);
                 positionX += parsedDataSet.BitsRead;
                 return SubArrayGetter(bytes, parsedDataSet.BitsRead);
-
-            } 
+            }
 
             //{ "0", "Connect Request"},
             //{ "1", "Reserved"},
@@ -85,7 +82,6 @@ namespace TrainShark.Parsers
             {
                 // Connect Request
                 middle = Parse(DataSets.Subset57.Cmd0ConnectRequest, middle, ref position);
-                
             }
             else if (cmd == 1)
             {
@@ -110,13 +106,10 @@ namespace TrainShark.Parsers
             else if (cmd == 6)
             {
                 // IDLE
-                
             }
-            else if(cmd == 9)
+            else if (cmd == 9)
             {
                 // upper layer
-                
-
 
                 if (SAP >= 8 && SAP <= 31)
                 {
@@ -128,9 +121,7 @@ namespace TrainShark.Parsers
                     }
                     else
                     {
-                        
                     }
-                    
                 }
                 else if (SAP == 32)
                 {
@@ -149,7 +140,7 @@ namespace TrainShark.Parsers
                     // STM channel!
 
                     var testposition = position;
-                    
+
                     var ffisheader = DataSets.Subset58.FFFISHeader.Parse(middle);
                     list.Add(ffisheader);
                     position += ffisheader.BitsRead;
@@ -168,7 +159,7 @@ namespace TrainShark.Parsers
                     do
                     {
                         var ident = (int)FieldGetter(middle, middlepos, 8);
-                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = {ident}});
+                        var definition = ss58.FindByIdentifier(new Identifiers { Numeric = { ident } });
 
                         if (definition == null)
                         {
@@ -181,9 +172,6 @@ namespace TrainShark.Parsers
 
                         middlepos += parsedDataSet.BitsRead;
                         remainer -= parsedDataSet.BitsRead;
-
-
-
                     } while (remainer > 24);
 
                     if (remainer > 0)
@@ -193,17 +181,12 @@ namespace TrainShark.Parsers
                         displayFields.Add(new Tuple<string, object>("PaddingBitsValue", remainvalue));
                     }
 
-
-
-
                     position += payloadLength;
                 }
                 else
                 {
                     // twilight zone?
                 }
-
-                
             }
 
             if (sl != "0")
@@ -214,7 +197,6 @@ namespace TrainShark.Parsers
                 else if (sl == "4")
                     list.Add(DataSets.Subset57.SL4Checksum.Parse(remain));
             }
-            
 
             return list;
         }

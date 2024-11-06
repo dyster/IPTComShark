@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BitDataParser;
+﻿using BitDataParser;
+using System.Collections.Generic;
 
 namespace TrainShark.DataSets
 {
@@ -35,7 +35,6 @@ namespace TrainShark.DataSets
                         {"13", "0"},
                         {"14", "0"},
                         {"15", "0"},
-
                     }
                 },
                 new BitField()
@@ -159,7 +158,6 @@ namespace TrainShark.DataSets
                     BitFieldType = BitFieldType.UInt32,
                     Length = 32
                 },
-
             }
         };
 
@@ -174,7 +172,6 @@ namespace TrainShark.DataSets
                     BitFieldType = BitFieldType.HexString,
                     Length = 32
                 },
-                
             }
         };
 
@@ -189,7 +186,6 @@ namespace TrainShark.DataSets
                     BitFieldType = BitFieldType.HexString,
                     Length = 48
                 },
-
             }
         };
     }
