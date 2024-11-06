@@ -182,7 +182,7 @@ namespace TrainShark
         public void SetApplicationTitle(string[] fileNames = null)
         {
             Text = Application.ProductName;
-            Text += " " + Application.ProductVersion + " Test Release";
+            Text += " " + Application.ProductVersion + " Open Release";
             if (fileNames != null && fileNames.Length == 1)
             {
                 Text += " - " + fileNames[0];
