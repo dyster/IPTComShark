@@ -561,13 +561,7 @@ namespace TrainShark
         {
             var importer = new Hasler();
             Import(importer);
-        }
-
-        private void canapeJRUToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var importer = new Canape();
-            Import(importer);
-        }
+        }        
 
         private void Import(IImporter importer)
         {
@@ -651,91 +645,7 @@ namespace TrainShark
             }
 
             return img;
-        }
-
-        private void bDSToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var fileDropper = new FileDropper();
-            fileDropper.ShowDialog(this);
-            var files = fileDropper.DroppedFiles;
-
-            var regex = new Regex(
-                @"^(LOG|ERR|WRN|FTL),(TXT|BIN|BDS|ELG),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),([\d:_; ]+),\s*(\d+),\s*(\d+),\s*(\d+),(0x\d+),(0x\d+),(.*)$");
-
-            foreach (var file in files)
-            {
-                var lines = File.ReadAllLines(file);
-                foreach (var line in lines)
-                {
-                    var match = regex.Match(line);
-
-                    if (match.Groups.Count != 15)
-                    {
-                        // stuff we missed
-                    }
-                    else
-                    {
-                        var NC_SEVERITY = match.Groups[1].Value;
-                        var N_COMMAND = match.Groups[2].Value;
-                        var L_PACKET = int.Parse(match.Groups[3].Value);
-                        var N_VER = int.Parse(match.Groups[4].Value);
-                        var ServiceID = int.Parse(match.Groups[5].Value);
-                        var deviceID = int.Parse(match.Groups[6].Value);
-                        var N_SEQ = int.Parse(match.Groups[7].Value);
-                        var UTC_REFTIME = match.Groups[8].Value;
-                        var UTC_OFFSET = int.Parse(match.Groups[9].Value);
-                        var T_REFTIME = int.Parse(match.Groups[10].Value);
-                        var Receive_Time = int.Parse(match.Groups[11].Value);
-                        var Classification = match.Groups[12].Value;
-                        var MessageId = match.Groups[13].Value;
-                        var M_MSG = match.Groups[14].Value;
-
-                        if (ServiceID == 208 && deviceID == 200)
-                        {
-                            continue;
-                            var hexes = M_MSG.Split(',');
-                            var bytes = new byte[hexes.Length];
-                            for (var index = 0; index < hexes.Length; index++)
-                            {
-                                var hex = hexes[index];
-                                bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
-                            }
-
-                            var action = new byte[32];
-                            Array.Copy(bytes, 14, action, 0, 32);
-
-                            var parsedDataSet = ETCSDiag.DIA_130.Parse(action);
-
-                            var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS 130", DateTime.Now);
-                            // TODO no idea if this works now
-                            capturePacket.DisplayFields.AddRange(
-                                parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
-                            packetListView1.Add(capturePacket);
-                        }
-                        else if (ServiceID == 205 && deviceID == 3)
-                        {
-                            var hexes = M_MSG.Split(',');
-                            var bytes = new byte[hexes.Length];
-                            for (var index = 0; index < hexes.Length; index++)
-                            {
-                                var hex = hexes[index];
-                                bytes[index] = Convert.ToByte(hex.Substring(2, 2), 16);
-                            }
-
-                            var V_NOM = BitConverter.ToInt16(new byte[] { bytes[13], bytes[12] }, 0);
-
-                            var capturePacket = new CapturePacket(ProtocolType.Virtual, "BDS ODO", DateTime.Now);
-                            var parsedDataSet = ParsedDataSet.CreateError("V_NOM is " + V_NOM);
-                            // TODO no idea if this works either now
-                            capturePacket.DisplayFields.AddRange(
-                                parsedDataSet.ParsedFields.Select(pf => new DisplayField(pf)));
-
-                            packetListView1.Add(capturePacket);
-                        }
-                    }
-                }
-            }
-        }
+        }       
 
         private void textBoxIgnoreVars_TypingFinished(object sender, EventArgs e)
         {

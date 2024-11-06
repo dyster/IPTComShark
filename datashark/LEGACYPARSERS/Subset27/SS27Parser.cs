@@ -206,6 +206,8 @@ namespace TrainShark.Parsers
                     var regex = new Regex(@"EVC Message#(\d+)");
                     if (regex.IsMatch(textmsg))
                     {
+                        throw new Exception("not supported");
+                        /*
                         int txtid = int.Parse(regex.Match(textmsg).Groups[1].Value);
                         if (VSIS210.MMI_Q_TEXT.LookupTable.ContainsKey(regex.Match(textmsg).Groups[1].Value))
                         {
@@ -216,7 +218,7 @@ namespace TrainShark.Parsers
                         else
                         {
                             parsed.Events.Add(new ETCSEvent("Plain Text: Unknown EVC Text -> " + textmsg));
-                        }
+                        }*/
                     }
                     else
                     {
@@ -332,6 +334,7 @@ namespace TrainShark.Parsers
                     parsed.SubMessage = ParsedDataSet.CreateError("Not Implemented");
                     goto default;
                 case SS27MsgType.PROPRIETARY:
+                    /* TODO removed specific proprietary parsing, should be replaced with generic method (whatever that might be
                     parsed.SubMessage = Proprietary.PropJRU.Parse(payload);
                     position.Add(parsed.SubMessage.BitsRead);
                     
@@ -350,7 +353,7 @@ namespace TrainShark.Parsers
                             var packetid = parsed.SubMessage.GetField("NID_PACKET");
 
                             if ((ushort) packetid.TrueValue == 15)
-                            {
+                            {                                
                                 parsed.ExtraMessages.Add(Proprietary.STM15.Parse(remain));
                                 position.Add(parsed.ExtraMessages.Last().BitsRead);                                
                             }
@@ -412,7 +415,7 @@ namespace TrainShark.Parsers
                         if (awsstring.Count > 0)
                             parsed.Events.Add(new ETCSEvent("TPWS: " + string.Join(", ", awsstring),
                                 ETCSEventType.Wayside));
-                    }
+                    }*/
 
 
                     break;

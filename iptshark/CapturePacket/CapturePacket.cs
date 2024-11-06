@@ -178,10 +178,12 @@ namespace TrainShark
                             var jruload = tcpPacket.PayloadData;
                             try
                             {
+                                /* not supported, remove?
                                 ushort jrulen = BitConverter.ToUInt16(new byte[] { jruload[1], jruload[0] }, 0);
                                 var buffer = new byte[jrulen];
                                 Array.Copy(jruload, 2, buffer, 0, jrulen);
                                 var parsedDataSet = VSIS210.JRU_STATUS.Parse(buffer);
+                                */
 
                                 // TODO move this to separate parser
                                 //if(parsedDataSet != null)

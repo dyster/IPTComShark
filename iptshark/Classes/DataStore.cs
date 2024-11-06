@@ -11,13 +11,7 @@ namespace TrainShark.Classes
 
         public DataStore()
         {
-            DataCollections.Add(new IPT());
-            DataCollections.Add(new TPWS());
-            DataCollections.Add(new STM());
-            DataCollections.Add(new ETCSDiag());
-            DataCollections.Add(new VSISDMI());
-            DataCollections.Add(new ABDO());
-            DataCollections.Add(new VSIS210());
+            DataCollections.Add(new IPT());            
         }
 
         public void Add(DataSetCollection dataSetCollection)
